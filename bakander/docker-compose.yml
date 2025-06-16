@@ -1,0 +1,88 @@
+version: '3'
+
+services:
+
+  #golang 服务
+  golang:
+    hostname: golang
+    #    image: golang:latest  # 父镜像名称
+    image: golang:1.23.4
+    volumes: # 挂载卷
+      - /xingfufit/go:/go
+    ports: # 端口映射
+      - "9039:9039"
+    stdin_open: true
+    tty: true
+    restart: always
+    privileged: true
+    # command: 启动后运行的命令
+  #    profiles:
+  #      - dev
+  #      - release
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ACCESS_KEY: Yj123987
+      MINIO_SECRET_KEY: Yj987123
+    volumes:
+      - /xingfufit/go/minio/:/data
+      - /xingfufit/go/minio/:/root/.minio
+    command: server --console-address ':9001' /data
+    privileged: true
+    restart: always
+  #    profiles:
+  #      - dev
+  #      - release
+
+
+  es01:
+    container_name: es01
+    image: elasticsearch:8.17.2
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - TZ=Asia/Shanghai
+      - http.host=0.0.0.0
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=es2025
+      - xpack.security.http.ssl.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+    volumes:
+      - /xingfufit/es/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - /xingfufit/es/data:/usr/share/elasticsearch/data
+      - /xingfufit/es/plugins:/usr/share/elasticsearch/plugins
+      - /xingfufit/es/logs:/usr/share/elasticsearch/logs
+    networks:
+      - elastic
+
+  kibana:
+    container_name: kibana
+    image: kibana:8.17.2
+    restart: unless-stopped
+    environment:
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=es2025
+    volumes:
+      - /xingfufit/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - "5601:5601"
+    networks:
+      - elastic
+    depends_on:
+      - es01
+
+networks:
+  elastic:
+    external: true
