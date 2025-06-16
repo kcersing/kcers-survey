@@ -11,7 +11,7 @@ type User interface {
 	UpdateUserStatus(id, status int64) error
 	DeleteUser(id int64) error
 	SetRole(id int64, roleID []int64) error
-	SetDefaultVenue(id, venueId int64) error
+
 	GetUserName(id int64) (name string)
 	Login(req *user.LoginReq) (res *user.LoginResp, err error)
 }

@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
-	"kcers-survey/biz/infras/service/member"
 	"kcers-survey/biz/infras/service/system"
 	"kcers-survey/biz/infras/service/user"
 	"kcers-survey/idl_gen/model/logs"
@@ -54,18 +53,7 @@ func LogMw() app.HandlerFunc {
 			log.Identity = 2
 		}
 
-		memberIn, exist := c.Get("member_id")
-		if !(exist || userIn == nil) {
-			memberId := toInt(memberIn)
-			userInfo, _ := member.NewMember(ctx, c).Info(memberId)
-			if userInfo != nil {
-				username = userInfo.Name
-			}
-			log.Operatorsr = username
-			log.Identity = 1
-		}
 		err := system.NewLogs(ctx, c).Create(log)
-
 		if err != nil {
 			hlog.Error(err)
 		}

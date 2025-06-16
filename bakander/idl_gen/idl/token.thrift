@@ -13,17 +13,7 @@ struct TokenInfo {
     7: optional string source  =""(api.raw = "source")
     8: optional string expiredAt ="" (api.raw = "expiredAt")
 }
-struct MemberTokenInfo {
-    1:  i64 id (api.raw = "id")
-    2:  string createdAt (api.raw = "createdAt")
-    3:  string updatedAt (api.raw = "updatedAt")
-    4:  i64 memberId (api.raw = "memberId")
-    5:  string name (api.raw = "username")
-    6:  string token (api.raw = "token")
-    7:  string source (api.raw = "source")
-    8:  string expiredAt (api.raw = "expiredAt")
-    10: string mobile (api.raw = "mobile")
-}
+
 // token列表请求参数
 struct TokenListReq {
     1: optional i64 page =0 (api.raw = "page")

@@ -5,7 +5,6 @@ import (
 	"entgo.io/ent/dialect/entsql"
 	_ "entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema"
-	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"kcers-survey/biz/dal/db/mysql/ent/schema/mixins"
 )
@@ -17,10 +16,10 @@ type Survey struct {
 func (Survey) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("title").Comment("title"),
-		field.Text("description").Comment("description"),
-		field.Int64("active").Default(1).Comment("active"),
-		field.Time("start").Default(nil).Comment("开始时间"),
-		field.Time("end").Default(nil).Comment("结束时间"),
+		field.String("pic").Comment("pic"),
+		field.Text("desc").Comment("desc"),
+		field.Time("start_at").Default(nil).Comment("开始时间"),
+		field.Time("end_at").Default(nil).Comment("结束时间"),
 	}
 }
 
@@ -33,7 +32,7 @@ func (Survey) Mixin() []ent.Mixin {
 
 func (Survey) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("question", SurveyQuestion.Type),
+		//edge.To("question", SurveyQuestion.Type),
 	}
 }
 

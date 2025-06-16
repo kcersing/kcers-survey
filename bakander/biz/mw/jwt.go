@@ -7,11 +7,13 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/hertz-contrib/jwt"
-	"saas/biz/dal/config"
-	"saas/biz/infras/service"
-	"saas/biz/pkg/errno"
-	"saas/biz/pkg/utils"
-	"saas/idl_gen/model/user"
+	"kcers-survey/biz/dal/config"
+	"kcers-survey/biz/infras/service/common"
+	userService "kcers-survey/biz/infras/service/user"
+	"kcers-survey/biz/pkg/errno"
+	"kcers-survey/biz/pkg/utils"
+	"kcers-survey/idl_gen/model/user"
+	user3 "kcers-survey/idl_gen/model/user"
 	"strconv"
 	"time"
 )
@@ -81,7 +83,10 @@ func newJWT(enforcer *casbin.Enforcer) (jwtMiddleware *jwt.HertzJWTMiddleware, e
 
 			username := loginVal.Username
 			password := loginVal.Password
-			res, err = service.NewLogin(ctx, c).Login(username, password)
+			res, err = userService.NewUser(ctx, c).Login(&user3.LoginReq{
+				Username: username,
+				Password: password,
+			})
 			if err != nil {
 				return nil, errors.New("账号或密码错误")
 			}
@@ -166,9 +171,9 @@ func newJWT(enforcer *casbin.Enforcer) (jwtMiddleware *jwt.HertzJWTMiddleware, e
 			return true
 		},
 		LogoutResponse: func(ctx context.Context, c *app.RequestContext, code int) {
-			id := service.GetTokenUserID(c)
+			id := common.GetTokenUserID(c)
 			hlog.Info(id)
-			err = service.NewToken(ctx, c).Delete(id)
+			err = common.NewToken(ctx, c).Delete(id)
 			if err != nil {
 				utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 			}

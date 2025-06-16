@@ -11,11 +11,10 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent"
 	"kcers-survey/biz/dal/db/mysql/ent/predicate"
 	user2 "kcers-survey/biz/dal/db/mysql/ent/user"
-	"kcers-survey/biz/dal/enums"
 	"kcers-survey/biz/infras/do"
+	"kcers-survey/biz/infras/enum"
 	"kcers-survey/biz/infras/service"
 	"kcers-survey/biz/pkg/encrypt"
-	"kcers-survey/idl_gen/model/dictionary"
 	"kcers-survey/idl_gen/model/user"
 	"time"
 )
@@ -67,24 +66,14 @@ func (u *User) GetUserName(id int64) (name string) {
 	return ""
 }
 func (u *User) Info(id int64) (info *user.UserInfo, err error) {
-	//info = new(user.UserInfo)
-	//userInterface, exist := u.cache.Get("userInfo" + strconv.Itoa(int(id)))
-	//if exist {
-	//	if u, ok := userInterface.(*user.UserInfo); ok {
-	//		return u, nil
-	//	}
-	//}
+
 	userEnt, err := u.db.User.Query().Where(user2.IDEQ(id)).First(u.ctx)
 	if err != nil {
 		err = errors.Wrap(err, "get user failed")
 		return info, err
 	}
 	info = u.entUserInfo(*userEnt)
-	//if !userEnt.Birthday.IsZero() {
-	//	info.Age = int64(time.Now().Sub(userEnt.Birthday).Hours() / 24 / 365)
-	//}
-	//info.Birthday = userEnt.Birthday.Format(time.DateTime)
-	//u.cache.SetWithTTL("userInfo"+strconv.Itoa(int(info.Id)), &info, 1, 1*time.Hour)
+
 	return
 }
 
@@ -99,7 +88,7 @@ func (u *User) Create(req *user.CreateOrUpdateUserReq) error {
 		return errors.New("手机号重复！")
 	}
 
-	var gender = enums.ReturnMemberGenderKey(req.Gender)
+	var gender = enum.ReturnMemberGenderKey(req.Gender)
 
 	parsedTime, _ := time.Parse(time.DateOnly, req.Birthday)
 	password, _ := encrypt.Crypt(req.Password)
@@ -117,26 +106,13 @@ func (u *User) Create(req *user.CreateOrUpdateUserReq) error {
 		SetBirthday(parsedTime).
 		SetGender(gender).
 		SetWecom(req.Wecom).
-		SetJobTime(req.JobTime).
 		SetPassword(password).
-		SetFunctions(req.Functions).
 		AddRoleIDs(req.RoleId...).
 		SetDetail(req.Detail).
-		AddTagIDs(req.UserTags...).
-		AddVenueIDs(req.VenueId...).
-		SetDefaultVenueID(req.DefaultVenueId).
 		Save(u.ctx)
 
 	if err != nil {
 		err = service.Rollback(tx, errors.Wrap(err, "create user failed"))
-		return err
-	}
-	_, err = tx.Face.Create().
-		SetUserFaces(noe).
-		Save(u.ctx)
-
-	if err != nil {
-		err = service.Rollback(tx, errors.Wrap(err, "create Face failed"))
 		return err
 	}
 
@@ -231,45 +207,17 @@ func (u *User) DeleteUser(id int64) error {
 
 func (u *User) entUserInfo(userEnt ent.User) (info *user.UserInfo) {
 	info = &user.UserInfo{
-		ID:             userEnt.ID,
-		Status:         userEnt.Status,
-		Username:       userEnt.Username,
-		Name:           userEnt.Name,
-		Mobile:         userEnt.Mobile,
-		CreatedAt:      userEnt.CreatedAt.Format(time.DateTime),
-		UpdatedAt:      userEnt.UpdatedAt.Format(time.DateTime),
-		Detail:         userEnt.Detail,
-		JobTime:        &userEnt.JobTime,
-		DefaultVenueId: userEnt.DefaultVenueID,
+		ID:        userEnt.ID,
+		Status:    userEnt.Status,
+		Username:  userEnt.Username,
+		Name:      userEnt.Name,
+		Mobile:    userEnt.Mobile,
+		CreatedAt: userEnt.CreatedAt.Format(time.DateTime),
+		UpdatedAt: userEnt.UpdatedAt.Format(time.DateTime),
+		Detail:    userEnt.Detail,
 	}
 
 	info.Gender = enums.ReturnMemberGenderValues(userEnt.Gender)
-
-	var venues []*user.Venues
-	Venues, _ := userEnt.QueryVenues().All(u.ctx)
-	if len(Venues) > 0 {
-		for _, ve := range Venues {
-			venues = append(venues, &user.Venues{
-				ID:   ve.ID,
-				Name: ve.Name,
-			})
-
-		}
-	}
-	info.Venues = venues
-	Tags, _ := userEnt.QueryTags().All(u.ctx)
-	if len(Tags) > 0 {
-		for _, d := range Tags {
-
-			info.UserTags = append(info.UserTags, &dictionary.DictionaryDetail{
-				ID:     d.ID,
-				Title:  d.Title,
-				Key:    d.Key,
-				Value:  d.Value,
-				Status: d.Status,
-			})
-		}
-	}
 
 	roles, _ := userEnt.QueryRoles().All(u.ctx)
 	if roles != nil {

@@ -12,27 +12,19 @@ struct UserInfo {
 	8:string avatar (api.raw = "avatar")
 	9:string createdAt (api.raw = "createdAt")
 	10:string updatedAt  (api.raw = "updatedAt")
-	12: list<string> functions (api.raw = "functions")
+
 	13:string gender (api.raw = "gender")
 	15:string birthday (api.raw = "birthday")
     16:string detail (api.raw = "detail")
-    17:optional i64 jobAt (api.raw = "jobAt")
-    18: list<dictionary.DictionaryDetail> userTags (api.raw = "userTags")
-    19: list<Venues> venues (api.raw = "venues")
 
-    20:optional i64 jobTime (api.raw = "jobTime")
     21: list<UserRole> userRole (api.raw = "userRole")
     22: list<i64> userRoleIds (api.raw = "userRoleIds")
 
     23:  optional string email (api.raw = "email")
     25:  optional string wecom (api.raw = "wecom")
 
-    254:i64 defaultVenueId (api.raw = "defaultVenueId")
 }
-struct Venues {
-    1: i64 id (api.raw = "id")
-    2: string name (api.raw = "name")
-}
+
 
 // login request | 登录参数
 struct LoginReq {
@@ -84,15 +76,11 @@ struct CreateOrUpdateUserReq {
     13:  optional string username="" (api.raw = "username")
     14:  optional list<string> functions="" (api.raw = "functions")
     15:  optional string detail="" (api.raw = "detail")
-    16:  optional i64 jobAt=0 (api.raw = "jobAt")
-    18: optional list<i64> userTags="" (api.raw = "userTags")
-    19:optional i64 jobTime=0 (api.raw = "jobTime")
-    20: optional list<i64> venueId=0 (api.raw = "venueId")
 
 	24:string birthday="" (api.raw = "birthday")
     23:  optional string email="" (api.raw = "email")
     25:  optional string wecom="" (api.raw = "wecom")
-    254:optional i64 defaultVenueId=0 (api.raw = "defaultVenueId")
+
 }
 
 
@@ -101,16 +89,10 @@ struct UserListReq {
     1:  optional i64 page=1 (api.raw = "page")
     2:  optional i64 pageSize=100 (api.raw = "pageSize")
     4:  optional string name="" (api.raw = "name")
-    5:  optional i64 jobAt=0 (api.raw = "jobAt")
     6:  optional string mobile="" (api.raw = "mobile")
     7:  optional i64 roleId=0 (api.raw = "roleId")
     8:  optional i64 status=0 (api.raw = "status")
-    9:  optional i64 type=1 (api.raw = "type")
-    10:optional i64 venueId=0 (api.raw = "venueId")
-    /**职能*/
-    11: optional list<string> functions="" (api.raw = "functions")
-    /**标签*/
-    13: optional list<i64> tagId=0 (api.raw = "tagId" )
+
 }
 
 struct SetUserRole{
@@ -118,10 +100,7 @@ struct SetUserRole{
     2:  optional list<i64> roleId=0 (api.raw = "roleId")
 }
 
-struct SetDefaultVenueReq{
-    1: i64 userId (api.raw = "userId")
-    2: optional i64 venueId (api.raw = "venueId")
-}
+
 
 service UserService {
   // 登录
@@ -154,7 +133,5 @@ service UserService {
   /**设置用户角色*/
   base.NilResponse SetUserRole(1: SetUserRole req) (api.post = "/service/user/set-role")
 
-  /** 设置用户默认场馆*/
-  base.NilResponse SetDefaultVenue(1: SetDefaultVenueReq req) (api.post = "/service/user/set-default-venue")
 
 }
