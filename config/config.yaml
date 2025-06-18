@@ -21,7 +21,7 @@ Redis:
   Password:
 
 MySQL:
-  Host: root:root@tcp(127.0.0.1:3306)/saas?parseTime=True
+  Host: root:root@tcp(127.0.0.1:3306)/survey?parseTime=True
   Salt: root
 
 PostgreSQL:

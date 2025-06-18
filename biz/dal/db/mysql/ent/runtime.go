@@ -272,6 +272,18 @@ func init() {
 	surveyDescStatus := surveyMixinFields1[0].Descriptor()
 	// survey.DefaultStatus holds the default value on creation for the status field.
 	survey.DefaultStatus = surveyDescStatus.Default.(int64)
+	// surveyDescTitle is the schema descriptor for title field.
+	surveyDescTitle := surveyFields[0].Descriptor()
+	// survey.DefaultTitle holds the default value on creation for the title field.
+	survey.DefaultTitle = surveyDescTitle.Default.(string)
+	// surveyDescPic is the schema descriptor for pic field.
+	surveyDescPic := surveyFields[1].Descriptor()
+	// survey.DefaultPic holds the default value on creation for the pic field.
+	survey.DefaultPic = surveyDescPic.Default.(string)
+	// surveyDescDesc is the schema descriptor for desc field.
+	surveyDescDesc := surveyFields[2].Descriptor()
+	// survey.DefaultDesc holds the default value on creation for the desc field.
+	survey.DefaultDesc = surveyDescDesc.Default.(string)
 	surveyquestionMixin := schema.SurveyQuestion{}.Mixin()
 	surveyquestionMixinFields0 := surveyquestionMixin[0].Fields()
 	_ = surveyquestionMixinFields0
@@ -309,6 +321,14 @@ func init() {
 	surveyquestionDescParentID := surveyquestionFields[1].Descriptor()
 	// surveyquestion.DefaultParentID holds the default value on creation for the parent_id field.
 	surveyquestion.DefaultParentID = surveyquestionDescParentID.Default.(int64)
+	// surveyquestionDescContent is the schema descriptor for content field.
+	surveyquestionDescContent := surveyquestionFields[2].Descriptor()
+	// surveyquestion.DefaultContent holds the default value on creation for the content field.
+	surveyquestion.DefaultContent = surveyquestionDescContent.Default.(string)
+	// surveyquestionDescType is the schema descriptor for type field.
+	surveyquestionDescType := surveyquestionFields[3].Descriptor()
+	// surveyquestion.DefaultType holds the default value on creation for the type field.
+	surveyquestion.DefaultType = surveyquestionDescType.Default.(string)
 	// surveyquestionDescSort is the schema descriptor for sort field.
 	surveyquestionDescSort := surveyquestionFields[4].Descriptor()
 	// surveyquestion.DefaultSort holds the default value on creation for the sort field.

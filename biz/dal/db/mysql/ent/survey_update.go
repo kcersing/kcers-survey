@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/predicate"
 	"kcers-survey/biz/dal/db/mysql/ent/survey"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -136,6 +137,12 @@ func (su *SurveyUpdate) SetNillableTitle(s *string) *SurveyUpdate {
 	return su
 }
 
+// ClearTitle clears the value of the "title" field.
+func (su *SurveyUpdate) ClearTitle() *SurveyUpdate {
+	su.mutation.ClearTitle()
+	return su
+}
+
 // SetPic sets the "pic" field.
 func (su *SurveyUpdate) SetPic(s string) *SurveyUpdate {
 	su.mutation.SetPic(s)
@@ -147,6 +154,12 @@ func (su *SurveyUpdate) SetNillablePic(s *string) *SurveyUpdate {
 	if s != nil {
 		su.SetPic(*s)
 	}
+	return su
+}
+
+// ClearPic clears the value of the "pic" field.
+func (su *SurveyUpdate) ClearPic() *SurveyUpdate {
+	su.mutation.ClearPic()
 	return su
 }
 
@@ -164,6 +177,12 @@ func (su *SurveyUpdate) SetNillableDesc(s *string) *SurveyUpdate {
 	return su
 }
 
+// ClearDesc clears the value of the "desc" field.
+func (su *SurveyUpdate) ClearDesc() *SurveyUpdate {
+	su.mutation.ClearDesc()
+	return su
+}
+
 // SetStartAt sets the "start_at" field.
 func (su *SurveyUpdate) SetStartAt(t time.Time) *SurveyUpdate {
 	su.mutation.SetStartAt(t)
@@ -175,6 +194,12 @@ func (su *SurveyUpdate) SetNillableStartAt(t *time.Time) *SurveyUpdate {
 	if t != nil {
 		su.SetStartAt(*t)
 	}
+	return su
+}
+
+// ClearStartAt clears the value of the "start_at" field.
+func (su *SurveyUpdate) ClearStartAt() *SurveyUpdate {
+	su.mutation.ClearStartAt()
 	return su
 }
 
@@ -192,9 +217,51 @@ func (su *SurveyUpdate) SetNillableEndAt(t *time.Time) *SurveyUpdate {
 	return su
 }
 
+// ClearEndAt clears the value of the "end_at" field.
+func (su *SurveyUpdate) ClearEndAt() *SurveyUpdate {
+	su.mutation.ClearEndAt()
+	return su
+}
+
+// AddQuestionIDs adds the "question" edge to the SurveyQuestion entity by IDs.
+func (su *SurveyUpdate) AddQuestionIDs(ids ...int64) *SurveyUpdate {
+	su.mutation.AddQuestionIDs(ids...)
+	return su
+}
+
+// AddQuestion adds the "question" edges to the SurveyQuestion entity.
+func (su *SurveyUpdate) AddQuestion(s ...*SurveyQuestion) *SurveyUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return su.AddQuestionIDs(ids...)
+}
+
 // Mutation returns the SurveyMutation object of the builder.
 func (su *SurveyUpdate) Mutation() *SurveyMutation {
 	return su.mutation
+}
+
+// ClearQuestion clears all "question" edges to the SurveyQuestion entity.
+func (su *SurveyUpdate) ClearQuestion() *SurveyUpdate {
+	su.mutation.ClearQuestion()
+	return su
+}
+
+// RemoveQuestionIDs removes the "question" edge to SurveyQuestion entities by IDs.
+func (su *SurveyUpdate) RemoveQuestionIDs(ids ...int64) *SurveyUpdate {
+	su.mutation.RemoveQuestionIDs(ids...)
+	return su
+}
+
+// RemoveQuestion removes "question" edges to SurveyQuestion entities.
+func (su *SurveyUpdate) RemoveQuestion(s ...*SurveyQuestion) *SurveyUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return su.RemoveQuestionIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -287,17 +354,77 @@ func (su *SurveyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := su.mutation.Title(); ok {
 		_spec.SetField(survey.FieldTitle, field.TypeString, value)
 	}
+	if su.mutation.TitleCleared() {
+		_spec.ClearField(survey.FieldTitle, field.TypeString)
+	}
 	if value, ok := su.mutation.Pic(); ok {
 		_spec.SetField(survey.FieldPic, field.TypeString, value)
+	}
+	if su.mutation.PicCleared() {
+		_spec.ClearField(survey.FieldPic, field.TypeString)
 	}
 	if value, ok := su.mutation.Desc(); ok {
 		_spec.SetField(survey.FieldDesc, field.TypeString, value)
 	}
+	if su.mutation.DescCleared() {
+		_spec.ClearField(survey.FieldDesc, field.TypeString)
+	}
 	if value, ok := su.mutation.StartAt(); ok {
 		_spec.SetField(survey.FieldStartAt, field.TypeTime, value)
 	}
+	if su.mutation.StartAtCleared() {
+		_spec.ClearField(survey.FieldStartAt, field.TypeTime)
+	}
 	if value, ok := su.mutation.EndAt(); ok {
 		_spec.SetField(survey.FieldEndAt, field.TypeTime, value)
+	}
+	if su.mutation.EndAtCleared() {
+		_spec.ClearField(survey.FieldEndAt, field.TypeTime)
+	}
+	if su.mutation.QuestionCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   survey.QuestionTable,
+			Columns: []string{survey.QuestionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.RemovedQuestionIDs(); len(nodes) > 0 && !su.mutation.QuestionCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   survey.QuestionTable,
+			Columns: []string{survey.QuestionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := su.mutation.QuestionIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   survey.QuestionTable,
+			Columns: []string{survey.QuestionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_spec.AddModifiers(su.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, su.driver, _spec); err != nil {
@@ -428,6 +555,12 @@ func (suo *SurveyUpdateOne) SetNillableTitle(s *string) *SurveyUpdateOne {
 	return suo
 }
 
+// ClearTitle clears the value of the "title" field.
+func (suo *SurveyUpdateOne) ClearTitle() *SurveyUpdateOne {
+	suo.mutation.ClearTitle()
+	return suo
+}
+
 // SetPic sets the "pic" field.
 func (suo *SurveyUpdateOne) SetPic(s string) *SurveyUpdateOne {
 	suo.mutation.SetPic(s)
@@ -439,6 +572,12 @@ func (suo *SurveyUpdateOne) SetNillablePic(s *string) *SurveyUpdateOne {
 	if s != nil {
 		suo.SetPic(*s)
 	}
+	return suo
+}
+
+// ClearPic clears the value of the "pic" field.
+func (suo *SurveyUpdateOne) ClearPic() *SurveyUpdateOne {
+	suo.mutation.ClearPic()
 	return suo
 }
 
@@ -456,6 +595,12 @@ func (suo *SurveyUpdateOne) SetNillableDesc(s *string) *SurveyUpdateOne {
 	return suo
 }
 
+// ClearDesc clears the value of the "desc" field.
+func (suo *SurveyUpdateOne) ClearDesc() *SurveyUpdateOne {
+	suo.mutation.ClearDesc()
+	return suo
+}
+
 // SetStartAt sets the "start_at" field.
 func (suo *SurveyUpdateOne) SetStartAt(t time.Time) *SurveyUpdateOne {
 	suo.mutation.SetStartAt(t)
@@ -467,6 +612,12 @@ func (suo *SurveyUpdateOne) SetNillableStartAt(t *time.Time) *SurveyUpdateOne {
 	if t != nil {
 		suo.SetStartAt(*t)
 	}
+	return suo
+}
+
+// ClearStartAt clears the value of the "start_at" field.
+func (suo *SurveyUpdateOne) ClearStartAt() *SurveyUpdateOne {
+	suo.mutation.ClearStartAt()
 	return suo
 }
 
@@ -484,9 +635,51 @@ func (suo *SurveyUpdateOne) SetNillableEndAt(t *time.Time) *SurveyUpdateOne {
 	return suo
 }
 
+// ClearEndAt clears the value of the "end_at" field.
+func (suo *SurveyUpdateOne) ClearEndAt() *SurveyUpdateOne {
+	suo.mutation.ClearEndAt()
+	return suo
+}
+
+// AddQuestionIDs adds the "question" edge to the SurveyQuestion entity by IDs.
+func (suo *SurveyUpdateOne) AddQuestionIDs(ids ...int64) *SurveyUpdateOne {
+	suo.mutation.AddQuestionIDs(ids...)
+	return suo
+}
+
+// AddQuestion adds the "question" edges to the SurveyQuestion entity.
+func (suo *SurveyUpdateOne) AddQuestion(s ...*SurveyQuestion) *SurveyUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return suo.AddQuestionIDs(ids...)
+}
+
 // Mutation returns the SurveyMutation object of the builder.
 func (suo *SurveyUpdateOne) Mutation() *SurveyMutation {
 	return suo.mutation
+}
+
+// ClearQuestion clears all "question" edges to the SurveyQuestion entity.
+func (suo *SurveyUpdateOne) ClearQuestion() *SurveyUpdateOne {
+	suo.mutation.ClearQuestion()
+	return suo
+}
+
+// RemoveQuestionIDs removes the "question" edge to SurveyQuestion entities by IDs.
+func (suo *SurveyUpdateOne) RemoveQuestionIDs(ids ...int64) *SurveyUpdateOne {
+	suo.mutation.RemoveQuestionIDs(ids...)
+	return suo
+}
+
+// RemoveQuestion removes "question" edges to SurveyQuestion entities.
+func (suo *SurveyUpdateOne) RemoveQuestion(s ...*SurveyQuestion) *SurveyUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return suo.RemoveQuestionIDs(ids...)
 }
 
 // Where appends a list predicates to the SurveyUpdate builder.
@@ -609,17 +802,77 @@ func (suo *SurveyUpdateOne) sqlSave(ctx context.Context) (_node *Survey, err err
 	if value, ok := suo.mutation.Title(); ok {
 		_spec.SetField(survey.FieldTitle, field.TypeString, value)
 	}
+	if suo.mutation.TitleCleared() {
+		_spec.ClearField(survey.FieldTitle, field.TypeString)
+	}
 	if value, ok := suo.mutation.Pic(); ok {
 		_spec.SetField(survey.FieldPic, field.TypeString, value)
+	}
+	if suo.mutation.PicCleared() {
+		_spec.ClearField(survey.FieldPic, field.TypeString)
 	}
 	if value, ok := suo.mutation.Desc(); ok {
 		_spec.SetField(survey.FieldDesc, field.TypeString, value)
 	}
+	if suo.mutation.DescCleared() {
+		_spec.ClearField(survey.FieldDesc, field.TypeString)
+	}
 	if value, ok := suo.mutation.StartAt(); ok {
 		_spec.SetField(survey.FieldStartAt, field.TypeTime, value)
 	}
+	if suo.mutation.StartAtCleared() {
+		_spec.ClearField(survey.FieldStartAt, field.TypeTime)
+	}
 	if value, ok := suo.mutation.EndAt(); ok {
 		_spec.SetField(survey.FieldEndAt, field.TypeTime, value)
+	}
+	if suo.mutation.EndAtCleared() {
+		_spec.ClearField(survey.FieldEndAt, field.TypeTime)
+	}
+	if suo.mutation.QuestionCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   survey.QuestionTable,
+			Columns: []string{survey.QuestionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.RemovedQuestionIDs(); len(nodes) > 0 && !suo.mutation.QuestionCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   survey.QuestionTable,
+			Columns: []string{survey.QuestionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suo.mutation.QuestionIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   survey.QuestionTable,
+			Columns: []string{survey.QuestionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_spec.AddModifiers(suo.modifiers...)
 	_node = &Survey{config: suo.config}

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // ID filters vertices based on their ID field.
@@ -409,6 +410,16 @@ func TitleHasSuffix(v string) predicate.Survey {
 	return predicate.Survey(sql.FieldHasSuffix(FieldTitle, v))
 }
 
+// TitleIsNil applies the IsNil predicate on the "title" field.
+func TitleIsNil() predicate.Survey {
+	return predicate.Survey(sql.FieldIsNull(FieldTitle))
+}
+
+// TitleNotNil applies the NotNil predicate on the "title" field.
+func TitleNotNil() predicate.Survey {
+	return predicate.Survey(sql.FieldNotNull(FieldTitle))
+}
+
 // TitleEqualFold applies the EqualFold predicate on the "title" field.
 func TitleEqualFold(v string) predicate.Survey {
 	return predicate.Survey(sql.FieldEqualFold(FieldTitle, v))
@@ -472,6 +483,16 @@ func PicHasPrefix(v string) predicate.Survey {
 // PicHasSuffix applies the HasSuffix predicate on the "pic" field.
 func PicHasSuffix(v string) predicate.Survey {
 	return predicate.Survey(sql.FieldHasSuffix(FieldPic, v))
+}
+
+// PicIsNil applies the IsNil predicate on the "pic" field.
+func PicIsNil() predicate.Survey {
+	return predicate.Survey(sql.FieldIsNull(FieldPic))
+}
+
+// PicNotNil applies the NotNil predicate on the "pic" field.
+func PicNotNil() predicate.Survey {
+	return predicate.Survey(sql.FieldNotNull(FieldPic))
 }
 
 // PicEqualFold applies the EqualFold predicate on the "pic" field.
@@ -539,6 +560,16 @@ func DescHasSuffix(v string) predicate.Survey {
 	return predicate.Survey(sql.FieldHasSuffix(FieldDesc, v))
 }
 
+// DescIsNil applies the IsNil predicate on the "desc" field.
+func DescIsNil() predicate.Survey {
+	return predicate.Survey(sql.FieldIsNull(FieldDesc))
+}
+
+// DescNotNil applies the NotNil predicate on the "desc" field.
+func DescNotNil() predicate.Survey {
+	return predicate.Survey(sql.FieldNotNull(FieldDesc))
+}
+
 // DescEqualFold applies the EqualFold predicate on the "desc" field.
 func DescEqualFold(v string) predicate.Survey {
 	return predicate.Survey(sql.FieldEqualFold(FieldDesc, v))
@@ -589,6 +620,16 @@ func StartAtLTE(v time.Time) predicate.Survey {
 	return predicate.Survey(sql.FieldLTE(FieldStartAt, v))
 }
 
+// StartAtIsNil applies the IsNil predicate on the "start_at" field.
+func StartAtIsNil() predicate.Survey {
+	return predicate.Survey(sql.FieldIsNull(FieldStartAt))
+}
+
+// StartAtNotNil applies the NotNil predicate on the "start_at" field.
+func StartAtNotNil() predicate.Survey {
+	return predicate.Survey(sql.FieldNotNull(FieldStartAt))
+}
+
 // EndAtEQ applies the EQ predicate on the "end_at" field.
 func EndAtEQ(v time.Time) predicate.Survey {
 	return predicate.Survey(sql.FieldEQ(FieldEndAt, v))
@@ -627,6 +668,39 @@ func EndAtLT(v time.Time) predicate.Survey {
 // EndAtLTE applies the LTE predicate on the "end_at" field.
 func EndAtLTE(v time.Time) predicate.Survey {
 	return predicate.Survey(sql.FieldLTE(FieldEndAt, v))
+}
+
+// EndAtIsNil applies the IsNil predicate on the "end_at" field.
+func EndAtIsNil() predicate.Survey {
+	return predicate.Survey(sql.FieldIsNull(FieldEndAt))
+}
+
+// EndAtNotNil applies the NotNil predicate on the "end_at" field.
+func EndAtNotNil() predicate.Survey {
+	return predicate.Survey(sql.FieldNotNull(FieldEndAt))
+}
+
+// HasQuestion applies the HasEdge predicate on the "question" edge.
+func HasQuestion() predicate.Survey {
+	return predicate.Survey(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, QuestionTable, QuestionColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasQuestionWith applies the HasEdge predicate on the "question" edge with a given conditions (other predicates).
+func HasQuestionWith(preds ...predicate.SurveyQuestion) predicate.Survey {
+	return predicate.Survey(func(s *sql.Selector) {
+		step := newQuestionStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

@@ -8129,26 +8129,29 @@ func (m *RoleMutation) ResetEdge(name string) error {
 // SurveyMutation represents an operation that mutates the Survey nodes in the graph.
 type SurveyMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *int64
-	created_at    *time.Time
-	updated_at    *time.Time
-	delete        *int64
-	adddelete     *int64
-	created_id    *int64
-	addcreated_id *int64
-	status        *int64
-	addstatus     *int64
-	title         *string
-	pic           *string
-	desc          *string
-	start_at      *time.Time
-	end_at        *time.Time
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*Survey, error)
-	predicates    []predicate.Survey
+	op              Op
+	typ             string
+	id              *int64
+	created_at      *time.Time
+	updated_at      *time.Time
+	delete          *int64
+	adddelete       *int64
+	created_id      *int64
+	addcreated_id   *int64
+	status          *int64
+	addstatus       *int64
+	title           *string
+	pic             *string
+	desc            *string
+	start_at        *time.Time
+	end_at          *time.Time
+	clearedFields   map[string]struct{}
+	question        map[int64]struct{}
+	removedquestion map[int64]struct{}
+	clearedquestion bool
+	done            bool
+	oldValue        func(context.Context) (*Survey, error)
+	predicates      []predicate.Survey
 }
 
 var _ ent.Mutation = (*SurveyMutation)(nil)
@@ -8594,9 +8597,22 @@ func (m *SurveyMutation) OldTitle(ctx context.Context) (v string, err error) {
 	return oldValue.Title, nil
 }
 
+// ClearTitle clears the value of the "title" field.
+func (m *SurveyMutation) ClearTitle() {
+	m.title = nil
+	m.clearedFields[survey.FieldTitle] = struct{}{}
+}
+
+// TitleCleared returns if the "title" field was cleared in this mutation.
+func (m *SurveyMutation) TitleCleared() bool {
+	_, ok := m.clearedFields[survey.FieldTitle]
+	return ok
+}
+
 // ResetTitle resets all changes to the "title" field.
 func (m *SurveyMutation) ResetTitle() {
 	m.title = nil
+	delete(m.clearedFields, survey.FieldTitle)
 }
 
 // SetPic sets the "pic" field.
@@ -8630,9 +8646,22 @@ func (m *SurveyMutation) OldPic(ctx context.Context) (v string, err error) {
 	return oldValue.Pic, nil
 }
 
+// ClearPic clears the value of the "pic" field.
+func (m *SurveyMutation) ClearPic() {
+	m.pic = nil
+	m.clearedFields[survey.FieldPic] = struct{}{}
+}
+
+// PicCleared returns if the "pic" field was cleared in this mutation.
+func (m *SurveyMutation) PicCleared() bool {
+	_, ok := m.clearedFields[survey.FieldPic]
+	return ok
+}
+
 // ResetPic resets all changes to the "pic" field.
 func (m *SurveyMutation) ResetPic() {
 	m.pic = nil
+	delete(m.clearedFields, survey.FieldPic)
 }
 
 // SetDesc sets the "desc" field.
@@ -8666,9 +8695,22 @@ func (m *SurveyMutation) OldDesc(ctx context.Context) (v string, err error) {
 	return oldValue.Desc, nil
 }
 
+// ClearDesc clears the value of the "desc" field.
+func (m *SurveyMutation) ClearDesc() {
+	m.desc = nil
+	m.clearedFields[survey.FieldDesc] = struct{}{}
+}
+
+// DescCleared returns if the "desc" field was cleared in this mutation.
+func (m *SurveyMutation) DescCleared() bool {
+	_, ok := m.clearedFields[survey.FieldDesc]
+	return ok
+}
+
 // ResetDesc resets all changes to the "desc" field.
 func (m *SurveyMutation) ResetDesc() {
 	m.desc = nil
+	delete(m.clearedFields, survey.FieldDesc)
 }
 
 // SetStartAt sets the "start_at" field.
@@ -8702,9 +8744,22 @@ func (m *SurveyMutation) OldStartAt(ctx context.Context) (v time.Time, err error
 	return oldValue.StartAt, nil
 }
 
+// ClearStartAt clears the value of the "start_at" field.
+func (m *SurveyMutation) ClearStartAt() {
+	m.start_at = nil
+	m.clearedFields[survey.FieldStartAt] = struct{}{}
+}
+
+// StartAtCleared returns if the "start_at" field was cleared in this mutation.
+func (m *SurveyMutation) StartAtCleared() bool {
+	_, ok := m.clearedFields[survey.FieldStartAt]
+	return ok
+}
+
 // ResetStartAt resets all changes to the "start_at" field.
 func (m *SurveyMutation) ResetStartAt() {
 	m.start_at = nil
+	delete(m.clearedFields, survey.FieldStartAt)
 }
 
 // SetEndAt sets the "end_at" field.
@@ -8738,9 +8793,76 @@ func (m *SurveyMutation) OldEndAt(ctx context.Context) (v time.Time, err error) 
 	return oldValue.EndAt, nil
 }
 
+// ClearEndAt clears the value of the "end_at" field.
+func (m *SurveyMutation) ClearEndAt() {
+	m.end_at = nil
+	m.clearedFields[survey.FieldEndAt] = struct{}{}
+}
+
+// EndAtCleared returns if the "end_at" field was cleared in this mutation.
+func (m *SurveyMutation) EndAtCleared() bool {
+	_, ok := m.clearedFields[survey.FieldEndAt]
+	return ok
+}
+
 // ResetEndAt resets all changes to the "end_at" field.
 func (m *SurveyMutation) ResetEndAt() {
 	m.end_at = nil
+	delete(m.clearedFields, survey.FieldEndAt)
+}
+
+// AddQuestionIDs adds the "question" edge to the SurveyQuestion entity by ids.
+func (m *SurveyMutation) AddQuestionIDs(ids ...int64) {
+	if m.question == nil {
+		m.question = make(map[int64]struct{})
+	}
+	for i := range ids {
+		m.question[ids[i]] = struct{}{}
+	}
+}
+
+// ClearQuestion clears the "question" edge to the SurveyQuestion entity.
+func (m *SurveyMutation) ClearQuestion() {
+	m.clearedquestion = true
+}
+
+// QuestionCleared reports if the "question" edge to the SurveyQuestion entity was cleared.
+func (m *SurveyMutation) QuestionCleared() bool {
+	return m.clearedquestion
+}
+
+// RemoveQuestionIDs removes the "question" edge to the SurveyQuestion entity by IDs.
+func (m *SurveyMutation) RemoveQuestionIDs(ids ...int64) {
+	if m.removedquestion == nil {
+		m.removedquestion = make(map[int64]struct{})
+	}
+	for i := range ids {
+		delete(m.question, ids[i])
+		m.removedquestion[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedQuestion returns the removed IDs of the "question" edge to the SurveyQuestion entity.
+func (m *SurveyMutation) RemovedQuestionIDs() (ids []int64) {
+	for id := range m.removedquestion {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// QuestionIDs returns the "question" edge IDs in the mutation.
+func (m *SurveyMutation) QuestionIDs() (ids []int64) {
+	for id := range m.question {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetQuestion resets all changes to the "question" edge.
+func (m *SurveyMutation) ResetQuestion() {
+	m.question = nil
+	m.clearedquestion = false
+	m.removedquestion = nil
 }
 
 // Where appends a list predicates to the SurveyMutation builder.
@@ -9028,6 +9150,21 @@ func (m *SurveyMutation) ClearedFields() []string {
 	if m.FieldCleared(survey.FieldStatus) {
 		fields = append(fields, survey.FieldStatus)
 	}
+	if m.FieldCleared(survey.FieldTitle) {
+		fields = append(fields, survey.FieldTitle)
+	}
+	if m.FieldCleared(survey.FieldPic) {
+		fields = append(fields, survey.FieldPic)
+	}
+	if m.FieldCleared(survey.FieldDesc) {
+		fields = append(fields, survey.FieldDesc)
+	}
+	if m.FieldCleared(survey.FieldStartAt) {
+		fields = append(fields, survey.FieldStartAt)
+	}
+	if m.FieldCleared(survey.FieldEndAt) {
+		fields = append(fields, survey.FieldEndAt)
+	}
 	return fields
 }
 
@@ -9056,6 +9193,21 @@ func (m *SurveyMutation) ClearField(name string) error {
 		return nil
 	case survey.FieldStatus:
 		m.ClearStatus()
+		return nil
+	case survey.FieldTitle:
+		m.ClearTitle()
+		return nil
+	case survey.FieldPic:
+		m.ClearPic()
+		return nil
+	case survey.FieldDesc:
+		m.ClearDesc()
+		return nil
+	case survey.FieldStartAt:
+		m.ClearStartAt()
+		return nil
+	case survey.FieldEndAt:
+		m.ClearEndAt()
 		return nil
 	}
 	return fmt.Errorf("unknown Survey nullable field %s", name)
@@ -9101,49 +9253,85 @@ func (m *SurveyMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SurveyMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.question != nil {
+		edges = append(edges, survey.EdgeQuestion)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *SurveyMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case survey.EdgeQuestion:
+		ids := make([]ent.Value, 0, len(m.question))
+		for id := range m.question {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SurveyMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.removedquestion != nil {
+		edges = append(edges, survey.EdgeQuestion)
+	}
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *SurveyMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case survey.EdgeQuestion:
+		ids := make([]ent.Value, 0, len(m.removedquestion))
+		for id := range m.removedquestion {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SurveyMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.clearedquestion {
+		edges = append(edges, survey.EdgeQuestion)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *SurveyMutation) EdgeCleared(name string) bool {
+	switch name {
+	case survey.EdgeQuestion:
+		return m.clearedquestion
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *SurveyMutation) ClearEdge(name string) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown Survey unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *SurveyMutation) ResetEdge(name string) error {
+	switch name {
+	case survey.EdgeQuestion:
+		m.ResetQuestion()
+		return nil
+	}
 	return fmt.Errorf("unknown Survey edge %s", name)
 }
 
@@ -9161,8 +9349,6 @@ type SurveyQuestionMutation struct {
 	addcreated_id *int64
 	status        *int64
 	addstatus     *int64
-	survey_id     *int64
-	addsurvey_id  *int64
 	parent_id     *int64
 	addparent_id  *int64
 	content       *string
@@ -9173,6 +9359,8 @@ type SurveyQuestionMutation struct {
 	addrequired   *int64
 	options       *map[string]string
 	clearedFields map[string]struct{}
+	survey        *int64
+	clearedsurvey bool
 	done          bool
 	oldValue      func(context.Context) (*SurveyQuestion, error)
 	predicates    []predicate.SurveyQuestion
@@ -9592,13 +9780,12 @@ func (m *SurveyQuestionMutation) ResetStatus() {
 
 // SetSurveyID sets the "survey_id" field.
 func (m *SurveyQuestionMutation) SetSurveyID(i int64) {
-	m.survey_id = &i
-	m.addsurvey_id = nil
+	m.survey = &i
 }
 
 // SurveyID returns the value of the "survey_id" field in the mutation.
 func (m *SurveyQuestionMutation) SurveyID() (r int64, exists bool) {
-	v := m.survey_id
+	v := m.survey
 	if v == nil {
 		return
 	}
@@ -9622,28 +9809,22 @@ func (m *SurveyQuestionMutation) OldSurveyID(ctx context.Context) (v int64, err 
 	return oldValue.SurveyID, nil
 }
 
-// AddSurveyID adds i to the "survey_id" field.
-func (m *SurveyQuestionMutation) AddSurveyID(i int64) {
-	if m.addsurvey_id != nil {
-		*m.addsurvey_id += i
-	} else {
-		m.addsurvey_id = &i
-	}
+// ClearSurveyID clears the value of the "survey_id" field.
+func (m *SurveyQuestionMutation) ClearSurveyID() {
+	m.survey = nil
+	m.clearedFields[surveyquestion.FieldSurveyID] = struct{}{}
 }
 
-// AddedSurveyID returns the value that was added to the "survey_id" field in this mutation.
-func (m *SurveyQuestionMutation) AddedSurveyID() (r int64, exists bool) {
-	v := m.addsurvey_id
-	if v == nil {
-		return
-	}
-	return *v, true
+// SurveyIDCleared returns if the "survey_id" field was cleared in this mutation.
+func (m *SurveyQuestionMutation) SurveyIDCleared() bool {
+	_, ok := m.clearedFields[surveyquestion.FieldSurveyID]
+	return ok
 }
 
 // ResetSurveyID resets all changes to the "survey_id" field.
 func (m *SurveyQuestionMutation) ResetSurveyID() {
-	m.survey_id = nil
-	m.addsurvey_id = nil
+	m.survey = nil
+	delete(m.clearedFields, surveyquestion.FieldSurveyID)
 }
 
 // SetParentID sets the "parent_id" field.
@@ -9696,10 +9877,24 @@ func (m *SurveyQuestionMutation) AddedParentID() (r int64, exists bool) {
 	return *v, true
 }
 
+// ClearParentID clears the value of the "parent_id" field.
+func (m *SurveyQuestionMutation) ClearParentID() {
+	m.parent_id = nil
+	m.addparent_id = nil
+	m.clearedFields[surveyquestion.FieldParentID] = struct{}{}
+}
+
+// ParentIDCleared returns if the "parent_id" field was cleared in this mutation.
+func (m *SurveyQuestionMutation) ParentIDCleared() bool {
+	_, ok := m.clearedFields[surveyquestion.FieldParentID]
+	return ok
+}
+
 // ResetParentID resets all changes to the "parent_id" field.
 func (m *SurveyQuestionMutation) ResetParentID() {
 	m.parent_id = nil
 	m.addparent_id = nil
+	delete(m.clearedFields, surveyquestion.FieldParentID)
 }
 
 // SetContent sets the "content" field.
@@ -9733,9 +9928,22 @@ func (m *SurveyQuestionMutation) OldContent(ctx context.Context) (v string, err 
 	return oldValue.Content, nil
 }
 
+// ClearContent clears the value of the "content" field.
+func (m *SurveyQuestionMutation) ClearContent() {
+	m.content = nil
+	m.clearedFields[surveyquestion.FieldContent] = struct{}{}
+}
+
+// ContentCleared returns if the "content" field was cleared in this mutation.
+func (m *SurveyQuestionMutation) ContentCleared() bool {
+	_, ok := m.clearedFields[surveyquestion.FieldContent]
+	return ok
+}
+
 // ResetContent resets all changes to the "content" field.
 func (m *SurveyQuestionMutation) ResetContent() {
 	m.content = nil
+	delete(m.clearedFields, surveyquestion.FieldContent)
 }
 
 // SetType sets the "type" field.
@@ -9769,9 +9977,22 @@ func (m *SurveyQuestionMutation) OldType(ctx context.Context) (v string, err err
 	return oldValue.Type, nil
 }
 
+// ClearType clears the value of the "type" field.
+func (m *SurveyQuestionMutation) ClearType() {
+	m._type = nil
+	m.clearedFields[surveyquestion.FieldType] = struct{}{}
+}
+
+// TypeCleared returns if the "type" field was cleared in this mutation.
+func (m *SurveyQuestionMutation) TypeCleared() bool {
+	_, ok := m.clearedFields[surveyquestion.FieldType]
+	return ok
+}
+
 // ResetType resets all changes to the "type" field.
 func (m *SurveyQuestionMutation) ResetType() {
 	m._type = nil
+	delete(m.clearedFields, surveyquestion.FieldType)
 }
 
 // SetSort sets the "sort" field.
@@ -9824,10 +10045,24 @@ func (m *SurveyQuestionMutation) AddedSort() (r int64, exists bool) {
 	return *v, true
 }
 
+// ClearSort clears the value of the "sort" field.
+func (m *SurveyQuestionMutation) ClearSort() {
+	m.sort = nil
+	m.addsort = nil
+	m.clearedFields[surveyquestion.FieldSort] = struct{}{}
+}
+
+// SortCleared returns if the "sort" field was cleared in this mutation.
+func (m *SurveyQuestionMutation) SortCleared() bool {
+	_, ok := m.clearedFields[surveyquestion.FieldSort]
+	return ok
+}
+
 // ResetSort resets all changes to the "sort" field.
 func (m *SurveyQuestionMutation) ResetSort() {
 	m.sort = nil
 	m.addsort = nil
+	delete(m.clearedFields, surveyquestion.FieldSort)
 }
 
 // SetRequired sets the "required" field.
@@ -9880,10 +10115,24 @@ func (m *SurveyQuestionMutation) AddedRequired() (r int64, exists bool) {
 	return *v, true
 }
 
+// ClearRequired clears the value of the "required" field.
+func (m *SurveyQuestionMutation) ClearRequired() {
+	m.required = nil
+	m.addrequired = nil
+	m.clearedFields[surveyquestion.FieldRequired] = struct{}{}
+}
+
+// RequiredCleared returns if the "required" field was cleared in this mutation.
+func (m *SurveyQuestionMutation) RequiredCleared() bool {
+	_, ok := m.clearedFields[surveyquestion.FieldRequired]
+	return ok
+}
+
 // ResetRequired resets all changes to the "required" field.
 func (m *SurveyQuestionMutation) ResetRequired() {
 	m.required = nil
 	m.addrequired = nil
+	delete(m.clearedFields, surveyquestion.FieldRequired)
 }
 
 // SetOptions sets the "options" field.
@@ -9917,9 +10166,49 @@ func (m *SurveyQuestionMutation) OldOptions(ctx context.Context) (v map[string]s
 	return oldValue.Options, nil
 }
 
+// ClearOptions clears the value of the "options" field.
+func (m *SurveyQuestionMutation) ClearOptions() {
+	m.options = nil
+	m.clearedFields[surveyquestion.FieldOptions] = struct{}{}
+}
+
+// OptionsCleared returns if the "options" field was cleared in this mutation.
+func (m *SurveyQuestionMutation) OptionsCleared() bool {
+	_, ok := m.clearedFields[surveyquestion.FieldOptions]
+	return ok
+}
+
 // ResetOptions resets all changes to the "options" field.
 func (m *SurveyQuestionMutation) ResetOptions() {
 	m.options = nil
+	delete(m.clearedFields, surveyquestion.FieldOptions)
+}
+
+// ClearSurvey clears the "survey" edge to the Survey entity.
+func (m *SurveyQuestionMutation) ClearSurvey() {
+	m.clearedsurvey = true
+	m.clearedFields[surveyquestion.FieldSurveyID] = struct{}{}
+}
+
+// SurveyCleared reports if the "survey" edge to the Survey entity was cleared.
+func (m *SurveyQuestionMutation) SurveyCleared() bool {
+	return m.SurveyIDCleared() || m.clearedsurvey
+}
+
+// SurveyIDs returns the "survey" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// SurveyID instead. It exists only for internal usage by the builders.
+func (m *SurveyQuestionMutation) SurveyIDs() (ids []int64) {
+	if id := m.survey; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetSurvey resets all changes to the "survey" edge.
+func (m *SurveyQuestionMutation) ResetSurvey() {
+	m.survey = nil
+	m.clearedsurvey = false
 }
 
 // Where appends a list predicates to the SurveyQuestionMutation builder.
@@ -9972,7 +10261,7 @@ func (m *SurveyQuestionMutation) Fields() []string {
 	if m.status != nil {
 		fields = append(fields, surveyquestion.FieldStatus)
 	}
-	if m.survey_id != nil {
+	if m.survey != nil {
 		fields = append(fields, surveyquestion.FieldSurveyID)
 	}
 	if m.parent_id != nil {
@@ -10168,9 +10457,6 @@ func (m *SurveyQuestionMutation) AddedFields() []string {
 	if m.addstatus != nil {
 		fields = append(fields, surveyquestion.FieldStatus)
 	}
-	if m.addsurvey_id != nil {
-		fields = append(fields, surveyquestion.FieldSurveyID)
-	}
 	if m.addparent_id != nil {
 		fields = append(fields, surveyquestion.FieldParentID)
 	}
@@ -10194,8 +10480,6 @@ func (m *SurveyQuestionMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedCreatedID()
 	case surveyquestion.FieldStatus:
 		return m.AddedStatus()
-	case surveyquestion.FieldSurveyID:
-		return m.AddedSurveyID()
 	case surveyquestion.FieldParentID:
 		return m.AddedParentID()
 	case surveyquestion.FieldSort:
@@ -10231,13 +10515,6 @@ func (m *SurveyQuestionMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStatus(v)
-		return nil
-	case surveyquestion.FieldSurveyID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddSurveyID(v)
 		return nil
 	case surveyquestion.FieldParentID:
 		v, ok := value.(int64)
@@ -10283,6 +10560,27 @@ func (m *SurveyQuestionMutation) ClearedFields() []string {
 	if m.FieldCleared(surveyquestion.FieldStatus) {
 		fields = append(fields, surveyquestion.FieldStatus)
 	}
+	if m.FieldCleared(surveyquestion.FieldSurveyID) {
+		fields = append(fields, surveyquestion.FieldSurveyID)
+	}
+	if m.FieldCleared(surveyquestion.FieldParentID) {
+		fields = append(fields, surveyquestion.FieldParentID)
+	}
+	if m.FieldCleared(surveyquestion.FieldContent) {
+		fields = append(fields, surveyquestion.FieldContent)
+	}
+	if m.FieldCleared(surveyquestion.FieldType) {
+		fields = append(fields, surveyquestion.FieldType)
+	}
+	if m.FieldCleared(surveyquestion.FieldSort) {
+		fields = append(fields, surveyquestion.FieldSort)
+	}
+	if m.FieldCleared(surveyquestion.FieldRequired) {
+		fields = append(fields, surveyquestion.FieldRequired)
+	}
+	if m.FieldCleared(surveyquestion.FieldOptions) {
+		fields = append(fields, surveyquestion.FieldOptions)
+	}
 	return fields
 }
 
@@ -10311,6 +10609,27 @@ func (m *SurveyQuestionMutation) ClearField(name string) error {
 		return nil
 	case surveyquestion.FieldStatus:
 		m.ClearStatus()
+		return nil
+	case surveyquestion.FieldSurveyID:
+		m.ClearSurveyID()
+		return nil
+	case surveyquestion.FieldParentID:
+		m.ClearParentID()
+		return nil
+	case surveyquestion.FieldContent:
+		m.ClearContent()
+		return nil
+	case surveyquestion.FieldType:
+		m.ClearType()
+		return nil
+	case surveyquestion.FieldSort:
+		m.ClearSort()
+		return nil
+	case surveyquestion.FieldRequired:
+		m.ClearRequired()
+		return nil
+	case surveyquestion.FieldOptions:
+		m.ClearOptions()
 		return nil
 	}
 	return fmt.Errorf("unknown SurveyQuestion nullable field %s", name)
@@ -10362,19 +10681,28 @@ func (m *SurveyQuestionMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SurveyQuestionMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.survey != nil {
+		edges = append(edges, surveyquestion.EdgeSurvey)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *SurveyQuestionMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case surveyquestion.EdgeSurvey:
+		if id := m.survey; id != nil {
+			return []ent.Value{*id}
+		}
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SurveyQuestionMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
 	return edges
 }
 
@@ -10386,25 +10714,42 @@ func (m *SurveyQuestionMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SurveyQuestionMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.clearedsurvey {
+		edges = append(edges, surveyquestion.EdgeSurvey)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *SurveyQuestionMutation) EdgeCleared(name string) bool {
+	switch name {
+	case surveyquestion.EdgeSurvey:
+		return m.clearedsurvey
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *SurveyQuestionMutation) ClearEdge(name string) error {
+	switch name {
+	case surveyquestion.EdgeSurvey:
+		m.ClearSurvey()
+		return nil
+	}
 	return fmt.Errorf("unknown SurveyQuestion unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *SurveyQuestionMutation) ResetEdge(name string) error {
+	switch name {
+	case surveyquestion.EdgeSurvey:
+		m.ResetSurvey()
+		return nil
+	}
 	return fmt.Errorf("unknown SurveyQuestion edge %s", name)
 }
 
@@ -10428,8 +10773,6 @@ type SurveyResponseMutation struct {
 	_map          *string
 	device        *string
 	audio         *string
-	started_at    *time.Time
-	completed_at  *time.Time
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*SurveyResponse, error)
@@ -10898,10 +11241,24 @@ func (m *SurveyResponseMutation) AddedSurveyID() (r int64, exists bool) {
 	return *v, true
 }
 
+// ClearSurveyID clears the value of the "survey_id" field.
+func (m *SurveyResponseMutation) ClearSurveyID() {
+	m.survey_id = nil
+	m.addsurvey_id = nil
+	m.clearedFields[surveyresponse.FieldSurveyID] = struct{}{}
+}
+
+// SurveyIDCleared returns if the "survey_id" field was cleared in this mutation.
+func (m *SurveyResponseMutation) SurveyIDCleared() bool {
+	_, ok := m.clearedFields[surveyresponse.FieldSurveyID]
+	return ok
+}
+
 // ResetSurveyID resets all changes to the "survey_id" field.
 func (m *SurveyResponseMutation) ResetSurveyID() {
 	m.survey_id = nil
 	m.addsurvey_id = nil
+	delete(m.clearedFields, surveyresponse.FieldSurveyID)
 }
 
 // SetIP sets the "ip" field.
@@ -10935,9 +11292,22 @@ func (m *SurveyResponseMutation) OldIP(ctx context.Context) (v string, err error
 	return oldValue.IP, nil
 }
 
+// ClearIP clears the value of the "ip" field.
+func (m *SurveyResponseMutation) ClearIP() {
+	m.ip = nil
+	m.clearedFields[surveyresponse.FieldIP] = struct{}{}
+}
+
+// IPCleared returns if the "ip" field was cleared in this mutation.
+func (m *SurveyResponseMutation) IPCleared() bool {
+	_, ok := m.clearedFields[surveyresponse.FieldIP]
+	return ok
+}
+
 // ResetIP resets all changes to the "ip" field.
 func (m *SurveyResponseMutation) ResetIP() {
 	m.ip = nil
+	delete(m.clearedFields, surveyresponse.FieldIP)
 }
 
 // SetMap sets the "map" field.
@@ -10971,9 +11341,22 @@ func (m *SurveyResponseMutation) OldMap(ctx context.Context) (v string, err erro
 	return oldValue.Map, nil
 }
 
+// ClearMap clears the value of the "map" field.
+func (m *SurveyResponseMutation) ClearMap() {
+	m._map = nil
+	m.clearedFields[surveyresponse.FieldMap] = struct{}{}
+}
+
+// MapCleared returns if the "map" field was cleared in this mutation.
+func (m *SurveyResponseMutation) MapCleared() bool {
+	_, ok := m.clearedFields[surveyresponse.FieldMap]
+	return ok
+}
+
 // ResetMap resets all changes to the "map" field.
 func (m *SurveyResponseMutation) ResetMap() {
 	m._map = nil
+	delete(m.clearedFields, surveyresponse.FieldMap)
 }
 
 // SetDevice sets the "device" field.
@@ -11007,9 +11390,22 @@ func (m *SurveyResponseMutation) OldDevice(ctx context.Context) (v string, err e
 	return oldValue.Device, nil
 }
 
+// ClearDevice clears the value of the "device" field.
+func (m *SurveyResponseMutation) ClearDevice() {
+	m.device = nil
+	m.clearedFields[surveyresponse.FieldDevice] = struct{}{}
+}
+
+// DeviceCleared returns if the "device" field was cleared in this mutation.
+func (m *SurveyResponseMutation) DeviceCleared() bool {
+	_, ok := m.clearedFields[surveyresponse.FieldDevice]
+	return ok
+}
+
 // ResetDevice resets all changes to the "device" field.
 func (m *SurveyResponseMutation) ResetDevice() {
 	m.device = nil
+	delete(m.clearedFields, surveyresponse.FieldDevice)
 }
 
 // SetAudio sets the "audio" field.
@@ -11043,81 +11439,22 @@ func (m *SurveyResponseMutation) OldAudio(ctx context.Context) (v string, err er
 	return oldValue.Audio, nil
 }
 
+// ClearAudio clears the value of the "audio" field.
+func (m *SurveyResponseMutation) ClearAudio() {
+	m.audio = nil
+	m.clearedFields[surveyresponse.FieldAudio] = struct{}{}
+}
+
+// AudioCleared returns if the "audio" field was cleared in this mutation.
+func (m *SurveyResponseMutation) AudioCleared() bool {
+	_, ok := m.clearedFields[surveyresponse.FieldAudio]
+	return ok
+}
+
 // ResetAudio resets all changes to the "audio" field.
 func (m *SurveyResponseMutation) ResetAudio() {
 	m.audio = nil
-}
-
-// SetStartedAt sets the "started_at" field.
-func (m *SurveyResponseMutation) SetStartedAt(t time.Time) {
-	m.started_at = &t
-}
-
-// StartedAt returns the value of the "started_at" field in the mutation.
-func (m *SurveyResponseMutation) StartedAt() (r time.Time, exists bool) {
-	v := m.started_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldStartedAt returns the old "started_at" field's value of the SurveyResponse entity.
-// If the SurveyResponse object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SurveyResponseMutation) OldStartedAt(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldStartedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldStartedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStartedAt: %w", err)
-	}
-	return oldValue.StartedAt, nil
-}
-
-// ResetStartedAt resets all changes to the "started_at" field.
-func (m *SurveyResponseMutation) ResetStartedAt() {
-	m.started_at = nil
-}
-
-// SetCompletedAt sets the "completed_at" field.
-func (m *SurveyResponseMutation) SetCompletedAt(t time.Time) {
-	m.completed_at = &t
-}
-
-// CompletedAt returns the value of the "completed_at" field in the mutation.
-func (m *SurveyResponseMutation) CompletedAt() (r time.Time, exists bool) {
-	v := m.completed_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCompletedAt returns the old "completed_at" field's value of the SurveyResponse entity.
-// If the SurveyResponse object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SurveyResponseMutation) OldCompletedAt(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCompletedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCompletedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCompletedAt: %w", err)
-	}
-	return oldValue.CompletedAt, nil
-}
-
-// ResetCompletedAt resets all changes to the "completed_at" field.
-func (m *SurveyResponseMutation) ResetCompletedAt() {
-	m.completed_at = nil
+	delete(m.clearedFields, surveyresponse.FieldAudio)
 }
 
 // Where appends a list predicates to the SurveyResponseMutation builder.
@@ -11154,7 +11491,7 @@ func (m *SurveyResponseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SurveyResponseMutation) Fields() []string {
-	fields := make([]string, 0, 12)
+	fields := make([]string, 0, 10)
 	if m.created_at != nil {
 		fields = append(fields, surveyresponse.FieldCreatedAt)
 	}
@@ -11185,12 +11522,6 @@ func (m *SurveyResponseMutation) Fields() []string {
 	if m.audio != nil {
 		fields = append(fields, surveyresponse.FieldAudio)
 	}
-	if m.started_at != nil {
-		fields = append(fields, surveyresponse.FieldStartedAt)
-	}
-	if m.completed_at != nil {
-		fields = append(fields, surveyresponse.FieldCompletedAt)
-	}
 	return fields
 }
 
@@ -11219,10 +11550,6 @@ func (m *SurveyResponseMutation) Field(name string) (ent.Value, bool) {
 		return m.Device()
 	case surveyresponse.FieldAudio:
 		return m.Audio()
-	case surveyresponse.FieldStartedAt:
-		return m.StartedAt()
-	case surveyresponse.FieldCompletedAt:
-		return m.CompletedAt()
 	}
 	return nil, false
 }
@@ -11252,10 +11579,6 @@ func (m *SurveyResponseMutation) OldField(ctx context.Context, name string) (ent
 		return m.OldDevice(ctx)
 	case surveyresponse.FieldAudio:
 		return m.OldAudio(ctx)
-	case surveyresponse.FieldStartedAt:
-		return m.OldStartedAt(ctx)
-	case surveyresponse.FieldCompletedAt:
-		return m.OldCompletedAt(ctx)
 	}
 	return nil, fmt.Errorf("unknown SurveyResponse field %s", name)
 }
@@ -11334,20 +11657,6 @@ func (m *SurveyResponseMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetAudio(v)
-		return nil
-	case surveyresponse.FieldStartedAt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetStartedAt(v)
-		return nil
-	case surveyresponse.FieldCompletedAt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCompletedAt(v)
 		return nil
 	}
 	return fmt.Errorf("unknown SurveyResponse field %s", name)
@@ -11445,6 +11754,21 @@ func (m *SurveyResponseMutation) ClearedFields() []string {
 	if m.FieldCleared(surveyresponse.FieldStatus) {
 		fields = append(fields, surveyresponse.FieldStatus)
 	}
+	if m.FieldCleared(surveyresponse.FieldSurveyID) {
+		fields = append(fields, surveyresponse.FieldSurveyID)
+	}
+	if m.FieldCleared(surveyresponse.FieldIP) {
+		fields = append(fields, surveyresponse.FieldIP)
+	}
+	if m.FieldCleared(surveyresponse.FieldMap) {
+		fields = append(fields, surveyresponse.FieldMap)
+	}
+	if m.FieldCleared(surveyresponse.FieldDevice) {
+		fields = append(fields, surveyresponse.FieldDevice)
+	}
+	if m.FieldCleared(surveyresponse.FieldAudio) {
+		fields = append(fields, surveyresponse.FieldAudio)
+	}
 	return fields
 }
 
@@ -11473,6 +11797,21 @@ func (m *SurveyResponseMutation) ClearField(name string) error {
 		return nil
 	case surveyresponse.FieldStatus:
 		m.ClearStatus()
+		return nil
+	case surveyresponse.FieldSurveyID:
+		m.ClearSurveyID()
+		return nil
+	case surveyresponse.FieldIP:
+		m.ClearIP()
+		return nil
+	case surveyresponse.FieldMap:
+		m.ClearMap()
+		return nil
+	case surveyresponse.FieldDevice:
+		m.ClearDevice()
+		return nil
+	case surveyresponse.FieldAudio:
+		m.ClearAudio()
 		return nil
 	}
 	return fmt.Errorf("unknown SurveyResponse nullable field %s", name)
@@ -11511,12 +11850,6 @@ func (m *SurveyResponseMutation) ResetField(name string) error {
 		return nil
 	case surveyresponse.FieldAudio:
 		m.ResetAudio()
-		return nil
-	case surveyresponse.FieldStartedAt:
-		m.ResetStartedAt()
-		return nil
-	case surveyresponse.FieldCompletedAt:
-		m.ResetCompletedAt()
 		return nil
 	}
 	return fmt.Errorf("unknown SurveyResponse field %s", name)
@@ -12061,10 +12394,24 @@ func (m *SurveyResponseAnswersMutation) AddedSurveyID() (r int64, exists bool) {
 	return *v, true
 }
 
+// ClearSurveyID clears the value of the "survey_id" field.
+func (m *SurveyResponseAnswersMutation) ClearSurveyID() {
+	m.survey_id = nil
+	m.addsurvey_id = nil
+	m.clearedFields[surveyresponseanswers.FieldSurveyID] = struct{}{}
+}
+
+// SurveyIDCleared returns if the "survey_id" field was cleared in this mutation.
+func (m *SurveyResponseAnswersMutation) SurveyIDCleared() bool {
+	_, ok := m.clearedFields[surveyresponseanswers.FieldSurveyID]
+	return ok
+}
+
 // ResetSurveyID resets all changes to the "survey_id" field.
 func (m *SurveyResponseAnswersMutation) ResetSurveyID() {
 	m.survey_id = nil
 	m.addsurvey_id = nil
+	delete(m.clearedFields, surveyresponseanswers.FieldSurveyID)
 }
 
 // SetSurveyResponseID sets the "survey_response_id" field.
@@ -12117,10 +12464,24 @@ func (m *SurveyResponseAnswersMutation) AddedSurveyResponseID() (r int64, exists
 	return *v, true
 }
 
+// ClearSurveyResponseID clears the value of the "survey_response_id" field.
+func (m *SurveyResponseAnswersMutation) ClearSurveyResponseID() {
+	m.survey_response_id = nil
+	m.addsurvey_response_id = nil
+	m.clearedFields[surveyresponseanswers.FieldSurveyResponseID] = struct{}{}
+}
+
+// SurveyResponseIDCleared returns if the "survey_response_id" field was cleared in this mutation.
+func (m *SurveyResponseAnswersMutation) SurveyResponseIDCleared() bool {
+	_, ok := m.clearedFields[surveyresponseanswers.FieldSurveyResponseID]
+	return ok
+}
+
 // ResetSurveyResponseID resets all changes to the "survey_response_id" field.
 func (m *SurveyResponseAnswersMutation) ResetSurveyResponseID() {
 	m.survey_response_id = nil
 	m.addsurvey_response_id = nil
+	delete(m.clearedFields, surveyresponseanswers.FieldSurveyResponseID)
 }
 
 // SetSurveyQuestionID sets the "survey_question_id" field.
@@ -12173,10 +12534,24 @@ func (m *SurveyResponseAnswersMutation) AddedSurveyQuestionID() (r int64, exists
 	return *v, true
 }
 
+// ClearSurveyQuestionID clears the value of the "survey_question_id" field.
+func (m *SurveyResponseAnswersMutation) ClearSurveyQuestionID() {
+	m.survey_question_id = nil
+	m.addsurvey_question_id = nil
+	m.clearedFields[surveyresponseanswers.FieldSurveyQuestionID] = struct{}{}
+}
+
+// SurveyQuestionIDCleared returns if the "survey_question_id" field was cleared in this mutation.
+func (m *SurveyResponseAnswersMutation) SurveyQuestionIDCleared() bool {
+	_, ok := m.clearedFields[surveyresponseanswers.FieldSurveyQuestionID]
+	return ok
+}
+
 // ResetSurveyQuestionID resets all changes to the "survey_question_id" field.
 func (m *SurveyResponseAnswersMutation) ResetSurveyQuestionID() {
 	m.survey_question_id = nil
 	m.addsurvey_question_id = nil
+	delete(m.clearedFields, surveyresponseanswers.FieldSurveyQuestionID)
 }
 
 // SetAnswerText sets the "answer_text" field.
@@ -12210,9 +12585,22 @@ func (m *SurveyResponseAnswersMutation) OldAnswerText(ctx context.Context) (v st
 	return oldValue.AnswerText, nil
 }
 
+// ClearAnswerText clears the value of the "answer_text" field.
+func (m *SurveyResponseAnswersMutation) ClearAnswerText() {
+	m.answer_text = nil
+	m.clearedFields[surveyresponseanswers.FieldAnswerText] = struct{}{}
+}
+
+// AnswerTextCleared returns if the "answer_text" field was cleared in this mutation.
+func (m *SurveyResponseAnswersMutation) AnswerTextCleared() bool {
+	_, ok := m.clearedFields[surveyresponseanswers.FieldAnswerText]
+	return ok
+}
+
 // ResetAnswerText resets all changes to the "answer_text" field.
 func (m *SurveyResponseAnswersMutation) ResetAnswerText() {
 	m.answer_text = nil
+	delete(m.clearedFields, surveyresponseanswers.FieldAnswerText)
 }
 
 // SetAnswerValue sets the "answer_value" field.
@@ -12265,10 +12653,24 @@ func (m *SurveyResponseAnswersMutation) AddedAnswerValue() (r int64, exists bool
 	return *v, true
 }
 
+// ClearAnswerValue clears the value of the "answer_value" field.
+func (m *SurveyResponseAnswersMutation) ClearAnswerValue() {
+	m.answer_value = nil
+	m.addanswer_value = nil
+	m.clearedFields[surveyresponseanswers.FieldAnswerValue] = struct{}{}
+}
+
+// AnswerValueCleared returns if the "answer_value" field was cleared in this mutation.
+func (m *SurveyResponseAnswersMutation) AnswerValueCleared() bool {
+	_, ok := m.clearedFields[surveyresponseanswers.FieldAnswerValue]
+	return ok
+}
+
 // ResetAnswerValue resets all changes to the "answer_value" field.
 func (m *SurveyResponseAnswersMutation) ResetAnswerValue() {
 	m.answer_value = nil
 	m.addanswer_value = nil
+	delete(m.clearedFields, surveyresponseanswers.FieldAnswerValue)
 }
 
 // Where appends a list predicates to the SurveyResponseAnswersMutation builder.
@@ -12604,6 +13006,21 @@ func (m *SurveyResponseAnswersMutation) ClearedFields() []string {
 	if m.FieldCleared(surveyresponseanswers.FieldStatus) {
 		fields = append(fields, surveyresponseanswers.FieldStatus)
 	}
+	if m.FieldCleared(surveyresponseanswers.FieldSurveyID) {
+		fields = append(fields, surveyresponseanswers.FieldSurveyID)
+	}
+	if m.FieldCleared(surveyresponseanswers.FieldSurveyResponseID) {
+		fields = append(fields, surveyresponseanswers.FieldSurveyResponseID)
+	}
+	if m.FieldCleared(surveyresponseanswers.FieldSurveyQuestionID) {
+		fields = append(fields, surveyresponseanswers.FieldSurveyQuestionID)
+	}
+	if m.FieldCleared(surveyresponseanswers.FieldAnswerText) {
+		fields = append(fields, surveyresponseanswers.FieldAnswerText)
+	}
+	if m.FieldCleared(surveyresponseanswers.FieldAnswerValue) {
+		fields = append(fields, surveyresponseanswers.FieldAnswerValue)
+	}
 	return fields
 }
 
@@ -12632,6 +13049,21 @@ func (m *SurveyResponseAnswersMutation) ClearField(name string) error {
 		return nil
 	case surveyresponseanswers.FieldStatus:
 		m.ClearStatus()
+		return nil
+	case surveyresponseanswers.FieldSurveyID:
+		m.ClearSurveyID()
+		return nil
+	case surveyresponseanswers.FieldSurveyResponseID:
+		m.ClearSurveyResponseID()
+		return nil
+	case surveyresponseanswers.FieldSurveyQuestionID:
+		m.ClearSurveyQuestionID()
+		return nil
+	case surveyresponseanswers.FieldAnswerText:
+		m.ClearAnswerText()
+		return nil
+	case surveyresponseanswers.FieldAnswerValue:
+		m.ClearAnswerValue()
 		return nil
 	}
 	return fmt.Errorf("unknown SurveyResponseAnswers nullable field %s", name)

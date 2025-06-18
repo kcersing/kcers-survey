@@ -43,6 +43,7 @@ require (
 	github.com/spf13/cast v1.6.0
 	github.com/spf13/viper v1.18.2
 	github.com/swaggo/swag v1.16.4
+	github.com/wechatpay-apiv3/wechatpay-go v0.2.20
 	golang.org/x/crypto v0.35.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 )

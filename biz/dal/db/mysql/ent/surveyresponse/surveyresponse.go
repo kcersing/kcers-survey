@@ -33,10 +33,6 @@ const (
 	FieldDevice = "device"
 	// FieldAudio holds the string denoting the audio field in the database.
 	FieldAudio = "audio"
-	// FieldStartedAt holds the string denoting the started_at field in the database.
-	FieldStartedAt = "started_at"
-	// FieldCompletedAt holds the string denoting the completed_at field in the database.
-	FieldCompletedAt = "completed_at"
 	// Table holds the table name of the surveyresponse in the database.
 	Table = "survey_response"
 )
@@ -54,8 +50,6 @@ var Columns = []string{
 	FieldMap,
 	FieldDevice,
 	FieldAudio,
-	FieldStartedAt,
-	FieldCompletedAt,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -149,14 +143,4 @@ func ByDevice(opts ...sql.OrderTermOption) OrderOption {
 // ByAudio orders the results by the audio field.
 func ByAudio(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAudio, opts...).ToFunc()
-}
-
-// ByStartedAt orders the results by the started_at field.
-func ByStartedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldStartedAt, opts...).ToFunc()
-}
-
-// ByCompletedAt orders the results by the completed_at field.
-func ByCompletedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCompletedAt, opts...).ToFunc()
 }

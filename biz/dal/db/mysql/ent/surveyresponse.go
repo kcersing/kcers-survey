@@ -37,11 +37,7 @@ type SurveyResponse struct {
 	// 设备信息
 	Device string `json:"device,omitempty"`
 	// 音频
-	Audio string `json:"audio,omitempty"`
-	// 开始时间
-	StartedAt time.Time `json:"started_at,omitempty"`
-	// 完成时间
-	CompletedAt  time.Time `json:"completed_at,omitempty"`
+	Audio        string `json:"audio,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -54,7 +50,7 @@ func (*SurveyResponse) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case surveyresponse.FieldIP, surveyresponse.FieldMap, surveyresponse.FieldDevice, surveyresponse.FieldAudio:
 			values[i] = new(sql.NullString)
-		case surveyresponse.FieldCreatedAt, surveyresponse.FieldUpdatedAt, surveyresponse.FieldStartedAt, surveyresponse.FieldCompletedAt:
+		case surveyresponse.FieldCreatedAt, surveyresponse.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -137,18 +133,6 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sr.Audio = value.String
 			}
-		case surveyresponse.FieldStartedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field started_at", values[i])
-			} else if value.Valid {
-				sr.StartedAt = value.Time
-			}
-		case surveyresponse.FieldCompletedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field completed_at", values[i])
-			} else if value.Valid {
-				sr.CompletedAt = value.Time
-			}
 		default:
 			sr.selectValues.Set(columns[i], values[i])
 		}
@@ -214,12 +198,6 @@ func (sr *SurveyResponse) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("audio=")
 	builder.WriteString(sr.Audio)
-	builder.WriteString(", ")
-	builder.WriteString("started_at=")
-	builder.WriteString(sr.StartedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("completed_at=")
-	builder.WriteString(sr.CompletedAt.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

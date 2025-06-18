@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // ID filters vertices based on their ID field.
@@ -379,24 +380,14 @@ func SurveyIDNotIn(vs ...int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldNotIn(FieldSurveyID, vs...))
 }
 
-// SurveyIDGT applies the GT predicate on the "survey_id" field.
-func SurveyIDGT(v int64) predicate.SurveyQuestion {
-	return predicate.SurveyQuestion(sql.FieldGT(FieldSurveyID, v))
+// SurveyIDIsNil applies the IsNil predicate on the "survey_id" field.
+func SurveyIDIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldSurveyID))
 }
 
-// SurveyIDGTE applies the GTE predicate on the "survey_id" field.
-func SurveyIDGTE(v int64) predicate.SurveyQuestion {
-	return predicate.SurveyQuestion(sql.FieldGTE(FieldSurveyID, v))
-}
-
-// SurveyIDLT applies the LT predicate on the "survey_id" field.
-func SurveyIDLT(v int64) predicate.SurveyQuestion {
-	return predicate.SurveyQuestion(sql.FieldLT(FieldSurveyID, v))
-}
-
-// SurveyIDLTE applies the LTE predicate on the "survey_id" field.
-func SurveyIDLTE(v int64) predicate.SurveyQuestion {
-	return predicate.SurveyQuestion(sql.FieldLTE(FieldSurveyID, v))
+// SurveyIDNotNil applies the NotNil predicate on the "survey_id" field.
+func SurveyIDNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldSurveyID))
 }
 
 // ParentIDEQ applies the EQ predicate on the "parent_id" field.
@@ -437,6 +428,16 @@ func ParentIDLT(v int64) predicate.SurveyQuestion {
 // ParentIDLTE applies the LTE predicate on the "parent_id" field.
 func ParentIDLTE(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldLTE(FieldParentID, v))
+}
+
+// ParentIDIsNil applies the IsNil predicate on the "parent_id" field.
+func ParentIDIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldParentID))
+}
+
+// ParentIDNotNil applies the NotNil predicate on the "parent_id" field.
+func ParentIDNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldParentID))
 }
 
 // ContentEQ applies the EQ predicate on the "content" field.
@@ -492,6 +493,16 @@ func ContentHasPrefix(v string) predicate.SurveyQuestion {
 // ContentHasSuffix applies the HasSuffix predicate on the "content" field.
 func ContentHasSuffix(v string) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldHasSuffix(FieldContent, v))
+}
+
+// ContentIsNil applies the IsNil predicate on the "content" field.
+func ContentIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldContent))
+}
+
+// ContentNotNil applies the NotNil predicate on the "content" field.
+func ContentNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldContent))
 }
 
 // ContentEqualFold applies the EqualFold predicate on the "content" field.
@@ -559,6 +570,16 @@ func TypeHasSuffix(v string) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldHasSuffix(FieldType, v))
 }
 
+// TypeIsNil applies the IsNil predicate on the "type" field.
+func TypeIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldType))
+}
+
+// TypeNotNil applies the NotNil predicate on the "type" field.
+func TypeNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldType))
+}
+
 // TypeEqualFold applies the EqualFold predicate on the "type" field.
 func TypeEqualFold(v string) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEqualFold(FieldType, v))
@@ -609,6 +630,16 @@ func SortLTE(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldLTE(FieldSort, v))
 }
 
+// SortIsNil applies the IsNil predicate on the "sort" field.
+func SortIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldSort))
+}
+
+// SortNotNil applies the NotNil predicate on the "sort" field.
+func SortNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldSort))
+}
+
 // RequiredEQ applies the EQ predicate on the "required" field.
 func RequiredEQ(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldRequired, v))
@@ -647,6 +678,49 @@ func RequiredLT(v int64) predicate.SurveyQuestion {
 // RequiredLTE applies the LTE predicate on the "required" field.
 func RequiredLTE(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldLTE(FieldRequired, v))
+}
+
+// RequiredIsNil applies the IsNil predicate on the "required" field.
+func RequiredIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldRequired))
+}
+
+// RequiredNotNil applies the NotNil predicate on the "required" field.
+func RequiredNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldRequired))
+}
+
+// OptionsIsNil applies the IsNil predicate on the "options" field.
+func OptionsIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldOptions))
+}
+
+// OptionsNotNil applies the NotNil predicate on the "options" field.
+func OptionsNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldOptions))
+}
+
+// HasSurvey applies the HasEdge predicate on the "survey" edge.
+func HasSurvey() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, SurveyTable, SurveyColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasSurveyWith applies the HasEdge predicate on the "survey" edge with a given conditions (other predicates).
+func HasSurveyWith(preds ...predicate.Survey) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(func(s *sql.Selector) {
+		step := newSurveyStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

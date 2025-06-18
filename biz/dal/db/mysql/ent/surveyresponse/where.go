@@ -104,16 +104,6 @@ func Audio(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldEQ(FieldAudio, v))
 }
 
-// StartedAt applies equality check predicate on the "started_at" field. It's identical to StartedAtEQ.
-func StartedAt(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEQ(FieldStartedAt, v))
-}
-
-// CompletedAt applies equality check predicate on the "completed_at" field. It's identical to CompletedAtEQ.
-func CompletedAt(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEQ(FieldCompletedAt, v))
-}
-
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldEQ(FieldCreatedAt, v))
@@ -404,6 +394,16 @@ func SurveyIDLTE(v int64) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldLTE(FieldSurveyID, v))
 }
 
+// SurveyIDIsNil applies the IsNil predicate on the "survey_id" field.
+func SurveyIDIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldSurveyID))
+}
+
+// SurveyIDNotNil applies the NotNil predicate on the "survey_id" field.
+func SurveyIDNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldSurveyID))
+}
+
 // IPEQ applies the EQ predicate on the "ip" field.
 func IPEQ(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldEQ(FieldIP, v))
@@ -457,6 +457,16 @@ func IPHasPrefix(v string) predicate.SurveyResponse {
 // IPHasSuffix applies the HasSuffix predicate on the "ip" field.
 func IPHasSuffix(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldIP, v))
+}
+
+// IPIsNil applies the IsNil predicate on the "ip" field.
+func IPIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldIP))
+}
+
+// IPNotNil applies the NotNil predicate on the "ip" field.
+func IPNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldIP))
 }
 
 // IPEqualFold applies the EqualFold predicate on the "ip" field.
@@ -524,6 +534,16 @@ func MapHasSuffix(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldMap, v))
 }
 
+// MapIsNil applies the IsNil predicate on the "map" field.
+func MapIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldMap))
+}
+
+// MapNotNil applies the NotNil predicate on the "map" field.
+func MapNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldMap))
+}
+
 // MapEqualFold applies the EqualFold predicate on the "map" field.
 func MapEqualFold(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldEqualFold(FieldMap, v))
@@ -587,6 +607,16 @@ func DeviceHasPrefix(v string) predicate.SurveyResponse {
 // DeviceHasSuffix applies the HasSuffix predicate on the "device" field.
 func DeviceHasSuffix(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldDevice, v))
+}
+
+// DeviceIsNil applies the IsNil predicate on the "device" field.
+func DeviceIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldDevice))
+}
+
+// DeviceNotNil applies the NotNil predicate on the "device" field.
+func DeviceNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldDevice))
 }
 
 // DeviceEqualFold applies the EqualFold predicate on the "device" field.
@@ -654,6 +684,16 @@ func AudioHasSuffix(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldAudio, v))
 }
 
+// AudioIsNil applies the IsNil predicate on the "audio" field.
+func AudioIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldAudio))
+}
+
+// AudioNotNil applies the NotNil predicate on the "audio" field.
+func AudioNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldAudio))
+}
+
 // AudioEqualFold applies the EqualFold predicate on the "audio" field.
 func AudioEqualFold(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldEqualFold(FieldAudio, v))
@@ -662,86 +702,6 @@ func AudioEqualFold(v string) predicate.SurveyResponse {
 // AudioContainsFold applies the ContainsFold predicate on the "audio" field.
 func AudioContainsFold(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldContainsFold(FieldAudio, v))
-}
-
-// StartedAtEQ applies the EQ predicate on the "started_at" field.
-func StartedAtEQ(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEQ(FieldStartedAt, v))
-}
-
-// StartedAtNEQ applies the NEQ predicate on the "started_at" field.
-func StartedAtNEQ(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNEQ(FieldStartedAt, v))
-}
-
-// StartedAtIn applies the In predicate on the "started_at" field.
-func StartedAtIn(vs ...time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldIn(FieldStartedAt, vs...))
-}
-
-// StartedAtNotIn applies the NotIn predicate on the "started_at" field.
-func StartedAtNotIn(vs ...time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNotIn(FieldStartedAt, vs...))
-}
-
-// StartedAtGT applies the GT predicate on the "started_at" field.
-func StartedAtGT(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGT(FieldStartedAt, v))
-}
-
-// StartedAtGTE applies the GTE predicate on the "started_at" field.
-func StartedAtGTE(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGTE(FieldStartedAt, v))
-}
-
-// StartedAtLT applies the LT predicate on the "started_at" field.
-func StartedAtLT(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLT(FieldStartedAt, v))
-}
-
-// StartedAtLTE applies the LTE predicate on the "started_at" field.
-func StartedAtLTE(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLTE(FieldStartedAt, v))
-}
-
-// CompletedAtEQ applies the EQ predicate on the "completed_at" field.
-func CompletedAtEQ(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEQ(FieldCompletedAt, v))
-}
-
-// CompletedAtNEQ applies the NEQ predicate on the "completed_at" field.
-func CompletedAtNEQ(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNEQ(FieldCompletedAt, v))
-}
-
-// CompletedAtIn applies the In predicate on the "completed_at" field.
-func CompletedAtIn(vs ...time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldIn(FieldCompletedAt, vs...))
-}
-
-// CompletedAtNotIn applies the NotIn predicate on the "completed_at" field.
-func CompletedAtNotIn(vs ...time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNotIn(FieldCompletedAt, vs...))
-}
-
-// CompletedAtGT applies the GT predicate on the "completed_at" field.
-func CompletedAtGT(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGT(FieldCompletedAt, v))
-}
-
-// CompletedAtGTE applies the GTE predicate on the "completed_at" field.
-func CompletedAtGTE(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGTE(FieldCompletedAt, v))
-}
-
-// CompletedAtLT applies the LT predicate on the "completed_at" field.
-func CompletedAtLT(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLT(FieldCompletedAt, v))
-}
-
-// CompletedAtLTE applies the LTE predicate on the "completed_at" field.
-func CompletedAtLTE(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLTE(FieldCompletedAt, v))
 }
 
 // And groups predicates with the AND operator between them.

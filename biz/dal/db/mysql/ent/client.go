@@ -1489,6 +1489,22 @@ func (c *SurveyClient) GetX(ctx context.Context, id int64) *Survey {
 	return obj
 }
 
+// QueryQuestion queries the question edge of a Survey.
+func (c *SurveyClient) QueryQuestion(s *Survey) *SurveyQuestionQuery {
+	query := (&SurveyQuestionClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(survey.Table, survey.FieldID, id),
+			sqlgraph.To(surveyquestion.Table, surveyquestion.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, survey.QuestionTable, survey.QuestionColumn),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *SurveyClient) Hooks() []Hook {
 	return c.hooks.Survey
@@ -1620,6 +1636,22 @@ func (c *SurveyQuestionClient) GetX(ctx context.Context, id int64) *SurveyQuesti
 		panic(err)
 	}
 	return obj
+}
+
+// QuerySurvey queries the survey edge of a SurveyQuestion.
+func (c *SurveyQuestionClient) QuerySurvey(sq *SurveyQuestion) *SurveyQuery {
+	query := (&SurveyClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := sq.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(surveyquestion.Table, surveyquestion.FieldID, id),
+			sqlgraph.To(survey.Table, survey.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, surveyquestion.SurveyTable, surveyquestion.SurveyColumn),
+		)
+		fromV = sqlgraph.Neighbors(sq.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.

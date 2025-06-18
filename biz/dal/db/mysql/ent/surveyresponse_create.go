@@ -4,7 +4,6 @@ package ent
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
 	"time"
@@ -160,18 +159,6 @@ func (src *SurveyResponseCreate) SetNillableAudio(s *string) *SurveyResponseCrea
 	return src
 }
 
-// SetStartedAt sets the "started_at" field.
-func (src *SurveyResponseCreate) SetStartedAt(t time.Time) *SurveyResponseCreate {
-	src.mutation.SetStartedAt(t)
-	return src
-}
-
-// SetCompletedAt sets the "completed_at" field.
-func (src *SurveyResponseCreate) SetCompletedAt(t time.Time) *SurveyResponseCreate {
-	src.mutation.SetCompletedAt(t)
-	return src
-}
-
 // SetID sets the "id" field.
 func (src *SurveyResponseCreate) SetID(i int64) *SurveyResponseCreate {
 	src.mutation.SetID(i)
@@ -257,27 +244,6 @@ func (src *SurveyResponseCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (src *SurveyResponseCreate) check() error {
-	if _, ok := src.mutation.SurveyID(); !ok {
-		return &ValidationError{Name: "survey_id", err: errors.New(`ent: missing required field "SurveyResponse.survey_id"`)}
-	}
-	if _, ok := src.mutation.IP(); !ok {
-		return &ValidationError{Name: "ip", err: errors.New(`ent: missing required field "SurveyResponse.ip"`)}
-	}
-	if _, ok := src.mutation.Map(); !ok {
-		return &ValidationError{Name: "map", err: errors.New(`ent: missing required field "SurveyResponse.map"`)}
-	}
-	if _, ok := src.mutation.Device(); !ok {
-		return &ValidationError{Name: "device", err: errors.New(`ent: missing required field "SurveyResponse.device"`)}
-	}
-	if _, ok := src.mutation.Audio(); !ok {
-		return &ValidationError{Name: "audio", err: errors.New(`ent: missing required field "SurveyResponse.audio"`)}
-	}
-	if _, ok := src.mutation.StartedAt(); !ok {
-		return &ValidationError{Name: "started_at", err: errors.New(`ent: missing required field "SurveyResponse.started_at"`)}
-	}
-	if _, ok := src.mutation.CompletedAt(); !ok {
-		return &ValidationError{Name: "completed_at", err: errors.New(`ent: missing required field "SurveyResponse.completed_at"`)}
-	}
 	return nil
 }
 
@@ -349,14 +315,6 @@ func (src *SurveyResponseCreate) createSpec() (*SurveyResponse, *sqlgraph.Create
 	if value, ok := src.mutation.Audio(); ok {
 		_spec.SetField(surveyresponse.FieldAudio, field.TypeString, value)
 		_node.Audio = value
-	}
-	if value, ok := src.mutation.StartedAt(); ok {
-		_spec.SetField(surveyresponse.FieldStartedAt, field.TypeTime, value)
-		_node.StartedAt = value
-	}
-	if value, ok := src.mutation.CompletedAt(); ok {
-		_spec.SetField(surveyresponse.FieldCompletedAt, field.TypeTime, value)
-		_node.CompletedAt = value
 	}
 	return _node, _spec
 }

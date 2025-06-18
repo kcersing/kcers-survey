@@ -4,8 +4,8 @@ package ent
 
 import (
 	"context"
-	"errors"
 	"fmt"
+	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
 	"time"
 
@@ -124,9 +124,25 @@ func (sqc *SurveyQuestionCreate) SetContent(s string) *SurveyQuestionCreate {
 	return sqc
 }
 
+// SetNillableContent sets the "content" field if the given value is not nil.
+func (sqc *SurveyQuestionCreate) SetNillableContent(s *string) *SurveyQuestionCreate {
+	if s != nil {
+		sqc.SetContent(*s)
+	}
+	return sqc
+}
+
 // SetType sets the "type" field.
 func (sqc *SurveyQuestionCreate) SetType(s string) *SurveyQuestionCreate {
 	sqc.mutation.SetType(s)
+	return sqc
+}
+
+// SetNillableType sets the "type" field if the given value is not nil.
+func (sqc *SurveyQuestionCreate) SetNillableType(s *string) *SurveyQuestionCreate {
+	if s != nil {
+		sqc.SetType(*s)
+	}
 	return sqc
 }
 
@@ -168,6 +184,11 @@ func (sqc *SurveyQuestionCreate) SetOptions(m map[string]string) *SurveyQuestion
 func (sqc *SurveyQuestionCreate) SetID(i int64) *SurveyQuestionCreate {
 	sqc.mutation.SetID(i)
 	return sqc
+}
+
+// SetSurvey sets the "survey" edge to the Survey entity.
+func (sqc *SurveyQuestionCreate) SetSurvey(s *Survey) *SurveyQuestionCreate {
+	return sqc.SetSurveyID(s.ID)
 }
 
 // Mutation returns the SurveyQuestionMutation object of the builder.
@@ -233,6 +254,14 @@ func (sqc *SurveyQuestionCreate) defaults() {
 		v := surveyquestion.DefaultParentID
 		sqc.mutation.SetParentID(v)
 	}
+	if _, ok := sqc.mutation.Content(); !ok {
+		v := surveyquestion.DefaultContent
+		sqc.mutation.SetContent(v)
+	}
+	if _, ok := sqc.mutation.GetType(); !ok {
+		v := surveyquestion.DefaultType
+		sqc.mutation.SetType(v)
+	}
 	if _, ok := sqc.mutation.Sort(); !ok {
 		v := surveyquestion.DefaultSort
 		sqc.mutation.SetSort(v)
@@ -245,27 +274,6 @@ func (sqc *SurveyQuestionCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (sqc *SurveyQuestionCreate) check() error {
-	if _, ok := sqc.mutation.SurveyID(); !ok {
-		return &ValidationError{Name: "survey_id", err: errors.New(`ent: missing required field "SurveyQuestion.survey_id"`)}
-	}
-	if _, ok := sqc.mutation.ParentID(); !ok {
-		return &ValidationError{Name: "parent_id", err: errors.New(`ent: missing required field "SurveyQuestion.parent_id"`)}
-	}
-	if _, ok := sqc.mutation.Content(); !ok {
-		return &ValidationError{Name: "content", err: errors.New(`ent: missing required field "SurveyQuestion.content"`)}
-	}
-	if _, ok := sqc.mutation.GetType(); !ok {
-		return &ValidationError{Name: "type", err: errors.New(`ent: missing required field "SurveyQuestion.type"`)}
-	}
-	if _, ok := sqc.mutation.Sort(); !ok {
-		return &ValidationError{Name: "sort", err: errors.New(`ent: missing required field "SurveyQuestion.sort"`)}
-	}
-	if _, ok := sqc.mutation.Required(); !ok {
-		return &ValidationError{Name: "required", err: errors.New(`ent: missing required field "SurveyQuestion.required"`)}
-	}
-	if _, ok := sqc.mutation.Options(); !ok {
-		return &ValidationError{Name: "options", err: errors.New(`ent: missing required field "SurveyQuestion.options"`)}
-	}
 	return nil
 }
 
@@ -318,10 +326,6 @@ func (sqc *SurveyQuestionCreate) createSpec() (*SurveyQuestion, *sqlgraph.Create
 		_spec.SetField(surveyquestion.FieldStatus, field.TypeInt64, value)
 		_node.Status = value
 	}
-	if value, ok := sqc.mutation.SurveyID(); ok {
-		_spec.SetField(surveyquestion.FieldSurveyID, field.TypeInt64, value)
-		_node.SurveyID = value
-	}
 	if value, ok := sqc.mutation.ParentID(); ok {
 		_spec.SetField(surveyquestion.FieldParentID, field.TypeInt64, value)
 		_node.ParentID = value
@@ -345,6 +349,23 @@ func (sqc *SurveyQuestionCreate) createSpec() (*SurveyQuestion, *sqlgraph.Create
 	if value, ok := sqc.mutation.Options(); ok {
 		_spec.SetField(surveyquestion.FieldOptions, field.TypeJSON, value)
 		_node.Options = value
+	}
+	if nodes := sqc.mutation.SurveyIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyquestion.SurveyTable,
+			Columns: []string{surveyquestion.SurveyColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.SurveyID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

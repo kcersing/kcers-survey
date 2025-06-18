@@ -16,14 +16,11 @@ type SurveyResponse struct {
 
 func (SurveyResponse) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int64("survey_id").Default(0).Comment("survey_id"),
-		field.String("ip").Default("").Comment("用户IP地址"),
-		field.String("map").Default("").Comment("用户地图坐标"),
-		field.String("device").Default("").Comment("设备信息"),
-		field.String("audio").Default("").Comment("音频"),
-
-		field.Time("started_at").Default(nil).Comment("开始时间"),
-		field.Time("completed_at").Default(nil).Comment("完成时间"),
+		field.Int64("survey_id").Optional().Default(0).Comment("survey_id"),
+		field.String("ip").Optional().Default("").Comment("用户IP地址"),
+		field.String("map").Optional().Default("").Comment("用户地图坐标"),
+		field.String("device").Optional().Default("").Comment("设备信息"),
+		field.String("audio").Optional().Default("").Comment("音频"),
 	}
 }
 

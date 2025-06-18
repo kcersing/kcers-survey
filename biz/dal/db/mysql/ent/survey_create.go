@@ -4,9 +4,9 @@ package ent
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/survey"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -96,9 +96,25 @@ func (sc *SurveyCreate) SetTitle(s string) *SurveyCreate {
 	return sc
 }
 
+// SetNillableTitle sets the "title" field if the given value is not nil.
+func (sc *SurveyCreate) SetNillableTitle(s *string) *SurveyCreate {
+	if s != nil {
+		sc.SetTitle(*s)
+	}
+	return sc
+}
+
 // SetPic sets the "pic" field.
 func (sc *SurveyCreate) SetPic(s string) *SurveyCreate {
 	sc.mutation.SetPic(s)
+	return sc
+}
+
+// SetNillablePic sets the "pic" field if the given value is not nil.
+func (sc *SurveyCreate) SetNillablePic(s *string) *SurveyCreate {
+	if s != nil {
+		sc.SetPic(*s)
+	}
 	return sc
 }
 
@@ -108,9 +124,25 @@ func (sc *SurveyCreate) SetDesc(s string) *SurveyCreate {
 	return sc
 }
 
+// SetNillableDesc sets the "desc" field if the given value is not nil.
+func (sc *SurveyCreate) SetNillableDesc(s *string) *SurveyCreate {
+	if s != nil {
+		sc.SetDesc(*s)
+	}
+	return sc
+}
+
 // SetStartAt sets the "start_at" field.
 func (sc *SurveyCreate) SetStartAt(t time.Time) *SurveyCreate {
 	sc.mutation.SetStartAt(t)
+	return sc
+}
+
+// SetNillableStartAt sets the "start_at" field if the given value is not nil.
+func (sc *SurveyCreate) SetNillableStartAt(t *time.Time) *SurveyCreate {
+	if t != nil {
+		sc.SetStartAt(*t)
+	}
 	return sc
 }
 
@@ -120,10 +152,33 @@ func (sc *SurveyCreate) SetEndAt(t time.Time) *SurveyCreate {
 	return sc
 }
 
+// SetNillableEndAt sets the "end_at" field if the given value is not nil.
+func (sc *SurveyCreate) SetNillableEndAt(t *time.Time) *SurveyCreate {
+	if t != nil {
+		sc.SetEndAt(*t)
+	}
+	return sc
+}
+
 // SetID sets the "id" field.
 func (sc *SurveyCreate) SetID(i int64) *SurveyCreate {
 	sc.mutation.SetID(i)
 	return sc
+}
+
+// AddQuestionIDs adds the "question" edge to the SurveyQuestion entity by IDs.
+func (sc *SurveyCreate) AddQuestionIDs(ids ...int64) *SurveyCreate {
+	sc.mutation.AddQuestionIDs(ids...)
+	return sc
+}
+
+// AddQuestion adds the "question" edges to the SurveyQuestion entity.
+func (sc *SurveyCreate) AddQuestion(s ...*SurveyQuestion) *SurveyCreate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sc.AddQuestionIDs(ids...)
 }
 
 // Mutation returns the SurveyMutation object of the builder.
@@ -181,25 +236,22 @@ func (sc *SurveyCreate) defaults() {
 		v := survey.DefaultStatus
 		sc.mutation.SetStatus(v)
 	}
+	if _, ok := sc.mutation.Title(); !ok {
+		v := survey.DefaultTitle
+		sc.mutation.SetTitle(v)
+	}
+	if _, ok := sc.mutation.Pic(); !ok {
+		v := survey.DefaultPic
+		sc.mutation.SetPic(v)
+	}
+	if _, ok := sc.mutation.Desc(); !ok {
+		v := survey.DefaultDesc
+		sc.mutation.SetDesc(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (sc *SurveyCreate) check() error {
-	if _, ok := sc.mutation.Title(); !ok {
-		return &ValidationError{Name: "title", err: errors.New(`ent: missing required field "Survey.title"`)}
-	}
-	if _, ok := sc.mutation.Pic(); !ok {
-		return &ValidationError{Name: "pic", err: errors.New(`ent: missing required field "Survey.pic"`)}
-	}
-	if _, ok := sc.mutation.Desc(); !ok {
-		return &ValidationError{Name: "desc", err: errors.New(`ent: missing required field "Survey.desc"`)}
-	}
-	if _, ok := sc.mutation.StartAt(); !ok {
-		return &ValidationError{Name: "start_at", err: errors.New(`ent: missing required field "Survey.start_at"`)}
-	}
-	if _, ok := sc.mutation.EndAt(); !ok {
-		return &ValidationError{Name: "end_at", err: errors.New(`ent: missing required field "Survey.end_at"`)}
-	}
 	return nil
 }
 
@@ -271,6 +323,22 @@ func (sc *SurveyCreate) createSpec() (*Survey, *sqlgraph.CreateSpec) {
 	if value, ok := sc.mutation.EndAt(); ok {
 		_spec.SetField(survey.FieldEndAt, field.TypeTime, value)
 		_node.EndAt = value
+	}
+	if nodes := sc.mutation.QuestionIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   survey.QuestionTable,
+			Columns: []string{survey.QuestionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

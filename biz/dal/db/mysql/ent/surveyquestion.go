@@ -5,6 +5,7 @@ package ent
 import (
 	"encoding/json"
 	"fmt"
+	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
 	"strings"
 	"time"
@@ -42,8 +43,31 @@ type SurveyQuestion struct {
 	// 是否必填 1必填 2选填
 	Required int64 `json:"required,omitempty"`
 	// 存储选项
-	Options      map[string]string `json:"options,omitempty"`
+	Options map[string]string `json:"options,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the SurveyQuestionQuery when eager-loading is set.
+	Edges        SurveyQuestionEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// SurveyQuestionEdges holds the relations/edges for other nodes in the graph.
+type SurveyQuestionEdges struct {
+	// Survey holds the value of the survey edge.
+	Survey *Survey `json:"survey,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// SurveyOrErr returns the Survey value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e SurveyQuestionEdges) SurveyOrErr() (*Survey, error) {
+	if e.Survey != nil {
+		return e.Survey, nil
+	} else if e.loadedTypes[0] {
+		return nil, &NotFoundError{label: survey.Label}
+	}
+	return nil, &NotLoadedError{edge: "survey"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -165,6 +189,11 @@ func (sq *SurveyQuestion) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (sq *SurveyQuestion) Value(name string) (ent.Value, error) {
 	return sq.selectValues.Get(name)
+}
+
+// QuerySurvey queries the "survey" edge of the SurveyQuestion entity.
+func (sq *SurveyQuestion) QuerySurvey() *SurveyQuery {
+	return NewSurveyQuestionClient(sq.config).QuerySurvey(sq)
 }
 
 // Update returns a builder for updating this SurveyQuestion.

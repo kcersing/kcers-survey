@@ -394,6 +394,16 @@ func SurveyIDLTE(v int64) predicate.SurveyResponseAnswers {
 	return predicate.SurveyResponseAnswers(sql.FieldLTE(FieldSurveyID, v))
 }
 
+// SurveyIDIsNil applies the IsNil predicate on the "survey_id" field.
+func SurveyIDIsNil() predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(sql.FieldIsNull(FieldSurveyID))
+}
+
+// SurveyIDNotNil applies the NotNil predicate on the "survey_id" field.
+func SurveyIDNotNil() predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(sql.FieldNotNull(FieldSurveyID))
+}
+
 // SurveyResponseIDEQ applies the EQ predicate on the "survey_response_id" field.
 func SurveyResponseIDEQ(v int64) predicate.SurveyResponseAnswers {
 	return predicate.SurveyResponseAnswers(sql.FieldEQ(FieldSurveyResponseID, v))
@@ -434,6 +444,16 @@ func SurveyResponseIDLTE(v int64) predicate.SurveyResponseAnswers {
 	return predicate.SurveyResponseAnswers(sql.FieldLTE(FieldSurveyResponseID, v))
 }
 
+// SurveyResponseIDIsNil applies the IsNil predicate on the "survey_response_id" field.
+func SurveyResponseIDIsNil() predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(sql.FieldIsNull(FieldSurveyResponseID))
+}
+
+// SurveyResponseIDNotNil applies the NotNil predicate on the "survey_response_id" field.
+func SurveyResponseIDNotNil() predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(sql.FieldNotNull(FieldSurveyResponseID))
+}
+
 // SurveyQuestionIDEQ applies the EQ predicate on the "survey_question_id" field.
 func SurveyQuestionIDEQ(v int64) predicate.SurveyResponseAnswers {
 	return predicate.SurveyResponseAnswers(sql.FieldEQ(FieldSurveyQuestionID, v))
@@ -472,6 +492,16 @@ func SurveyQuestionIDLT(v int64) predicate.SurveyResponseAnswers {
 // SurveyQuestionIDLTE applies the LTE predicate on the "survey_question_id" field.
 func SurveyQuestionIDLTE(v int64) predicate.SurveyResponseAnswers {
 	return predicate.SurveyResponseAnswers(sql.FieldLTE(FieldSurveyQuestionID, v))
+}
+
+// SurveyQuestionIDIsNil applies the IsNil predicate on the "survey_question_id" field.
+func SurveyQuestionIDIsNil() predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(sql.FieldIsNull(FieldSurveyQuestionID))
+}
+
+// SurveyQuestionIDNotNil applies the NotNil predicate on the "survey_question_id" field.
+func SurveyQuestionIDNotNil() predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(sql.FieldNotNull(FieldSurveyQuestionID))
 }
 
 // AnswerTextEQ applies the EQ predicate on the "answer_text" field.
@@ -529,6 +559,16 @@ func AnswerTextHasSuffix(v string) predicate.SurveyResponseAnswers {
 	return predicate.SurveyResponseAnswers(sql.FieldHasSuffix(FieldAnswerText, v))
 }
 
+// AnswerTextIsNil applies the IsNil predicate on the "answer_text" field.
+func AnswerTextIsNil() predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(sql.FieldIsNull(FieldAnswerText))
+}
+
+// AnswerTextNotNil applies the NotNil predicate on the "answer_text" field.
+func AnswerTextNotNil() predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(sql.FieldNotNull(FieldAnswerText))
+}
+
 // AnswerTextEqualFold applies the EqualFold predicate on the "answer_text" field.
 func AnswerTextEqualFold(v string) predicate.SurveyResponseAnswers {
 	return predicate.SurveyResponseAnswers(sql.FieldEqualFold(FieldAnswerText, v))
@@ -577,6 +617,16 @@ func AnswerValueLT(v int64) predicate.SurveyResponseAnswers {
 // AnswerValueLTE applies the LTE predicate on the "answer_value" field.
 func AnswerValueLTE(v int64) predicate.SurveyResponseAnswers {
 	return predicate.SurveyResponseAnswers(sql.FieldLTE(FieldAnswerValue, v))
+}
+
+// AnswerValueIsNil applies the IsNil predicate on the "answer_value" field.
+func AnswerValueIsNil() predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(sql.FieldIsNull(FieldAnswerValue))
+}
+
+// AnswerValueNotNil applies the NotNil predicate on the "answer_value" field.
+func AnswerValueNotNil() predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(sql.FieldNotNull(FieldAnswerValue))
 }
 
 // And groups predicates with the AND operator between them.

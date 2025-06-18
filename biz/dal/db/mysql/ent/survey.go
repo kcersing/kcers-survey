@@ -37,8 +37,29 @@ type Survey struct {
 	// 开始时间
 	StartAt time.Time `json:"start_at,omitempty"`
 	// 结束时间
-	EndAt        time.Time `json:"end_at,omitempty"`
+	EndAt time.Time `json:"end_at,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the SurveyQuery when eager-loading is set.
+	Edges        SurveyEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// SurveyEdges holds the relations/edges for other nodes in the graph.
+type SurveyEdges struct {
+	// Question holds the value of the question edge.
+	Question []*SurveyQuestion `json:"question,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// QuestionOrErr returns the Question value or an error if the edge
+// was not loaded in eager-loading.
+func (e SurveyEdges) QuestionOrErr() ([]*SurveyQuestion, error) {
+	if e.loadedTypes[0] {
+		return e.Question, nil
+	}
+	return nil, &NotLoadedError{edge: "question"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -144,6 +165,11 @@ func (s *Survey) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (s *Survey) Value(name string) (ent.Value, error) {
 	return s.selectValues.Get(name)
+}
+
+// QueryQuestion queries the "question" edge of the Survey entity.
+func (s *Survey) QueryQuestion() *SurveyQuestionQuery {
+	return NewSurveyClient(s.config).QueryQuestion(s)
 }
 
 // Update returns a builder for updating this Survey.

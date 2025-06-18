@@ -7,6 +7,7 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
 	"kcers-survey/biz/dal/db/mysql/ent/schema/mixins"
+	"entgo.io/ent/schema/edge"
 )
 
 type SurveyQuestion struct {
@@ -16,15 +17,15 @@ type SurveyQuestion struct {
 func (SurveyQuestion) Fields() []ent.Field {
 	return []ent.Field{
 
-		field.Int64("survey_id").Default(0).Comment("survey_id"),
-		field.Int64("parent_id").Default(0).Comment("parent_id"),
-		field.Text("content").Comment("content"),
-		field.String("type").Comment("type"),
+		field.Int64("survey_id").Optional().Default(0).Comment("survey_id"),
+		field.Int64("parent_id").Optional().Default(0).Comment("parent_id"),
+		field.Text("content").Optional().Default("").Comment("content"),
+		field.String("type").Optional().Default("").Comment("type"),
 
-		field.Int64("sort").Default(0).Comment("sort"),
+		field.Int64("sort").Optional().Default(0).Comment("sort"),
 
-		field.Int64("required").Default(1).Comment("是否必填 1必填 2选填"),
-		field.JSON("options", map[string]string{}).Comment("存储选项"),
+		field.Int64("required").Optional().Default(1).Comment("是否必填 1必填 2选填"),
+		field.JSON("options", map[string]string{}).Optional().Comment("存储选项"),
 	}
 }
 
@@ -37,7 +38,8 @@ func (SurveyQuestion) Mixin() []ent.Mixin {
 
 func (SurveyQuestion) Edges() []ent.Edge {
 	return []ent.Edge{
-		//edge.From("survey", Survey.Type).Ref("question").Field("survey_id"),
+		edge.From("survey", Survey.Type).Ref("question").Field("survey_id").Unique(),
+
 	}
 }
 

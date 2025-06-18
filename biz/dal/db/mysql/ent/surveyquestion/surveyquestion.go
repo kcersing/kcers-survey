@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -37,8 +38,17 @@ const (
 	FieldRequired = "required"
 	// FieldOptions holds the string denoting the options field in the database.
 	FieldOptions = "options"
+	// EdgeSurvey holds the string denoting the survey edge name in mutations.
+	EdgeSurvey = "survey"
 	// Table holds the table name of the surveyquestion in the database.
 	Table = "survey_question"
+	// SurveyTable is the table that holds the survey relation/edge.
+	SurveyTable = "survey_question"
+	// SurveyInverseTable is the table name for the Survey entity.
+	// It exists in this package in order to avoid circular dependency with the "survey" package.
+	SurveyInverseTable = "survey"
+	// SurveyColumn is the table column denoting the survey relation/edge.
+	SurveyColumn = "survey_id"
 )
 
 // Columns holds all SQL columns for surveyquestion fields.
@@ -85,6 +95,10 @@ var (
 	DefaultSurveyID int64
 	// DefaultParentID holds the default value on creation for the "parent_id" field.
 	DefaultParentID int64
+	// DefaultContent holds the default value on creation for the "content" field.
+	DefaultContent string
+	// DefaultType holds the default value on creation for the "type" field.
+	DefaultType string
 	// DefaultSort holds the default value on creation for the "sort" field.
 	DefaultSort int64
 	// DefaultRequired holds the default value on creation for the "required" field.
@@ -152,4 +166,18 @@ func BySort(opts ...sql.OrderTermOption) OrderOption {
 // ByRequired orders the results by the required field.
 func ByRequired(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRequired, opts...).ToFunc()
+}
+
+// BySurveyField orders the results by survey field.
+func BySurveyField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newSurveyStep(), sql.OrderByField(field, opts...))
+	}
+}
+func newSurveyStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(SurveyInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, SurveyTable, SurveyColumn),
+	)
 }

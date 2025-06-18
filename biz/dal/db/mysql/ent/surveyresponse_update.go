@@ -143,6 +143,12 @@ func (sru *SurveyResponseUpdate) AddSurveyID(i int64) *SurveyResponseUpdate {
 	return sru
 }
 
+// ClearSurveyID clears the value of the "survey_id" field.
+func (sru *SurveyResponseUpdate) ClearSurveyID() *SurveyResponseUpdate {
+	sru.mutation.ClearSurveyID()
+	return sru
+}
+
 // SetIP sets the "ip" field.
 func (sru *SurveyResponseUpdate) SetIP(s string) *SurveyResponseUpdate {
 	sru.mutation.SetIP(s)
@@ -154,6 +160,12 @@ func (sru *SurveyResponseUpdate) SetNillableIP(s *string) *SurveyResponseUpdate 
 	if s != nil {
 		sru.SetIP(*s)
 	}
+	return sru
+}
+
+// ClearIP clears the value of the "ip" field.
+func (sru *SurveyResponseUpdate) ClearIP() *SurveyResponseUpdate {
+	sru.mutation.ClearIP()
 	return sru
 }
 
@@ -171,6 +183,12 @@ func (sru *SurveyResponseUpdate) SetNillableMap(s *string) *SurveyResponseUpdate
 	return sru
 }
 
+// ClearMap clears the value of the "map" field.
+func (sru *SurveyResponseUpdate) ClearMap() *SurveyResponseUpdate {
+	sru.mutation.ClearMap()
+	return sru
+}
+
 // SetDevice sets the "device" field.
 func (sru *SurveyResponseUpdate) SetDevice(s string) *SurveyResponseUpdate {
 	sru.mutation.SetDevice(s)
@@ -182,6 +200,12 @@ func (sru *SurveyResponseUpdate) SetNillableDevice(s *string) *SurveyResponseUpd
 	if s != nil {
 		sru.SetDevice(*s)
 	}
+	return sru
+}
+
+// ClearDevice clears the value of the "device" field.
+func (sru *SurveyResponseUpdate) ClearDevice() *SurveyResponseUpdate {
+	sru.mutation.ClearDevice()
 	return sru
 }
 
@@ -199,31 +223,9 @@ func (sru *SurveyResponseUpdate) SetNillableAudio(s *string) *SurveyResponseUpda
 	return sru
 }
 
-// SetStartedAt sets the "started_at" field.
-func (sru *SurveyResponseUpdate) SetStartedAt(t time.Time) *SurveyResponseUpdate {
-	sru.mutation.SetStartedAt(t)
-	return sru
-}
-
-// SetNillableStartedAt sets the "started_at" field if the given value is not nil.
-func (sru *SurveyResponseUpdate) SetNillableStartedAt(t *time.Time) *SurveyResponseUpdate {
-	if t != nil {
-		sru.SetStartedAt(*t)
-	}
-	return sru
-}
-
-// SetCompletedAt sets the "completed_at" field.
-func (sru *SurveyResponseUpdate) SetCompletedAt(t time.Time) *SurveyResponseUpdate {
-	sru.mutation.SetCompletedAt(t)
-	return sru
-}
-
-// SetNillableCompletedAt sets the "completed_at" field if the given value is not nil.
-func (sru *SurveyResponseUpdate) SetNillableCompletedAt(t *time.Time) *SurveyResponseUpdate {
-	if t != nil {
-		sru.SetCompletedAt(*t)
-	}
+// ClearAudio clears the value of the "audio" field.
+func (sru *SurveyResponseUpdate) ClearAudio() *SurveyResponseUpdate {
+	sru.mutation.ClearAudio()
 	return sru
 }
 
@@ -325,23 +327,32 @@ func (sru *SurveyResponseUpdate) sqlSave(ctx context.Context) (n int, err error)
 	if value, ok := sru.mutation.AddedSurveyID(); ok {
 		_spec.AddField(surveyresponse.FieldSurveyID, field.TypeInt64, value)
 	}
+	if sru.mutation.SurveyIDCleared() {
+		_spec.ClearField(surveyresponse.FieldSurveyID, field.TypeInt64)
+	}
 	if value, ok := sru.mutation.IP(); ok {
 		_spec.SetField(surveyresponse.FieldIP, field.TypeString, value)
+	}
+	if sru.mutation.IPCleared() {
+		_spec.ClearField(surveyresponse.FieldIP, field.TypeString)
 	}
 	if value, ok := sru.mutation.Map(); ok {
 		_spec.SetField(surveyresponse.FieldMap, field.TypeString, value)
 	}
+	if sru.mutation.MapCleared() {
+		_spec.ClearField(surveyresponse.FieldMap, field.TypeString)
+	}
 	if value, ok := sru.mutation.Device(); ok {
 		_spec.SetField(surveyresponse.FieldDevice, field.TypeString, value)
+	}
+	if sru.mutation.DeviceCleared() {
+		_spec.ClearField(surveyresponse.FieldDevice, field.TypeString)
 	}
 	if value, ok := sru.mutation.Audio(); ok {
 		_spec.SetField(surveyresponse.FieldAudio, field.TypeString, value)
 	}
-	if value, ok := sru.mutation.StartedAt(); ok {
-		_spec.SetField(surveyresponse.FieldStartedAt, field.TypeTime, value)
-	}
-	if value, ok := sru.mutation.CompletedAt(); ok {
-		_spec.SetField(surveyresponse.FieldCompletedAt, field.TypeTime, value)
+	if sru.mutation.AudioCleared() {
+		_spec.ClearField(surveyresponse.FieldAudio, field.TypeString)
 	}
 	_spec.AddModifiers(sru.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, sru.driver, _spec); err != nil {
@@ -479,6 +490,12 @@ func (sruo *SurveyResponseUpdateOne) AddSurveyID(i int64) *SurveyResponseUpdateO
 	return sruo
 }
 
+// ClearSurveyID clears the value of the "survey_id" field.
+func (sruo *SurveyResponseUpdateOne) ClearSurveyID() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearSurveyID()
+	return sruo
+}
+
 // SetIP sets the "ip" field.
 func (sruo *SurveyResponseUpdateOne) SetIP(s string) *SurveyResponseUpdateOne {
 	sruo.mutation.SetIP(s)
@@ -490,6 +507,12 @@ func (sruo *SurveyResponseUpdateOne) SetNillableIP(s *string) *SurveyResponseUpd
 	if s != nil {
 		sruo.SetIP(*s)
 	}
+	return sruo
+}
+
+// ClearIP clears the value of the "ip" field.
+func (sruo *SurveyResponseUpdateOne) ClearIP() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearIP()
 	return sruo
 }
 
@@ -507,6 +530,12 @@ func (sruo *SurveyResponseUpdateOne) SetNillableMap(s *string) *SurveyResponseUp
 	return sruo
 }
 
+// ClearMap clears the value of the "map" field.
+func (sruo *SurveyResponseUpdateOne) ClearMap() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearMap()
+	return sruo
+}
+
 // SetDevice sets the "device" field.
 func (sruo *SurveyResponseUpdateOne) SetDevice(s string) *SurveyResponseUpdateOne {
 	sruo.mutation.SetDevice(s)
@@ -518,6 +547,12 @@ func (sruo *SurveyResponseUpdateOne) SetNillableDevice(s *string) *SurveyRespons
 	if s != nil {
 		sruo.SetDevice(*s)
 	}
+	return sruo
+}
+
+// ClearDevice clears the value of the "device" field.
+func (sruo *SurveyResponseUpdateOne) ClearDevice() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearDevice()
 	return sruo
 }
 
@@ -535,31 +570,9 @@ func (sruo *SurveyResponseUpdateOne) SetNillableAudio(s *string) *SurveyResponse
 	return sruo
 }
 
-// SetStartedAt sets the "started_at" field.
-func (sruo *SurveyResponseUpdateOne) SetStartedAt(t time.Time) *SurveyResponseUpdateOne {
-	sruo.mutation.SetStartedAt(t)
-	return sruo
-}
-
-// SetNillableStartedAt sets the "started_at" field if the given value is not nil.
-func (sruo *SurveyResponseUpdateOne) SetNillableStartedAt(t *time.Time) *SurveyResponseUpdateOne {
-	if t != nil {
-		sruo.SetStartedAt(*t)
-	}
-	return sruo
-}
-
-// SetCompletedAt sets the "completed_at" field.
-func (sruo *SurveyResponseUpdateOne) SetCompletedAt(t time.Time) *SurveyResponseUpdateOne {
-	sruo.mutation.SetCompletedAt(t)
-	return sruo
-}
-
-// SetNillableCompletedAt sets the "completed_at" field if the given value is not nil.
-func (sruo *SurveyResponseUpdateOne) SetNillableCompletedAt(t *time.Time) *SurveyResponseUpdateOne {
-	if t != nil {
-		sruo.SetCompletedAt(*t)
-	}
+// ClearAudio clears the value of the "audio" field.
+func (sruo *SurveyResponseUpdateOne) ClearAudio() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearAudio()
 	return sruo
 }
 
@@ -691,23 +704,32 @@ func (sruo *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	if value, ok := sruo.mutation.AddedSurveyID(); ok {
 		_spec.AddField(surveyresponse.FieldSurveyID, field.TypeInt64, value)
 	}
+	if sruo.mutation.SurveyIDCleared() {
+		_spec.ClearField(surveyresponse.FieldSurveyID, field.TypeInt64)
+	}
 	if value, ok := sruo.mutation.IP(); ok {
 		_spec.SetField(surveyresponse.FieldIP, field.TypeString, value)
+	}
+	if sruo.mutation.IPCleared() {
+		_spec.ClearField(surveyresponse.FieldIP, field.TypeString)
 	}
 	if value, ok := sruo.mutation.Map(); ok {
 		_spec.SetField(surveyresponse.FieldMap, field.TypeString, value)
 	}
+	if sruo.mutation.MapCleared() {
+		_spec.ClearField(surveyresponse.FieldMap, field.TypeString)
+	}
 	if value, ok := sruo.mutation.Device(); ok {
 		_spec.SetField(surveyresponse.FieldDevice, field.TypeString, value)
+	}
+	if sruo.mutation.DeviceCleared() {
+		_spec.ClearField(surveyresponse.FieldDevice, field.TypeString)
 	}
 	if value, ok := sruo.mutation.Audio(); ok {
 		_spec.SetField(surveyresponse.FieldAudio, field.TypeString, value)
 	}
-	if value, ok := sruo.mutation.StartedAt(); ok {
-		_spec.SetField(surveyresponse.FieldStartedAt, field.TypeTime, value)
-	}
-	if value, ok := sruo.mutation.CompletedAt(); ok {
-		_spec.SetField(surveyresponse.FieldCompletedAt, field.TypeTime, value)
+	if sruo.mutation.AudioCleared() {
+		_spec.ClearField(surveyresponse.FieldAudio, field.TypeString)
 	}
 	_spec.AddModifiers(sruo.modifiers...)
 	_node = &SurveyResponse{config: sruo.config}

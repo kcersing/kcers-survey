@@ -4,7 +4,6 @@ package ent
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"time"
@@ -138,6 +137,14 @@ func (srac *SurveyResponseAnswersCreate) SetAnswerText(s string) *SurveyResponse
 	return srac
 }
 
+// SetNillableAnswerText sets the "answer_text" field if the given value is not nil.
+func (srac *SurveyResponseAnswersCreate) SetNillableAnswerText(s *string) *SurveyResponseAnswersCreate {
+	if s != nil {
+		srac.SetAnswerText(*s)
+	}
+	return srac
+}
+
 // SetAnswerValue sets the "answer_value" field.
 func (srac *SurveyResponseAnswersCreate) SetAnswerValue(i int64) *SurveyResponseAnswersCreate {
 	srac.mutation.SetAnswerValue(i)
@@ -233,21 +240,6 @@ func (srac *SurveyResponseAnswersCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (srac *SurveyResponseAnswersCreate) check() error {
-	if _, ok := srac.mutation.SurveyID(); !ok {
-		return &ValidationError{Name: "survey_id", err: errors.New(`ent: missing required field "SurveyResponseAnswers.survey_id"`)}
-	}
-	if _, ok := srac.mutation.SurveyResponseID(); !ok {
-		return &ValidationError{Name: "survey_response_id", err: errors.New(`ent: missing required field "SurveyResponseAnswers.survey_response_id"`)}
-	}
-	if _, ok := srac.mutation.SurveyQuestionID(); !ok {
-		return &ValidationError{Name: "survey_question_id", err: errors.New(`ent: missing required field "SurveyResponseAnswers.survey_question_id"`)}
-	}
-	if _, ok := srac.mutation.AnswerText(); !ok {
-		return &ValidationError{Name: "answer_text", err: errors.New(`ent: missing required field "SurveyResponseAnswers.answer_text"`)}
-	}
-	if _, ok := srac.mutation.AnswerValue(); !ok {
-		return &ValidationError{Name: "answer_value", err: errors.New(`ent: missing required field "SurveyResponseAnswers.answer_value"`)}
-	}
 	return nil
 }
 

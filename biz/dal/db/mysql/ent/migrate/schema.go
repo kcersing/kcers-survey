@@ -210,11 +210,11 @@ var (
 		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
-		{Name: "title", Type: field.TypeString, Comment: "title"},
-		{Name: "pic", Type: field.TypeString, Comment: "pic"},
-		{Name: "desc", Type: field.TypeString, Size: 2147483647, Comment: "desc"},
-		{Name: "start_at", Type: field.TypeTime, Comment: "开始时间"},
-		{Name: "end_at", Type: field.TypeTime, Comment: "结束时间"},
+		{Name: "title", Type: field.TypeString, Nullable: true, Comment: "title", Default: ""},
+		{Name: "pic", Type: field.TypeString, Nullable: true, Comment: "pic", Default: ""},
+		{Name: "desc", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "desc", Default: ""},
+		{Name: "start_at", Type: field.TypeTime, Nullable: true, Comment: "开始时间"},
+		{Name: "end_at", Type: field.TypeTime, Nullable: true, Comment: "结束时间"},
 	}
 	// SurveyTable holds the schema information for the "survey" table.
 	SurveyTable = &schema.Table{
@@ -230,19 +230,27 @@ var (
 		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
-		{Name: "survey_id", Type: field.TypeInt64, Comment: "survey_id", Default: 0},
-		{Name: "parent_id", Type: field.TypeInt64, Comment: "parent_id", Default: 0},
-		{Name: "content", Type: field.TypeString, Size: 2147483647, Comment: "content"},
-		{Name: "type", Type: field.TypeString, Comment: "type"},
-		{Name: "sort", Type: field.TypeInt64, Comment: "sort", Default: 0},
-		{Name: "required", Type: field.TypeInt64, Comment: "是否必填 1必填 2选填", Default: 1},
-		{Name: "options", Type: field.TypeJSON, Comment: "存储选项"},
+		{Name: "parent_id", Type: field.TypeInt64, Nullable: true, Comment: "parent_id", Default: 0},
+		{Name: "content", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "content", Default: ""},
+		{Name: "type", Type: field.TypeString, Nullable: true, Comment: "type", Default: ""},
+		{Name: "sort", Type: field.TypeInt64, Nullable: true, Comment: "sort", Default: 0},
+		{Name: "required", Type: field.TypeInt64, Nullable: true, Comment: "是否必填 1必填 2选填", Default: 1},
+		{Name: "options", Type: field.TypeJSON, Nullable: true, Comment: "存储选项"},
+		{Name: "survey_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_id", Default: 0},
 	}
 	// SurveyQuestionTable holds the schema information for the "survey_question" table.
 	SurveyQuestionTable = &schema.Table{
 		Name:       "survey_question",
 		Columns:    SurveyQuestionColumns,
 		PrimaryKey: []*schema.Column{SurveyQuestionColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "survey_question_survey_question",
+				Columns:    []*schema.Column{SurveyQuestionColumns[12]},
+				RefColumns: []*schema.Column{SurveyColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// SurveyResponseColumns holds the columns for the "survey_response" table.
 	SurveyResponseColumns = []*schema.Column{
@@ -252,13 +260,11 @@ var (
 		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
-		{Name: "survey_id", Type: field.TypeInt64, Comment: "survey_id", Default: 0},
-		{Name: "ip", Type: field.TypeString, Comment: "用户IP地址", Default: ""},
-		{Name: "map", Type: field.TypeString, Comment: "用户地图坐标", Default: ""},
-		{Name: "device", Type: field.TypeString, Comment: "设备信息", Default: ""},
-		{Name: "audio", Type: field.TypeString, Comment: "音频", Default: ""},
-		{Name: "started_at", Type: field.TypeTime, Comment: "开始时间"},
-		{Name: "completed_at", Type: field.TypeTime, Comment: "完成时间"},
+		{Name: "survey_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_id", Default: 0},
+		{Name: "ip", Type: field.TypeString, Nullable: true, Comment: "用户IP地址", Default: ""},
+		{Name: "map", Type: field.TypeString, Nullable: true, Comment: "用户地图坐标", Default: ""},
+		{Name: "device", Type: field.TypeString, Nullable: true, Comment: "设备信息", Default: ""},
+		{Name: "audio", Type: field.TypeString, Nullable: true, Comment: "音频", Default: ""},
 	}
 	// SurveyResponseTable holds the schema information for the "survey_response" table.
 	SurveyResponseTable = &schema.Table{
@@ -274,11 +280,11 @@ var (
 		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
-		{Name: "survey_id", Type: field.TypeInt64, Comment: "survey_id", Default: 0},
-		{Name: "survey_response_id", Type: field.TypeInt64, Comment: "survey_response_id", Default: 0},
-		{Name: "survey_question_id", Type: field.TypeInt64, Comment: "survey_question_id", Default: 0},
-		{Name: "answer_text", Type: field.TypeString, Comment: "回答文本"},
-		{Name: "answer_value", Type: field.TypeInt64, Comment: "回答数值", Default: 1},
+		{Name: "survey_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_id", Default: 0},
+		{Name: "survey_response_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_response_id", Default: 0},
+		{Name: "survey_question_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_question_id", Default: 0},
+		{Name: "answer_text", Type: field.TypeString, Nullable: true, Comment: "回答文本"},
+		{Name: "answer_value", Type: field.TypeInt64, Nullable: true, Comment: "回答数值", Default: 1},
 	}
 	// SurveyResponseAnswersTable holds the schema information for the "survey_response_answers" table.
 	SurveyResponseAnswersTable = &schema.Table{
@@ -474,6 +480,7 @@ func init() {
 	SurveyTable.Annotation = &entsql.Annotation{
 		Table: "survey",
 	}
+	SurveyQuestionTable.ForeignKeys[0].RefTable = SurveyTable
 	SurveyQuestionTable.Annotation = &entsql.Annotation{
 		Table: "survey_question",
 	}
