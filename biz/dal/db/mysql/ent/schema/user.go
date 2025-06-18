@@ -60,7 +60,6 @@ func (User) Edges() []ent.Edge {
 	return []ent.Edge{
 
 		edge.To("token", Token.Type).Unique(),
-		edge.To("tags", DictionaryDetail.Type),
 
 		edge.To("roles", Role.Type),
 	}

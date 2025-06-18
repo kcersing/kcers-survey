@@ -74,13 +74,11 @@ type User struct {
 type UserEdges struct {
 	// Token holds the value of the token edge.
 	Token *Token `json:"token,omitempty"`
-	// Tags holds the value of the tags edge.
-	Tags []*DictionaryDetail `json:"tags,omitempty"`
 	// Roles holds the value of the roles edge.
 	Roles []*Role `json:"roles,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [3]bool
+	loadedTypes [2]bool
 }
 
 // TokenOrErr returns the Token value or an error if the edge
@@ -94,19 +92,10 @@ func (e UserEdges) TokenOrErr() (*Token, error) {
 	return nil, &NotLoadedError{edge: "token"}
 }
 
-// TagsOrErr returns the Tags value or an error if the edge
-// was not loaded in eager-loading.
-func (e UserEdges) TagsOrErr() ([]*DictionaryDetail, error) {
-	if e.loadedTypes[1] {
-		return e.Tags, nil
-	}
-	return nil, &NotLoadedError{edge: "tags"}
-}
-
 // RolesOrErr returns the Roles value or an error if the edge
 // was not loaded in eager-loading.
 func (e UserEdges) RolesOrErr() ([]*Role, error) {
-	if e.loadedTypes[2] {
+	if e.loadedTypes[1] {
 		return e.Roles, nil
 	}
 	return nil, &NotLoadedError{edge: "roles"}
@@ -296,11 +285,6 @@ func (u *User) Value(name string) (ent.Value, error) {
 // QueryToken queries the "token" edge of the User entity.
 func (u *User) QueryToken() *TokenQuery {
 	return NewUserClient(u.config).QueryToken(u)
-}
-
-// QueryTags queries the "tags" edge of the User entity.
-func (u *User) QueryTags() *DictionaryDetailQuery {
-	return NewUserClient(u.config).QueryTags(u)
 }
 
 // QueryRoles queries the "roles" edge of the User entity.

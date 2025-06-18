@@ -24,7 +24,6 @@ type DictionaryDetailQuery struct {
 	inters         []Interceptor
 	predicates     []predicate.DictionaryDetail
 	withDictionary *DictionaryQuery
-	withFKs        bool
 	modifiers      []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -372,15 +371,11 @@ func (ddq *DictionaryDetailQuery) prepareQuery(ctx context.Context) error {
 func (ddq *DictionaryDetailQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*DictionaryDetail, error) {
 	var (
 		nodes       = []*DictionaryDetail{}
-		withFKs     = ddq.withFKs
 		_spec       = ddq.querySpec()
 		loadedTypes = [1]bool{
 			ddq.withDictionary != nil,
 		}
 	)
-	if withFKs {
-		_spec.Node.Columns = append(_spec.Node.Columns, dictionarydetail.ForeignKeys...)
-	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*DictionaryDetail).scanValues(nil, columns)
 	}

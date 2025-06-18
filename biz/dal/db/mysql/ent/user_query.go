@@ -6,7 +6,6 @@ import (
 	"context"
 	"database/sql/driver"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/dictionarydetail"
 	"kcers-survey/biz/dal/db/mysql/ent/predicate"
 	"kcers-survey/biz/dal/db/mysql/ent/role"
 	"kcers-survey/biz/dal/db/mysql/ent/token"
@@ -27,7 +26,6 @@ type UserQuery struct {
 	inters     []Interceptor
 	predicates []predicate.User
 	withToken  *TokenQuery
-	withTags   *DictionaryDetailQuery
 	withRoles  *RoleQuery
 	modifiers  []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
@@ -81,28 +79,6 @@ func (uq *UserQuery) QueryToken() *TokenQuery {
 			sqlgraph.From(user.Table, user.FieldID, selector),
 			sqlgraph.To(token.Table, token.FieldID),
 			sqlgraph.Edge(sqlgraph.O2O, false, user.TokenTable, user.TokenColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryTags chains the current query on the "tags" edge.
-func (uq *UserQuery) QueryTags() *DictionaryDetailQuery {
-	query := (&DictionaryDetailClient{config: uq.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := uq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := uq.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(user.Table, user.FieldID, selector),
-			sqlgraph.To(dictionarydetail.Table, dictionarydetail.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, user.TagsTable, user.TagsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(uq.driver.Dialect(), step)
 		return fromU, nil
@@ -325,7 +301,6 @@ func (uq *UserQuery) Clone() *UserQuery {
 		inters:     append([]Interceptor{}, uq.inters...),
 		predicates: append([]predicate.User{}, uq.predicates...),
 		withToken:  uq.withToken.Clone(),
-		withTags:   uq.withTags.Clone(),
 		withRoles:  uq.withRoles.Clone(),
 		// clone intermediate query.
 		sql:       uq.sql.Clone(),
@@ -342,17 +317,6 @@ func (uq *UserQuery) WithToken(opts ...func(*TokenQuery)) *UserQuery {
 		opt(query)
 	}
 	uq.withToken = query
-	return uq
-}
-
-// WithTags tells the query-builder to eager-load the nodes that are connected to
-// the "tags" edge. The optional arguments are used to configure the query builder of the edge.
-func (uq *UserQuery) WithTags(opts ...func(*DictionaryDetailQuery)) *UserQuery {
-	query := (&DictionaryDetailClient{config: uq.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	uq.withTags = query
 	return uq
 }
 
@@ -445,9 +409,8 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 	var (
 		nodes       = []*User{}
 		_spec       = uq.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [2]bool{
 			uq.withToken != nil,
-			uq.withTags != nil,
 			uq.withRoles != nil,
 		}
 	)
@@ -475,13 +438,6 @@ func (uq *UserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*User, e
 	if query := uq.withToken; query != nil {
 		if err := uq.loadToken(ctx, query, nodes, nil,
 			func(n *User, e *Token) { n.Edges.Token = e }); err != nil {
-			return nil, err
-		}
-	}
-	if query := uq.withTags; query != nil {
-		if err := uq.loadTags(ctx, query, nodes,
-			func(n *User) { n.Edges.Tags = []*DictionaryDetail{} },
-			func(n *User, e *DictionaryDetail) { n.Edges.Tags = append(n.Edges.Tags, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -518,37 +474,6 @@ func (uq *UserQuery) loadToken(ctx context.Context, query *TokenQuery, nodes []*
 		node, ok := nodeids[*fk]
 		if !ok {
 			return fmt.Errorf(`unexpected referenced foreign-key "user_token" returned %v for node %v`, *fk, n.ID)
-		}
-		assign(node, n)
-	}
-	return nil
-}
-func (uq *UserQuery) loadTags(ctx context.Context, query *DictionaryDetailQuery, nodes []*User, init func(*User), assign func(*User, *DictionaryDetail)) error {
-	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int64]*User)
-	for i := range nodes {
-		fks = append(fks, nodes[i].ID)
-		nodeids[nodes[i].ID] = nodes[i]
-		if init != nil {
-			init(nodes[i])
-		}
-	}
-	query.withFKs = true
-	query.Where(predicate.DictionaryDetail(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(user.TagsColumn), fks...))
-	}))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		fk := n.user_tags
-		if fk == nil {
-			return fmt.Errorf(`foreign-key "user_tags" is nil for node %v`, n.ID)
-		}
-		node, ok := nodeids[*fk]
-		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "user_tags" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}

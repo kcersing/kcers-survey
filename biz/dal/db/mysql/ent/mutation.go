@@ -16,6 +16,7 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/role"
 	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyquestionoptions"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"kcers-survey/biz/dal/db/mysql/ent/token"
@@ -45,6 +46,7 @@ const (
 	TypeRole                  = "Role"
 	TypeSurvey                = "Survey"
 	TypeSurveyQuestion        = "SurveyQuestion"
+	TypeSurveyQuestionOptions = "SurveyQuestionOptions"
 	TypeSurveyResponse        = "SurveyResponse"
 	TypeSurveyResponseAnswers = "SurveyResponseAnswers"
 	TypeToken                 = "Token"
@@ -9359,6 +9361,9 @@ type SurveyQuestionMutation struct {
 	addrequired   *int64
 	options       *map[string]string
 	clearedFields map[string]struct{}
+	option        map[int64]struct{}
+	removedoption map[int64]struct{}
+	clearedoption bool
 	survey        *int64
 	clearedsurvey bool
 	done          bool
@@ -10184,6 +10189,60 @@ func (m *SurveyQuestionMutation) ResetOptions() {
 	delete(m.clearedFields, surveyquestion.FieldOptions)
 }
 
+// AddOptionIDs adds the "option" edge to the SurveyQuestionOptions entity by ids.
+func (m *SurveyQuestionMutation) AddOptionIDs(ids ...int64) {
+	if m.option == nil {
+		m.option = make(map[int64]struct{})
+	}
+	for i := range ids {
+		m.option[ids[i]] = struct{}{}
+	}
+}
+
+// ClearOption clears the "option" edge to the SurveyQuestionOptions entity.
+func (m *SurveyQuestionMutation) ClearOption() {
+	m.clearedoption = true
+}
+
+// OptionCleared reports if the "option" edge to the SurveyQuestionOptions entity was cleared.
+func (m *SurveyQuestionMutation) OptionCleared() bool {
+	return m.clearedoption
+}
+
+// RemoveOptionIDs removes the "option" edge to the SurveyQuestionOptions entity by IDs.
+func (m *SurveyQuestionMutation) RemoveOptionIDs(ids ...int64) {
+	if m.removedoption == nil {
+		m.removedoption = make(map[int64]struct{})
+	}
+	for i := range ids {
+		delete(m.option, ids[i])
+		m.removedoption[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedOption returns the removed IDs of the "option" edge to the SurveyQuestionOptions entity.
+func (m *SurveyQuestionMutation) RemovedOptionIDs() (ids []int64) {
+	for id := range m.removedoption {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// OptionIDs returns the "option" edge IDs in the mutation.
+func (m *SurveyQuestionMutation) OptionIDs() (ids []int64) {
+	for id := range m.option {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetOption resets all changes to the "option" edge.
+func (m *SurveyQuestionMutation) ResetOption() {
+	m.option = nil
+	m.clearedoption = false
+	m.removedoption = nil
+}
+
 // ClearSurvey clears the "survey" edge to the Survey entity.
 func (m *SurveyQuestionMutation) ClearSurvey() {
 	m.clearedsurvey = true
@@ -10681,7 +10740,10 @@ func (m *SurveyQuestionMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SurveyQuestionMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
+	if m.option != nil {
+		edges = append(edges, surveyquestion.EdgeOption)
+	}
 	if m.survey != nil {
 		edges = append(edges, surveyquestion.EdgeSurvey)
 	}
@@ -10692,6 +10754,12 @@ func (m *SurveyQuestionMutation) AddedEdges() []string {
 // name in this mutation.
 func (m *SurveyQuestionMutation) AddedIDs(name string) []ent.Value {
 	switch name {
+	case surveyquestion.EdgeOption:
+		ids := make([]ent.Value, 0, len(m.option))
+		for id := range m.option {
+			ids = append(ids, id)
+		}
+		return ids
 	case surveyquestion.EdgeSurvey:
 		if id := m.survey; id != nil {
 			return []ent.Value{*id}
@@ -10702,19 +10770,33 @@ func (m *SurveyQuestionMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SurveyQuestionMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
+	if m.removedoption != nil {
+		edges = append(edges, surveyquestion.EdgeOption)
+	}
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *SurveyQuestionMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case surveyquestion.EdgeOption:
+		ids := make([]ent.Value, 0, len(m.removedoption))
+		for id := range m.removedoption {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SurveyQuestionMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
+	if m.clearedoption {
+		edges = append(edges, surveyquestion.EdgeOption)
+	}
 	if m.clearedsurvey {
 		edges = append(edges, surveyquestion.EdgeSurvey)
 	}
@@ -10725,6 +10807,8 @@ func (m *SurveyQuestionMutation) ClearedEdges() []string {
 // was cleared in this mutation.
 func (m *SurveyQuestionMutation) EdgeCleared(name string) bool {
 	switch name {
+	case surveyquestion.EdgeOption:
+		return m.clearedoption
 	case surveyquestion.EdgeSurvey:
 		return m.clearedsurvey
 	}
@@ -10746,11 +10830,1051 @@ func (m *SurveyQuestionMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *SurveyQuestionMutation) ResetEdge(name string) error {
 	switch name {
+	case surveyquestion.EdgeOption:
+		m.ResetOption()
+		return nil
 	case surveyquestion.EdgeSurvey:
 		m.ResetSurvey()
 		return nil
 	}
 	return fmt.Errorf("unknown SurveyQuestion edge %s", name)
+}
+
+// SurveyQuestionOptionsMutation represents an operation that mutates the SurveyQuestionOptions nodes in the graph.
+type SurveyQuestionOptionsMutation struct {
+	config
+	op              Op
+	typ             string
+	id              *int64
+	created_at      *time.Time
+	updated_at      *time.Time
+	delete          *int64
+	adddelete       *int64
+	created_id      *int64
+	addcreated_id   *int64
+	status          *int64
+	addstatus       *int64
+	serial          *string
+	content         *string
+	clearedFields   map[string]struct{}
+	question        *int64
+	clearedquestion bool
+	done            bool
+	oldValue        func(context.Context) (*SurveyQuestionOptions, error)
+	predicates      []predicate.SurveyQuestionOptions
+}
+
+var _ ent.Mutation = (*SurveyQuestionOptionsMutation)(nil)
+
+// surveyquestionoptionsOption allows management of the mutation configuration using functional options.
+type surveyquestionoptionsOption func(*SurveyQuestionOptionsMutation)
+
+// newSurveyQuestionOptionsMutation creates new mutation for the SurveyQuestionOptions entity.
+func newSurveyQuestionOptionsMutation(c config, op Op, opts ...surveyquestionoptionsOption) *SurveyQuestionOptionsMutation {
+	m := &SurveyQuestionOptionsMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSurveyQuestionOptions,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSurveyQuestionOptionsID sets the ID field of the mutation.
+func withSurveyQuestionOptionsID(id int64) surveyquestionoptionsOption {
+	return func(m *SurveyQuestionOptionsMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SurveyQuestionOptions
+		)
+		m.oldValue = func(ctx context.Context) (*SurveyQuestionOptions, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SurveyQuestionOptions.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSurveyQuestionOptions sets the old SurveyQuestionOptions of the mutation.
+func withSurveyQuestionOptions(node *SurveyQuestionOptions) surveyquestionoptionsOption {
+	return func(m *SurveyQuestionOptionsMutation) {
+		m.oldValue = func(context.Context) (*SurveyQuestionOptions, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SurveyQuestionOptionsMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SurveyQuestionOptionsMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of SurveyQuestionOptions entities.
+func (m *SurveyQuestionOptionsMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *SurveyQuestionOptionsMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *SurveyQuestionOptionsMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().SurveyQuestionOptions.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *SurveyQuestionOptionsMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *SurveyQuestionOptionsMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the SurveyQuestionOptions entity.
+// If the SurveyQuestionOptions object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurveyQuestionOptionsMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (m *SurveyQuestionOptionsMutation) ClearCreatedAt() {
+	m.created_at = nil
+	m.clearedFields[surveyquestionoptions.FieldCreatedAt] = struct{}{}
+}
+
+// CreatedAtCleared returns if the "created_at" field was cleared in this mutation.
+func (m *SurveyQuestionOptionsMutation) CreatedAtCleared() bool {
+	_, ok := m.clearedFields[surveyquestionoptions.FieldCreatedAt]
+	return ok
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *SurveyQuestionOptionsMutation) ResetCreatedAt() {
+	m.created_at = nil
+	delete(m.clearedFields, surveyquestionoptions.FieldCreatedAt)
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *SurveyQuestionOptionsMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *SurveyQuestionOptionsMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the SurveyQuestionOptions entity.
+// If the SurveyQuestionOptions object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurveyQuestionOptionsMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ClearUpdatedAt clears the value of the "updated_at" field.
+func (m *SurveyQuestionOptionsMutation) ClearUpdatedAt() {
+	m.updated_at = nil
+	m.clearedFields[surveyquestionoptions.FieldUpdatedAt] = struct{}{}
+}
+
+// UpdatedAtCleared returns if the "updated_at" field was cleared in this mutation.
+func (m *SurveyQuestionOptionsMutation) UpdatedAtCleared() bool {
+	_, ok := m.clearedFields[surveyquestionoptions.FieldUpdatedAt]
+	return ok
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *SurveyQuestionOptionsMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+	delete(m.clearedFields, surveyquestionoptions.FieldUpdatedAt)
+}
+
+// SetDelete sets the "delete" field.
+func (m *SurveyQuestionOptionsMutation) SetDelete(i int64) {
+	m.delete = &i
+	m.adddelete = nil
+}
+
+// Delete returns the value of the "delete" field in the mutation.
+func (m *SurveyQuestionOptionsMutation) Delete() (r int64, exists bool) {
+	v := m.delete
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDelete returns the old "delete" field's value of the SurveyQuestionOptions entity.
+// If the SurveyQuestionOptions object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurveyQuestionOptionsMutation) OldDelete(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDelete is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDelete requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDelete: %w", err)
+	}
+	return oldValue.Delete, nil
+}
+
+// AddDelete adds i to the "delete" field.
+func (m *SurveyQuestionOptionsMutation) AddDelete(i int64) {
+	if m.adddelete != nil {
+		*m.adddelete += i
+	} else {
+		m.adddelete = &i
+	}
+}
+
+// AddedDelete returns the value that was added to the "delete" field in this mutation.
+func (m *SurveyQuestionOptionsMutation) AddedDelete() (r int64, exists bool) {
+	v := m.adddelete
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDelete clears the value of the "delete" field.
+func (m *SurveyQuestionOptionsMutation) ClearDelete() {
+	m.delete = nil
+	m.adddelete = nil
+	m.clearedFields[surveyquestionoptions.FieldDelete] = struct{}{}
+}
+
+// DeleteCleared returns if the "delete" field was cleared in this mutation.
+func (m *SurveyQuestionOptionsMutation) DeleteCleared() bool {
+	_, ok := m.clearedFields[surveyquestionoptions.FieldDelete]
+	return ok
+}
+
+// ResetDelete resets all changes to the "delete" field.
+func (m *SurveyQuestionOptionsMutation) ResetDelete() {
+	m.delete = nil
+	m.adddelete = nil
+	delete(m.clearedFields, surveyquestionoptions.FieldDelete)
+}
+
+// SetCreatedID sets the "created_id" field.
+func (m *SurveyQuestionOptionsMutation) SetCreatedID(i int64) {
+	m.created_id = &i
+	m.addcreated_id = nil
+}
+
+// CreatedID returns the value of the "created_id" field in the mutation.
+func (m *SurveyQuestionOptionsMutation) CreatedID() (r int64, exists bool) {
+	v := m.created_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedID returns the old "created_id" field's value of the SurveyQuestionOptions entity.
+// If the SurveyQuestionOptions object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurveyQuestionOptionsMutation) OldCreatedID(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedID: %w", err)
+	}
+	return oldValue.CreatedID, nil
+}
+
+// AddCreatedID adds i to the "created_id" field.
+func (m *SurveyQuestionOptionsMutation) AddCreatedID(i int64) {
+	if m.addcreated_id != nil {
+		*m.addcreated_id += i
+	} else {
+		m.addcreated_id = &i
+	}
+}
+
+// AddedCreatedID returns the value that was added to the "created_id" field in this mutation.
+func (m *SurveyQuestionOptionsMutation) AddedCreatedID() (r int64, exists bool) {
+	v := m.addcreated_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearCreatedID clears the value of the "created_id" field.
+func (m *SurveyQuestionOptionsMutation) ClearCreatedID() {
+	m.created_id = nil
+	m.addcreated_id = nil
+	m.clearedFields[surveyquestionoptions.FieldCreatedID] = struct{}{}
+}
+
+// CreatedIDCleared returns if the "created_id" field was cleared in this mutation.
+func (m *SurveyQuestionOptionsMutation) CreatedIDCleared() bool {
+	_, ok := m.clearedFields[surveyquestionoptions.FieldCreatedID]
+	return ok
+}
+
+// ResetCreatedID resets all changes to the "created_id" field.
+func (m *SurveyQuestionOptionsMutation) ResetCreatedID() {
+	m.created_id = nil
+	m.addcreated_id = nil
+	delete(m.clearedFields, surveyquestionoptions.FieldCreatedID)
+}
+
+// SetStatus sets the "status" field.
+func (m *SurveyQuestionOptionsMutation) SetStatus(i int64) {
+	m.status = &i
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *SurveyQuestionOptionsMutation) Status() (r int64, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the SurveyQuestionOptions entity.
+// If the SurveyQuestionOptions object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurveyQuestionOptionsMutation) OldStatus(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds i to the "status" field.
+func (m *SurveyQuestionOptionsMutation) AddStatus(i int64) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *SurveyQuestionOptionsMutation) AddedStatus() (r int64, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearStatus clears the value of the "status" field.
+func (m *SurveyQuestionOptionsMutation) ClearStatus() {
+	m.status = nil
+	m.addstatus = nil
+	m.clearedFields[surveyquestionoptions.FieldStatus] = struct{}{}
+}
+
+// StatusCleared returns if the "status" field was cleared in this mutation.
+func (m *SurveyQuestionOptionsMutation) StatusCleared() bool {
+	_, ok := m.clearedFields[surveyquestionoptions.FieldStatus]
+	return ok
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *SurveyQuestionOptionsMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+	delete(m.clearedFields, surveyquestionoptions.FieldStatus)
+}
+
+// SetSurveyQuestionID sets the "survey_question_id" field.
+func (m *SurveyQuestionOptionsMutation) SetSurveyQuestionID(i int64) {
+	m.question = &i
+}
+
+// SurveyQuestionID returns the value of the "survey_question_id" field in the mutation.
+func (m *SurveyQuestionOptionsMutation) SurveyQuestionID() (r int64, exists bool) {
+	v := m.question
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSurveyQuestionID returns the old "survey_question_id" field's value of the SurveyQuestionOptions entity.
+// If the SurveyQuestionOptions object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurveyQuestionOptionsMutation) OldSurveyQuestionID(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSurveyQuestionID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSurveyQuestionID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSurveyQuestionID: %w", err)
+	}
+	return oldValue.SurveyQuestionID, nil
+}
+
+// ClearSurveyQuestionID clears the value of the "survey_question_id" field.
+func (m *SurveyQuestionOptionsMutation) ClearSurveyQuestionID() {
+	m.question = nil
+	m.clearedFields[surveyquestionoptions.FieldSurveyQuestionID] = struct{}{}
+}
+
+// SurveyQuestionIDCleared returns if the "survey_question_id" field was cleared in this mutation.
+func (m *SurveyQuestionOptionsMutation) SurveyQuestionIDCleared() bool {
+	_, ok := m.clearedFields[surveyquestionoptions.FieldSurveyQuestionID]
+	return ok
+}
+
+// ResetSurveyQuestionID resets all changes to the "survey_question_id" field.
+func (m *SurveyQuestionOptionsMutation) ResetSurveyQuestionID() {
+	m.question = nil
+	delete(m.clearedFields, surveyquestionoptions.FieldSurveyQuestionID)
+}
+
+// SetSerial sets the "serial" field.
+func (m *SurveyQuestionOptionsMutation) SetSerial(s string) {
+	m.serial = &s
+}
+
+// Serial returns the value of the "serial" field in the mutation.
+func (m *SurveyQuestionOptionsMutation) Serial() (r string, exists bool) {
+	v := m.serial
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSerial returns the old "serial" field's value of the SurveyQuestionOptions entity.
+// If the SurveyQuestionOptions object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurveyQuestionOptionsMutation) OldSerial(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSerial is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSerial requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSerial: %w", err)
+	}
+	return oldValue.Serial, nil
+}
+
+// ClearSerial clears the value of the "serial" field.
+func (m *SurveyQuestionOptionsMutation) ClearSerial() {
+	m.serial = nil
+	m.clearedFields[surveyquestionoptions.FieldSerial] = struct{}{}
+}
+
+// SerialCleared returns if the "serial" field was cleared in this mutation.
+func (m *SurveyQuestionOptionsMutation) SerialCleared() bool {
+	_, ok := m.clearedFields[surveyquestionoptions.FieldSerial]
+	return ok
+}
+
+// ResetSerial resets all changes to the "serial" field.
+func (m *SurveyQuestionOptionsMutation) ResetSerial() {
+	m.serial = nil
+	delete(m.clearedFields, surveyquestionoptions.FieldSerial)
+}
+
+// SetContent sets the "content" field.
+func (m *SurveyQuestionOptionsMutation) SetContent(s string) {
+	m.content = &s
+}
+
+// Content returns the value of the "content" field in the mutation.
+func (m *SurveyQuestionOptionsMutation) Content() (r string, exists bool) {
+	v := m.content
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContent returns the old "content" field's value of the SurveyQuestionOptions entity.
+// If the SurveyQuestionOptions object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurveyQuestionOptionsMutation) OldContent(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContent is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContent requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContent: %w", err)
+	}
+	return oldValue.Content, nil
+}
+
+// ClearContent clears the value of the "content" field.
+func (m *SurveyQuestionOptionsMutation) ClearContent() {
+	m.content = nil
+	m.clearedFields[surveyquestionoptions.FieldContent] = struct{}{}
+}
+
+// ContentCleared returns if the "content" field was cleared in this mutation.
+func (m *SurveyQuestionOptionsMutation) ContentCleared() bool {
+	_, ok := m.clearedFields[surveyquestionoptions.FieldContent]
+	return ok
+}
+
+// ResetContent resets all changes to the "content" field.
+func (m *SurveyQuestionOptionsMutation) ResetContent() {
+	m.content = nil
+	delete(m.clearedFields, surveyquestionoptions.FieldContent)
+}
+
+// SetQuestionID sets the "question" edge to the SurveyQuestion entity by id.
+func (m *SurveyQuestionOptionsMutation) SetQuestionID(id int64) {
+	m.question = &id
+}
+
+// ClearQuestion clears the "question" edge to the SurveyQuestion entity.
+func (m *SurveyQuestionOptionsMutation) ClearQuestion() {
+	m.clearedquestion = true
+	m.clearedFields[surveyquestionoptions.FieldSurveyQuestionID] = struct{}{}
+}
+
+// QuestionCleared reports if the "question" edge to the SurveyQuestion entity was cleared.
+func (m *SurveyQuestionOptionsMutation) QuestionCleared() bool {
+	return m.SurveyQuestionIDCleared() || m.clearedquestion
+}
+
+// QuestionID returns the "question" edge ID in the mutation.
+func (m *SurveyQuestionOptionsMutation) QuestionID() (id int64, exists bool) {
+	if m.question != nil {
+		return *m.question, true
+	}
+	return
+}
+
+// QuestionIDs returns the "question" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// QuestionID instead. It exists only for internal usage by the builders.
+func (m *SurveyQuestionOptionsMutation) QuestionIDs() (ids []int64) {
+	if id := m.question; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetQuestion resets all changes to the "question" edge.
+func (m *SurveyQuestionOptionsMutation) ResetQuestion() {
+	m.question = nil
+	m.clearedquestion = false
+}
+
+// Where appends a list predicates to the SurveyQuestionOptionsMutation builder.
+func (m *SurveyQuestionOptionsMutation) Where(ps ...predicate.SurveyQuestionOptions) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the SurveyQuestionOptionsMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *SurveyQuestionOptionsMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.SurveyQuestionOptions, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *SurveyQuestionOptionsMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *SurveyQuestionOptionsMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (SurveyQuestionOptions).
+func (m *SurveyQuestionOptionsMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SurveyQuestionOptionsMutation) Fields() []string {
+	fields := make([]string, 0, 8)
+	if m.created_at != nil {
+		fields = append(fields, surveyquestionoptions.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, surveyquestionoptions.FieldUpdatedAt)
+	}
+	if m.delete != nil {
+		fields = append(fields, surveyquestionoptions.FieldDelete)
+	}
+	if m.created_id != nil {
+		fields = append(fields, surveyquestionoptions.FieldCreatedID)
+	}
+	if m.status != nil {
+		fields = append(fields, surveyquestionoptions.FieldStatus)
+	}
+	if m.question != nil {
+		fields = append(fields, surveyquestionoptions.FieldSurveyQuestionID)
+	}
+	if m.serial != nil {
+		fields = append(fields, surveyquestionoptions.FieldSerial)
+	}
+	if m.content != nil {
+		fields = append(fields, surveyquestionoptions.FieldContent)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SurveyQuestionOptionsMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case surveyquestionoptions.FieldCreatedAt:
+		return m.CreatedAt()
+	case surveyquestionoptions.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case surveyquestionoptions.FieldDelete:
+		return m.Delete()
+	case surveyquestionoptions.FieldCreatedID:
+		return m.CreatedID()
+	case surveyquestionoptions.FieldStatus:
+		return m.Status()
+	case surveyquestionoptions.FieldSurveyQuestionID:
+		return m.SurveyQuestionID()
+	case surveyquestionoptions.FieldSerial:
+		return m.Serial()
+	case surveyquestionoptions.FieldContent:
+		return m.Content()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SurveyQuestionOptionsMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case surveyquestionoptions.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case surveyquestionoptions.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case surveyquestionoptions.FieldDelete:
+		return m.OldDelete(ctx)
+	case surveyquestionoptions.FieldCreatedID:
+		return m.OldCreatedID(ctx)
+	case surveyquestionoptions.FieldStatus:
+		return m.OldStatus(ctx)
+	case surveyquestionoptions.FieldSurveyQuestionID:
+		return m.OldSurveyQuestionID(ctx)
+	case surveyquestionoptions.FieldSerial:
+		return m.OldSerial(ctx)
+	case surveyquestionoptions.FieldContent:
+		return m.OldContent(ctx)
+	}
+	return nil, fmt.Errorf("unknown SurveyQuestionOptions field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SurveyQuestionOptionsMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case surveyquestionoptions.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case surveyquestionoptions.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case surveyquestionoptions.FieldDelete:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDelete(v)
+		return nil
+	case surveyquestionoptions.FieldCreatedID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedID(v)
+		return nil
+	case surveyquestionoptions.FieldStatus:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	case surveyquestionoptions.FieldSurveyQuestionID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSurveyQuestionID(v)
+		return nil
+	case surveyquestionoptions.FieldSerial:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSerial(v)
+		return nil
+	case surveyquestionoptions.FieldContent:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContent(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SurveyQuestionOptions field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SurveyQuestionOptionsMutation) AddedFields() []string {
+	var fields []string
+	if m.adddelete != nil {
+		fields = append(fields, surveyquestionoptions.FieldDelete)
+	}
+	if m.addcreated_id != nil {
+		fields = append(fields, surveyquestionoptions.FieldCreatedID)
+	}
+	if m.addstatus != nil {
+		fields = append(fields, surveyquestionoptions.FieldStatus)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SurveyQuestionOptionsMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case surveyquestionoptions.FieldDelete:
+		return m.AddedDelete()
+	case surveyquestionoptions.FieldCreatedID:
+		return m.AddedCreatedID()
+	case surveyquestionoptions.FieldStatus:
+		return m.AddedStatus()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SurveyQuestionOptionsMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case surveyquestionoptions.FieldDelete:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDelete(v)
+		return nil
+	case surveyquestionoptions.FieldCreatedID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedID(v)
+		return nil
+	case surveyquestionoptions.FieldStatus:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SurveyQuestionOptions numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SurveyQuestionOptionsMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(surveyquestionoptions.FieldCreatedAt) {
+		fields = append(fields, surveyquestionoptions.FieldCreatedAt)
+	}
+	if m.FieldCleared(surveyquestionoptions.FieldUpdatedAt) {
+		fields = append(fields, surveyquestionoptions.FieldUpdatedAt)
+	}
+	if m.FieldCleared(surveyquestionoptions.FieldDelete) {
+		fields = append(fields, surveyquestionoptions.FieldDelete)
+	}
+	if m.FieldCleared(surveyquestionoptions.FieldCreatedID) {
+		fields = append(fields, surveyquestionoptions.FieldCreatedID)
+	}
+	if m.FieldCleared(surveyquestionoptions.FieldStatus) {
+		fields = append(fields, surveyquestionoptions.FieldStatus)
+	}
+	if m.FieldCleared(surveyquestionoptions.FieldSurveyQuestionID) {
+		fields = append(fields, surveyquestionoptions.FieldSurveyQuestionID)
+	}
+	if m.FieldCleared(surveyquestionoptions.FieldSerial) {
+		fields = append(fields, surveyquestionoptions.FieldSerial)
+	}
+	if m.FieldCleared(surveyquestionoptions.FieldContent) {
+		fields = append(fields, surveyquestionoptions.FieldContent)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SurveyQuestionOptionsMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SurveyQuestionOptionsMutation) ClearField(name string) error {
+	switch name {
+	case surveyquestionoptions.FieldCreatedAt:
+		m.ClearCreatedAt()
+		return nil
+	case surveyquestionoptions.FieldUpdatedAt:
+		m.ClearUpdatedAt()
+		return nil
+	case surveyquestionoptions.FieldDelete:
+		m.ClearDelete()
+		return nil
+	case surveyquestionoptions.FieldCreatedID:
+		m.ClearCreatedID()
+		return nil
+	case surveyquestionoptions.FieldStatus:
+		m.ClearStatus()
+		return nil
+	case surveyquestionoptions.FieldSurveyQuestionID:
+		m.ClearSurveyQuestionID()
+		return nil
+	case surveyquestionoptions.FieldSerial:
+		m.ClearSerial()
+		return nil
+	case surveyquestionoptions.FieldContent:
+		m.ClearContent()
+		return nil
+	}
+	return fmt.Errorf("unknown SurveyQuestionOptions nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SurveyQuestionOptionsMutation) ResetField(name string) error {
+	switch name {
+	case surveyquestionoptions.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case surveyquestionoptions.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case surveyquestionoptions.FieldDelete:
+		m.ResetDelete()
+		return nil
+	case surveyquestionoptions.FieldCreatedID:
+		m.ResetCreatedID()
+		return nil
+	case surveyquestionoptions.FieldStatus:
+		m.ResetStatus()
+		return nil
+	case surveyquestionoptions.FieldSurveyQuestionID:
+		m.ResetSurveyQuestionID()
+		return nil
+	case surveyquestionoptions.FieldSerial:
+		m.ResetSerial()
+		return nil
+	case surveyquestionoptions.FieldContent:
+		m.ResetContent()
+		return nil
+	}
+	return fmt.Errorf("unknown SurveyQuestionOptions field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SurveyQuestionOptionsMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.question != nil {
+		edges = append(edges, surveyquestionoptions.EdgeQuestion)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SurveyQuestionOptionsMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case surveyquestionoptions.EdgeQuestion:
+		if id := m.question; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SurveyQuestionOptionsMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SurveyQuestionOptionsMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SurveyQuestionOptionsMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.clearedquestion {
+		edges = append(edges, surveyquestionoptions.EdgeQuestion)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SurveyQuestionOptionsMutation) EdgeCleared(name string) bool {
+	switch name {
+	case surveyquestionoptions.EdgeQuestion:
+		return m.clearedquestion
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SurveyQuestionOptionsMutation) ClearEdge(name string) error {
+	switch name {
+	case surveyquestionoptions.EdgeQuestion:
+		m.ClearQuestion()
+		return nil
+	}
+	return fmt.Errorf("unknown SurveyQuestionOptions unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SurveyQuestionOptionsMutation) ResetEdge(name string) error {
+	switch name {
+	case surveyquestionoptions.EdgeQuestion:
+		m.ResetQuestion()
+		return nil
+	}
+	return fmt.Errorf("unknown SurveyQuestionOptions edge %s", name)
 }
 
 // SurveyResponseMutation represents an operation that mutates the SurveyResponse nodes in the graph.
@@ -14260,9 +15384,6 @@ type UserMutation struct {
 	clearedFields       map[string]struct{}
 	token               *int64
 	clearedtoken        bool
-	tags                map[int64]struct{}
-	removedtags         map[int64]struct{}
-	clearedtags         bool
 	roles               map[int64]struct{}
 	removedroles        map[int64]struct{}
 	clearedroles        bool
@@ -15581,60 +16702,6 @@ func (m *UserMutation) ResetToken() {
 	m.clearedtoken = false
 }
 
-// AddTagIDs adds the "tags" edge to the DictionaryDetail entity by ids.
-func (m *UserMutation) AddTagIDs(ids ...int64) {
-	if m.tags == nil {
-		m.tags = make(map[int64]struct{})
-	}
-	for i := range ids {
-		m.tags[ids[i]] = struct{}{}
-	}
-}
-
-// ClearTags clears the "tags" edge to the DictionaryDetail entity.
-func (m *UserMutation) ClearTags() {
-	m.clearedtags = true
-}
-
-// TagsCleared reports if the "tags" edge to the DictionaryDetail entity was cleared.
-func (m *UserMutation) TagsCleared() bool {
-	return m.clearedtags
-}
-
-// RemoveTagIDs removes the "tags" edge to the DictionaryDetail entity by IDs.
-func (m *UserMutation) RemoveTagIDs(ids ...int64) {
-	if m.removedtags == nil {
-		m.removedtags = make(map[int64]struct{})
-	}
-	for i := range ids {
-		delete(m.tags, ids[i])
-		m.removedtags[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedTags returns the removed IDs of the "tags" edge to the DictionaryDetail entity.
-func (m *UserMutation) RemovedTagsIDs() (ids []int64) {
-	for id := range m.removedtags {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// TagsIDs returns the "tags" edge IDs in the mutation.
-func (m *UserMutation) TagsIDs() (ids []int64) {
-	for id := range m.tags {
-		ids = append(ids, id)
-	}
-	return
-}
-
-// ResetTags resets all changes to the "tags" edge.
-func (m *UserMutation) ResetTags() {
-	m.tags = nil
-	m.clearedtags = false
-	m.removedtags = nil
-}
-
 // AddRoleIDs adds the "roles" edge to the Role entity by ids.
 func (m *UserMutation) AddRoleIDs(ids ...int64) {
 	if m.roles == nil {
@@ -16365,12 +17432,9 @@ func (m *UserMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *UserMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 2)
 	if m.token != nil {
 		edges = append(edges, user.EdgeToken)
-	}
-	if m.tags != nil {
-		edges = append(edges, user.EdgeTags)
 	}
 	if m.roles != nil {
 		edges = append(edges, user.EdgeRoles)
@@ -16386,12 +17450,6 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 		if id := m.token; id != nil {
 			return []ent.Value{*id}
 		}
-	case user.EdgeTags:
-		ids := make([]ent.Value, 0, len(m.tags))
-		for id := range m.tags {
-			ids = append(ids, id)
-		}
-		return ids
 	case user.EdgeRoles:
 		ids := make([]ent.Value, 0, len(m.roles))
 		for id := range m.roles {
@@ -16404,10 +17462,7 @@ func (m *UserMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *UserMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
-	if m.removedtags != nil {
-		edges = append(edges, user.EdgeTags)
-	}
+	edges := make([]string, 0, 2)
 	if m.removedroles != nil {
 		edges = append(edges, user.EdgeRoles)
 	}
@@ -16418,12 +17473,6 @@ func (m *UserMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
-	case user.EdgeTags:
-		ids := make([]ent.Value, 0, len(m.removedtags))
-		for id := range m.removedtags {
-			ids = append(ids, id)
-		}
-		return ids
 	case user.EdgeRoles:
 		ids := make([]ent.Value, 0, len(m.removedroles))
 		for id := range m.removedroles {
@@ -16436,12 +17485,9 @@ func (m *UserMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *UserMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 2)
 	if m.clearedtoken {
 		edges = append(edges, user.EdgeToken)
-	}
-	if m.clearedtags {
-		edges = append(edges, user.EdgeTags)
 	}
 	if m.clearedroles {
 		edges = append(edges, user.EdgeRoles)
@@ -16455,8 +17501,6 @@ func (m *UserMutation) EdgeCleared(name string) bool {
 	switch name {
 	case user.EdgeToken:
 		return m.clearedtoken
-	case user.EdgeTags:
-		return m.clearedtags
 	case user.EdgeRoles:
 		return m.clearedroles
 	}
@@ -16480,9 +17524,6 @@ func (m *UserMutation) ResetEdge(name string) error {
 	switch name {
 	case user.EdgeToken:
 		m.ResetToken()
-		return nil
-	case user.EdgeTags:
-		m.ResetTags()
 		return nil
 	case user.EdgeRoles:
 		m.ResetRoles()

@@ -52,11 +52,22 @@ type SurveyQuestion struct {
 
 // SurveyQuestionEdges holds the relations/edges for other nodes in the graph.
 type SurveyQuestionEdges struct {
+	// Option holds the value of the option edge.
+	Option []*SurveyQuestionOptions `json:"option,omitempty"`
 	// Survey holds the value of the survey edge.
 	Survey *Survey `json:"survey,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [2]bool
+}
+
+// OptionOrErr returns the Option value or an error if the edge
+// was not loaded in eager-loading.
+func (e SurveyQuestionEdges) OptionOrErr() ([]*SurveyQuestionOptions, error) {
+	if e.loadedTypes[0] {
+		return e.Option, nil
+	}
+	return nil, &NotLoadedError{edge: "option"}
 }
 
 // SurveyOrErr returns the Survey value or an error if the edge
@@ -64,7 +75,7 @@ type SurveyQuestionEdges struct {
 func (e SurveyQuestionEdges) SurveyOrErr() (*Survey, error) {
 	if e.Survey != nil {
 		return e.Survey, nil
-	} else if e.loadedTypes[0] {
+	} else if e.loadedTypes[1] {
 		return nil, &NotFoundError{label: survey.Label}
 	}
 	return nil, &NotLoadedError{edge: "survey"}
@@ -189,6 +200,11 @@ func (sq *SurveyQuestion) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (sq *SurveyQuestion) Value(name string) (ent.Value, error) {
 	return sq.selectValues.Get(name)
+}
+
+// QueryOption queries the "option" edge of the SurveyQuestion entity.
+func (sq *SurveyQuestion) QueryOption() *SurveyQuestionOptionsQuery {
+	return NewSurveyQuestionClient(sq.config).QueryOption(sq)
 }
 
 // QuerySurvey queries the "survey" edge of the SurveyQuestion entity.

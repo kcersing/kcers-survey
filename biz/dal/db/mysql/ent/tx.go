@@ -30,6 +30,8 @@ type Tx struct {
 	Survey *SurveyClient
 	// SurveyQuestion is the client for interacting with the SurveyQuestion builders.
 	SurveyQuestion *SurveyQuestionClient
+	// SurveyQuestionOptions is the client for interacting with the SurveyQuestionOptions builders.
+	SurveyQuestionOptions *SurveyQuestionOptionsClient
 	// SurveyResponse is the client for interacting with the SurveyResponse builders.
 	SurveyResponse *SurveyResponseClient
 	// SurveyResponseAnswers is the client for interacting with the SurveyResponseAnswers builders.
@@ -178,6 +180,7 @@ func (tx *Tx) init() {
 	tx.Role = NewRoleClient(tx.config)
 	tx.Survey = NewSurveyClient(tx.config)
 	tx.SurveyQuestion = NewSurveyQuestionClient(tx.config)
+	tx.SurveyQuestionOptions = NewSurveyQuestionOptionsClient(tx.config)
 	tx.SurveyResponse = NewSurveyResponseClient(tx.config)
 	tx.SurveyResponseAnswers = NewSurveyResponseAnswersClient(tx.config)
 	tx.Token = NewTokenClient(tx.config)

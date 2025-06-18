@@ -13,6 +13,7 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/schema"
 	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyquestionoptions"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"kcers-survey/biz/dal/db/mysql/ent/token"
@@ -337,6 +338,47 @@ func init() {
 	surveyquestionDescRequired := surveyquestionFields[5].Descriptor()
 	// surveyquestion.DefaultRequired holds the default value on creation for the required field.
 	surveyquestion.DefaultRequired = surveyquestionDescRequired.Default.(int64)
+	surveyquestionoptionsMixin := schema.SurveyQuestionOptions{}.Mixin()
+	surveyquestionoptionsMixinFields0 := surveyquestionoptionsMixin[0].Fields()
+	_ = surveyquestionoptionsMixinFields0
+	surveyquestionoptionsMixinFields1 := surveyquestionoptionsMixin[1].Fields()
+	_ = surveyquestionoptionsMixinFields1
+	surveyquestionoptionsFields := schema.SurveyQuestionOptions{}.Fields()
+	_ = surveyquestionoptionsFields
+	// surveyquestionoptionsDescCreatedAt is the schema descriptor for created_at field.
+	surveyquestionoptionsDescCreatedAt := surveyquestionoptionsMixinFields0[1].Descriptor()
+	// surveyquestionoptions.DefaultCreatedAt holds the default value on creation for the created_at field.
+	surveyquestionoptions.DefaultCreatedAt = surveyquestionoptionsDescCreatedAt.Default.(func() time.Time)
+	// surveyquestionoptionsDescUpdatedAt is the schema descriptor for updated_at field.
+	surveyquestionoptionsDescUpdatedAt := surveyquestionoptionsMixinFields0[2].Descriptor()
+	// surveyquestionoptions.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	surveyquestionoptions.DefaultUpdatedAt = surveyquestionoptionsDescUpdatedAt.Default.(func() time.Time)
+	// surveyquestionoptions.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	surveyquestionoptions.UpdateDefaultUpdatedAt = surveyquestionoptionsDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// surveyquestionoptionsDescDelete is the schema descriptor for delete field.
+	surveyquestionoptionsDescDelete := surveyquestionoptionsMixinFields0[3].Descriptor()
+	// surveyquestionoptions.DefaultDelete holds the default value on creation for the delete field.
+	surveyquestionoptions.DefaultDelete = surveyquestionoptionsDescDelete.Default.(int64)
+	// surveyquestionoptionsDescCreatedID is the schema descriptor for created_id field.
+	surveyquestionoptionsDescCreatedID := surveyquestionoptionsMixinFields0[4].Descriptor()
+	// surveyquestionoptions.DefaultCreatedID holds the default value on creation for the created_id field.
+	surveyquestionoptions.DefaultCreatedID = surveyquestionoptionsDescCreatedID.Default.(int64)
+	// surveyquestionoptionsDescStatus is the schema descriptor for status field.
+	surveyquestionoptionsDescStatus := surveyquestionoptionsMixinFields1[0].Descriptor()
+	// surveyquestionoptions.DefaultStatus holds the default value on creation for the status field.
+	surveyquestionoptions.DefaultStatus = surveyquestionoptionsDescStatus.Default.(int64)
+	// surveyquestionoptionsDescSurveyQuestionID is the schema descriptor for survey_question_id field.
+	surveyquestionoptionsDescSurveyQuestionID := surveyquestionoptionsFields[0].Descriptor()
+	// surveyquestionoptions.DefaultSurveyQuestionID holds the default value on creation for the survey_question_id field.
+	surveyquestionoptions.DefaultSurveyQuestionID = surveyquestionoptionsDescSurveyQuestionID.Default.(int64)
+	// surveyquestionoptionsDescSerial is the schema descriptor for serial field.
+	surveyquestionoptionsDescSerial := surveyquestionoptionsFields[1].Descriptor()
+	// surveyquestionoptions.DefaultSerial holds the default value on creation for the serial field.
+	surveyquestionoptions.DefaultSerial = surveyquestionoptionsDescSerial.Default.(string)
+	// surveyquestionoptionsDescContent is the schema descriptor for content field.
+	surveyquestionoptionsDescContent := surveyquestionoptionsFields[2].Descriptor()
+	// surveyquestionoptions.DefaultContent holds the default value on creation for the content field.
+	surveyquestionoptions.DefaultContent = surveyquestionoptionsDescContent.Default.(string)
 	surveyresponseMixin := schema.SurveyResponse{}.Mixin()
 	surveyresponseMixinFields0 := surveyresponseMixin[0].Fields()
 	_ = surveyresponseMixinFields0

@@ -700,6 +700,29 @@ func OptionsNotNil() predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldNotNull(FieldOptions))
 }
 
+// HasOption applies the HasEdge predicate on the "option" edge.
+func HasOption() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, OptionTable, OptionColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasOptionWith applies the HasEdge predicate on the "option" edge with a given conditions (other predicates).
+func HasOptionWith(preds ...predicate.SurveyQuestionOptions) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(func(s *sql.Selector) {
+		step := newOptionStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // HasSurvey applies the HasEdge predicate on the "survey" edge.
 func HasSurvey() predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(func(s *sql.Selector) {

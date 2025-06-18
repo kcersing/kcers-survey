@@ -43,19 +43,28 @@ struct Survey {
      5:optional string startAt="" (api.raw = "startAt")
      6:optional string endAt="" (api.raw = "endAt")
      7:optional list<Question> questions={} (api.raw = "questions")
+     8:optional i64 questionCount=0 (api.raw = "questionCount")
+     9:optional i64 responseCount=0 (api.raw = "responseCount")
+     10:optional string pic="" (api.raw = "pic")
 
 }
 struct SurveyListReq {
-
+    1: optional i64 page=0 (api.raw = "page")
+    2: optional i64 pageSize=100 (api.raw = "pageSize")
+    3: optional string title="" (api.raw = "title")
 }
 
 struct CreateOrUpdateQuestionReq {
-  1:optional string name="" (api.raw = "name")
-  2:optional string pic="" (api.raw = "pic")
-  3:optional string link="" (api.raw = "link")
-  4:optional i64 isShow=1 (api.raw = "isShow")
-  5:optional i64 id=0 (api.raw = "id")
+  1:optional i64 id=0 (api.raw = "id")
+  2:optional string content="" (api.raw = "content")
+  3:optional string type="" (api.raw = "type")
+  4:optional i64 survey_id=0 (api.raw = "survey_id")
+  5:optional i64 parent_id=0 (api.raw = "parent_id")
+  6:optional i64 sort=0 (api.raw = "sort")
+  7:optional i64 required=1 (api.raw = "required")
+  8:optional i64 to=0 (api.raw = "to")
 }
+
 
 // QuestionRequest 问题请求
 struct Question  {
@@ -66,11 +75,15 @@ struct Question  {
       5:optional i64 sort=0 (api.raw = "sort")
       6:optional i64 id=0 (api.raw = "id")
       7:optional list<Question> subQuestions={} (api.raw = "subQuestions")
+      8:optional i64 to=0 (api.raw = "to")
+      9:optional i64 survey_id=0 (api.raw = "survey_id")
+      10:optional i64 parent_id=0 (api.raw = "parent_id")
+
 }
 
 struct Options {
-	  1:optional string key="" (api.raw = "key")
-      2:optional string value="" (api.raw = "value")
+	  1:optional string serial="" (api.raw = "serial")
+      2:optional string content="" (api.raw = "content")
 }
 
 struct CreateOrUpdateResponseReq {
@@ -89,5 +102,6 @@ struct Response  {
 }
 
 struct ResponseListReq {
-
+    1: optional i64 page=0 (api.raw = "page")
+    2: optional i64 pageSize=100 (api.raw = "pageSize")
 }

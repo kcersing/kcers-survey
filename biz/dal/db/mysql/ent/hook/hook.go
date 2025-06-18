@@ -116,6 +116,18 @@ func (f SurveyQuestionFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Val
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SurveyQuestionMutation", m)
 }
 
+// The SurveyQuestionOptionsFunc type is an adapter to allow the use of ordinary
+// function as SurveyQuestionOptions mutator.
+type SurveyQuestionOptionsFunc func(context.Context, *ent.SurveyQuestionOptionsMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SurveyQuestionOptionsFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.SurveyQuestionOptionsMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SurveyQuestionOptionsMutation", m)
+}
+
 // The SurveyResponseFunc type is an adapter to allow the use of ordinary
 // function as SurveyResponse mutator.
 type SurveyResponseFunc func(context.Context, *ent.SurveyResponseMutation) (ent.Value, error)

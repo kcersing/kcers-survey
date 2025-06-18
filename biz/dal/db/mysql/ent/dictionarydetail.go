@@ -40,7 +40,6 @@ type DictionaryDetail struct {
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the DictionaryDetailQuery when eager-loading is set.
 	Edges        DictionaryDetailEdges `json:"edges"`
-	user_tags    *int64
 	selectValues sql.SelectValues
 }
 
@@ -75,8 +74,6 @@ func (*DictionaryDetail) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullString)
 		case dictionarydetail.FieldCreatedAt, dictionarydetail.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
-		case dictionarydetail.ForeignKeys[0]: // user_tags
-			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -151,13 +148,6 @@ func (dd *DictionaryDetail) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field dictionary_id", values[i])
 			} else if value.Valid {
 				dd.DictionaryID = value.Int64
-			}
-		case dictionarydetail.ForeignKeys[0]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field user_tags", value)
-			} else if value.Valid {
-				dd.user_tags = new(int64)
-				*dd.user_tags = int64(value.Int64)
 			}
 		default:
 			dd.selectValues.Set(columns[i], values[i])

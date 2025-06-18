@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/dictionarydetail"
 	"kcers-survey/biz/dal/db/mysql/ent/role"
 	"kcers-survey/biz/dal/db/mysql/ent/token"
 	"kcers-survey/biz/dal/db/mysql/ent/user"
@@ -324,21 +323,6 @@ func (uc *UserCreate) SetToken(t *Token) *UserCreate {
 	return uc.SetTokenID(t.ID)
 }
 
-// AddTagIDs adds the "tags" edge to the DictionaryDetail entity by IDs.
-func (uc *UserCreate) AddTagIDs(ids ...int64) *UserCreate {
-	uc.mutation.AddTagIDs(ids...)
-	return uc
-}
-
-// AddTags adds the "tags" edges to the DictionaryDetail entity.
-func (uc *UserCreate) AddTags(d ...*DictionaryDetail) *UserCreate {
-	ids := make([]int64, len(d))
-	for i := range d {
-		ids[i] = d[i].ID
-	}
-	return uc.AddTagIDs(ids...)
-}
-
 // AddRoleIDs adds the "roles" edge to the Role entity by IDs.
 func (uc *UserCreate) AddRoleIDs(ids ...int64) *UserCreate {
 	uc.mutation.AddRoleIDs(ids...)
@@ -574,22 +558,6 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(token.FieldID, field.TypeInt64),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := uc.mutation.TagsIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   user.TagsTable,
-			Columns: []string{user.TagsColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(dictionarydetail.FieldID, field.TypeInt64),
 			},
 		}
 		for _, k := range nodes {

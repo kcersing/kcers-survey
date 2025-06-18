@@ -11,5 +11,7 @@ const (
 	QuestionTypeVideo    QuestionType = "video"    // 视频
 	QuestionTypeAudio    QuestionType = "audio"    // 音频
 	QuestionTypeFile     QuestionType = "file"     // 文件
+	QuestionTypeDate     QuestionType = "date"     // 日期
 	QuestionTypeDateTime QuestionType = "datetime" // 日期时间
+
 )

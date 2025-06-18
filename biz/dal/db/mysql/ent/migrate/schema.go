@@ -65,7 +65,6 @@ var (
 		{Name: "key", Type: field.TypeString, Comment: "key | 键"},
 		{Name: "value", Type: field.TypeString, Comment: "value | 值"},
 		{Name: "dictionary_id", Type: field.TypeInt64, Nullable: true, Comment: "Dictionary ID | 字典ID"},
-		{Name: "user_tags", Type: field.TypeInt64, Nullable: true},
 	}
 	// SysDictionaryDetailsTable holds the schema information for the "sys_dictionary_details" table.
 	SysDictionaryDetailsTable = &schema.Table{
@@ -77,12 +76,6 @@ var (
 				Symbol:     "sys_dictionary_details_sys_dictionaries_dictionary_details",
 				Columns:    []*schema.Column{SysDictionaryDetailsColumns[9]},
 				RefColumns: []*schema.Column{SysDictionariesColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-			{
-				Symbol:     "sys_dictionary_details_sys_users_tags",
-				Columns:    []*schema.Column{SysDictionaryDetailsColumns[10]},
-				RefColumns: []*schema.Column{SysUsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
@@ -248,6 +241,32 @@ var (
 				Symbol:     "survey_question_survey_question",
 				Columns:    []*schema.Column{SurveyQuestionColumns[12]},
 				RefColumns: []*schema.Column{SurveyColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
+	// SurveyQuestionOptionsColumns holds the columns for the "survey_question_options" table.
+	SurveyQuestionOptionsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Increment: true, Comment: "primary key"},
+		{Name: "created_at", Type: field.TypeTime, Nullable: true, Comment: "created time"},
+		{Name: "updated_at", Type: field.TypeTime, Nullable: true, Comment: "last update time"},
+		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
+		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
+		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
+		{Name: "serial", Type: field.TypeString, Nullable: true, Comment: "serial", Default: ""},
+		{Name: "content", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "content", Default: ""},
+		{Name: "survey_question_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_question_id", Default: 0},
+	}
+	// SurveyQuestionOptionsTable holds the schema information for the "survey_question_options" table.
+	SurveyQuestionOptionsTable = &schema.Table{
+		Name:       "survey_question_options",
+		Columns:    SurveyQuestionOptionsColumns,
+		PrimaryKey: []*schema.Column{SurveyQuestionOptionsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "survey_question_options_survey_question_option",
+				Columns:    []*schema.Column{SurveyQuestionOptionsColumns[8]},
+				RefColumns: []*schema.Column{SurveyQuestionColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
@@ -442,6 +461,7 @@ var (
 		SysRolesTable,
 		SurveyTable,
 		SurveyQuestionTable,
+		SurveyQuestionOptionsTable,
 		SurveyResponseTable,
 		SurveyResponseAnswersTable,
 		SysTokensTable,
@@ -459,7 +479,6 @@ func init() {
 		Table: "sys_dictionaries",
 	}
 	SysDictionaryDetailsTable.ForeignKeys[0].RefTable = SysDictionariesTable
-	SysDictionaryDetailsTable.ForeignKeys[1].RefTable = SysUsersTable
 	SysDictionaryDetailsTable.Annotation = &entsql.Annotation{
 		Table: "sys_dictionary_details",
 	}
@@ -483,6 +502,10 @@ func init() {
 	SurveyQuestionTable.ForeignKeys[0].RefTable = SurveyTable
 	SurveyQuestionTable.Annotation = &entsql.Annotation{
 		Table: "survey_question",
+	}
+	SurveyQuestionOptionsTable.ForeignKeys[0].RefTable = SurveyQuestionTable
+	SurveyQuestionOptionsTable.Annotation = &entsql.Annotation{
+		Table: "survey_question_options",
 	}
 	SurveyResponseTable.Annotation = &entsql.Annotation{
 		Table: "survey_response",

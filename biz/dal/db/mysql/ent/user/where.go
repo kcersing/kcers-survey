@@ -1503,29 +1503,6 @@ func HasTokenWith(preds ...predicate.Token) predicate.User {
 	})
 }
 
-// HasTags applies the HasEdge predicate on the "tags" edge.
-func HasTags() predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, TagsTable, TagsColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasTagsWith applies the HasEdge predicate on the "tags" edge with a given conditions (other predicates).
-func HasTagsWith(preds ...predicate.DictionaryDetail) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		step := newTagsStep()
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
 // HasRoles applies the HasEdge predicate on the "roles" edge.
 func HasRoles() predicate.User {
 	return predicate.User(func(s *sql.Selector) {

@@ -33,6 +33,9 @@ type Survey func(*sql.Selector)
 // SurveyQuestion is the predicate function for surveyquestion builders.
 type SurveyQuestion func(*sql.Selector)
 
+// SurveyQuestionOptions is the predicate function for surveyquestionoptions builders.
+type SurveyQuestionOptions func(*sql.Selector)
+
 // SurveyResponse is the predicate function for surveyresponse builders.
 type SurveyResponse func(*sql.Selector)
 

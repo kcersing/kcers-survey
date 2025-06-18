@@ -420,7 +420,6 @@ func (dq *DictionaryQuery) loadDictionaryDetails(ctx context.Context, query *Dic
 			init(nodes[i])
 		}
 	}
-	query.withFKs = true
 	if len(query.ctx.Fields) > 0 {
 		query.ctx.AppendFieldOnce(dictionarydetail.FieldDictionaryID)
 	}
