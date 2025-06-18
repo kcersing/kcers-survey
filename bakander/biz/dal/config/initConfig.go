@@ -5,7 +5,6 @@ import (
 	"github.com/spf13/viper"
 
 	"kcers-survey/biz/pkg/consts"
-	"kcers-survey/biz/pkg/utils"
 )
 
 // InitConfig 初始化配置
@@ -21,13 +20,4 @@ func InitConfig() {
 		hlog.Fatalf("unmarshal err failed: %s", err.Error())
 	}
 	hlog.Info("config Info: %v", GlobalServerConfig)
-
-	if GlobalServerConfig.Host == "" {
-		address, err := utils.GetLocalIPv4Address()
-		if err != nil {
-			hlog.Fatalf("get localIpv4Addr failed:%s", err.Error())
-		} else {
-			GlobalServerConfig.Host = address
-		}
-	}
 }

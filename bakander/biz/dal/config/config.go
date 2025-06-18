@@ -60,6 +60,7 @@ type Wechat struct {
 	Pkcs12FileContent  string `mapstructure:"pkcs12_file_content" yaml:"pkcs12_file_content"`
 	SerialNo           string `mapstructure:"serial_no" yaml:"serial_no"`
 	NotifyUrl          string `mapstructure:"notify_url" yaml:"notify_url"`
+	RefundNotifyUrl    string `mapstructure:"refund_notify_url" yaml:"refund_notify_url"`
 	RSAPublicKeyPath   string `mapstructure:"rsa_public_key_path" yaml:"rsa_public_key_path"`
 	WechatPaySerialNo  string `mapstructure:"wechat_pay_serial_no" yaml:"wechat_pay_serial_no"`
 	CertificateKeyPath string `mapstructure:"certificate_key_path" yaml:"certificate_key_path"`

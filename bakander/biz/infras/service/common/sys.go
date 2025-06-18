@@ -9,6 +9,7 @@ import (
 	"kcers-survey/biz/dal/config"
 	db "kcers-survey/biz/dal/db/mysql"
 	"kcers-survey/biz/dal/db/mysql/ent"
+	"kcers-survey/biz/dal/db/mysql/ent/predicate"
 
 	"kcers-survey/biz/infras/do"
 

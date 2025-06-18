@@ -4,9 +4,13 @@ import (
 	"context"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/pkg/errors"
+	"kcers-survey/biz/dal/config"
 	"kcers-survey/biz/dal/db/mysql/ent"
 	"kcers-survey/biz/dal/db/mysql/ent/user"
+	"kcers-survey/biz/pkg/consts"
+	"os"
 	"strconv"
+	"time"
 )
 
 func GetTokenUserID(c *app.RequestContext) int64 {
@@ -50,4 +54,17 @@ func GetUser(db *ent.Client, id int64) (one *ent.User, err error) {
 		return nil, errors.Wrap(err, "未查询到该账号")
 	}
 	return one, err
+}
+
+func ExportFilePath(v string) (string, string) {
+	timePath := time.Now().Format(time.DateOnly) + "/"
+	exportFilePath := consts.ExportFilePath + timePath
+	if err := os.MkdirAll(exportFilePath, 0o777); err != nil {
+		panic(err)
+	}
+	ing := strconv.FormatInt(time.Now().Unix(), 10)
+	name := v + ing + ".xlsx"
+	files := exportFilePath + name
+	domain := config.GlobalServerConfig.Domain + "export/" + timePath + name
+	return files, domain
 }

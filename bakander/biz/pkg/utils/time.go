@@ -17,7 +17,7 @@
 package utils
 
 import (
-	"saas/biz/pkg/errno"
+	"kcers-survey/biz/pkg/errno"
 	"time"
 )
 

@@ -12,7 +12,7 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/predicate"
 	user2 "kcers-survey/biz/dal/db/mysql/ent/user"
 	"kcers-survey/biz/infras/do"
-	"kcers-survey/biz/infras/enum"
+	"kcers-survey/biz/infras/enums"
 	"kcers-survey/biz/infras/service"
 	"kcers-survey/biz/pkg/encrypt"
 	"kcers-survey/idl_gen/model/user"
@@ -88,7 +88,7 @@ func (u *User) Create(req *user.CreateOrUpdateUserReq) error {
 		return errors.New("手机号重复！")
 	}
 
-	var gender = enum.ReturnMemberGenderKey(req.Gender)
+	var gender = enums.ReturnMemberGenderKey(req.Gender)
 
 	parsedTime, _ := time.Parse(time.DateOnly, req.Birthday)
 	password, _ := encrypt.Crypt(req.Password)
@@ -96,7 +96,7 @@ func (u *User) Create(req *user.CreateOrUpdateUserReq) error {
 	if err != nil {
 		return errors.Wrap(err, "starting a transaction:")
 	}
-	noe, err := tx.User.Create().
+	_, err = tx.User.Create().
 		SetAvatar(req.Avatar).
 		SetMobile(req.Mobile).
 		SetEmail(req.Email).
