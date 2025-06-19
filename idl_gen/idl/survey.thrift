@@ -58,8 +58,8 @@ struct CreateOrUpdateQuestionReq {
   1:optional i64 id=0 (api.raw = "id")
   2:optional string content="" (api.raw = "content")
   3:optional string type="" (api.raw = "type")
-  4:optional i64 survey_id=0 (api.raw = "survey_id")
-  5:optional i64 parent_id=0 (api.raw = "parent_id")
+  4:optional i64 surveyId=0 (api.raw = "surveyId")
+  5:optional i64 parentId=0 (api.raw = "parentId")
   6:optional i64 sort=0 (api.raw = "sort")
   7:optional i64 required=1 (api.raw = "required")
   8:optional i64 to=0 (api.raw = "to")
@@ -75,11 +75,18 @@ struct Question  {
       5:optional i64 sort=0 (api.raw = "sort")
       6:optional i64 id=0 (api.raw = "id")
       7:optional list<Question> subQuestions={} (api.raw = "subQuestions")
-      8:optional i64 to=0 (api.raw = "to")
-      9:optional i64 survey_id=0 (api.raw = "survey_id")
-      10:optional i64 parent_id=0 (api.raw = "parent_id")
+      8:optional JumpRules jumpRules (api.raw = "jumpRules")
+      9:optional i64 surveyId=0 (api.raw = "surveyId")
+      10:optional i64 parentId=0 (api.raw = "parentId")
 
 }
+struct JumpRules {
+	  1:optional i64 questionId=0 (api.raw = "questionId")// 触发跳题的问题ID
+      2:optional string answer="" (api.raw = "answer")// 触发条件的回答
+      3:optional i64 nextQuestionId=0 (api.raw = "nextQuestionId")// 跳转的目标问题ID
+      4:optional string operators="" (api.raw = "operators")
+}
+
 
 struct Options {
 	  1:optional string serial="" (api.raw = "serial")

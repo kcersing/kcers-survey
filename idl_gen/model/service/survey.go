@@ -1442,10 +1442,11 @@ type CreateOrUpdateQuestionReq struct {
 	ID       int64  `thrift:"id,1,optional" form:"id" json:"id" query:"id"`
 	Content  string `thrift:"content,2,optional" form:"content" json:"content" query:"content"`
 	Type     string `thrift:"type,3,optional" form:"type" json:"type" query:"type"`
-	SurveyID int64  `thrift:"survey_id,4,optional" form:"survey_id" json:"survey_id" query:"survey_id"`
-	ParentID int64  `thrift:"parent_id,5,optional" form:"parent_id" json:"parent_id" query:"parent_id"`
+	SurveyId int64  `thrift:"surveyId,4,optional" form:"surveyId" json:"surveyId" query:"surveyId"`
+	ParentId int64  `thrift:"parentId,5,optional" form:"parentId" json:"parentId" query:"parentId"`
 	Sort     int64  `thrift:"sort,6,optional" form:"sort" json:"sort" query:"sort"`
 	Required int64  `thrift:"required,7,optional" form:"required" json:"required" query:"required"`
+	To       int64  `thrift:"to,8,optional" form:"to" json:"to" query:"to"`
 }
 
 func NewCreateOrUpdateQuestionReq() *CreateOrUpdateQuestionReq {
@@ -1454,10 +1455,11 @@ func NewCreateOrUpdateQuestionReq() *CreateOrUpdateQuestionReq {
 		ID:       0,
 		Content:  "",
 		Type:     "",
-		SurveyID: 0,
-		ParentID: 0,
+		SurveyId: 0,
+		ParentId: 0,
 		Sort:     0,
 		Required: 1,
+		To:       0,
 	}
 }
 
@@ -1465,10 +1467,11 @@ func (p *CreateOrUpdateQuestionReq) InitDefault() {
 	p.ID = 0
 	p.Content = ""
 	p.Type = ""
-	p.SurveyID = 0
-	p.ParentID = 0
+	p.SurveyId = 0
+	p.ParentId = 0
 	p.Sort = 0
 	p.Required = 1
+	p.To = 0
 }
 
 var CreateOrUpdateQuestionReq_ID_DEFAULT int64 = 0
@@ -1498,22 +1501,22 @@ func (p *CreateOrUpdateQuestionReq) GetType() (v string) {
 	return p.Type
 }
 
-var CreateOrUpdateQuestionReq_SurveyID_DEFAULT int64 = 0
+var CreateOrUpdateQuestionReq_SurveyId_DEFAULT int64 = 0
 
-func (p *CreateOrUpdateQuestionReq) GetSurveyID() (v int64) {
-	if !p.IsSetSurveyID() {
-		return CreateOrUpdateQuestionReq_SurveyID_DEFAULT
+func (p *CreateOrUpdateQuestionReq) GetSurveyId() (v int64) {
+	if !p.IsSetSurveyId() {
+		return CreateOrUpdateQuestionReq_SurveyId_DEFAULT
 	}
-	return p.SurveyID
+	return p.SurveyId
 }
 
-var CreateOrUpdateQuestionReq_ParentID_DEFAULT int64 = 0
+var CreateOrUpdateQuestionReq_ParentId_DEFAULT int64 = 0
 
-func (p *CreateOrUpdateQuestionReq) GetParentID() (v int64) {
-	if !p.IsSetParentID() {
-		return CreateOrUpdateQuestionReq_ParentID_DEFAULT
+func (p *CreateOrUpdateQuestionReq) GetParentId() (v int64) {
+	if !p.IsSetParentId() {
+		return CreateOrUpdateQuestionReq_ParentId_DEFAULT
 	}
-	return p.ParentID
+	return p.ParentId
 }
 
 var CreateOrUpdateQuestionReq_Sort_DEFAULT int64 = 0
@@ -1534,14 +1537,24 @@ func (p *CreateOrUpdateQuestionReq) GetRequired() (v int64) {
 	return p.Required
 }
 
+var CreateOrUpdateQuestionReq_To_DEFAULT int64 = 0
+
+func (p *CreateOrUpdateQuestionReq) GetTo() (v int64) {
+	if !p.IsSetTo() {
+		return CreateOrUpdateQuestionReq_To_DEFAULT
+	}
+	return p.To
+}
+
 var fieldIDToName_CreateOrUpdateQuestionReq = map[int16]string{
 	1: "id",
 	2: "content",
 	3: "type",
-	4: "survey_id",
-	5: "parent_id",
+	4: "surveyId",
+	5: "parentId",
 	6: "sort",
 	7: "required",
+	8: "to",
 }
 
 func (p *CreateOrUpdateQuestionReq) IsSetID() bool {
@@ -1556,12 +1569,12 @@ func (p *CreateOrUpdateQuestionReq) IsSetType() bool {
 	return p.Type != CreateOrUpdateQuestionReq_Type_DEFAULT
 }
 
-func (p *CreateOrUpdateQuestionReq) IsSetSurveyID() bool {
-	return p.SurveyID != CreateOrUpdateQuestionReq_SurveyID_DEFAULT
+func (p *CreateOrUpdateQuestionReq) IsSetSurveyId() bool {
+	return p.SurveyId != CreateOrUpdateQuestionReq_SurveyId_DEFAULT
 }
 
-func (p *CreateOrUpdateQuestionReq) IsSetParentID() bool {
-	return p.ParentID != CreateOrUpdateQuestionReq_ParentID_DEFAULT
+func (p *CreateOrUpdateQuestionReq) IsSetParentId() bool {
+	return p.ParentId != CreateOrUpdateQuestionReq_ParentId_DEFAULT
 }
 
 func (p *CreateOrUpdateQuestionReq) IsSetSort() bool {
@@ -1570,6 +1583,10 @@ func (p *CreateOrUpdateQuestionReq) IsSetSort() bool {
 
 func (p *CreateOrUpdateQuestionReq) IsSetRequired() bool {
 	return p.Required != CreateOrUpdateQuestionReq_Required_DEFAULT
+}
+
+func (p *CreateOrUpdateQuestionReq) IsSetTo() bool {
+	return p.To != CreateOrUpdateQuestionReq_To_DEFAULT
 }
 
 func (p *CreateOrUpdateQuestionReq) Read(iprot thrift.TProtocol) (err error) {
@@ -1647,6 +1664,14 @@ func (p *CreateOrUpdateQuestionReq) Read(iprot thrift.TProtocol) (err error) {
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
+		case 8:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		default:
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
@@ -1717,7 +1742,7 @@ func (p *CreateOrUpdateQuestionReq) ReadField4(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.SurveyID = _field
+	p.SurveyId = _field
 	return nil
 }
 func (p *CreateOrUpdateQuestionReq) ReadField5(iprot thrift.TProtocol) error {
@@ -1728,7 +1753,7 @@ func (p *CreateOrUpdateQuestionReq) ReadField5(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.ParentID = _field
+	p.ParentId = _field
 	return nil
 }
 func (p *CreateOrUpdateQuestionReq) ReadField6(iprot thrift.TProtocol) error {
@@ -1751,6 +1776,17 @@ func (p *CreateOrUpdateQuestionReq) ReadField7(iprot thrift.TProtocol) error {
 		_field = v
 	}
 	p.Required = _field
+	return nil
+}
+func (p *CreateOrUpdateQuestionReq) ReadField8(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.To = _field
 	return nil
 }
 
@@ -1786,6 +1822,10 @@ func (p *CreateOrUpdateQuestionReq) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField7(oprot); err != nil {
 			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
 			goto WriteFieldError
 		}
 	}
@@ -1864,11 +1904,11 @@ WriteFieldEndError:
 }
 
 func (p *CreateOrUpdateQuestionReq) writeField4(oprot thrift.TProtocol) (err error) {
-	if p.IsSetSurveyID() {
-		if err = oprot.WriteFieldBegin("survey_id", thrift.I64, 4); err != nil {
+	if p.IsSetSurveyId() {
+		if err = oprot.WriteFieldBegin("surveyId", thrift.I64, 4); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteI64(p.SurveyID); err != nil {
+		if err := oprot.WriteI64(p.SurveyId); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -1883,11 +1923,11 @@ WriteFieldEndError:
 }
 
 func (p *CreateOrUpdateQuestionReq) writeField5(oprot thrift.TProtocol) (err error) {
-	if p.IsSetParentID() {
-		if err = oprot.WriteFieldBegin("parent_id", thrift.I64, 5); err != nil {
+	if p.IsSetParentId() {
+		if err = oprot.WriteFieldBegin("parentId", thrift.I64, 5); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteI64(p.ParentID); err != nil {
+		if err := oprot.WriteI64(p.ParentId); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -1939,6 +1979,25 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
 }
 
+func (p *CreateOrUpdateQuestionReq) writeField8(oprot thrift.TProtocol) (err error) {
+	if p.IsSetTo() {
+		if err = oprot.WriteFieldBegin("to", thrift.I64, 8); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.To); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
+
 func (p *CreateOrUpdateQuestionReq) String() string {
 	if p == nil {
 		return "<nil>"
@@ -1956,6 +2015,9 @@ type Question struct {
 	Sort         int64       `thrift:"sort,5,optional" form:"sort" json:"sort" query:"sort"`
 	ID           int64       `thrift:"id,6,optional" form:"id" json:"id" query:"id"`
 	SubQuestions []*Question `thrift:"subQuestions,7,optional" form:"subQuestions" json:"subQuestions" query:"subQuestions"`
+	JumpRules    *JumpRules  `thrift:"jumpRules,8,optional" form:"jumpRules" json:"jumpRules" query:"jumpRules"`
+	SurveyId     int64       `thrift:"surveyId,9,optional" form:"surveyId" json:"surveyId" query:"surveyId"`
+	ParentId     int64       `thrift:"parentId,10,optional" form:"parentId" json:"parentId" query:"parentId"`
 }
 
 func NewQuestion() *Question {
@@ -1967,6 +2029,8 @@ func NewQuestion() *Question {
 		Sort:         0,
 		ID:           0,
 		SubQuestions: []*Question{},
+		SurveyId:     0,
+		ParentId:     0,
 	}
 }
 
@@ -1977,6 +2041,8 @@ func (p *Question) InitDefault() {
 	p.Sort = 0
 	p.ID = 0
 	p.SubQuestions = []*Question{}
+	p.SurveyId = 0
+	p.ParentId = 0
 }
 
 var Question_Content_DEFAULT string = ""
@@ -2042,14 +2108,44 @@ func (p *Question) GetSubQuestions() (v []*Question) {
 	return p.SubQuestions
 }
 
+var Question_JumpRules_DEFAULT *JumpRules
+
+func (p *Question) GetJumpRules() (v *JumpRules) {
+	if !p.IsSetJumpRules() {
+		return Question_JumpRules_DEFAULT
+	}
+	return p.JumpRules
+}
+
+var Question_SurveyId_DEFAULT int64 = 0
+
+func (p *Question) GetSurveyId() (v int64) {
+	if !p.IsSetSurveyId() {
+		return Question_SurveyId_DEFAULT
+	}
+	return p.SurveyId
+}
+
+var Question_ParentId_DEFAULT int64 = 0
+
+func (p *Question) GetParentId() (v int64) {
+	if !p.IsSetParentId() {
+		return Question_ParentId_DEFAULT
+	}
+	return p.ParentId
+}
+
 var fieldIDToName_Question = map[int16]string{
-	1: "content",
-	2: "type",
-	3: "options",
-	4: "required",
-	5: "sort",
-	6: "id",
-	7: "subQuestions",
+	1:  "content",
+	2:  "type",
+	3:  "options",
+	4:  "required",
+	5:  "sort",
+	6:  "id",
+	7:  "subQuestions",
+	8:  "jumpRules",
+	9:  "surveyId",
+	10: "parentId",
 }
 
 func (p *Question) IsSetContent() bool {
@@ -2078,6 +2174,18 @@ func (p *Question) IsSetID() bool {
 
 func (p *Question) IsSetSubQuestions() bool {
 	return p.SubQuestions != nil
+}
+
+func (p *Question) IsSetJumpRules() bool {
+	return p.JumpRules != nil
+}
+
+func (p *Question) IsSetSurveyId() bool {
+	return p.SurveyId != Question_SurveyId_DEFAULT
+}
+
+func (p *Question) IsSetParentId() bool {
+	return p.ParentId != Question_ParentId_DEFAULT
 }
 
 func (p *Question) Read(iprot thrift.TProtocol) (err error) {
@@ -2150,6 +2258,30 @@ func (p *Question) Read(iprot thrift.TProtocol) (err error) {
 		case 7:
 			if fieldTypeId == thrift.LIST {
 				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 8:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 9:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField9(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 10:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField10(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -2285,6 +2417,36 @@ func (p *Question) ReadField7(iprot thrift.TProtocol) error {
 	p.SubQuestions = _field
 	return nil
 }
+func (p *Question) ReadField8(iprot thrift.TProtocol) error {
+	_field := NewJumpRules()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.JumpRules = _field
+	return nil
+}
+func (p *Question) ReadField9(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.SurveyId = _field
+	return nil
+}
+func (p *Question) ReadField10(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.ParentId = _field
+	return nil
+}
 
 func (p *Question) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -2318,6 +2480,18 @@ func (p *Question) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField7(oprot); err != nil {
 			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
+			goto WriteFieldError
+		}
+		if err = p.writeField9(oprot); err != nil {
+			fieldId = 9
+			goto WriteFieldError
+		}
+		if err = p.writeField10(oprot); err != nil {
+			fieldId = 10
 			goto WriteFieldError
 		}
 	}
@@ -2487,11 +2661,403 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
 }
 
+func (p *Question) writeField8(oprot thrift.TProtocol) (err error) {
+	if p.IsSetJumpRules() {
+		if err = oprot.WriteFieldBegin("jumpRules", thrift.STRUCT, 8); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.JumpRules.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
+
+func (p *Question) writeField9(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSurveyId() {
+		if err = oprot.WriteFieldBegin("surveyId", thrift.I64, 9); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.SurveyId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
+}
+
+func (p *Question) writeField10(oprot thrift.TProtocol) (err error) {
+	if p.IsSetParentId() {
+		if err = oprot.WriteFieldBegin("parentId", thrift.I64, 10); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.ParentId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 10 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 10 end error: ", p), err)
+}
+
 func (p *Question) String() string {
 	if p == nil {
 		return "<nil>"
 	}
 	return fmt.Sprintf("Question(%+v)", *p)
+
+}
+
+type JumpRules struct {
+	// 触发跳题的问题ID
+	QuestionId int64 `thrift:"questionId,1,optional" form:"questionId" json:"questionId" query:"questionId"`
+	// 触发条件的回答
+	Answer string `thrift:"answer,2,optional" form:"answer" json:"answer" query:"answer"`
+	// 跳转的目标问题ID
+	NextQuestionId int64  `thrift:"nextQuestionId,3,optional" form:"nextQuestionId" json:"nextQuestionId" query:"nextQuestionId"`
+	Operators      string `thrift:"operators,4,optional" form:"operators" json:"operators" query:"operators"`
+}
+
+func NewJumpRules() *JumpRules {
+	return &JumpRules{
+
+		QuestionId:     0,
+		Answer:         "",
+		NextQuestionId: 0,
+		Operators:      "",
+	}
+}
+
+func (p *JumpRules) InitDefault() {
+	p.QuestionId = 0
+	p.Answer = ""
+	p.NextQuestionId = 0
+	p.Operators = ""
+}
+
+var JumpRules_QuestionId_DEFAULT int64 = 0
+
+func (p *JumpRules) GetQuestionId() (v int64) {
+	if !p.IsSetQuestionId() {
+		return JumpRules_QuestionId_DEFAULT
+	}
+	return p.QuestionId
+}
+
+var JumpRules_Answer_DEFAULT string = ""
+
+func (p *JumpRules) GetAnswer() (v string) {
+	if !p.IsSetAnswer() {
+		return JumpRules_Answer_DEFAULT
+	}
+	return p.Answer
+}
+
+var JumpRules_NextQuestionId_DEFAULT int64 = 0
+
+func (p *JumpRules) GetNextQuestionId() (v int64) {
+	if !p.IsSetNextQuestionId() {
+		return JumpRules_NextQuestionId_DEFAULT
+	}
+	return p.NextQuestionId
+}
+
+var JumpRules_Operators_DEFAULT string = ""
+
+func (p *JumpRules) GetOperators() (v string) {
+	if !p.IsSetOperators() {
+		return JumpRules_Operators_DEFAULT
+	}
+	return p.Operators
+}
+
+var fieldIDToName_JumpRules = map[int16]string{
+	1: "questionId",
+	2: "answer",
+	3: "nextQuestionId",
+	4: "operators",
+}
+
+func (p *JumpRules) IsSetQuestionId() bool {
+	return p.QuestionId != JumpRules_QuestionId_DEFAULT
+}
+
+func (p *JumpRules) IsSetAnswer() bool {
+	return p.Answer != JumpRules_Answer_DEFAULT
+}
+
+func (p *JumpRules) IsSetNextQuestionId() bool {
+	return p.NextQuestionId != JumpRules_NextQuestionId_DEFAULT
+}
+
+func (p *JumpRules) IsSetOperators() bool {
+	return p.Operators != JumpRules_Operators_DEFAULT
+}
+
+func (p *JumpRules) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 4:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_JumpRules[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *JumpRules) ReadField1(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.QuestionId = _field
+	return nil
+}
+func (p *JumpRules) ReadField2(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Answer = _field
+	return nil
+}
+func (p *JumpRules) ReadField3(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.NextQuestionId = _field
+	return nil
+}
+func (p *JumpRules) ReadField4(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Operators = _field
+	return nil
+}
+
+func (p *JumpRules) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("JumpRules"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *JumpRules) writeField1(oprot thrift.TProtocol) (err error) {
+	if p.IsSetQuestionId() {
+		if err = oprot.WriteFieldBegin("questionId", thrift.I64, 1); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.QuestionId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *JumpRules) writeField2(oprot thrift.TProtocol) (err error) {
+	if p.IsSetAnswer() {
+		if err = oprot.WriteFieldBegin("answer", thrift.STRING, 2); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Answer); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *JumpRules) writeField3(oprot thrift.TProtocol) (err error) {
+	if p.IsSetNextQuestionId() {
+		if err = oprot.WriteFieldBegin("nextQuestionId", thrift.I64, 3); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.NextQuestionId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *JumpRules) writeField4(oprot thrift.TProtocol) (err error) {
+	if p.IsSetOperators() {
+		if err = oprot.WriteFieldBegin("operators", thrift.STRING, 4); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Operators); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *JumpRules) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("JumpRules(%+v)", *p)
 
 }
 

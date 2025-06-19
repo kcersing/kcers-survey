@@ -15,3 +15,12 @@ const (
 	QuestionTypeDateTime QuestionType = "datetime" // 日期时间
 
 )
+
+type JumpRulesOperators string
+
+const (
+	JumpRulesOperatorsEquals      JumpRulesOperators = "equals"
+	JumpRulesOperatorsNotEquals   JumpRulesOperators = "notEquals"
+	JumpRulesOperatorsContains    JumpRulesOperators = "contains"
+	JumpRulesOperatorsNotContains JumpRulesOperators = "notContains"
+)
