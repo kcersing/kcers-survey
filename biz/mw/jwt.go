@@ -150,6 +150,7 @@ func newJWT(enforcer *casbin.Enforcer) (jwtMiddleware *jwt.HertzJWTMiddleware, e
 			//	hlog.Error(err, "role is not exist")
 			//	return false
 			//}
+
 			//if roleInfo.Status != 1 {
 			//	hlog.Error("role cache is not a valid *ent.Role or the role is not active")
 			//	return false
