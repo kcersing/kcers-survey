@@ -25,6 +25,8 @@ const (
 	FieldStatus = "status"
 	// FieldSurveyID holds the string denoting the survey_id field in the database.
 	FieldSurveyID = "survey_id"
+	// FieldRespondent holds the string denoting the respondent field in the database.
+	FieldRespondent = "respondent"
 	// FieldIP holds the string denoting the ip field in the database.
 	FieldIP = "ip"
 	// FieldMap holds the string denoting the map field in the database.
@@ -46,6 +48,7 @@ var Columns = []string{
 	FieldCreatedID,
 	FieldStatus,
 	FieldSurveyID,
+	FieldRespondent,
 	FieldIP,
 	FieldMap,
 	FieldDevice,
@@ -77,6 +80,8 @@ var (
 	DefaultStatus int64
 	// DefaultSurveyID holds the default value on creation for the "survey_id" field.
 	DefaultSurveyID int64
+	// DefaultRespondent holds the default value on creation for the "respondent" field.
+	DefaultRespondent string
 	// DefaultIP holds the default value on creation for the "ip" field.
 	DefaultIP string
 	// DefaultMap holds the default value on creation for the "map" field.
@@ -123,6 +128,11 @@ func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 // BySurveyID orders the results by the survey_id field.
 func BySurveyID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSurveyID, opts...).ToFunc()
+}
+
+// ByRespondent orders the results by the respondent field.
+func ByRespondent(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRespondent, opts...).ToFunc()
 }
 
 // ByIP orders the results by the ip field.

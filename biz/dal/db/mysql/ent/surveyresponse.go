@@ -30,6 +30,8 @@ type SurveyResponse struct {
 	Status int64 `json:"status,omitempty"`
 	// survey_id
 	SurveyID int64 `json:"survey_id,omitempty"`
+	// 受访人
+	Respondent string `json:"respondent,omitempty"`
 	// 用户IP地址
 	IP string `json:"ip,omitempty"`
 	// 用户地图坐标
@@ -48,7 +50,7 @@ func (*SurveyResponse) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case surveyresponse.FieldID, surveyresponse.FieldDelete, surveyresponse.FieldCreatedID, surveyresponse.FieldStatus, surveyresponse.FieldSurveyID:
 			values[i] = new(sql.NullInt64)
-		case surveyresponse.FieldIP, surveyresponse.FieldMap, surveyresponse.FieldDevice, surveyresponse.FieldAudio:
+		case surveyresponse.FieldRespondent, surveyresponse.FieldIP, surveyresponse.FieldMap, surveyresponse.FieldDevice, surveyresponse.FieldAudio:
 			values[i] = new(sql.NullString)
 		case surveyresponse.FieldCreatedAt, surveyresponse.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -108,6 +110,12 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field survey_id", values[i])
 			} else if value.Valid {
 				sr.SurveyID = value.Int64
+			}
+		case surveyresponse.FieldRespondent:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field respondent", values[i])
+			} else if value.Valid {
+				sr.Respondent = value.String
 			}
 		case surveyresponse.FieldIP:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -186,6 +194,9 @@ func (sr *SurveyResponse) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("survey_id=")
 	builder.WriteString(fmt.Sprintf("%v", sr.SurveyID))
+	builder.WriteString(", ")
+	builder.WriteString("respondent=")
+	builder.WriteString(sr.Respondent)
 	builder.WriteString(", ")
 	builder.WriteString("ip=")
 	builder.WriteString(sr.IP)

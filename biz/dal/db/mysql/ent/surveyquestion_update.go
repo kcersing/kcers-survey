@@ -238,6 +238,33 @@ func (squ *SurveyQuestionUpdate) ClearSort() *SurveyQuestionUpdate {
 	return squ
 }
 
+// SetTo sets the "to" field.
+func (squ *SurveyQuestionUpdate) SetTo(i int64) *SurveyQuestionUpdate {
+	squ.mutation.ResetTo()
+	squ.mutation.SetTo(i)
+	return squ
+}
+
+// SetNillableTo sets the "to" field if the given value is not nil.
+func (squ *SurveyQuestionUpdate) SetNillableTo(i *int64) *SurveyQuestionUpdate {
+	if i != nil {
+		squ.SetTo(*i)
+	}
+	return squ
+}
+
+// AddTo adds i to the "to" field.
+func (squ *SurveyQuestionUpdate) AddTo(i int64) *SurveyQuestionUpdate {
+	squ.mutation.AddTo(i)
+	return squ
+}
+
+// ClearTo clears the value of the "to" field.
+func (squ *SurveyQuestionUpdate) ClearTo() *SurveyQuestionUpdate {
+	squ.mutation.ClearTo()
+	return squ
+}
+
 // SetRequired sets the "required" field.
 func (squ *SurveyQuestionUpdate) SetRequired(i int64) *SurveyQuestionUpdate {
 	squ.mutation.ResetRequired()
@@ -445,6 +472,15 @@ func (squ *SurveyQuestionUpdate) sqlSave(ctx context.Context) (n int, err error)
 	}
 	if squ.mutation.SortCleared() {
 		_spec.ClearField(surveyquestion.FieldSort, field.TypeInt64)
+	}
+	if value, ok := squ.mutation.To(); ok {
+		_spec.SetField(surveyquestion.FieldTo, field.TypeInt64, value)
+	}
+	if value, ok := squ.mutation.AddedTo(); ok {
+		_spec.AddField(surveyquestion.FieldTo, field.TypeInt64, value)
+	}
+	if squ.mutation.ToCleared() {
+		_spec.ClearField(surveyquestion.FieldTo, field.TypeInt64)
 	}
 	if value, ok := squ.mutation.Required(); ok {
 		_spec.SetField(surveyquestion.FieldRequired, field.TypeInt64, value)
@@ -764,6 +800,33 @@ func (squo *SurveyQuestionUpdateOne) ClearSort() *SurveyQuestionUpdateOne {
 	return squo
 }
 
+// SetTo sets the "to" field.
+func (squo *SurveyQuestionUpdateOne) SetTo(i int64) *SurveyQuestionUpdateOne {
+	squo.mutation.ResetTo()
+	squo.mutation.SetTo(i)
+	return squo
+}
+
+// SetNillableTo sets the "to" field if the given value is not nil.
+func (squo *SurveyQuestionUpdateOne) SetNillableTo(i *int64) *SurveyQuestionUpdateOne {
+	if i != nil {
+		squo.SetTo(*i)
+	}
+	return squo
+}
+
+// AddTo adds i to the "to" field.
+func (squo *SurveyQuestionUpdateOne) AddTo(i int64) *SurveyQuestionUpdateOne {
+	squo.mutation.AddTo(i)
+	return squo
+}
+
+// ClearTo clears the value of the "to" field.
+func (squo *SurveyQuestionUpdateOne) ClearTo() *SurveyQuestionUpdateOne {
+	squo.mutation.ClearTo()
+	return squo
+}
+
 // SetRequired sets the "required" field.
 func (squo *SurveyQuestionUpdateOne) SetRequired(i int64) *SurveyQuestionUpdateOne {
 	squo.mutation.ResetRequired()
@@ -1001,6 +1064,15 @@ func (squo *SurveyQuestionUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	}
 	if squo.mutation.SortCleared() {
 		_spec.ClearField(surveyquestion.FieldSort, field.TypeInt64)
+	}
+	if value, ok := squo.mutation.To(); ok {
+		_spec.SetField(surveyquestion.FieldTo, field.TypeInt64, value)
+	}
+	if value, ok := squo.mutation.AddedTo(); ok {
+		_spec.AddField(surveyquestion.FieldTo, field.TypeInt64, value)
+	}
+	if squo.mutation.ToCleared() {
+		_spec.ClearField(surveyquestion.FieldTo, field.TypeInt64)
 	}
 	if value, ok := squo.mutation.Required(); ok {
 		_spec.SetField(surveyquestion.FieldRequired, field.TypeInt64, value)

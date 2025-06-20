@@ -40,6 +40,8 @@ type SurveyQuestion struct {
 	Type string `json:"type,omitempty"`
 	// sort
 	Sort int64 `json:"sort,omitempty"`
+	// 跳
+	To int64 `json:"to,omitempty"`
 	// 是否必填 1必填 2选填
 	Required int64 `json:"required,omitempty"`
 	// 存储选项
@@ -88,7 +90,7 @@ func (*SurveyQuestion) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case surveyquestion.FieldOptions:
 			values[i] = new([]byte)
-		case surveyquestion.FieldID, surveyquestion.FieldDelete, surveyquestion.FieldCreatedID, surveyquestion.FieldStatus, surveyquestion.FieldSurveyID, surveyquestion.FieldParentID, surveyquestion.FieldSort, surveyquestion.FieldRequired:
+		case surveyquestion.FieldID, surveyquestion.FieldDelete, surveyquestion.FieldCreatedID, surveyquestion.FieldStatus, surveyquestion.FieldSurveyID, surveyquestion.FieldParentID, surveyquestion.FieldSort, surveyquestion.FieldTo, surveyquestion.FieldRequired:
 			values[i] = new(sql.NullInt64)
 		case surveyquestion.FieldContent, surveyquestion.FieldType:
 			values[i] = new(sql.NullString)
@@ -174,6 +176,12 @@ func (sq *SurveyQuestion) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field sort", values[i])
 			} else if value.Valid {
 				sq.Sort = value.Int64
+			}
+		case surveyquestion.FieldTo:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field to", values[i])
+			} else if value.Valid {
+				sq.To = value.Int64
 			}
 		case surveyquestion.FieldRequired:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -264,6 +272,9 @@ func (sq *SurveyQuestion) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("sort=")
 	builder.WriteString(fmt.Sprintf("%v", sq.Sort))
+	builder.WriteString(", ")
+	builder.WriteString("to=")
+	builder.WriteString(fmt.Sprintf("%v", sq.To))
 	builder.WriteString(", ")
 	builder.WriteString("required=")
 	builder.WriteString(fmt.Sprintf("%v", sq.Required))

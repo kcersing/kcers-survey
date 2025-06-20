@@ -34,6 +34,8 @@ const (
 	FieldType = "type"
 	// FieldSort holds the string denoting the sort field in the database.
 	FieldSort = "sort"
+	// FieldTo holds the string denoting the to field in the database.
+	FieldTo = "to"
 	// FieldRequired holds the string denoting the required field in the database.
 	FieldRequired = "required"
 	// FieldOptions holds the string denoting the options field in the database.
@@ -73,6 +75,7 @@ var Columns = []string{
 	FieldContent,
 	FieldType,
 	FieldSort,
+	FieldTo,
 	FieldRequired,
 	FieldOptions,
 }
@@ -110,6 +113,8 @@ var (
 	DefaultType string
 	// DefaultSort holds the default value on creation for the "sort" field.
 	DefaultSort int64
+	// DefaultTo holds the default value on creation for the "to" field.
+	DefaultTo int64
 	// DefaultRequired holds the default value on creation for the "required" field.
 	DefaultRequired int64
 )
@@ -170,6 +175,11 @@ func ByType(opts ...sql.OrderTermOption) OrderOption {
 // BySort orders the results by the sort field.
 func BySort(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSort, opts...).ToFunc()
+}
+
+// ByTo orders the results by the to field.
+func ByTo(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTo, opts...).ToFunc()
 }
 
 // ByRequired orders the results by the required field.

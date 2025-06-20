@@ -1174,19 +1174,19 @@ type SurveyListReq struct {
 func NewSurveyListReq() *SurveyListReq {
 	return &SurveyListReq{
 
-		Page:     0,
+		Page:     1,
 		PageSize: 100,
 		Title:    "",
 	}
 }
 
 func (p *SurveyListReq) InitDefault() {
-	p.Page = 0
+	p.Page = 1
 	p.PageSize = 100
 	p.Title = ""
 }
 
-var SurveyListReq_Page_DEFAULT int64 = 0
+var SurveyListReq_Page_DEFAULT int64 = 1
 
 func (p *SurveyListReq) GetPage() (v int64) {
 	if !p.IsSetPage() {

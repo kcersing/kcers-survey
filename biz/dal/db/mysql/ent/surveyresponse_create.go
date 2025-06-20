@@ -103,6 +103,20 @@ func (src *SurveyResponseCreate) SetNillableSurveyID(i *int64) *SurveyResponseCr
 	return src
 }
 
+// SetRespondent sets the "respondent" field.
+func (src *SurveyResponseCreate) SetRespondent(s string) *SurveyResponseCreate {
+	src.mutation.SetRespondent(s)
+	return src
+}
+
+// SetNillableRespondent sets the "respondent" field if the given value is not nil.
+func (src *SurveyResponseCreate) SetNillableRespondent(s *string) *SurveyResponseCreate {
+	if s != nil {
+		src.SetRespondent(*s)
+	}
+	return src
+}
+
 // SetIP sets the "ip" field.
 func (src *SurveyResponseCreate) SetIP(s string) *SurveyResponseCreate {
 	src.mutation.SetIP(s)
@@ -224,6 +238,10 @@ func (src *SurveyResponseCreate) defaults() {
 		v := surveyresponse.DefaultSurveyID
 		src.mutation.SetSurveyID(v)
 	}
+	if _, ok := src.mutation.Respondent(); !ok {
+		v := surveyresponse.DefaultRespondent
+		src.mutation.SetRespondent(v)
+	}
 	if _, ok := src.mutation.IP(); !ok {
 		v := surveyresponse.DefaultIP
 		src.mutation.SetIP(v)
@@ -299,6 +317,10 @@ func (src *SurveyResponseCreate) createSpec() (*SurveyResponse, *sqlgraph.Create
 	if value, ok := src.mutation.SurveyID(); ok {
 		_spec.SetField(surveyresponse.FieldSurveyID, field.TypeInt64, value)
 		_node.SurveyID = value
+	}
+	if value, ok := src.mutation.Respondent(); ok {
+		_spec.SetField(surveyresponse.FieldRespondent, field.TypeString, value)
+		_node.Respondent = value
 	}
 	if value, ok := src.mutation.IP(); ok {
 		_spec.SetField(surveyresponse.FieldIP, field.TypeString, value)

@@ -105,6 +105,11 @@ func Sort(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldSort, v))
 }
 
+// To applies equality check predicate on the "to" field. It's identical to ToEQ.
+func To(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldTo, v))
+}
+
 // Required applies equality check predicate on the "required" field. It's identical to RequiredEQ.
 func Required(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldRequired, v))
@@ -638,6 +643,56 @@ func SortIsNil() predicate.SurveyQuestion {
 // SortNotNil applies the NotNil predicate on the "sort" field.
 func SortNotNil() predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldNotNull(FieldSort))
+}
+
+// ToEQ applies the EQ predicate on the "to" field.
+func ToEQ(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldTo, v))
+}
+
+// ToNEQ applies the NEQ predicate on the "to" field.
+func ToNEQ(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNEQ(FieldTo, v))
+}
+
+// ToIn applies the In predicate on the "to" field.
+func ToIn(vs ...int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIn(FieldTo, vs...))
+}
+
+// ToNotIn applies the NotIn predicate on the "to" field.
+func ToNotIn(vs ...int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotIn(FieldTo, vs...))
+}
+
+// ToGT applies the GT predicate on the "to" field.
+func ToGT(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGT(FieldTo, v))
+}
+
+// ToGTE applies the GTE predicate on the "to" field.
+func ToGTE(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGTE(FieldTo, v))
+}
+
+// ToLT applies the LT predicate on the "to" field.
+func ToLT(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLT(FieldTo, v))
+}
+
+// ToLTE applies the LTE predicate on the "to" field.
+func ToLTE(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLTE(FieldTo, v))
+}
+
+// ToIsNil applies the IsNil predicate on the "to" field.
+func ToIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldTo))
+}
+
+// ToNotNil applies the NotNil predicate on the "to" field.
+func ToNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldTo))
 }
 
 // RequiredEQ applies the EQ predicate on the "required" field.

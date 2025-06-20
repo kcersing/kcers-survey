@@ -334,8 +334,12 @@ func init() {
 	surveyquestionDescSort := surveyquestionFields[4].Descriptor()
 	// surveyquestion.DefaultSort holds the default value on creation for the sort field.
 	surveyquestion.DefaultSort = surveyquestionDescSort.Default.(int64)
+	// surveyquestionDescTo is the schema descriptor for to field.
+	surveyquestionDescTo := surveyquestionFields[5].Descriptor()
+	// surveyquestion.DefaultTo holds the default value on creation for the to field.
+	surveyquestion.DefaultTo = surveyquestionDescTo.Default.(int64)
 	// surveyquestionDescRequired is the schema descriptor for required field.
-	surveyquestionDescRequired := surveyquestionFields[5].Descriptor()
+	surveyquestionDescRequired := surveyquestionFields[6].Descriptor()
 	// surveyquestion.DefaultRequired holds the default value on creation for the required field.
 	surveyquestion.DefaultRequired = surveyquestionDescRequired.Default.(int64)
 	surveyquestionoptionsMixin := schema.SurveyQuestionOptions{}.Mixin()
@@ -412,20 +416,24 @@ func init() {
 	surveyresponseDescSurveyID := surveyresponseFields[0].Descriptor()
 	// surveyresponse.DefaultSurveyID holds the default value on creation for the survey_id field.
 	surveyresponse.DefaultSurveyID = surveyresponseDescSurveyID.Default.(int64)
+	// surveyresponseDescRespondent is the schema descriptor for respondent field.
+	surveyresponseDescRespondent := surveyresponseFields[1].Descriptor()
+	// surveyresponse.DefaultRespondent holds the default value on creation for the respondent field.
+	surveyresponse.DefaultRespondent = surveyresponseDescRespondent.Default.(string)
 	// surveyresponseDescIP is the schema descriptor for ip field.
-	surveyresponseDescIP := surveyresponseFields[1].Descriptor()
+	surveyresponseDescIP := surveyresponseFields[2].Descriptor()
 	// surveyresponse.DefaultIP holds the default value on creation for the ip field.
 	surveyresponse.DefaultIP = surveyresponseDescIP.Default.(string)
 	// surveyresponseDescMap is the schema descriptor for map field.
-	surveyresponseDescMap := surveyresponseFields[2].Descriptor()
+	surveyresponseDescMap := surveyresponseFields[3].Descriptor()
 	// surveyresponse.DefaultMap holds the default value on creation for the map field.
 	surveyresponse.DefaultMap = surveyresponseDescMap.Default.(string)
 	// surveyresponseDescDevice is the schema descriptor for device field.
-	surveyresponseDescDevice := surveyresponseFields[3].Descriptor()
+	surveyresponseDescDevice := surveyresponseFields[4].Descriptor()
 	// surveyresponse.DefaultDevice holds the default value on creation for the device field.
 	surveyresponse.DefaultDevice = surveyresponseDescDevice.Default.(string)
 	// surveyresponseDescAudio is the schema descriptor for audio field.
-	surveyresponseDescAudio := surveyresponseFields[4].Descriptor()
+	surveyresponseDescAudio := surveyresponseFields[5].Descriptor()
 	// surveyresponse.DefaultAudio holds the default value on creation for the audio field.
 	surveyresponse.DefaultAudio = surveyresponseDescAudio.Default.(string)
 	surveyresponseanswersMixin := schema.SurveyResponseAnswers{}.Mixin()

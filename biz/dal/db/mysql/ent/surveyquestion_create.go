@@ -161,6 +161,20 @@ func (sqc *SurveyQuestionCreate) SetNillableSort(i *int64) *SurveyQuestionCreate
 	return sqc
 }
 
+// SetTo sets the "to" field.
+func (sqc *SurveyQuestionCreate) SetTo(i int64) *SurveyQuestionCreate {
+	sqc.mutation.SetTo(i)
+	return sqc
+}
+
+// SetNillableTo sets the "to" field if the given value is not nil.
+func (sqc *SurveyQuestionCreate) SetNillableTo(i *int64) *SurveyQuestionCreate {
+	if i != nil {
+		sqc.SetTo(*i)
+	}
+	return sqc
+}
+
 // SetRequired sets the "required" field.
 func (sqc *SurveyQuestionCreate) SetRequired(i int64) *SurveyQuestionCreate {
 	sqc.mutation.SetRequired(i)
@@ -282,6 +296,10 @@ func (sqc *SurveyQuestionCreate) defaults() {
 		v := surveyquestion.DefaultSort
 		sqc.mutation.SetSort(v)
 	}
+	if _, ok := sqc.mutation.To(); !ok {
+		v := surveyquestion.DefaultTo
+		sqc.mutation.SetTo(v)
+	}
 	if _, ok := sqc.mutation.Required(); !ok {
 		v := surveyquestion.DefaultRequired
 		sqc.mutation.SetRequired(v)
@@ -357,6 +375,10 @@ func (sqc *SurveyQuestionCreate) createSpec() (*SurveyQuestion, *sqlgraph.Create
 	if value, ok := sqc.mutation.Sort(); ok {
 		_spec.SetField(surveyquestion.FieldSort, field.TypeInt64, value)
 		_node.Sort = value
+	}
+	if value, ok := sqc.mutation.To(); ok {
+		_spec.SetField(surveyquestion.FieldTo, field.TypeInt64, value)
+		_node.To = value
 	}
 	if value, ok := sqc.mutation.Required(); ok {
 		_spec.SetField(surveyquestion.FieldRequired, field.TypeInt64, value)

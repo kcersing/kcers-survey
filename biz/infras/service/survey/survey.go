@@ -98,7 +98,7 @@ func (s Survey) ListSurvey(req *service.SurveyListReq) (resp []*service.Survey, 
 	if req.Title != "" {
 		predicates = append(predicates, survey2.Title(req.Title))
 	}
-	predicates = append(predicates, survey2.Delete(1))
+	predicates = append(predicates, survey2.Delete(0))
 	all, err := s.db.Survey.
 		Query().
 		Where(predicates...).
@@ -135,8 +135,8 @@ func (s Survey) CreateQuestion(req *service.CreateOrUpdateQuestionReq) (err erro
 	_, err = s.db.SurveyQuestion.Create().
 		SetContent(req.Content).
 		SetType(req.Type).
-		SetSurveyID(req.SurveyID).
-		SetParentID(req.ParentID).
+		SetSurveyID(req.SurveyId).
+		SetParentID(req.ParentId).
 		SetSort(req.Sort).
 		SetRequired(req.Required).
 		Save(s.ctx)
@@ -152,8 +152,8 @@ func (s Survey) UpdateQuestion(req *service.CreateOrUpdateQuestionReq) (err erro
 		Where(surveyquestion2.IDEQ(req.ID)).
 		SetContent(req.Content).
 		SetType(req.Type).
-		SetSurveyID(req.SurveyID).
-		SetParentID(req.ParentID).
+		SetSurveyID(req.SurveyId).
+		SetParentID(req.ParentId).
 		SetSort(req.Sort).
 		SetRequired(req.Required).
 		Save(s.ctx)

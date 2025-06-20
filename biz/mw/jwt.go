@@ -100,8 +100,10 @@ func newJWT(enforcer *casbin.Enforcer) (jwtMiddleware *jwt.HertzJWTMiddleware, e
 		},
 		// Authorizator is used to validate the authentication of the current request.
 		Authorizator: func(data interface{}, ctx context.Context, c *app.RequestContext) bool {
-			//obj := string(c.URI().Path())
-			//act := string(c.Method())
+			obj := string(c.URI().Path())
+			act := string(c.Method())
+
+			hlog.Info(obj, act)
 			payloadMap, ok := data.(map[string]interface{})
 
 			if !ok {
@@ -109,7 +111,7 @@ func newJWT(enforcer *casbin.Enforcer) (jwtMiddleware *jwt.HertzJWTMiddleware, e
 				return false
 			}
 			var userRoleIds []int64
-
+			hlog.Info(payloadMap)
 			userType, ok := payloadMap["userType"].(string)
 			if !ok {
 				hlog.Error("userType 解析错误", err)

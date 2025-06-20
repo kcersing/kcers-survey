@@ -227,6 +227,7 @@ var (
 		{Name: "content", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "content", Default: ""},
 		{Name: "type", Type: field.TypeString, Nullable: true, Comment: "type", Default: ""},
 		{Name: "sort", Type: field.TypeInt64, Nullable: true, Comment: "sort", Default: 0},
+		{Name: "to", Type: field.TypeInt64, Nullable: true, Comment: "跳", Default: 0},
 		{Name: "required", Type: field.TypeInt64, Nullable: true, Comment: "是否必填 1必填 2选填", Default: 1},
 		{Name: "options", Type: field.TypeJSON, Nullable: true, Comment: "存储选项"},
 		{Name: "survey_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_id", Default: 0},
@@ -239,7 +240,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "survey_question_survey_question",
-				Columns:    []*schema.Column{SurveyQuestionColumns[12]},
+				Columns:    []*schema.Column{SurveyQuestionColumns[13]},
 				RefColumns: []*schema.Column{SurveyColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -280,6 +281,7 @@ var (
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
 		{Name: "survey_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_id", Default: 0},
+		{Name: "respondent", Type: field.TypeString, Nullable: true, Comment: "受访人", Default: ""},
 		{Name: "ip", Type: field.TypeString, Nullable: true, Comment: "用户IP地址", Default: ""},
 		{Name: "map", Type: field.TypeString, Nullable: true, Comment: "用户地图坐标", Default: ""},
 		{Name: "device", Type: field.TypeString, Nullable: true, Comment: "设备信息", Default: ""},

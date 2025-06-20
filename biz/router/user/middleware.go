@@ -4,6 +4,8 @@ package user
 
 import (
 	"github.com/cloudwego/hertz/pkg/app"
+	"kcers-survey/biz/dal/casbin"
+	"kcers-survey/biz/mw"
 )
 
 func rootMw() []app.HandlerFunc {
@@ -13,7 +15,10 @@ func rootMw() []app.HandlerFunc {
 
 func _serviceMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		mw.GetJWTMw(casbin.CasbinEnforcer()).MiddlewareFunc(),
+		mw.LogMw(),
+	}
 }
 
 func _userMw() []app.HandlerFunc {
