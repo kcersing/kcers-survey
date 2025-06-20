@@ -9,7 +9,9 @@ export async function currentUser(options?: { [key: string]: any }) {
     data: API.CurrentUser;
   }>(Urls.UserInfo, {
     method: 'GET',
-
+    headers: {
+      Authorization:'Bearer ' + sessionStorage.getItem('token') || '',
+    },
     ...(options || {}),
   });
 }
@@ -93,3 +95,4 @@ export async function removeRule(options?: { [key: string]: any }) {
     },
   });
 }
+

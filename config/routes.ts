@@ -52,6 +52,12 @@ export default [
     component: './TableList',
   },
   {
+    name: '调查问卷',
+    icon: 'table',
+    path: '/survey/list',
+    component: './Survey/List',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },
