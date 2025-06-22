@@ -85,3 +85,23 @@ func _updatesurveyMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _questionMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getquestionMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _listquestionMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _responseMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

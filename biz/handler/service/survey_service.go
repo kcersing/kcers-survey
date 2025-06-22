@@ -113,7 +113,7 @@ func DeleteSurvey(ctx context.Context, c *app.RequestContext) {
 }
 
 // CreateQuestion .
-// @router /service/survey/question-create [POST]
+// @router /service/survey/question/create [POST]
 func CreateQuestion(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req service.CreateOrUpdateQuestionReq
@@ -133,7 +133,7 @@ func CreateQuestion(ctx context.Context, c *app.RequestContext) {
 }
 
 // UpdateQuestion .
-// @router /service/survey/question-update [POST]
+// @router /service/survey/question/update [POST]
 func UpdateQuestion(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req service.CreateOrUpdateQuestionReq
@@ -153,7 +153,7 @@ func UpdateQuestion(ctx context.Context, c *app.RequestContext) {
 }
 
 // DeleteQuestion .
-// @router /service/survey/question-delete [POST]
+// @router /service/survey/question/delete [POST]
 func DeleteQuestion(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req base.IDReq
@@ -173,7 +173,7 @@ func DeleteQuestion(ctx context.Context, c *app.RequestContext) {
 }
 
 // CreateResponse .
-// @router /service/survey/response-create [POST]
+// @router /service/survey/response/create [POST]
 func CreateResponse(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req service.CreateOrUpdateResponseReq
@@ -193,7 +193,7 @@ func CreateResponse(ctx context.Context, c *app.RequestContext) {
 }
 
 // UpdateResponse .
-// @router /service/survey/response-update [POST]
+// @router /service/survey/response/update [POST]
 func UpdateResponse(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req service.CreateOrUpdateResponseReq
@@ -213,7 +213,7 @@ func UpdateResponse(ctx context.Context, c *app.RequestContext) {
 }
 
 // GetResponse .
-// @router /service/survey/response-info [POST]
+// @router /service/survey/response/info [POST]
 func GetResponse(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req base.IDReq
@@ -233,7 +233,7 @@ func GetResponse(ctx context.Context, c *app.RequestContext) {
 }
 
 // ListResponse .
-// @router /service/survey/response-list [POST]
+// @router /service/survey/response/list [POST]
 func ListResponse(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req service.ResponseListReq
@@ -252,7 +252,7 @@ func ListResponse(ctx context.Context, c *app.RequestContext) {
 }
 
 // DeleteResponse .
-// @router /service/survey/response-delete [POST]
+// @router /service/survey/response/delete [POST]
 func DeleteResponse(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req base.IDReq
@@ -268,5 +268,44 @@ func DeleteResponse(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	utils.SendResponse(c, errno.Success, nil, 0, "")
+	return
+}
+
+// GetQuestion .
+// @router /service/survey/question/info [POST]
+func GetQuestion(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req base.IDReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+
+	info, err := surveyService.NewSurvey(ctx, c).GetQuestion(req.ID)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, info, 0, "")
+	return
+}
+
+// ListQuestion .
+// @router /service/survey/question/list [POST]
+func ListQuestion(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req service.QuestionListReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	list, total, err := surveyService.NewSurvey(ctx, c).ListQuestion(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, list, int64(total), "")
 	return
 }

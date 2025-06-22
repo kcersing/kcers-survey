@@ -25,15 +25,23 @@ func Register(r *server.Hertz) {
 			_survey.POST("/delete", append(_deletesurveyMw(), service.DeleteSurvey)...)
 			_survey.POST("/info", append(_getsurveyMw(), service.GetSurvey)...)
 			_survey.POST("/list", append(_listsurveyMw(), service.ListSurvey)...)
-			_survey.POST("/question-create", append(_createquestionMw(), service.CreateQuestion)...)
-			_survey.POST("/question-delete", append(_deletequestionMw(), service.DeleteQuestion)...)
-			_survey.POST("/question-update", append(_updatequestionMw(), service.UpdateQuestion)...)
-			_survey.POST("/response-create", append(_createresponseMw(), service.CreateResponse)...)
-			_survey.POST("/response-delete", append(_deleteresponseMw(), service.DeleteResponse)...)
-			_survey.POST("/response-info", append(_getresponseMw(), service.GetResponse)...)
-			_survey.POST("/response-list", append(_listresponseMw(), service.ListResponse)...)
-			_survey.POST("/response-update", append(_updateresponseMw(), service.UpdateResponse)...)
 			_survey.POST("/update", append(_updatesurveyMw(), service.UpdateSurvey)...)
+			{
+				_question := _survey.Group("/question", _questionMw()...)
+				_question.POST("/create", append(_createquestionMw(), service.CreateQuestion)...)
+				_question.POST("/delete", append(_deletequestionMw(), service.DeleteQuestion)...)
+				_question.POST("/info", append(_getquestionMw(), service.GetQuestion)...)
+				_question.POST("/list", append(_listquestionMw(), service.ListQuestion)...)
+				_question.POST("/update", append(_updatequestionMw(), service.UpdateQuestion)...)
+			}
+			{
+				_response := _survey.Group("/response", _responseMw()...)
+				_response.POST("/create", append(_createresponseMw(), service.CreateResponse)...)
+				_response.POST("/delete", append(_deleteresponseMw(), service.DeleteResponse)...)
+				_response.POST("/info", append(_getresponseMw(), service.GetResponse)...)
+				_response.POST("/list", append(_listresponseMw(), service.ListResponse)...)
+				_response.POST("/update", append(_updateresponseMw(), service.UpdateResponse)...)
+			}
 		}
 	}
 }

@@ -4,7 +4,6 @@ include "../base/base.thrift"
 
 service SurveyService {
 
-
 	base.NilResponse CreateSurvey(1: CreateOrUpdateSurveyReq req)  (api.post = "/service/survey/create")
 	base.NilResponse UpdateSurvey(1: CreateOrUpdateSurveyReq req)  (api.post = "/service/survey/update")
 	base.NilResponse GetSurvey(1: base.IDReq req) (api.post = "/service/survey/info")
@@ -12,16 +11,17 @@ service SurveyService {
 
 	base.NilResponse DeleteSurvey(1: base.IDReq req) (api.post = "/service/survey/delete")
 
-	base.NilResponse CreateQuestion(1: CreateOrUpdateQuestionReq req)  (api.post = "/service/survey/question-create")
-	base.NilResponse UpdateQuestion(1: CreateOrUpdateQuestionReq req)  (api.post = "/service/survey/question-update")
+	base.NilResponse CreateQuestion(1: CreateOrUpdateQuestionReq req)  (api.post = "/service/survey/question/create")
+	base.NilResponse UpdateQuestion(1: CreateOrUpdateQuestionReq req)  (api.post = "/service/survey/question/update")
+    base.NilResponse GetQuestion(1: base.IDReq req)  (api.post = "/service/survey/question/info")
+	base.NilResponse ListQuestion(1: QuestionListReq req)  (api.post = "/service/survey/question/list")
+	base.NilResponse DeleteQuestion(1: base.IDReq req)  (api.post = "/service/survey/question/delete")
 
-	base.NilResponse DeleteQuestion(1: base.IDReq req)  (api.post = "/service/survey/question-delete")
-
-	base.NilResponse CreateResponse(1: CreateOrUpdateResponseReq req) (api.post = "/service/survey/response-create")
-	base.NilResponse UpdateResponse(1: CreateOrUpdateResponseReq req) (api.post = "/service/survey/response-update")
-	base.NilResponse GetResponse(1: base.IDReq req)  (api.post = "/service/survey/response-info")
-	base.NilResponse ListResponse(1: ResponseListReq req) (api.post = "/service/survey/response-list")
-	base.NilResponse DeleteResponse(1: base.IDReq req)  (api.post = "/service/survey/response-delete")
+	base.NilResponse CreateResponse(1: CreateOrUpdateResponseReq req) (api.post = "/service/survey/response/create")
+	base.NilResponse UpdateResponse(1: CreateOrUpdateResponseReq req) (api.post = "/service/survey/response/update")
+	base.NilResponse GetResponse(1: base.IDReq req)  (api.post = "/service/survey/response/info")
+	base.NilResponse ListResponse(1: ResponseListReq req) (api.post = "/service/survey/response/list")
+	base.NilResponse DeleteResponse(1: base.IDReq req)  (api.post = "/service/survey/response/delete")
 
 
 }
@@ -46,12 +46,20 @@ struct Survey {
      8:optional i64 questionCount=0 (api.raw = "questionCount")
      9:optional i64 responseCount=0 (api.raw = "responseCount")
      10:optional string pic="" (api.raw = "pic")
+     11:optional string createdAt="" (api.raw = "createdAt")
 
 }
 struct SurveyListReq {
     1: optional i64 page=1 (api.raw = "page")
     2: optional i64 pageSize=100 (api.raw = "pageSize")
     3: optional string title="" (api.raw = "title")
+}
+struct QuestionListReq {
+    1: optional i64 page=1 (api.raw = "page")
+    2: optional i64 pageSize=100 (api.raw = "pageSize")
+    3: optional i64 surveyId=0 (api.raw = "surveyId")
+    4: optional string content="" (api.raw = "content")
+
 }
 
 struct CreateOrUpdateQuestionReq {

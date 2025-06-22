@@ -82,15 +82,30 @@ func (s Survey) GetSurvey(id int64) (resp *service.Survey, err error) {
 func (s Survey) entToSurvey(v *ent.Survey) *service.Survey {
 
 	return &service.Survey{
-		ID:      v.ID,
-		Title:   v.Title,
-		Pic:     v.Pic,
-		Desc:    v.Desc,
-		StartAt: v.StartAt.Format(time.DateTime),
-		EndAt:   v.EndAt.Format(time.DateTime),
+		ID:        v.ID,
+		Title:     v.Title,
+		Pic:       v.Pic,
+		Desc:      v.Desc,
+		StartAt:   v.StartAt.Format(time.DateTime),
+		EndAt:     v.EndAt.Format(time.DateTime),
+		CreatedAt: v.CreatedAt.Format(time.DateTime),
 	}
 }
+func (s Survey) entToQuestion(v *ent.SurveyQuestion) *service.Question {
 
+	return &service.Question{
+		Content:      v.Content,
+		Type:         v.Type,
+		Options:      nil,
+		Required:     v.Required,
+		Sort:         v.Sort,
+		ID:           v.ID,
+		SubQuestions: nil,
+		JumpRules:    nil,
+		SurveyId:     v.SurveyID,
+		ParentId:     v.ParentID,
+	}
+}
 func (s Survey) ListSurvey(req *service.SurveyListReq) (resp []*service.Survey, total int, err error) {
 
 	var predicates []predicate.Survey
@@ -163,7 +178,43 @@ func (s Survey) UpdateQuestion(req *service.CreateOrUpdateQuestionReq) (err erro
 	}
 	return nil
 }
+func (s Survey) GetQuestion(id int64) (resp *service.Question, err error) {
+	first, err := s.db.SurveyQuestion.Query().Where(surveyquestion2.IDEQ(id)).First(s.ctx)
+	if err != nil {
+		return nil, err
+	}
+	return s.entToQuestion(first), nil
+}
 
+func (s Survey) ListQuestion(req *service.QuestionListReq) (resp []*service.Question, total int, err error) {
+	var predicates []predicate.SurveyQuestion
+
+	if req.Content != "" {
+		predicates = append(predicates, surveyquestion2.Content(req.Content))
+	}
+
+	if req.SurveyId != 0 {
+		predicates = append(predicates, surveyquestion2.SurveyID(req.SurveyId))
+	}
+	predicates = append(predicates, surveyquestion2.Delete(0))
+	all, err := s.db.SurveyQuestion.
+		Query().
+		Where(predicates...).
+		Offset(int(req.Page-1) * int(req.PageSize)).
+		Limit(int(req.PageSize)).All(s.ctx)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	for _, v := range all {
+		resp = append(resp, s.entToQuestion(v))
+	}
+	total, err = s.db.Survey.Query().Count(s.ctx)
+	if err != nil {
+		return nil, 0, err
+	}
+	return resp, total, nil
+}
 func (s Survey) DeleteQuestion(id int64) (err error) {
 	_, err = s.db.SurveyQuestion.Update().
 		Where(surveyquestion2.IDEQ(id)).
