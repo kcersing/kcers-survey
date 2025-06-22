@@ -16,11 +16,7 @@ import React, { useRef, useState } from 'react';
 import type { FormValueType } from '@/pages/Survey/List/components/UpdateForm';
 import UpdateForm from '@/pages/Survey/List/components/UpdateForm';
 
-/**
- * @en-US Add node
- * @zh-CN 添加节点
- * @param fields
- */
+
 const handleAdd = async (fields: API.Survey) => {
   const hide = message.loading('正在添加');
   try {

@@ -11,9 +11,11 @@
 import { request } from '@umijs/max';
 import { Urls } from '@/services/ant-design-pro/url';
 
+
+
 export async function createSurvey(options?: { [key: string]: any }) {
 
-    return request<Record<string, any>>(Urls.ListSurvey, {
+    return request<Record<string, any>>(Urls.CreateSurvey, {
       method: 'POST',
       data: {
         method: 'post',
@@ -22,7 +24,7 @@ export async function createSurvey(options?: { [key: string]: any }) {
     });
   }
   export async function updateSurvey(options?: { [key: string]: any }) {
-    return request<Record<string, any>>(Urls.ListSurvey, {
+    return request<Record<string, any>>(Urls.UpdateSurvey, {
       method: 'POST',
       data: {
         method: 'post',
@@ -31,7 +33,7 @@ export async function createSurvey(options?: { [key: string]: any }) {
     });
   }
   export async function getSurvey(options?: { [key: string]: any }) {
-    return request<Record<string, any>>(Urls.ListSurvey, {
+    return request<Record<string, any>>(Urls.GetSurvey, {
       method: 'POST',
       data: {
         method: 'post',
@@ -51,7 +53,7 @@ export async function listSurvey(
   options?: { [key: string]: any },
 ) {
 
-  return request<Surveys.Survey>(Urls.ListSurvey, {
+  return request<API.Survey>(Urls.ListSurvey, {
     method: 'POST',
     params: {
       page: params.current,
@@ -61,9 +63,8 @@ export async function listSurvey(
   });
 }
 
-
   export async function deleteSurvey(options?: { [key: string]: any }) {
-    return request<Record<string, any>>(Urls.ListSurvey, {
+    return request<Record<string, any>>(Urls.DeleteSurvey, {
       method: 'POST',
       data: {
         method: 'post',
@@ -72,3 +73,64 @@ export async function listSurvey(
     });
   }
 
+
+
+
+export async function createQuestion(options?: { [key: string]: any }) {
+  return request<Record<string, any>>(Urls.CreateQuestion, {
+    method: 'POST',
+    data: {
+      method: 'post',
+      ...(options || {}),
+    },
+  });
+}
+export async function updateQuestion(options?: { [key: string]: any }) {
+  return request<Record<string, any>>(Urls.UpdateQuestion, {
+    method: 'POST',
+    data: {
+      method: 'post',
+      ...(options || {}),
+    },
+  });
+}
+export async function getQuestion(options?: { [key: string]: any }) {
+  return request<Record<string, any>>(Urls.GetQuestion, {
+    method: 'POST',
+    data: {
+      method: 'post',
+      ...(options || {}),
+    },
+  });
+}
+
+export async function listQuestion(
+    params: {
+      // query
+      /** 当前的页码 */
+      current?: number;
+      /** 页面的容量 */
+      pageSize?: number;
+    },
+    options?: { [key: string]: any },
+) {
+
+  return request<API.Survey>(Urls.ListQuestion, {
+    method: 'POST',
+    params: {
+      page: params.current,
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
+export async function deleteQuestion(options?: { [key: string]: any }) {
+  return request<Record<string, any>>(Urls.DeleteQuestion, {
+    method: 'POST',
+    data: {
+      method: 'post',
+      ...(options || {}),
+    },
+  });
+}
