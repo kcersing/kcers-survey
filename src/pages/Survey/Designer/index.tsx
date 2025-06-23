@@ -44,7 +44,7 @@ const Designer =  () => {
 
 
   let params = useParams();
-  const surveyId:number =parseInt( params.id)
+  const surveyId =parseInt(params.id as number)
   useEffect(() => {
     loadSurveyAndQuestions();
   }, []);
@@ -113,7 +113,7 @@ const Designer =  () => {
         text: '文本题',
         number: '数字题',
         date: '日期题',
-        matrix_single: '矩阵单选题',
+        // matrix_single: '矩阵题',
       },
     },
     {
@@ -121,8 +121,8 @@ const Designer =  () => {
       dataIndex: 'required',
       valueType: 'select',
       valueEnum: {
-        true: '是',
-        false: '否',
+        1: '是',
+        2: '否',
       },
     },
     {
@@ -152,23 +152,26 @@ const Designer =  () => {
   const handleSaveQuestion = async () => {
     try {
       const values = await form.validateFields();
-console.log(values);
-      const questionData = {
+
+      console.log(values);
+
+      let questionData = {
         ...values,
+        type:values.questionType,
         survey_id: surveyId,
         question_type: questionType,
       };
-
+      console.log(questionData)
       if (questionType === 'single_choice' || questionType === 'multiple_choice') {
-        questionData.options = options;
+        questionData.options = values.options;
       } else if (questionType === 'matrix_single') {
         // questionData.matrix_rows = matrixRows.filter(row => row.trim()).join(',');
         // questionData.matrix_columns = matrixColumns.filter(column => column.trim()).join(',');
       }
-      console.log(questionData)
+
       if (editingQuestion) {
         // 更新问题
-        await updateQuestion(editingQuestion.id, questionData);
+        await updateQuestion({'id':editingQuestion.id, ...questionData});
         message.success('问题更新成功');
       } else {
         // 创建新问题
@@ -193,7 +196,13 @@ console.log(values);
       question_type: question.type,
       required: question.required,
       sort: question.sort,
+
+
     });
+
+
+
+
 
     setEditingQuestion(question);
     setQuestionType(question.type);
@@ -246,6 +255,10 @@ console.log(values);
 
         dragSortHandlerRender={dragHandleRender}
         onDragSortEnd={handleDragSortEnd}
+
+        // request={request}
+
+
       />
     </ProCard>
 
@@ -262,6 +275,39 @@ console.log(values);
       form={form}
       layout="vertical"
       initialValues={editingQuestion || { required: true, sort: questions.length + 1 }}
+
+
+
+      submitter={{
+        // 配置按钮文本
+        searchConfig: {
+          resetText: '重置',
+          submitText: '提交',
+        },
+        // 配置按钮的属性
+        resetButtonProps: {
+          style: {
+            // 隐藏重置按钮
+            display: 'none',
+          },
+        },
+        submitButtonProps: {},
+
+        // 完全自定义整个区域
+        render: (props, doms) => {
+          console.log(props);
+          return  <div className="flex justify-end mt-4">
+            <Button onClick={() => setVisible(false)} style={{ marginRight: 8 }}>
+              取消
+            </Button>
+            <Button type="primary" onClick={handleSaveQuestion}>
+              保存
+            </Button>
+          </div>;
+        },
+      }}
+
+
     >
       <ProFormText
         name="content"
@@ -280,7 +326,7 @@ console.log(values);
           { label: '文本题', value: 'text' },
           { label: '数字题', value: 'number' },
           { label: '日期题', value: 'date' },
-          { label: '矩阵单选题', value: 'matrix_single' },
+          // { label: '矩阵单选题', value: 'matrix_single' },
         ]}
       />
 
@@ -288,8 +334,8 @@ console.log(values);
         name="required"
         label="是否必填"
         options={[
-          { label: '是', value: true },
-          { label: '否', value: false },
+          { label: '是', value: 1 },
+          { label: '否', value: 2 },
         ]}
       />
 
@@ -310,11 +356,10 @@ console.log(values);
             copyIconProps={{ Icon: SnippetsOutlined, }}
             initialValue={options.option}
             deleteIconProps={{ Icon: CloseOutlined, }}
-            ksy="options"
             name="options"
           >
             <ProFormText hidden={true}   name="serial" label="序号" />
-            <ProFormText  name="content" label="选项" />
+            <ProFormText name="content" label="选项" />
           </ProFormList>
 
         </div>
@@ -327,86 +372,38 @@ console.log(values);
 
           <div className="mb-6">
             <h4 className="font-medium mb-2">行设置</h4>
-            {matrixRows.map((row, index) => (
-              <div key={index} className="flex items-center mb-2">
-                <ProFormText
-                  value={row}
-                  onChange={(value) => {
-                    const newRows = [...matrixRows];
-                    newRows[index] = value;
-                    setMatrixRows(newRows);
-                  }}
-                  placeholder={`行 ${index + 1}`}
-                  style={{ marginRight: 8, flex: 1 }}
-                />
-                <Button
-                  type="danger"
-                  icon={<DeleteOutlined />}
-                  onClick={() => {
-                    const newRows = [...matrixRows];
-                    newRows.splice(index, 1);
-                    setMatrixRows(newRows);
-                  }}
-                  size="small"
-                />
-              </div>
-            ))}
-            <Button
-              type="dashed"
-              onClick={() => setMatrixRows([...matrixRows, ''])}
-              style={{ width: '100%' }}
+            <ProFormList
+              copyIconProps={{ Icon: SnippetsOutlined, }}
+              // initialValue={options.option}
+              deleteIconProps={{ Icon: CloseOutlined, }}
+              name="rows"
             >
-              <PlusOutlined /> 添加行
-            </Button>
+              <ProFormText hidden={true}   name="serial" label="序号" />
+              <ProFormText name="content" label="行" />
+            </ProFormList>
           </div>
 
           <div>
             <h4 className="font-medium mb-2">列设置</h4>
-            {matrixColumns.map((column, index) => (
-              <div key={index} className="flex items-center mb-2">
-                <ProFormText
-                  value={column}
-                  onChange={(value) => {
-                    const newColumns = [...matrixColumns];
-                    newColumns[index] = value;
-                    setMatrixColumns(newColumns);
-                  }}
-                  placeholder={`列 ${index + 1}`}
-                  style={{ marginRight: 8, flex: 1 }}
-                />
-                <Button
-                  type="danger"
-                  icon={<DeleteOutlined />}
-                  onClick={() => {
-                    const newColumns = [...matrixColumns];
-                    newColumns.splice(index, 1);
-                    setMatrixColumns(newColumns);
-                  }}
-                  size="small"
-                />
-              </div>
-            ))}
-            <Button
-              type="dashed"
-              onClick={() => setMatrixColumns([...matrixColumns, ''])}
-              style={{ width: '100%' }}
+            <ProFormList
+              copyIconProps={{ Icon: SnippetsOutlined, }}
+              // initialValue={options.option}
+              deleteIconProps={{ Icon: CloseOutlined, }}
+              name="columns"
             >
-              <PlusOutlined /> 添加列
-            </Button>
+              <ProFormText hidden={true}   name="serial" label="序号" />
+              <ProFormText name="content" label="列" />
+            </ProFormList>
+
           </div>
+
+
         </div>
       )}
 
       <Divider />
 
-      <div className="flex justify-end mt-4">
-        <Button onClick={() => setVisible(false)} style={{ marginRight: 8 }}>
-          取消
-        </Button>
-        <Button type="primary" onClick={handleSaveQuestion}>
-          保存
-        </Button>
-      </div>
+
     </ProForm>
   </Modal>
 

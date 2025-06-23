@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Select, DatePicker, Button, Card, message, Steps, PageHeader, Space } from 'antd';
+import { Form, Input, Select, DatePicker, Button, Card, message, Steps,  Space } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import { fetchQuestions, submitResponse, fetchSurvey } from '@/services/survey';
+import { listQuestion , createResponse, getSurvey } from '@/services/ant-design-pro/survey';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -12,15 +12,16 @@ type QuestionType = 'single_choice' | 'multiple_choice' | 'text' | 'number' | 'd
 interface Question {
   id: number;
   content: string;
-  question_type: QuestionType;
-  options?: string;
+  type: QuestionType;
+  options?: API.Options[];
   matrix_rows?: string;
   matrix_columns?: string;
-  required: boolean;
+  required: number;
 }
 
-const SurveyRespondent: React.FC<{ match: { params: { id: string } } }> = ({ match }) => {
-  const surveyId = parseInt(match.params.id, 10);
+const SurveyRespondent =  () => {
+
+  const surveyId = parseInt(1, 10);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [survey, setSurvey] = useState<any>({});
   const [currentStep, setCurrentStep] = useState(0);
@@ -37,16 +38,16 @@ const SurveyRespondent: React.FC<{ match: { params: { id: string } } }> = ({ mat
 
       // 并行加载问卷和问题
       const [surveyData, questionsData] = await Promise.all([
-        fetchSurvey(surveyId),
-        fetchQuestions(surveyId),
+        getSurvey({'id':surveyId}),
+        listQuestion({'surveyId':surveyId}),
       ]);
 
-      setSurvey(surveyData);
-      setQuestions(questionsData.sort((a, b) => a.sort_order - b.sort_order));
+      setSurvey(surveyData.data);
+      setQuestions(questionsData.data);
 
       // 初始化表单值
       const initialValues: any = {};
-      questionsData.forEach(question => {
+      questionsData.data.forEach((question: { id: any; }) => {
         initialValues[`question_${question.id}`] = '';
       });
       form.setFieldsValue(initialValues);
@@ -89,7 +90,7 @@ const SurveyRespondent: React.FC<{ match: { params: { id: string } } }> = ({ mat
       }));
 
       // 提交回答
-      await submitResponse({
+      await createResponse({
         survey_id: surveyId,
         respondent: localStorage.getItem('userId') || 'anonymous',
         answers,
@@ -121,10 +122,10 @@ const SurveyRespondent: React.FC<{ match: { params: { id: string } } }> = ({ mat
 
   return (
     <div>
-      <PageHeader
-        title={survey.title || '问卷'}
-        subTitle={survey.description || ''}
-      />
+      {/*<Header*/}
+      {/*  title={survey.title || '问卷'}*/}
+      {/*  subTitle={survey.description || ''}*/}
+      {/*/>*/}
 
       <Steps current={currentStep} className="mb-8">
         {questions.map((question, index) => (
@@ -138,7 +139,7 @@ const SurveyRespondent: React.FC<{ match: { params: { id: string } } }> = ({ mat
         <Form form={form} layout="vertical">
           {/* 根据问题类型渲染不同的表单组件 */}
           {(() => {
-            switch (currentQuestion.question_type) {
+            switch (currentQuestion.type) {
               case 'single_choice':
                 return (
                   <Form.Item
@@ -146,8 +147,8 @@ const SurveyRespondent: React.FC<{ match: { params: { id: string } } }> = ({ mat
                     rules={currentQuestion.required ? [{ required: true, message: '请选择一个选项' }] : []}
                   >
                     <Select placeholder="请选择">
-                      {currentQuestion.options?.split(',').map(option => (
-                        <Option key={option} value={option}>{option}</Option>
+                      {currentQuestion.options.map(option => (
+                        <Option key={option.content} value={option.content}>{option.content}</Option>
                       ))}
                     </Select>
                   </Form.Item>
@@ -160,8 +161,8 @@ const SurveyRespondent: React.FC<{ match: { params: { id: string } } }> = ({ mat
                     rules={currentQuestion.required ? [{ required: true, message: '请至少选择一个选项' }] : []}
                   >
                     <Select mode="multiple" placeholder="请选择">
-                      {currentQuestion.options?.split(',').map(option => (
-                        <Option key={option} value={option}>{option}</Option>
+                      {currentQuestion.options.map(option => (
+                        <Option key={option.content} value={option.content}>{option.content}</Option>
                       ))}
                     </Select>
                   </Form.Item>
@@ -200,50 +201,50 @@ const SurveyRespondent: React.FC<{ match: { params: { id: string } } }> = ({ mat
                   </Form.Item>
                 );
 
-              case 'matrix_single':
-                const rows = currentQuestion.matrix_rows?.split(',') || [];
-                const columns = currentQuestion.matrix_columns?.split(',') || [];
-
-                return (
-                  <Form.Item
-                    name={`question_${currentQuestion.id}`}
-                    rules={currentQuestion.required ? [{ required: true, message: '请至少选择一个选项' }] : []}
-                  >
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full">
-                        <thead>
-                        <tr>
-                          <th className="py-2 px-4 border">选项</th>
-                          {columns.map(column => (
-                            <th key={column} className="py-2 px-4 border">{column}</th>
-                          ))}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {rows.map(row => (
-                          <tr key={row}>
-                            <td className="py-2 px-4 border">{row}</td>
-                            {columns.map(column => (
-                              <td key={column} className="py-2 px-4 border text-center">
-                                <input
-                                  type="radio"
-                                  name={`matrix_${currentQuestion.id}_${row}`}
-                                  value={`${row}|${column}`}
-                                  onChange={(e) => {
-                                    form.setFieldsValue({
-                                      [`question_${currentQuestion.id}`]: e.target.value,
-                                    });
-                                  }}
-                                />
-                              </td>
-                            ))}
-                          </tr>
-                        ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </Form.Item>
-                );
+              // case 'matrix_single':
+              //   const rows = currentQuestion.matrix_rows?.split(',') || [];
+              //   const columns = currentQuestion.matrix_columns?.split(',') || [];
+              //
+              //   return (
+              //     <Form.Item
+              //       name={`question_${currentQuestion.id}`}
+              //       rules={currentQuestion.required ? [{ required: true, message: '请至少选择一个选项' }] : []}
+              //     >
+              //       <div className="overflow-x-auto">
+              //         <table className="min-w-full">
+              //           <thead>
+              //           <tr>
+              //             <th className="py-2 px-4 border">选项</th>
+              //             {columns.map(column => (
+              //               <th key={column} className="py-2 px-4 border">{column}</th>
+              //             ))}
+              //           </tr>
+              //           </thead>
+              //           <tbody>
+              //           {rows.map(row => (
+              //             <tr key={row}>
+              //               <td className="py-2 px-4 border">{row}</td>
+              //               {columns.map(column => (
+              //                 <td key={column} className="py-2 px-4 border text-center">
+              //                   <input
+              //                     type="radio"
+              //                     name={`matrix_${currentQuestion.id}_${row}`}
+              //                     value={`${row}|${column}`}
+              //                     onChange={(e) => {
+              //                       form.setFieldsValue({
+              //                         [`question_${currentQuestion.id}`]: e.target.value,
+              //                       });
+              //                     }}
+              //                   />
+              //                 </td>
+              //               ))}
+              //             </tr>
+              //           ))}
+              //           </tbody>
+              //         </table>
+              //       </div>
+              //     </Form.Item>
+              //   );
 
               default:
                 return <div>不支持的问题类型</div>;

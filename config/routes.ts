@@ -32,7 +32,7 @@ export default [
     path: '/admin',
     name: 'admin',
     icon: 'crown',
-    access: 'canAdmin',
+
     routes: [
       {
         path: '/admin',
@@ -45,12 +45,12 @@ export default [
       },
     ],
   },
-  {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
-  },
+  // {
+  //   name: 'list.table-list',
+  //   icon: 'table',
+  //   path: '/list',
+  //   component: './TableList',
+  // },
   {
     path: '/Survey',
     name: '问卷管理',
@@ -58,6 +58,7 @@ export default [
     routes: [
       { path: '/Survey/List', component: '@/pages/Survey/List', name: '问卷列表' },
       { path: '/Survey/:id/design', component: '@/pages/Survey/Designer', name: '设计页面' , hideInMenu: true, },
+      { path: '/Survey/:id/respondent', component: '@/pages/Survey/Respondent', name: '答题'  },
     ],
   },
 

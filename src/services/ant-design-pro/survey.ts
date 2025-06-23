@@ -86,6 +86,7 @@ export async function createQuestion(options?: { [key: string]: any }) {
   });
 }
 export async function updateQuestion(options?: { [key: string]: any }) {
+  console.log(options)
   return request<Record<string, any>>(Urls.UpdateQuestion, {
     method: 'POST',
     data: {
@@ -126,6 +127,16 @@ export async function listQuestion(
 }
 
 export async function deleteQuestion(options?: { [key: string]: any }) {
+  return request<Record<string, any>>(Urls.DeleteQuestion, {
+    method: 'POST',
+    data: {
+      method: 'post',
+      ...(options || {}),
+    },
+  });
+}
+
+export async function createResponse(options?: { [key: string]: any }) {
   return request<Record<string, any>>(Urls.DeleteQuestion, {
     method: 'POST',
     data: {
