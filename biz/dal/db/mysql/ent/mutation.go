@@ -21,6 +21,7 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"kcers-survey/biz/dal/db/mysql/ent/token"
 	"kcers-survey/biz/dal/db/mysql/ent/user"
+	"kcers-survey/idl_gen/model/service"
 	"sync"
 	"time"
 
@@ -9357,11 +9358,9 @@ type SurveyQuestionMutation struct {
 	_type         *string
 	sort          *int64
 	addsort       *int64
-	to            *int64
-	addto         *int64
+	jump_rules    *service.JumpRules
 	required      *int64
 	addrequired   *int64
-	options       *map[string]string
 	clearedFields map[string]struct{}
 	option        map[int64]struct{}
 	removedoption map[int64]struct{}
@@ -10072,74 +10071,53 @@ func (m *SurveyQuestionMutation) ResetSort() {
 	delete(m.clearedFields, surveyquestion.FieldSort)
 }
 
-// SetTo sets the "to" field.
-func (m *SurveyQuestionMutation) SetTo(i int64) {
-	m.to = &i
-	m.addto = nil
+// SetJumpRules sets the "jump_rules" field.
+func (m *SurveyQuestionMutation) SetJumpRules(sr service.JumpRules) {
+	m.jump_rules = &sr
 }
 
-// To returns the value of the "to" field in the mutation.
-func (m *SurveyQuestionMutation) To() (r int64, exists bool) {
-	v := m.to
+// JumpRules returns the value of the "jump_rules" field in the mutation.
+func (m *SurveyQuestionMutation) JumpRules() (r service.JumpRules, exists bool) {
+	v := m.jump_rules
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldTo returns the old "to" field's value of the SurveyQuestion entity.
+// OldJumpRules returns the old "jump_rules" field's value of the SurveyQuestion entity.
 // If the SurveyQuestion object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SurveyQuestionMutation) OldTo(ctx context.Context) (v int64, err error) {
+func (m *SurveyQuestionMutation) OldJumpRules(ctx context.Context) (v service.JumpRules, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldTo is only allowed on UpdateOne operations")
+		return v, errors.New("OldJumpRules is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldTo requires an ID field in the mutation")
+		return v, errors.New("OldJumpRules requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTo: %w", err)
+		return v, fmt.Errorf("querying old value for OldJumpRules: %w", err)
 	}
-	return oldValue.To, nil
+	return oldValue.JumpRules, nil
 }
 
-// AddTo adds i to the "to" field.
-func (m *SurveyQuestionMutation) AddTo(i int64) {
-	if m.addto != nil {
-		*m.addto += i
-	} else {
-		m.addto = &i
-	}
+// ClearJumpRules clears the value of the "jump_rules" field.
+func (m *SurveyQuestionMutation) ClearJumpRules() {
+	m.jump_rules = nil
+	m.clearedFields[surveyquestion.FieldJumpRules] = struct{}{}
 }
 
-// AddedTo returns the value that was added to the "to" field in this mutation.
-func (m *SurveyQuestionMutation) AddedTo() (r int64, exists bool) {
-	v := m.addto
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearTo clears the value of the "to" field.
-func (m *SurveyQuestionMutation) ClearTo() {
-	m.to = nil
-	m.addto = nil
-	m.clearedFields[surveyquestion.FieldTo] = struct{}{}
-}
-
-// ToCleared returns if the "to" field was cleared in this mutation.
-func (m *SurveyQuestionMutation) ToCleared() bool {
-	_, ok := m.clearedFields[surveyquestion.FieldTo]
+// JumpRulesCleared returns if the "jump_rules" field was cleared in this mutation.
+func (m *SurveyQuestionMutation) JumpRulesCleared() bool {
+	_, ok := m.clearedFields[surveyquestion.FieldJumpRules]
 	return ok
 }
 
-// ResetTo resets all changes to the "to" field.
-func (m *SurveyQuestionMutation) ResetTo() {
-	m.to = nil
-	m.addto = nil
-	delete(m.clearedFields, surveyquestion.FieldTo)
+// ResetJumpRules resets all changes to the "jump_rules" field.
+func (m *SurveyQuestionMutation) ResetJumpRules() {
+	m.jump_rules = nil
+	delete(m.clearedFields, surveyquestion.FieldJumpRules)
 }
 
 // SetRequired sets the "required" field.
@@ -10210,55 +10188,6 @@ func (m *SurveyQuestionMutation) ResetRequired() {
 	m.required = nil
 	m.addrequired = nil
 	delete(m.clearedFields, surveyquestion.FieldRequired)
-}
-
-// SetOptions sets the "options" field.
-func (m *SurveyQuestionMutation) SetOptions(value map[string]string) {
-	m.options = &value
-}
-
-// Options returns the value of the "options" field in the mutation.
-func (m *SurveyQuestionMutation) Options() (r map[string]string, exists bool) {
-	v := m.options
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldOptions returns the old "options" field's value of the SurveyQuestion entity.
-// If the SurveyQuestion object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SurveyQuestionMutation) OldOptions(ctx context.Context) (v map[string]string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldOptions is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldOptions requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldOptions: %w", err)
-	}
-	return oldValue.Options, nil
-}
-
-// ClearOptions clears the value of the "options" field.
-func (m *SurveyQuestionMutation) ClearOptions() {
-	m.options = nil
-	m.clearedFields[surveyquestion.FieldOptions] = struct{}{}
-}
-
-// OptionsCleared returns if the "options" field was cleared in this mutation.
-func (m *SurveyQuestionMutation) OptionsCleared() bool {
-	_, ok := m.clearedFields[surveyquestion.FieldOptions]
-	return ok
-}
-
-// ResetOptions resets all changes to the "options" field.
-func (m *SurveyQuestionMutation) ResetOptions() {
-	m.options = nil
-	delete(m.clearedFields, surveyquestion.FieldOptions)
 }
 
 // AddOptionIDs adds the "option" edge to the SurveyQuestionOptions entity by ids.
@@ -10376,7 +10305,7 @@ func (m *SurveyQuestionMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SurveyQuestionMutation) Fields() []string {
-	fields := make([]string, 0, 13)
+	fields := make([]string, 0, 12)
 	if m.created_at != nil {
 		fields = append(fields, surveyquestion.FieldCreatedAt)
 	}
@@ -10407,14 +10336,11 @@ func (m *SurveyQuestionMutation) Fields() []string {
 	if m.sort != nil {
 		fields = append(fields, surveyquestion.FieldSort)
 	}
-	if m.to != nil {
-		fields = append(fields, surveyquestion.FieldTo)
+	if m.jump_rules != nil {
+		fields = append(fields, surveyquestion.FieldJumpRules)
 	}
 	if m.required != nil {
 		fields = append(fields, surveyquestion.FieldRequired)
-	}
-	if m.options != nil {
-		fields = append(fields, surveyquestion.FieldOptions)
 	}
 	return fields
 }
@@ -10444,12 +10370,10 @@ func (m *SurveyQuestionMutation) Field(name string) (ent.Value, bool) {
 		return m.GetType()
 	case surveyquestion.FieldSort:
 		return m.Sort()
-	case surveyquestion.FieldTo:
-		return m.To()
+	case surveyquestion.FieldJumpRules:
+		return m.JumpRules()
 	case surveyquestion.FieldRequired:
 		return m.Required()
-	case surveyquestion.FieldOptions:
-		return m.Options()
 	}
 	return nil, false
 }
@@ -10479,12 +10403,10 @@ func (m *SurveyQuestionMutation) OldField(ctx context.Context, name string) (ent
 		return m.OldType(ctx)
 	case surveyquestion.FieldSort:
 		return m.OldSort(ctx)
-	case surveyquestion.FieldTo:
-		return m.OldTo(ctx)
+	case surveyquestion.FieldJumpRules:
+		return m.OldJumpRules(ctx)
 	case surveyquestion.FieldRequired:
 		return m.OldRequired(ctx)
-	case surveyquestion.FieldOptions:
-		return m.OldOptions(ctx)
 	}
 	return nil, fmt.Errorf("unknown SurveyQuestion field %s", name)
 }
@@ -10564,12 +10486,12 @@ func (m *SurveyQuestionMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetSort(v)
 		return nil
-	case surveyquestion.FieldTo:
-		v, ok := value.(int64)
+	case surveyquestion.FieldJumpRules:
+		v, ok := value.(service.JumpRules)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetTo(v)
+		m.SetJumpRules(v)
 		return nil
 	case surveyquestion.FieldRequired:
 		v, ok := value.(int64)
@@ -10577,13 +10499,6 @@ func (m *SurveyQuestionMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetRequired(v)
-		return nil
-	case surveyquestion.FieldOptions:
-		v, ok := value.(map[string]string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetOptions(v)
 		return nil
 	}
 	return fmt.Errorf("unknown SurveyQuestion field %s", name)
@@ -10608,9 +10523,6 @@ func (m *SurveyQuestionMutation) AddedFields() []string {
 	if m.addsort != nil {
 		fields = append(fields, surveyquestion.FieldSort)
 	}
-	if m.addto != nil {
-		fields = append(fields, surveyquestion.FieldTo)
-	}
 	if m.addrequired != nil {
 		fields = append(fields, surveyquestion.FieldRequired)
 	}
@@ -10632,8 +10544,6 @@ func (m *SurveyQuestionMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedParentID()
 	case surveyquestion.FieldSort:
 		return m.AddedSort()
-	case surveyquestion.FieldTo:
-		return m.AddedTo()
 	case surveyquestion.FieldRequired:
 		return m.AddedRequired()
 	}
@@ -10680,13 +10590,6 @@ func (m *SurveyQuestionMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddSort(v)
 		return nil
-	case surveyquestion.FieldTo:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddTo(v)
-		return nil
 	case surveyquestion.FieldRequired:
 		v, ok := value.(int64)
 		if !ok {
@@ -10732,14 +10635,11 @@ func (m *SurveyQuestionMutation) ClearedFields() []string {
 	if m.FieldCleared(surveyquestion.FieldSort) {
 		fields = append(fields, surveyquestion.FieldSort)
 	}
-	if m.FieldCleared(surveyquestion.FieldTo) {
-		fields = append(fields, surveyquestion.FieldTo)
+	if m.FieldCleared(surveyquestion.FieldJumpRules) {
+		fields = append(fields, surveyquestion.FieldJumpRules)
 	}
 	if m.FieldCleared(surveyquestion.FieldRequired) {
 		fields = append(fields, surveyquestion.FieldRequired)
-	}
-	if m.FieldCleared(surveyquestion.FieldOptions) {
-		fields = append(fields, surveyquestion.FieldOptions)
 	}
 	return fields
 }
@@ -10785,14 +10685,11 @@ func (m *SurveyQuestionMutation) ClearField(name string) error {
 	case surveyquestion.FieldSort:
 		m.ClearSort()
 		return nil
-	case surveyquestion.FieldTo:
-		m.ClearTo()
+	case surveyquestion.FieldJumpRules:
+		m.ClearJumpRules()
 		return nil
 	case surveyquestion.FieldRequired:
 		m.ClearRequired()
-		return nil
-	case surveyquestion.FieldOptions:
-		m.ClearOptions()
 		return nil
 	}
 	return fmt.Errorf("unknown SurveyQuestion nullable field %s", name)
@@ -10832,14 +10729,11 @@ func (m *SurveyQuestionMutation) ResetField(name string) error {
 	case surveyquestion.FieldSort:
 		m.ResetSort()
 		return nil
-	case surveyquestion.FieldTo:
-		m.ResetTo()
+	case surveyquestion.FieldJumpRules:
+		m.ResetJumpRules()
 		return nil
 	case surveyquestion.FieldRequired:
 		m.ResetRequired()
-		return nil
-	case surveyquestion.FieldOptions:
-		m.ResetOptions()
 		return nil
 	}
 	return fmt.Errorf("unknown SurveyQuestion field %s", name)

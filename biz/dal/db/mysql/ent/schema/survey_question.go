@@ -8,6 +8,7 @@ import (
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"kcers-survey/biz/dal/db/mysql/ent/schema/mixins"
+	service "kcers-survey/idl_gen/model/service"
 )
 
 type SurveyQuestion struct {
@@ -23,9 +24,8 @@ func (SurveyQuestion) Fields() []ent.Field {
 		field.String("type").Optional().Default("").Comment("type"),
 
 		field.Int64("sort").Optional().Default(0).Comment("sort"),
-		field.Int64("to").Optional().Default(0).Comment("跳"),
+		field.JSON("jump_rules", service.JumpRules{}).Optional().Default(service.JumpRules{}).Comment("跳题规则"),
 		field.Int64("required").Optional().Default(1).Comment("是否必填 1必填 2选填"),
-		field.JSON("options", map[string]string{}).Optional().Comment("存储选项"),
 	}
 }
 

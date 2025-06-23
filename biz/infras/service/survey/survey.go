@@ -9,6 +9,7 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/predicate"
 	survey2 "kcers-survey/biz/dal/db/mysql/ent/survey"
 	surveyquestion2 "kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
+	surveyquestionoptions2 "kcers-survey/biz/dal/db/mysql/ent/surveyquestionoptions"
 	"kcers-survey/biz/infras/do"
 	"kcers-survey/biz/infras/service/common"
 	"kcers-survey/biz/pkg/utils"
@@ -93,7 +94,7 @@ func (s Survey) entToSurvey(v *ent.Survey) *service.Survey {
 }
 func (s Survey) entToQuestion(v *ent.SurveyQuestion) *service.Question {
 
-	return &service.Question{
+	sq := &service.Question{
 		Content:      v.Content,
 		Type:         v.Type,
 		Options:      nil,
@@ -101,10 +102,30 @@ func (s Survey) entToQuestion(v *ent.SurveyQuestion) *service.Question {
 		Sort:         v.Sort,
 		ID:           v.ID,
 		SubQuestions: nil,
-		JumpRules:    nil,
+		JumpRules:    &v.JumpRules,
 		SurveyId:     v.SurveyID,
 		ParentId:     v.ParentID,
 	}
+	option, _ := s.db.SurveyQuestionOptions.
+		Query().
+		Where(
+			surveyquestionoptions2.SurveyQuestionID(v.ID),
+			surveyquestionoptions2.DeleteEQ(0),
+		).
+		All(s.ctx)
+
+	if len(option) > 0 {
+		var options []*service.Options
+		for _, o := range option {
+			options = append(options, &service.Options{
+				Serial:  o.Serial,
+				Content: o.Content,
+			})
+		}
+		sq.Options = options
+	}
+
+	return sq
 }
 func (s Survey) ListSurvey(req *service.SurveyListReq) (resp []*service.Survey, total int, err error) {
 

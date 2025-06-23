@@ -8,6 +8,7 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestionoptions"
+	"kcers-survey/idl_gen/model/service"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -161,16 +162,16 @@ func (sqc *SurveyQuestionCreate) SetNillableSort(i *int64) *SurveyQuestionCreate
 	return sqc
 }
 
-// SetTo sets the "to" field.
-func (sqc *SurveyQuestionCreate) SetTo(i int64) *SurveyQuestionCreate {
-	sqc.mutation.SetTo(i)
+// SetJumpRules sets the "jump_rules" field.
+func (sqc *SurveyQuestionCreate) SetJumpRules(sr service.JumpRules) *SurveyQuestionCreate {
+	sqc.mutation.SetJumpRules(sr)
 	return sqc
 }
 
-// SetNillableTo sets the "to" field if the given value is not nil.
-func (sqc *SurveyQuestionCreate) SetNillableTo(i *int64) *SurveyQuestionCreate {
-	if i != nil {
-		sqc.SetTo(*i)
+// SetNillableJumpRules sets the "jump_rules" field if the given value is not nil.
+func (sqc *SurveyQuestionCreate) SetNillableJumpRules(sr *service.JumpRules) *SurveyQuestionCreate {
+	if sr != nil {
+		sqc.SetJumpRules(*sr)
 	}
 	return sqc
 }
@@ -186,12 +187,6 @@ func (sqc *SurveyQuestionCreate) SetNillableRequired(i *int64) *SurveyQuestionCr
 	if i != nil {
 		sqc.SetRequired(*i)
 	}
-	return sqc
-}
-
-// SetOptions sets the "options" field.
-func (sqc *SurveyQuestionCreate) SetOptions(m map[string]string) *SurveyQuestionCreate {
-	sqc.mutation.SetOptions(m)
 	return sqc
 }
 
@@ -296,9 +291,9 @@ func (sqc *SurveyQuestionCreate) defaults() {
 		v := surveyquestion.DefaultSort
 		sqc.mutation.SetSort(v)
 	}
-	if _, ok := sqc.mutation.To(); !ok {
-		v := surveyquestion.DefaultTo
-		sqc.mutation.SetTo(v)
+	if _, ok := sqc.mutation.JumpRules(); !ok {
+		v := surveyquestion.DefaultJumpRules
+		sqc.mutation.SetJumpRules(v)
 	}
 	if _, ok := sqc.mutation.Required(); !ok {
 		v := surveyquestion.DefaultRequired
@@ -376,17 +371,13 @@ func (sqc *SurveyQuestionCreate) createSpec() (*SurveyQuestion, *sqlgraph.Create
 		_spec.SetField(surveyquestion.FieldSort, field.TypeInt64, value)
 		_node.Sort = value
 	}
-	if value, ok := sqc.mutation.To(); ok {
-		_spec.SetField(surveyquestion.FieldTo, field.TypeInt64, value)
-		_node.To = value
+	if value, ok := sqc.mutation.JumpRules(); ok {
+		_spec.SetField(surveyquestion.FieldJumpRules, field.TypeJSON, value)
+		_node.JumpRules = value
 	}
 	if value, ok := sqc.mutation.Required(); ok {
 		_spec.SetField(surveyquestion.FieldRequired, field.TypeInt64, value)
 		_node.Required = value
-	}
-	if value, ok := sqc.mutation.Options(); ok {
-		_spec.SetField(surveyquestion.FieldOptions, field.TypeJSON, value)
-		_node.Options = value
 	}
 	if nodes := sqc.mutation.OptionIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

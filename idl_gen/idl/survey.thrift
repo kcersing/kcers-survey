@@ -95,7 +95,6 @@ struct JumpRules {
       4:optional string operators="" (api.raw = "operators")
 }
 
-
 struct Options {
 	  1:optional string serial="" (api.raw = "serial")
       2:optional string content="" (api.raw = "content")

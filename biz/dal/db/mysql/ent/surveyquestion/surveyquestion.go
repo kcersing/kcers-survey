@@ -3,6 +3,7 @@
 package surveyquestion
 
 import (
+	"kcers-survey/idl_gen/model/service"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -34,12 +35,10 @@ const (
 	FieldType = "type"
 	// FieldSort holds the string denoting the sort field in the database.
 	FieldSort = "sort"
-	// FieldTo holds the string denoting the to field in the database.
-	FieldTo = "to"
+	// FieldJumpRules holds the string denoting the jump_rules field in the database.
+	FieldJumpRules = "jump_rules"
 	// FieldRequired holds the string denoting the required field in the database.
 	FieldRequired = "required"
-	// FieldOptions holds the string denoting the options field in the database.
-	FieldOptions = "options"
 	// EdgeOption holds the string denoting the option edge name in mutations.
 	EdgeOption = "option"
 	// EdgeSurvey holds the string denoting the survey edge name in mutations.
@@ -75,9 +74,8 @@ var Columns = []string{
 	FieldContent,
 	FieldType,
 	FieldSort,
-	FieldTo,
+	FieldJumpRules,
 	FieldRequired,
-	FieldOptions,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -113,8 +111,8 @@ var (
 	DefaultType string
 	// DefaultSort holds the default value on creation for the "sort" field.
 	DefaultSort int64
-	// DefaultTo holds the default value on creation for the "to" field.
-	DefaultTo int64
+	// DefaultJumpRules holds the default value on creation for the "jump_rules" field.
+	DefaultJumpRules service.JumpRules
 	// DefaultRequired holds the default value on creation for the "required" field.
 	DefaultRequired int64
 )
@@ -175,11 +173,6 @@ func ByType(opts ...sql.OrderTermOption) OrderOption {
 // BySort orders the results by the sort field.
 func BySort(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSort, opts...).ToFunc()
-}
-
-// ByTo orders the results by the to field.
-func ByTo(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldTo, opts...).ToFunc()
 }
 
 // ByRequired orders the results by the required field.

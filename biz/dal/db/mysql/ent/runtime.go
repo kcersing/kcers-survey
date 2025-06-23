@@ -18,6 +18,7 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"kcers-survey/biz/dal/db/mysql/ent/token"
 	"kcers-survey/biz/dal/db/mysql/ent/user"
+	"kcers-survey/idl_gen/model/service"
 	"time"
 )
 
@@ -334,10 +335,10 @@ func init() {
 	surveyquestionDescSort := surveyquestionFields[4].Descriptor()
 	// surveyquestion.DefaultSort holds the default value on creation for the sort field.
 	surveyquestion.DefaultSort = surveyquestionDescSort.Default.(int64)
-	// surveyquestionDescTo is the schema descriptor for to field.
-	surveyquestionDescTo := surveyquestionFields[5].Descriptor()
-	// surveyquestion.DefaultTo holds the default value on creation for the to field.
-	surveyquestion.DefaultTo = surveyquestionDescTo.Default.(int64)
+	// surveyquestionDescJumpRules is the schema descriptor for jump_rules field.
+	surveyquestionDescJumpRules := surveyquestionFields[5].Descriptor()
+	// surveyquestion.DefaultJumpRules holds the default value on creation for the jump_rules field.
+	surveyquestion.DefaultJumpRules = surveyquestionDescJumpRules.Default.(service.JumpRules)
 	// surveyquestionDescRequired is the schema descriptor for required field.
 	surveyquestionDescRequired := surveyquestionFields[6].Descriptor()
 	// surveyquestion.DefaultRequired holds the default value on creation for the required field.

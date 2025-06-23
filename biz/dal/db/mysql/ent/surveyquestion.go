@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
+	"kcers-survey/idl_gen/model/service"
 	"strings"
 	"time"
 
@@ -40,12 +41,10 @@ type SurveyQuestion struct {
 	Type string `json:"type,omitempty"`
 	// sort
 	Sort int64 `json:"sort,omitempty"`
-	// 跳
-	To int64 `json:"to,omitempty"`
+	// 跳题规则
+	JumpRules service.JumpRules `json:"jump_rules,omitempty"`
 	// 是否必填 1必填 2选填
 	Required int64 `json:"required,omitempty"`
-	// 存储选项
-	Options map[string]string `json:"options,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SurveyQuestionQuery when eager-loading is set.
 	Edges        SurveyQuestionEdges `json:"edges"`
@@ -88,9 +87,9 @@ func (*SurveyQuestion) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case surveyquestion.FieldOptions:
+		case surveyquestion.FieldJumpRules:
 			values[i] = new([]byte)
-		case surveyquestion.FieldID, surveyquestion.FieldDelete, surveyquestion.FieldCreatedID, surveyquestion.FieldStatus, surveyquestion.FieldSurveyID, surveyquestion.FieldParentID, surveyquestion.FieldSort, surveyquestion.FieldTo, surveyquestion.FieldRequired:
+		case surveyquestion.FieldID, surveyquestion.FieldDelete, surveyquestion.FieldCreatedID, surveyquestion.FieldStatus, surveyquestion.FieldSurveyID, surveyquestion.FieldParentID, surveyquestion.FieldSort, surveyquestion.FieldRequired:
 			values[i] = new(sql.NullInt64)
 		case surveyquestion.FieldContent, surveyquestion.FieldType:
 			values[i] = new(sql.NullString)
@@ -177,25 +176,19 @@ func (sq *SurveyQuestion) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sq.Sort = value.Int64
 			}
-		case surveyquestion.FieldTo:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field to", values[i])
-			} else if value.Valid {
-				sq.To = value.Int64
+		case surveyquestion.FieldJumpRules:
+			if value, ok := values[i].(*[]byte); !ok {
+				return fmt.Errorf("unexpected type %T for field jump_rules", values[i])
+			} else if value != nil && len(*value) > 0 {
+				if err := json.Unmarshal(*value, &sq.JumpRules); err != nil {
+					return fmt.Errorf("unmarshal field jump_rules: %w", err)
+				}
 			}
 		case surveyquestion.FieldRequired:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field required", values[i])
 			} else if value.Valid {
 				sq.Required = value.Int64
-			}
-		case surveyquestion.FieldOptions:
-			if value, ok := values[i].(*[]byte); !ok {
-				return fmt.Errorf("unexpected type %T for field options", values[i])
-			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &sq.Options); err != nil {
-					return fmt.Errorf("unmarshal field options: %w", err)
-				}
 			}
 		default:
 			sq.selectValues.Set(columns[i], values[i])
@@ -273,14 +266,11 @@ func (sq *SurveyQuestion) String() string {
 	builder.WriteString("sort=")
 	builder.WriteString(fmt.Sprintf("%v", sq.Sort))
 	builder.WriteString(", ")
-	builder.WriteString("to=")
-	builder.WriteString(fmt.Sprintf("%v", sq.To))
+	builder.WriteString("jump_rules=")
+	builder.WriteString(fmt.Sprintf("%v", sq.JumpRules))
 	builder.WriteString(", ")
 	builder.WriteString("required=")
 	builder.WriteString(fmt.Sprintf("%v", sq.Required))
-	builder.WriteString(", ")
-	builder.WriteString("options=")
-	builder.WriteString(fmt.Sprintf("%v", sq.Options))
 	builder.WriteByte(')')
 	return builder.String()
 }
