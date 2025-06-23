@@ -2,7 +2,6 @@ import { createSurvey, deleteSurvey, listSurvey, updateSurvey } from '@/services
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
-  FooterToolbar,
   ModalForm,
   PageContainer,
   ProDescriptions,
@@ -15,6 +14,7 @@ import { Button, Drawer, Input, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from '@/pages/Survey/List/components/UpdateForm';
 import UpdateForm from '@/pages/Survey/List/components/UpdateForm';
+import { history } from '@@/core/history';
 
 /**
  * @en-US Add node
@@ -61,24 +61,22 @@ const handleUpdate = async (fields: FormValueType) => {
 };
 
 /**
- *  Delete node
- * @zh-CN 删除节点
+ *  Delete
+ * @zh-CN 删除
  *
- * @param selectedRows
+ * @param selectedRow
  */
-const handleRemove = async (selectedRows: API.Survey[]) => {
+const remove = async (selectedRow: API.Survey) => {
   const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
+  if (!selectedRow) return true;
   try {
-    await deleteSurvey({
-      key: selectedRows.map((row) => row.key),
-    });
+    await deleteSurvey({ 'id':selectedRow.id });
     hide();
-    message.success('Deleted successfully and will refresh soon');
+    message.success('删除成功,即将刷新');
     return true;
   } catch (error) {
     hide();
-    message.error('Delete failed, please try again');
+    message.error('删除失败，请重试');
     return false;
   }
 };
@@ -100,7 +98,7 @@ const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
 
   const [currentRow, setCurrentRow] = useState<API.Survey>();
-  const [selectedRowsState, setSelectedRows] = useState<API.Survey[]>([]);
+
 
   /**
    * @en-US International configuration
@@ -134,14 +132,14 @@ const TableList: React.FC = () => {
     {
       title: '创建时间',
       sorter: true,
-      dataIndex: 'created_at',
+      dataIndex: 'createdAt',
       valueType: 'dateTime',
       renderFormItem: (item, { defaultRender, ...rest }, form) => {
         const status = form.getFieldValue('status');
-        if (`${status}` === '0') {
+        if (`${status}` === '1') {
           return false;
         }
-        if (`${status}` === '3') {
+        if (`${status}` === '2') {
           return (
             <Input
               {...rest}
@@ -157,25 +155,21 @@ const TableList: React.FC = () => {
     },
 
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      title: '操作',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a
-          key="config"
-          onClick={() => {
-            handleUpdateModalOpen(true);
-            setCurrentRow(record);
-          }}
-        >
-          <FormattedMessage id="pages.searchTable.config" defaultMessage="Configuration" />
-        </a>,
-        <a key="subscribeAlert" href="https://procomponents.ant.design/">
-          <FormattedMessage
-            id="pages.searchTable.subscribeAlert"
-            defaultMessage="Subscribe to alerts"
-          />
-        </a>,
+        <a key="config" onClick={() => {
+          handleUpdateModalOpen(true);
+          setCurrentRow(record);}
+        }>编辑</a>,
+
+
+        <a  key="config" onClick={() => {history.push(`/Survey/${record.id}/design`)}}>设计</a>,
+        <a  key="config" onClick={() => { history.push(`/Survey/${record.id}/respond`)}}>预览</a>,
+        <a  key="config" onClick={() => { history.push(`/Survey/${record.id}/statistics`)}}>统计</a>,
+        <a  key="remove" onClick={() => { remove(record).then()}}>删除</a>,
+
       ],
     },
   ];
@@ -189,9 +183,7 @@ const TableList: React.FC = () => {
         })}
         actionRef={actionRef}
         rowKey="key"
-        search={{
-          labelWidth: 120,
-        }}
+        search={{labelWidth: 120,}}
         toolBarRender={() => [
           <Button
             type="primary"
@@ -206,58 +198,13 @@ const TableList: React.FC = () => {
 
         request={listSurvey}
         columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            setSelectedRows(selectedRows);
-          },
-        }}
+
 
       />
-      {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
-              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
-              &nbsp;&nbsp;
-              <span>
-                <FormattedMessage
-                  id="pages.searchTable.totalServiceCalls"
-                  defaultMessage="Total number of service calls"
-                />{' '}
-                {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)}{' '}
-                <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
-              </span>
-            </div>
-          }
-        >
-          <Button
-            onClick={async () => {
-              await handleRemove(selectedRowsState);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            }}
-          >
-            <FormattedMessage
-              id="pages.searchTable.batchDeletion"
-              defaultMessage="Batch deletion"
-            />
-          </Button>
-          <Button type="primary">
-            <FormattedMessage
-              id="pages.searchTable.batchApproval"
-              defaultMessage="Batch approval"
-            />
-          </Button>
-        </FooterToolbar>
-      )}
+
       <ModalForm
-        title={intl.formatMessage({
-          id: 'pages.searchTable.createForm.newRule',
-          defaultMessage: 'New rule',
-        })}
-        width="400px"
+        title='新建问卷调查'
+        width="600px"
         open={createModalOpen}
         onOpenChange={handleModalOpen}
         onFinish={async (value) => {
@@ -274,18 +221,13 @@ const TableList: React.FC = () => {
           rules={[
             {
               required: true,
-              message: (
-                <FormattedMessage
-                  id="pages.searchTable.ruleName"
-                  defaultMessage="Rule name is required"
-                />
-              ),
+              message: '标题为必填项',
             },
           ]}
-          width="md"
-          name="name"
+
+          name="title"
         />
-        <ProFormTextArea width="md" name="desc" />
+        <ProFormTextArea  name="desc" />
       </ModalForm>
       <UpdateForm
         onSubmit={async (value) => {
@@ -317,15 +259,15 @@ const TableList: React.FC = () => {
         }}
         closable={false}
       >
-        {currentRow?.name && (
+        {currentRow?.title && (
           <ProDescriptions<API.Survey>
-            column={2}
-            title={currentRow?.name}
+            column={1}
+            title={currentRow?.title}
             request={async () => ({
               data: currentRow || {},
             })}
             params={{
-              id: currentRow?.name,
+              id: currentRow?.id,
             }}
             columns={columns as ProDescriptionsItemProps<API.Survey>[]}
           />

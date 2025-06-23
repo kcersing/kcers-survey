@@ -56,14 +56,25 @@ export default [
     name: '问卷管理',
     icon: 'form',
     routes: [
-      { path: '/Survey/list', component: '@/pages/Survey/List', name: '问卷列表' },
-      { path: '/Survey/create', component: '@/pages/Survey/Edit', name: '创建问卷' },
-      { path: '/Survey/:id/edit', component: '@/pages/Survey/Edit', name: '编辑问卷' },
-      { path: '/Survey/:id/design', component: '@/pages/Survey/Designer', name: '设计问卷' },
-      // { path: '/survey/:id/respond', component: '@/pages/survey/Respondent', name: '填写问卷' },
-      // { path: '/survey/:id/statistics', component: '@/pages/survey/Statistics', name: '统计分析' },
+      { path: '/Survey/List', component: '@/pages/Survey/List', name: '问卷列表' },
+      { path: '/Survey/:id/design', component: '@/pages/Survey/Designer', name: '设计页面' , hideInMenu: true, },
     ],
   },
+
+
+  // {
+  //   path: '/Survey',
+  //   name: '问卷管理',
+  //   icon: 'form',
+  //   routes: [
+  //     { path: '/Survey/list', component: '@/pages/Survey/List', name: '问卷列表' },
+  //     { path: '/Survey/create', component: '@/pages/Survey/Edit', name: '创建问卷' },
+  //     { path: '/Survey/:id/edit', component: '@/pages/Survey/Edit', name: '编辑问卷' },
+  //     { path: '/Survey/:id/design', component: '@/pages/Survey/Designer', name: '设计问卷' },
+  //     // { path: '/survey/:id/respond', component: '@/pages/survey/Respondent', name: '填写问卷' },
+  //     // { path: '/survey/:id/statistics', component: '@/pages/survey/Statistics', name: '统计分析' },
+  //   ],
+  // },
   {
     path: '/',
     redirect: '/welcome',
