@@ -83,4 +83,4 @@ Aliyun:
       TemplateCode :
 
 Swagger:
-  url : http://182.92.143.234:9039/swagger/doc.json
+  url : http://127.0.0.1:9039/swagger/doc.json
