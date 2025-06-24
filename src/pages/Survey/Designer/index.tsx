@@ -8,12 +8,9 @@ import {
   ProFormRadio,
   ProFormSelect,
   ProFormText,
-  ProFormDateTimePicker,
-  ProFormTextArea,
   ProCard,
   ProFormDigit,
-  DragSortTable,
-
+  ProTable,
   ProFormGroup,
   ProFormList,
 
@@ -70,39 +67,25 @@ const Designer =  () => {
   };
 
 
+  // const dragHandleRender = (rowData: any, idx: any) => (
+  //   <>
+  //     <MenuOutlined style={{ cursor: 'grab', color: 'gold' }} />
+  //     &nbsp;{idx + 1} - {rowData.name}
+  //   </>
+  // );
 
-  const handleDragSortEnd = (
-    beforeIndex: number,
-    afterIndex: number,
-    newDataSource: any,
-  ) => {
-    console.log('beforeIndex', beforeIndex);
-    console.log('afterIndex', afterIndex);
-    console.log('排序后的数据', newDataSource);
-    setQuestions(newDataSource)
-    // 请求成功之后刷新列表
-    actionRef.current?.reload();
-    message.success('修改列表排序成功');
-  };
-
-  const dragHandleRender = (rowData: any, idx: any) => (
-    <>
-      <MenuOutlined style={{ cursor: 'grab', color: 'gold' }} />
-      &nbsp;{idx + 1} - {rowData.name}
-    </>
-  );
-
-  const columns: ProColumns[] = [
+  const columns: ProColumns<API.Questions>[] = [
     {
       title: '排序',
       dataIndex: 'sort',
-      width: 60,
+      width: 120,
       className: 'drag-visible',
     },
     {
       title: '问题内容',
       dataIndex: 'content',
       className: 'drag-visible',
+      ellipsis: true,
     },
     {
       title: '问题类型',
@@ -133,7 +116,7 @@ const Designer =  () => {
       key: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a key="ex" onClick={() => handleEditQuestion(record)}>编辑</a>,
+        <a key="ex" onClick={() =>  handleEditQuestion(record)}>编辑</a>,
         <a key="de" onClick={() => handleDeleteQuestion(record.id)} >删除</a>,
       ],
     },
@@ -197,7 +180,7 @@ const Designer =  () => {
 
   const handleEditQuestion = (question: API.Questions) => {
     // 填充表单和状态
-
+    handleAddQuestion()
     form.setFieldsValue({
       content: question.content,
       question_type: question.type,
@@ -212,6 +195,7 @@ const Designer =  () => {
 
     if (question.type === 'single_choice' || question.type === 'multiple_choice') {
        setOptions(question.options);
+
     }
     // else if (question.type === 'matrix_single') {
       // setMatrixRows(question.matrixRows?.split(',') || []);
@@ -230,208 +214,198 @@ const Designer =  () => {
     }
   };
 
-
-
   return (
-<>
-    <ProCard
-      title={`问卷设计: ${survey.title || '加载中...'}`}
-      extra={[
-        <Button key="preview" href={`/survey/${surveyId}/respond`}>
-          预览问卷
-        </Button>,
-        <Button key="add" type="primary" onClick={handleAddQuestion}>
-          <PlusOutlined /> 添加问题
-        </Button>,
-      ]}
-    >
-
-      <DragSortTable<API.Questions>
-        actionRef={actionRef}
-        headerTitle="拖拽排序(默认把手)"
-        columns={columns}
-        rowKey="id"
-        search={false}
-        pagination={false}
-        loading={loading}
-        dataSource={questions}
-        dragSortKey="sort"
-
-        dragSortHandlerRender={dragHandleRender}
-        onDragSortEnd={handleDragSortEnd}
-
-        // request={request}
-
-
-      />
-    </ProCard>
-
-
-  {/* 问题编辑模态框 */}
-  <Modal
-    title={editingQuestion ? '编辑问题' : '添加问题'}
-    open={visible}
-    onCancel={() => setVisible(false)}
-    footer={null}
-    width={800}
-  >
-    <ProForm
-      form={form}
-      layout="vertical"
-      initialValues={editingQuestion || { required: true, sort: questions.length + 1 }}
-
-
-
-      submitter={{
-        // 配置按钮文本
-        searchConfig: {
-          resetText: '重置',
-          submitText: '提交',
-        },
-        // 配置按钮的属性
-        resetButtonProps: {
-          style: {
-            // 隐藏重置按钮
-            display: 'none',
-          },
-        },
-        submitButtonProps: {},
-
-        // 完全自定义整个区域
-        render: (props, doms) => {
-          console.log(props);
-          return  <div className="flex justify-end mt-4">
-            <Button onClick={() => setVisible(false)} style={{ marginRight: 8 }}>
-              取消
-            </Button>
-            <Button type="primary" onClick={handleSaveQuestion}>
-              保存
-            </Button>
-          </div>;
-        },
-      }}
-    >
-      <ProFormSelect
-        name="parentId"
-        label="上级问题"
-        showSearch
-        request={async ({ keyWords }) => {
-          const questionAll =   await listQuestion({surveyId:surveyId,keywords:keyWords});
-
-          return questionAll.data.map(q => ({
-            value: q.id,
-            label: q.content,
-          }));
-
-        }}
-
-        rules={[{ required: true, message: 'Please select your country!' }]}
-        style={{ width: '100%' }}
-        placeholder="Please select"
-        onChange={handleChange}
-      />
-
-
-
-      <ProFormText
-        name="content"
-        label="问题内容"
-        rules={[{ required: true, message: '请输入问题内容' }]}
-        rows={3}
-      />
-
-      <ProFormSelect
-        name="question_type"
-        label="问题类型"
-        onChange={(value) => setQuestionType(value as QuestionType)}
-        options={[
-          { label: '标题', value: 'h2' },
-          { label: '单页', value: 'page' },
-          { label: '单选题', value: 'single_choice' },
-          { label: '多选题', value: 'multiple_choice' },
-          { label: '文本题', value: 'text' },
-          { label: '数字题', value: 'number' },
-          { label: '日期题', value: 'date' },
-          { label: '评分', value: 'rate' },
-
-          // { label: '矩阵单选题', value: 'matrix_single' },
+    <>
+      <ProCard
+        title={`问卷设计: ${survey.title || '加载中...'}`}
+        extra={[
+          <Button key="preview" href={`/survey/${surveyId}/respond`}>
+            预览问卷
+          </Button>,
+          <Button key="add" type="primary" onClick={handleAddQuestion}>
+            <PlusOutlined /> 添加问题
+          </Button>,
         ]}
-      />
+      >
+        <ProTable<API.Questions>
+          actionRef={actionRef}
+          columns={columns}
+          rowKey="id"
+          search={false}
+          pagination={false}
+          loading={loading}
+          dataSource={questions}
 
-      <ProFormRadio.Group
-        name="required"
-        label="是否必填"
-        options={[
-          { label: '是', value: 1 },
-          { label: '否', value: 2 },
-        ]}
-      />
+          columnWidth={12}
+          defaultExpandAllRows={true}
+          // request={request}
+        />
+      </ProCard>
 
-      <ProFormDigit
-        name="sort"
-        label="排序"
-        min={1}
-        max={10}
-        fieldProps={{ precision: 0 }}
-        placeholder="请输入排序号"
-      />
+      {/* 问题编辑模态框 */}
+      <Modal
+        title={editingQuestion ? '编辑问题' : '添加问题'}
+        open={visible}
+        onCancel={() => setVisible(false)}
+        footer={null}
+        width={800}
+      >
+        <ProForm
+          form={form}
+          layout="vertical"
+          initialValues={editingQuestion || { required: true, sort: questions.length + 1 }}
+          submitter={{
+            // 配置按钮文本
+            searchConfig: {
+              resetText: '重置',
+              submitText: '提交',
+            },
+            // 配置按钮的属性
+            resetButtonProps: {
+              style: {
+                // 隐藏重置按钮
+                display: 'none',
+              },
+            },
+            submitButtonProps: {},
 
-      {/* 选项设置（针对单选题和多选题） */}
-      {['single_choice', 'multiple_choice'].includes(questionType) && (
-        <div>
-          <h3 className="font-medium mb-2">选项设置</h3>
-          <ProFormList
-            copyIconProps={{ Icon: SnippetsOutlined, }}
-            initialValue={options.option}
-            deleteIconProps={{ Icon: CloseOutlined, }}
-            name="options"
-          >
-            <ProFormText hidden={true}   name="serial" label="序号" />
-            <ProFormText name="content" label="选项" />
-          </ProFormList>
+            // 完全自定义整个区域
+            render: (props, doms) => {
+              console.log(props);
+              return (
+                <div className="flex justify-end mt-4">
+                  <Button onClick={() => setVisible(false)} style={{ marginRight: 8 }}>
+                    取消
+                  </Button>
+                  <Button type="primary" onClick={handleSaveQuestion}>
+                    保存
+                  </Button>
+                </div>
+              );
+            },
+          }}
+        >
+          <ProFormSelect
+            name="parentId"
+            label="上级问题"
+            showSearch
+            request={async ({ keyWords }) => {
+              const questionAll = await listQuestion({ surveyId: surveyId, keywords: keyWords });
 
-        </div>
-      )}
+              return questionAll.data.map((q) => ({
+                value: q.id,
+                label: q.content,
+              }));
+            }}
+            rules={[{ required: true, message: 'Please select your country!' }]}
+            style={{ width: '100%' }}
+            placeholder="Please select"
+            onChange={handleChange}
+          />
 
-      {/* 矩阵设置（针对矩阵单选题） */}
-      {/*{questionType === 'matrix_single' && (*/}
-      {/*  <div>*/}
-      {/*    <h3 className="font-medium mb-3">矩阵设置</h3>*/}
+          <ProFormText
+            name="content"
+            label="问题内容"
+            rules={[{ required: true, message: '请输入问题内容' }]}
+            rows={3}
+          />
 
-      {/*    <div className="mb-6">*/}
-      {/*      <h4 className="font-medium mb-2">行设置</h4>*/}
-      {/*      <ProFormList*/}
-      {/*        copyIconProps={{ Icon: SnippetsOutlined, }}*/}
-      {/*        // initialValue={options.option}*/}
-      {/*        deleteIconProps={{ Icon: CloseOutlined, }}*/}
-      {/*        name="rows"*/}
-      {/*      >*/}
-      {/*        <ProFormText hidden={true}   name="serial" label="序号" />*/}
-      {/*        <ProFormText name="content" label="行" />*/}
-      {/*      </ProFormList>*/}
-      {/*    </div>*/}
-      {/*    <div>*/}
-      {/*      <h4 className="font-medium mb-2">列设置</h4>*/}
-      {/*      <ProFormList*/}
-      {/*        copyIconProps={{ Icon: SnippetsOutlined, }}*/}
-      {/*        // initialValue={options.option}*/}
-      {/*        deleteIconProps={{ Icon: CloseOutlined, }}*/}
-      {/*        name="columns"*/}
-      {/*      >*/}
-      {/*        <ProFormText hidden={true}   name="serial" label="序号" />*/}
-      {/*        <ProFormText name="content" label="列" />*/}
-      {/*      </ProFormList>*/}
-      {/*    </div>*/}
-      {/*  </div>*/}
-      {/*)}*/}
+          <ProFormSelect
+            name="question_type"
+            label="问题类型"
+            onChange={(value) => setQuestionType(value as QuestionType)}
+            options={[
+              { label: '标题', value: 'h2' },
+              { label: '单页', value: 'page' },
+              { label: '单选题', value: 'single_choice' },
+              { label: '多选题', value: 'multiple_choice' },
+              { label: '文本题', value: 'text' },
+              { label: '数字题', value: 'number' },
+              { label: '日期题', value: 'date' },
+              { label: '评分', value: 'rate' },
 
-      <Divider />
+              // { label: '矩阵单选题', value: 'matrix_single' },
+            ]}
+          />
+
+          <ProFormRadio.Group
+            name="required"
+            label="是否必填"
+            options={[
+              { label: '是', value: 1 },
+              { label: '否', value: 2 },
+            ]}
+          />
+
+          <ProFormDigit
+            name="sort"
+            label="排序"
+            min={1}
+            max={10}
+            fieldProps={{ precision: 0 }}
+            placeholder="请输入排序号"
+          />
+          {console.log(options)}
+          {console.log(questionType)}
+          {console.log(['single_choice', 'multiple_choice'].includes(questionType))}
+          {/* 选项设置（针对单选题和多选题） */}
+          {['single_choice', 'multiple_choice'].includes(questionType) && (
+            <div>
+              <h3 className="font-medium mb-2">选项设置</h3>
+
+              <ProFormList
+                copyIconProps={{ Icon: SnippetsOutlined }}
+                initialValue={options}
+                deleteIconProps={{ Icon: CloseOutlined }}
+                name="options"
+              >
+                <ProFormGroup key="group">
+                <ProFormText key="serial" hidden={true} name="serial" label="序号" />
+                <ProFormText key="content" name="content" label="选项" />
+                </ProFormGroup>
+              </ProFormList>
 
 
-    </ProForm>
-  </Modal>
 
-</>
+            </div>
+          )}
+
+          {/* 矩阵设置（针对矩阵单选题） */}
+          {/*{questionType === 'matrix_single' && (*/}
+          {/*  <div>*/}
+          {/*    <h3 className="font-medium mb-3">矩阵设置</h3>*/}
+
+          {/*    <div className="mb-6">*/}
+          {/*      <h4 className="font-medium mb-2">行设置</h4>*/}
+          {/*      <ProFormList*/}
+          {/*        copyIconProps={{ Icon: SnippetsOutlined, }}*/}
+          {/*        // initialValue={options.option}*/}
+          {/*        deleteIconProps={{ Icon: CloseOutlined, }}*/}
+          {/*        name="rows"*/}
+          {/*      >*/}
+          {/*        <ProFormText hidden={true}   name="serial" label="序号" />*/}
+          {/*        <ProFormText name="content" label="行" />*/}
+          {/*      </ProFormList>*/}
+          {/*    </div>*/}
+          {/*    <div>*/}
+          {/*      <h4 className="font-medium mb-2">列设置</h4>*/}
+          {/*      <ProFormList*/}
+          {/*        copyIconProps={{ Icon: SnippetsOutlined, }}*/}
+          {/*        // initialValue={options.option}*/}
+          {/*        deleteIconProps={{ Icon: CloseOutlined, }}*/}
+          {/*        name="columns"*/}
+          {/*      >*/}
+          {/*        <ProFormText hidden={true}   name="serial" label="序号" />*/}
+          {/*        <ProFormText name="content" label="列" />*/}
+          {/*      </ProFormList>*/}
+          {/*    </div>*/}
+          {/*  </div>*/}
+          {/*)}*/}
+
+          <Divider />
+        </ProForm>
+      </Modal>
+    </>
   );
 };
 export default Designer;
