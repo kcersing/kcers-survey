@@ -142,7 +142,7 @@ declare namespace API {
     content?: string;
     required?: number;
     options?: Options[];
-    subQuestions?: Questions[];
+    children?: Questions[];
     surveyId?: number;
     parentId?: number;
     jumpRules?: JumpRules;

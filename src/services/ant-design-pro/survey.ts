@@ -49,11 +49,12 @@ export async function listSurvey(
     current?: number;
     /** 页面的容量 */
     pageSize?: number;
+    keywords?: string;
   },
   options?: { [key: string]: any },
 ) {
 
-  return request<API.Survey>(Urls.ListSurvey, {
+  return request<Record<string, any>>(Urls.ListSurvey, {
     method: 'POST',
     params: {
       page: params.current,
@@ -107,6 +108,8 @@ export async function getQuestion(options?: { [key: string]: any }) {
 
 export async function listQuestion(
     params: {
+      surveyId?: number;
+      keywords?:string;
       // query
       /** 当前的页码 */
       current?: number;
@@ -115,8 +118,7 @@ export async function listQuestion(
     },
     options?: { [key: string]: any },
 ) {
-
-  return request<API.Survey>(Urls.ListQuestion, {
+  return request<Record<string, any>>(Urls.ListQuestion, {
     method: 'POST',
     params: {
       page: params.current,

@@ -19,11 +19,11 @@ import {
 
 } from '@ant-design/pro-components';
 import { Button, message, Modal, Divider ,Segmented } from 'antd';
-import { listQuestion, getSurvey,createQuestion, updateQuestion, deleteQuestion } from '@/services/ant-design-pro/survey';
+import { listQuestion, getSurvey,createQuestion, updateQuestion, deleteQuestion,listSurvey } from '@/services/ant-design-pro/survey';
 
 import { DeleteOutlined, MenuOutlined, PlusOutlined ,CloseCircleOutlined, SmileOutlined, SnippetsOutlined,CloseOutlined} from '@ant-design/icons';
 
-type QuestionType = 'single_choice' | 'multiple_choice' | 'text' | 'number' | 'date' | 'matrix_single';
+type QuestionType = 'h2' | 'page' | 'rate' | 'single_choice' | 'multiple_choice' | 'text' | 'number' | 'date' | 'matrix_single';
 
 
 const Designer =  () => {
@@ -38,13 +38,13 @@ const Designer =  () => {
   const [editingQuestion, setEditingQuestion] = useState<API.Questions | null>(null);
   const [questionType, setQuestionType] = useState<QuestionType>('single_choice');
   const [options, setOptions] = useState<API.Options[]>([]);
-  const [matrixRows, setMatrixRows] = useState<string[]>([]);
-  const [matrixColumns, setMatrixColumns] = useState<string[]>([]);
+  // const [matrixRows, setMatrixRows] = useState<string[]>([]);
+  // const [matrixColumns, setMatrixColumns] = useState<string[]>([]);
   const [form] = ProForm.useForm();
 
 
   let params = useParams();
-  const surveyId =parseInt(params.id as number)
+  const surveyId =parseInt(params.id)
   useEffect(() => {
     loadSurveyAndQuestions();
   }, []);
@@ -55,8 +55,8 @@ const Designer =  () => {
 
       // 并行加载问卷和问题
       const [surveyData, questionsData] = await Promise.all([
-        getSurvey({'id':surveyId}),
-        listQuestion({'surveyId':surveyId}),
+        getSurvey({id:surveyId}),
+        listQuestion({surveyId:surveyId}),
       ]);
 
       setSurvey(surveyData.data);
@@ -108,11 +108,14 @@ const Designer =  () => {
       title: '问题类型',
       dataIndex: 'type',
       valueEnum: {
+        h2:'标题',
+        page:'单页',
         single_choice: '单选题',
         multiple_choice: '多选题',
         text: '文本题',
         number: '数字题',
         date: '日期题',
+        rate:'评分',
         // matrix_single: '矩阵题',
       },
     },
@@ -137,6 +140,9 @@ const Designer =  () => {
   ];
 
 
+  const handleChange = (value: string[]) => {
+    console.log(`selected ${value}`);
+  };
 
   const handleAddQuestion = () => {
     // 重置表单和状态
@@ -144,8 +150,8 @@ const Designer =  () => {
     setEditingQuestion(null);
     setQuestionType('single_choice');
     setOptions([]);
-    setMatrixRows([]);
-    setMatrixColumns([]);
+    // setMatrixRows([]);
+    // setMatrixColumns([]);
     setVisible(true);
   };
 
@@ -164,10 +170,11 @@ const Designer =  () => {
       console.log(questionData)
       if (questionType === 'single_choice' || questionType === 'multiple_choice') {
         questionData.options = values.options;
-      } else if (questionType === 'matrix_single') {
+      }
+      // else if (questionType === 'matrix_single') {
         // questionData.matrix_rows = matrixRows.filter(row => row.trim()).join(',');
         // questionData.matrix_columns = matrixColumns.filter(column => column.trim()).join(',');
-      }
+      // }
 
       if (editingQuestion) {
         // 更新问题
@@ -196,23 +203,20 @@ const Designer =  () => {
       question_type: question.type,
       required: question.required,
       sort: question.sort,
-
-
+      jump_rules: question.jumpRules,
+      parent_id: question.parentId,
     });
-
-
-
-
 
     setEditingQuestion(question);
     setQuestionType(question.type);
 
     if (question.type === 'single_choice' || question.type === 'multiple_choice') {
        setOptions(question.options);
-    } else if (question.type === 'matrix_single') {
+    }
+    // else if (question.type === 'matrix_single') {
       // setMatrixRows(question.matrixRows?.split(',') || []);
       // setMatrixColumns(question.matrixColumns?.split(',') || []);
-    }
+    // }
 
     setVisible(true);
   };
@@ -242,7 +246,7 @@ const Designer =  () => {
       ]}
     >
 
-      <DragSortTable
+      <DragSortTable<API.Questions>
         actionRef={actionRef}
         headerTitle="拖拽排序(默认把手)"
         columns={columns}
@@ -306,9 +310,29 @@ const Designer =  () => {
           </div>;
         },
       }}
-
-
     >
+      <ProFormSelect
+        name="parentId"
+        label="上级问题"
+        showSearch
+        request={async ({ keyWords }) => {
+          const questionAll =   await listQuestion({surveyId:surveyId,keywords:keyWords});
+
+          return questionAll.data.map(q => ({
+            value: q.id,
+            label: q.content,
+          }));
+
+        }}
+
+        rules={[{ required: true, message: 'Please select your country!' }]}
+        style={{ width: '100%' }}
+        placeholder="Please select"
+        onChange={handleChange}
+      />
+
+
+
       <ProFormText
         name="content"
         label="问题内容"
@@ -321,11 +345,15 @@ const Designer =  () => {
         label="问题类型"
         onChange={(value) => setQuestionType(value as QuestionType)}
         options={[
+          { label: '标题', value: 'h2' },
+          { label: '单页', value: 'page' },
           { label: '单选题', value: 'single_choice' },
           { label: '多选题', value: 'multiple_choice' },
           { label: '文本题', value: 'text' },
           { label: '数字题', value: 'number' },
           { label: '日期题', value: 'date' },
+          { label: '评分', value: 'rate' },
+
           // { label: '矩阵单选题', value: 'matrix_single' },
         ]}
       />
@@ -366,40 +394,36 @@ const Designer =  () => {
       )}
 
       {/* 矩阵设置（针对矩阵单选题） */}
-      {questionType === 'matrix_single' && (
-        <div>
-          <h3 className="font-medium mb-3">矩阵设置</h3>
+      {/*{questionType === 'matrix_single' && (*/}
+      {/*  <div>*/}
+      {/*    <h3 className="font-medium mb-3">矩阵设置</h3>*/}
 
-          <div className="mb-6">
-            <h4 className="font-medium mb-2">行设置</h4>
-            <ProFormList
-              copyIconProps={{ Icon: SnippetsOutlined, }}
-              // initialValue={options.option}
-              deleteIconProps={{ Icon: CloseOutlined, }}
-              name="rows"
-            >
-              <ProFormText hidden={true}   name="serial" label="序号" />
-              <ProFormText name="content" label="行" />
-            </ProFormList>
-          </div>
-
-          <div>
-            <h4 className="font-medium mb-2">列设置</h4>
-            <ProFormList
-              copyIconProps={{ Icon: SnippetsOutlined, }}
-              // initialValue={options.option}
-              deleteIconProps={{ Icon: CloseOutlined, }}
-              name="columns"
-            >
-              <ProFormText hidden={true}   name="serial" label="序号" />
-              <ProFormText name="content" label="列" />
-            </ProFormList>
-
-          </div>
-
-
-        </div>
-      )}
+      {/*    <div className="mb-6">*/}
+      {/*      <h4 className="font-medium mb-2">行设置</h4>*/}
+      {/*      <ProFormList*/}
+      {/*        copyIconProps={{ Icon: SnippetsOutlined, }}*/}
+      {/*        // initialValue={options.option}*/}
+      {/*        deleteIconProps={{ Icon: CloseOutlined, }}*/}
+      {/*        name="rows"*/}
+      {/*      >*/}
+      {/*        <ProFormText hidden={true}   name="serial" label="序号" />*/}
+      {/*        <ProFormText name="content" label="行" />*/}
+      {/*      </ProFormList>*/}
+      {/*    </div>*/}
+      {/*    <div>*/}
+      {/*      <h4 className="font-medium mb-2">列设置</h4>*/}
+      {/*      <ProFormList*/}
+      {/*        copyIconProps={{ Icon: SnippetsOutlined, }}*/}
+      {/*        // initialValue={options.option}*/}
+      {/*        deleteIconProps={{ Icon: CloseOutlined, }}*/}
+      {/*        name="columns"*/}
+      {/*      >*/}
+      {/*        <ProFormText hidden={true}   name="serial" label="序号" />*/}
+      {/*        <ProFormText name="content" label="列" />*/}
+      {/*      </ProFormList>*/}
+      {/*    </div>*/}
+      {/*  </div>*/}
+      {/*)}*/}
 
       <Divider />
 
