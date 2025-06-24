@@ -27,44 +27,6 @@ type Survey struct {
 	cache *ristretto.Cache
 }
 
-func (s Survey) TreeQuestion(req *service.QuestionListReq) (resp []*base.Tree, err error) {
-	var predicates []predicate.SurveyQuestion
-
-	if req.SurveyId != 0 {
-		predicates = append(predicates, surveyquestion2.SurveyID(req.SurveyId))
-	}
-	predicates = append(predicates, surveyquestion2.Delete(0))
-	all, err := s.db.SurveyQuestion.
-		Query().
-		Where(predicates...).
-		Offset(int(req.Page-1) * int(req.PageSize)).
-		Limit(int(req.PageSize)).All(s.ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	resp = findTreeQuestionChildren(all, 0)
-	return resp, nil
-}
-
-func findTreeQuestionChildren(data []*ent.SurveyQuestion, parentID int64) []*base.Tree {
-	if data == nil {
-		return nil
-	}
-	var result []*base.Tree
-	for _, v := range data {
-		if v.ParentID == parentID && v.ID != parentID {
-			var m = new(base.Tree)
-			m.Title = v.Content
-			m.Value = strconv.FormatInt(v.ID, 10)
-			m.Key = strconv.FormatInt(v.ID, 10)
-			m.Children = findTreeQuestionChildren(data, v.ID)
-			result = append(result, m)
-		}
-	}
-	return result
-}
-
 func (s Survey) CreateSurvey(req *service.CreateOrUpdateSurveyReq) (err error) {
 	startAt, err := utils.GetStringDateTime(req.StartAt)
 	if err != nil {
@@ -132,19 +94,64 @@ func (s Survey) entToSurvey(v *ent.Survey) *service.Survey {
 		CreatedAt: v.CreatedAt.Format(time.DateTime),
 	}
 }
+
+func (s Survey) entToQuestionAll(all []*ent.SurveyQuestion, parentID int64) []*service.Question {
+	if all == nil {
+		return nil
+	}
+	var result []*service.Question
+	for _, v := range all {
+		if v.ParentID == parentID && v.ID != parentID {
+			sq := &service.Question{
+				Content:   v.Content,
+				Type:      v.Type,
+				Options:   nil,
+				Required:  v.Required,
+				Sort:      v.Sort,
+				ID:        v.ID,
+				JumpRules: &v.JumpRules,
+				SurveyId:  v.SurveyID,
+				ParentId:  v.ParentID,
+			}
+			option, _ := s.db.SurveyQuestionOptions.
+				Query().
+				Where(
+					surveyquestionoptions2.SurveyQuestionID(v.ID),
+					surveyquestionoptions2.DeleteEQ(0),
+				).
+				All(s.ctx)
+
+			if len(option) > 0 {
+				var options []*service.Options
+				for _, o := range option {
+					options = append(options, &service.Options{
+						Serial:  o.Serial,
+						Content: o.Content,
+					})
+				}
+				sq.Options = options
+			}
+
+			sq.Children = s.entToQuestionAll(all, v.ID)
+			result = append(result, sq)
+		}
+	}
+	return result
+}
+
 func (s Survey) entToQuestion(v *ent.SurveyQuestion) *service.Question {
 
 	sq := &service.Question{
-		Content:      v.Content,
-		Type:         v.Type,
-		Options:      nil,
-		Required:     v.Required,
-		Sort:         v.Sort,
-		ID:           v.ID,
-		SubQuestions: nil,
-		JumpRules:    &v.JumpRules,
-		SurveyId:     v.SurveyID,
-		ParentId:     v.ParentID,
+		Content:   v.Content,
+		Type:      v.Type,
+		Options:   nil,
+		Required:  v.Required,
+		Sort:      v.Sort,
+		ID:        v.ID,
+		Children:  nil,
+		JumpRules: &v.JumpRules,
+		SurveyId:  v.SurveyID,
+		ParentId:  v.ParentID,
 	}
 	option, _ := s.db.SurveyQuestionOptions.
 		Query().
@@ -275,6 +282,43 @@ func (s Survey) GetQuestion(id int64) (resp *service.Question, err error) {
 	}
 	return s.entToQuestion(first), nil
 }
+func (s Survey) TreeQuestion(req *service.QuestionListReq) (resp []*base.Tree, err error) {
+	var predicates []predicate.SurveyQuestion
+
+	if req.SurveyId != 0 {
+		predicates = append(predicates, surveyquestion2.SurveyID(req.SurveyId))
+	}
+	predicates = append(predicates, surveyquestion2.Delete(0))
+	all, err := s.db.SurveyQuestion.
+		Query().
+		Where(predicates...).
+		Offset(int(req.Page-1) * int(req.PageSize)).
+		Limit(int(req.PageSize)).All(s.ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	resp = findTreeQuestionChildren(all, 0)
+	return resp, nil
+}
+
+func findTreeQuestionChildren(data []*ent.SurveyQuestion, parentID int64) []*base.Tree {
+	if data == nil {
+		return nil
+	}
+	var result []*base.Tree
+	for _, v := range data {
+		if v.ParentID == parentID && v.ID != parentID {
+			var m = new(base.Tree)
+			m.Title = v.Content
+			m.Value = strconv.FormatInt(v.ID, 10)
+			m.Key = strconv.FormatInt(v.ID, 10)
+			m.Children = findTreeQuestionChildren(data, v.ID)
+			result = append(result, m)
+		}
+	}
+	return result
+}
 
 func (s Survey) ListQuestion(req *service.QuestionListReq) (resp []*service.Question, total int, err error) {
 	var predicates []predicate.SurveyQuestion
@@ -296,9 +340,8 @@ func (s Survey) ListQuestion(req *service.QuestionListReq) (resp []*service.Ques
 		return nil, 0, err
 	}
 
-	for _, v := range all {
-		resp = append(resp, s.entToQuestion(v))
-	}
+	resp = s.entToQuestionAll(all, 0)
+
 	total, err = s.db.Survey.Query().Count(s.ctx)
 	if err != nil {
 		return nil, 0, err

@@ -86,7 +86,7 @@ struct Question  {
       4:optional i64 required=1 (api.raw = "required")
       5:optional i64 sort=0 (api.raw = "sort")
       6:optional i64 id=0 (api.raw = "id")
-      7:optional list<Question> subQuestions={} (api.raw = "subQuestions")
+      7:optional list<Question> children={} (api.raw = "childrens")
       8:optional JumpRules jumpRules={} (api.raw = "jumpRules")
       9:optional i64 surveyId=0 (api.raw = "surveyId")
       10:optional i64 parentId=0 (api.raw = "parentId")
