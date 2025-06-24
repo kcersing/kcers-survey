@@ -172,6 +172,26 @@ func (squ *SurveyQuestionUpdate) ClearParentID() *SurveyQuestionUpdate {
 	return squ
 }
 
+// SetSerial sets the "serial" field.
+func (squ *SurveyQuestionUpdate) SetSerial(s string) *SurveyQuestionUpdate {
+	squ.mutation.SetSerial(s)
+	return squ
+}
+
+// SetNillableSerial sets the "serial" field if the given value is not nil.
+func (squ *SurveyQuestionUpdate) SetNillableSerial(s *string) *SurveyQuestionUpdate {
+	if s != nil {
+		squ.SetSerial(*s)
+	}
+	return squ
+}
+
+// ClearSerial clears the value of the "serial" field.
+func (squ *SurveyQuestionUpdate) ClearSerial() *SurveyQuestionUpdate {
+	squ.mutation.ClearSerial()
+	return squ
+}
+
 // SetContent sets the "content" field.
 func (squ *SurveyQuestionUpdate) SetContent(s string) *SurveyQuestionUpdate {
 	squ.mutation.SetContent(s)
@@ -433,6 +453,12 @@ func (squ *SurveyQuestionUpdate) sqlSave(ctx context.Context) (n int, err error)
 	}
 	if squ.mutation.ParentIDCleared() {
 		_spec.ClearField(surveyquestion.FieldParentID, field.TypeInt64)
+	}
+	if value, ok := squ.mutation.Serial(); ok {
+		_spec.SetField(surveyquestion.FieldSerial, field.TypeString, value)
+	}
+	if squ.mutation.SerialCleared() {
+		_spec.ClearField(surveyquestion.FieldSerial, field.TypeString)
 	}
 	if value, ok := squ.mutation.Content(); ok {
 		_spec.SetField(surveyquestion.FieldContent, field.TypeString, value)
@@ -703,6 +729,26 @@ func (squo *SurveyQuestionUpdateOne) AddParentID(i int64) *SurveyQuestionUpdateO
 // ClearParentID clears the value of the "parent_id" field.
 func (squo *SurveyQuestionUpdateOne) ClearParentID() *SurveyQuestionUpdateOne {
 	squo.mutation.ClearParentID()
+	return squo
+}
+
+// SetSerial sets the "serial" field.
+func (squo *SurveyQuestionUpdateOne) SetSerial(s string) *SurveyQuestionUpdateOne {
+	squo.mutation.SetSerial(s)
+	return squo
+}
+
+// SetNillableSerial sets the "serial" field if the given value is not nil.
+func (squo *SurveyQuestionUpdateOne) SetNillableSerial(s *string) *SurveyQuestionUpdateOne {
+	if s != nil {
+		squo.SetSerial(*s)
+	}
+	return squo
+}
+
+// ClearSerial clears the value of the "serial" field.
+func (squo *SurveyQuestionUpdateOne) ClearSerial() *SurveyQuestionUpdateOne {
+	squo.mutation.ClearSerial()
 	return squo
 }
 
@@ -997,6 +1043,12 @@ func (squo *SurveyQuestionUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	}
 	if squo.mutation.ParentIDCleared() {
 		_spec.ClearField(surveyquestion.FieldParentID, field.TypeInt64)
+	}
+	if value, ok := squo.mutation.Serial(); ok {
+		_spec.SetField(surveyquestion.FieldSerial, field.TypeString, value)
+	}
+	if squo.mutation.SerialCleared() {
+		_spec.ClearField(surveyquestion.FieldSerial, field.TypeString)
 	}
 	if value, ok := squo.mutation.Content(); ok {
 		_spec.SetField(surveyquestion.FieldContent, field.TypeString, value)

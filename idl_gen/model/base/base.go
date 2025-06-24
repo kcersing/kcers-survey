@@ -1691,11 +1691,11 @@ func (p *StatusCodeReq) String() string {
 }
 
 type Tree struct {
-	Title    string  `thrift:"title,1" form:"title" json:"title" query:"title"`
-	Value    string  `thrift:"value,2" form:"value" json:"value" query:"value"`
-	Key      string  `thrift:"key,3" form:"key" json:"key" query:"key"`
-	Method   string  `thrift:"method,4" form:"method" json:"method" query:"method"`
-	Children []*Tree `thrift:"children,5" form:"children" json:"children" query:"children"`
+	Title    string  `thrift:"title,1,optional" form:"title" json:"title" query:"title"`
+	Value    string  `thrift:"value,2,optional" form:"value" json:"value" query:"value"`
+	Key      string  `thrift:"key,3,optional" form:"key" json:"key" query:"key"`
+	Method   string  `thrift:"method,4,optional" form:"method" json:"method" query:"method"`
+	Children []*Tree `thrift:"children,5,optional" form:"children" json:"children" query:"children"`
 }
 
 func NewTree() *Tree {
@@ -1717,23 +1717,48 @@ func (p *Tree) InitDefault() {
 	p.Children = []*Tree{}
 }
 
+var Tree_Title_DEFAULT string = ""
+
 func (p *Tree) GetTitle() (v string) {
+	if !p.IsSetTitle() {
+		return Tree_Title_DEFAULT
+	}
 	return p.Title
 }
 
+var Tree_Value_DEFAULT string = ""
+
 func (p *Tree) GetValue() (v string) {
+	if !p.IsSetValue() {
+		return Tree_Value_DEFAULT
+	}
 	return p.Value
 }
 
+var Tree_Key_DEFAULT string = ""
+
 func (p *Tree) GetKey() (v string) {
+	if !p.IsSetKey() {
+		return Tree_Key_DEFAULT
+	}
 	return p.Key
 }
 
+var Tree_Method_DEFAULT string = ""
+
 func (p *Tree) GetMethod() (v string) {
+	if !p.IsSetMethod() {
+		return Tree_Method_DEFAULT
+	}
 	return p.Method
 }
 
+var Tree_Children_DEFAULT []*Tree = []*Tree{}
+
 func (p *Tree) GetChildren() (v []*Tree) {
+	if !p.IsSetChildren() {
+		return Tree_Children_DEFAULT
+	}
 	return p.Children
 }
 
@@ -1743,6 +1768,26 @@ var fieldIDToName_Tree = map[int16]string{
 	3: "key",
 	4: "method",
 	5: "children",
+}
+
+func (p *Tree) IsSetTitle() bool {
+	return p.Title != Tree_Title_DEFAULT
+}
+
+func (p *Tree) IsSetValue() bool {
+	return p.Value != Tree_Value_DEFAULT
+}
+
+func (p *Tree) IsSetKey() bool {
+	return p.Key != Tree_Key_DEFAULT
+}
+
+func (p *Tree) IsSetMethod() bool {
+	return p.Method != Tree_Method_DEFAULT
+}
+
+func (p *Tree) IsSetChildren() bool {
+	return p.Children != nil
 }
 
 func (p *Tree) Read(iprot thrift.TProtocol) (err error) {
@@ -1946,14 +1991,16 @@ WriteStructEndError:
 }
 
 func (p *Tree) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("title", thrift.STRING, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Title); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetTitle() {
+		if err = oprot.WriteFieldBegin("title", thrift.STRING, 1); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Title); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -1963,14 +2010,16 @@ WriteFieldEndError:
 }
 
 func (p *Tree) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("value", thrift.STRING, 2); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Value); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetValue() {
+		if err = oprot.WriteFieldBegin("value", thrift.STRING, 2); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Value); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -1980,14 +2029,16 @@ WriteFieldEndError:
 }
 
 func (p *Tree) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("key", thrift.STRING, 3); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Key); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetKey() {
+		if err = oprot.WriteFieldBegin("key", thrift.STRING, 3); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Key); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -1997,14 +2048,16 @@ WriteFieldEndError:
 }
 
 func (p *Tree) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("method", thrift.STRING, 4); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Method); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetMethod() {
+		if err = oprot.WriteFieldBegin("method", thrift.STRING, 4); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Method); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2014,22 +2067,24 @@ WriteFieldEndError:
 }
 
 func (p *Tree) writeField5(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("children", thrift.LIST, 5); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Children)); err != nil {
-		return err
-	}
-	for _, v := range p.Children {
-		if err := v.Write(oprot); err != nil {
+	if p.IsSetChildren() {
+		if err = oprot.WriteFieldBegin("children", thrift.LIST, 5); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Children)); err != nil {
 			return err
 		}
-	}
-	if err := oprot.WriteListEnd(); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+		for _, v := range p.Children {
+			if err := v.Write(oprot); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteListEnd(); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:

@@ -323,24 +323,28 @@ func init() {
 	surveyquestionDescParentID := surveyquestionFields[1].Descriptor()
 	// surveyquestion.DefaultParentID holds the default value on creation for the parent_id field.
 	surveyquestion.DefaultParentID = surveyquestionDescParentID.Default.(int64)
+	// surveyquestionDescSerial is the schema descriptor for serial field.
+	surveyquestionDescSerial := surveyquestionFields[2].Descriptor()
+	// surveyquestion.DefaultSerial holds the default value on creation for the serial field.
+	surveyquestion.DefaultSerial = surveyquestionDescSerial.Default.(string)
 	// surveyquestionDescContent is the schema descriptor for content field.
-	surveyquestionDescContent := surveyquestionFields[2].Descriptor()
+	surveyquestionDescContent := surveyquestionFields[3].Descriptor()
 	// surveyquestion.DefaultContent holds the default value on creation for the content field.
 	surveyquestion.DefaultContent = surveyquestionDescContent.Default.(string)
 	// surveyquestionDescType is the schema descriptor for type field.
-	surveyquestionDescType := surveyquestionFields[3].Descriptor()
+	surveyquestionDescType := surveyquestionFields[4].Descriptor()
 	// surveyquestion.DefaultType holds the default value on creation for the type field.
 	surveyquestion.DefaultType = surveyquestionDescType.Default.(string)
 	// surveyquestionDescSort is the schema descriptor for sort field.
-	surveyquestionDescSort := surveyquestionFields[4].Descriptor()
+	surveyquestionDescSort := surveyquestionFields[5].Descriptor()
 	// surveyquestion.DefaultSort holds the default value on creation for the sort field.
 	surveyquestion.DefaultSort = surveyquestionDescSort.Default.(int64)
 	// surveyquestionDescJumpRules is the schema descriptor for jump_rules field.
-	surveyquestionDescJumpRules := surveyquestionFields[5].Descriptor()
+	surveyquestionDescJumpRules := surveyquestionFields[6].Descriptor()
 	// surveyquestion.DefaultJumpRules holds the default value on creation for the jump_rules field.
 	surveyquestion.DefaultJumpRules = surveyquestionDescJumpRules.Default.(service.JumpRules)
 	// surveyquestionDescRequired is the schema descriptor for required field.
-	surveyquestionDescRequired := surveyquestionFields[6].Descriptor()
+	surveyquestionDescRequired := surveyquestionFields[7].Descriptor()
 	// surveyquestion.DefaultRequired holds the default value on creation for the required field.
 	surveyquestion.DefaultRequired = surveyquestionDescRequired.Default.(int64)
 	surveyquestionoptionsMixin := schema.SurveyQuestionOptions{}.Mixin()
@@ -421,20 +425,36 @@ func init() {
 	surveyresponseDescRespondent := surveyresponseFields[1].Descriptor()
 	// surveyresponse.DefaultRespondent holds the default value on creation for the respondent field.
 	surveyresponse.DefaultRespondent = surveyresponseDescRespondent.Default.(string)
+	// surveyresponseDescRespondentPhone is the schema descriptor for respondent_phone field.
+	surveyresponseDescRespondentPhone := surveyresponseFields[2].Descriptor()
+	// surveyresponse.DefaultRespondentPhone holds the default value on creation for the respondent_phone field.
+	surveyresponse.DefaultRespondentPhone = surveyresponseDescRespondentPhone.Default.(string)
+	// surveyresponseDescResearcher is the schema descriptor for researcher field.
+	surveyresponseDescResearcher := surveyresponseFields[3].Descriptor()
+	// surveyresponse.DefaultResearcher holds the default value on creation for the researcher field.
+	surveyresponse.DefaultResearcher = surveyresponseDescResearcher.Default.(string)
+	// surveyresponseDescResearcherPhone is the schema descriptor for researcher_phone field.
+	surveyresponseDescResearcherPhone := surveyresponseFields[4].Descriptor()
+	// surveyresponse.DefaultResearcherPhone holds the default value on creation for the researcher_phone field.
+	surveyresponse.DefaultResearcherPhone = surveyresponseDescResearcherPhone.Default.(string)
+	// surveyresponseDescPic is the schema descriptor for pic field.
+	surveyresponseDescPic := surveyresponseFields[5].Descriptor()
+	// surveyresponse.DefaultPic holds the default value on creation for the pic field.
+	surveyresponse.DefaultPic = surveyresponseDescPic.Default.(string)
 	// surveyresponseDescIP is the schema descriptor for ip field.
-	surveyresponseDescIP := surveyresponseFields[2].Descriptor()
+	surveyresponseDescIP := surveyresponseFields[6].Descriptor()
 	// surveyresponse.DefaultIP holds the default value on creation for the ip field.
 	surveyresponse.DefaultIP = surveyresponseDescIP.Default.(string)
 	// surveyresponseDescMap is the schema descriptor for map field.
-	surveyresponseDescMap := surveyresponseFields[3].Descriptor()
+	surveyresponseDescMap := surveyresponseFields[7].Descriptor()
 	// surveyresponse.DefaultMap holds the default value on creation for the map field.
 	surveyresponse.DefaultMap = surveyresponseDescMap.Default.(string)
 	// surveyresponseDescDevice is the schema descriptor for device field.
-	surveyresponseDescDevice := surveyresponseFields[4].Descriptor()
+	surveyresponseDescDevice := surveyresponseFields[8].Descriptor()
 	// surveyresponse.DefaultDevice holds the default value on creation for the device field.
 	surveyresponse.DefaultDevice = surveyresponseDescDevice.Default.(string)
 	// surveyresponseDescAudio is the schema descriptor for audio field.
-	surveyresponseDescAudio := surveyresponseFields[5].Descriptor()
+	surveyresponseDescAudio := surveyresponseFields[9].Descriptor()
 	// surveyresponse.DefaultAudio holds the default value on creation for the audio field.
 	surveyresponse.DefaultAudio = surveyresponseDescAudio.Default.(string)
 	surveyresponseanswersMixin := schema.SurveyResponseAnswers{}.Mixin()

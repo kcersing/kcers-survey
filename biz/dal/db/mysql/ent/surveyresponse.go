@@ -32,6 +32,14 @@ type SurveyResponse struct {
 	SurveyID int64 `json:"survey_id,omitempty"`
 	// 受访人
 	Respondent string `json:"respondent,omitempty"`
+	// 受访人联系电话
+	RespondentPhone string `json:"respondent_phone,omitempty"`
+	// 调研员
+	Researcher string `json:"researcher,omitempty"`
+	// 调研员联系电话
+	ResearcherPhone string `json:"researcher_phone,omitempty"`
+	// 合照照片
+	Pic string `json:"pic,omitempty"`
 	// 用户IP地址
 	IP string `json:"ip,omitempty"`
 	// 用户地图坐标
@@ -50,7 +58,7 @@ func (*SurveyResponse) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case surveyresponse.FieldID, surveyresponse.FieldDelete, surveyresponse.FieldCreatedID, surveyresponse.FieldStatus, surveyresponse.FieldSurveyID:
 			values[i] = new(sql.NullInt64)
-		case surveyresponse.FieldRespondent, surveyresponse.FieldIP, surveyresponse.FieldMap, surveyresponse.FieldDevice, surveyresponse.FieldAudio:
+		case surveyresponse.FieldRespondent, surveyresponse.FieldRespondentPhone, surveyresponse.FieldResearcher, surveyresponse.FieldResearcherPhone, surveyresponse.FieldPic, surveyresponse.FieldIP, surveyresponse.FieldMap, surveyresponse.FieldDevice, surveyresponse.FieldAudio:
 			values[i] = new(sql.NullString)
 		case surveyresponse.FieldCreatedAt, surveyresponse.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -116,6 +124,30 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field respondent", values[i])
 			} else if value.Valid {
 				sr.Respondent = value.String
+			}
+		case surveyresponse.FieldRespondentPhone:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field respondent_phone", values[i])
+			} else if value.Valid {
+				sr.RespondentPhone = value.String
+			}
+		case surveyresponse.FieldResearcher:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field researcher", values[i])
+			} else if value.Valid {
+				sr.Researcher = value.String
+			}
+		case surveyresponse.FieldResearcherPhone:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field researcher_phone", values[i])
+			} else if value.Valid {
+				sr.ResearcherPhone = value.String
+			}
+		case surveyresponse.FieldPic:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field pic", values[i])
+			} else if value.Valid {
+				sr.Pic = value.String
 			}
 		case surveyresponse.FieldIP:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -197,6 +229,18 @@ func (sr *SurveyResponse) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("respondent=")
 	builder.WriteString(sr.Respondent)
+	builder.WriteString(", ")
+	builder.WriteString("respondent_phone=")
+	builder.WriteString(sr.RespondentPhone)
+	builder.WriteString(", ")
+	builder.WriteString("researcher=")
+	builder.WriteString(sr.Researcher)
+	builder.WriteString(", ")
+	builder.WriteString("researcher_phone=")
+	builder.WriteString(sr.ResearcherPhone)
+	builder.WriteString(", ")
+	builder.WriteString("pic=")
+	builder.WriteString(sr.Pic)
 	builder.WriteString(", ")
 	builder.WriteString("ip=")
 	builder.WriteString(sr.IP)

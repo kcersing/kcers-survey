@@ -90,6 +90,11 @@ func ParentID(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldParentID, v))
 }
 
+// Serial applies equality check predicate on the "serial" field. It's identical to SerialEQ.
+func Serial(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldSerial, v))
+}
+
 // Content applies equality check predicate on the "content" field. It's identical to ContentEQ.
 func Content(v string) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldContent, v))
@@ -438,6 +443,81 @@ func ParentIDIsNil() predicate.SurveyQuestion {
 // ParentIDNotNil applies the NotNil predicate on the "parent_id" field.
 func ParentIDNotNil() predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldNotNull(FieldParentID))
+}
+
+// SerialEQ applies the EQ predicate on the "serial" field.
+func SerialEQ(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldSerial, v))
+}
+
+// SerialNEQ applies the NEQ predicate on the "serial" field.
+func SerialNEQ(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNEQ(FieldSerial, v))
+}
+
+// SerialIn applies the In predicate on the "serial" field.
+func SerialIn(vs ...string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIn(FieldSerial, vs...))
+}
+
+// SerialNotIn applies the NotIn predicate on the "serial" field.
+func SerialNotIn(vs ...string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotIn(FieldSerial, vs...))
+}
+
+// SerialGT applies the GT predicate on the "serial" field.
+func SerialGT(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGT(FieldSerial, v))
+}
+
+// SerialGTE applies the GTE predicate on the "serial" field.
+func SerialGTE(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGTE(FieldSerial, v))
+}
+
+// SerialLT applies the LT predicate on the "serial" field.
+func SerialLT(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLT(FieldSerial, v))
+}
+
+// SerialLTE applies the LTE predicate on the "serial" field.
+func SerialLTE(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLTE(FieldSerial, v))
+}
+
+// SerialContains applies the Contains predicate on the "serial" field.
+func SerialContains(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldContains(FieldSerial, v))
+}
+
+// SerialHasPrefix applies the HasPrefix predicate on the "serial" field.
+func SerialHasPrefix(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldHasPrefix(FieldSerial, v))
+}
+
+// SerialHasSuffix applies the HasSuffix predicate on the "serial" field.
+func SerialHasSuffix(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldHasSuffix(FieldSerial, v))
+}
+
+// SerialIsNil applies the IsNil predicate on the "serial" field.
+func SerialIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldSerial))
+}
+
+// SerialNotNil applies the NotNil predicate on the "serial" field.
+func SerialNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldSerial))
+}
+
+// SerialEqualFold applies the EqualFold predicate on the "serial" field.
+func SerialEqualFold(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEqualFold(FieldSerial, v))
+}
+
+// SerialContainsFold applies the ContainsFold predicate on the "serial" field.
+func SerialContainsFold(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldContainsFold(FieldSerial, v))
 }
 
 // ContentEQ applies the EQ predicate on the "content" field.

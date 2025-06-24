@@ -224,6 +224,7 @@ var (
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
 		{Name: "parent_id", Type: field.TypeInt64, Nullable: true, Comment: "parent_id", Default: 0},
+		{Name: "serial", Type: field.TypeString, Nullable: true, Comment: "serial", Default: ""},
 		{Name: "content", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "content", Default: ""},
 		{Name: "type", Type: field.TypeString, Nullable: true, Comment: "type", Default: ""},
 		{Name: "sort", Type: field.TypeInt64, Nullable: true, Comment: "sort", Default: 0},
@@ -239,7 +240,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "survey_question_survey_question",
-				Columns:    []*schema.Column{SurveyQuestionColumns[12]},
+				Columns:    []*schema.Column{SurveyQuestionColumns[13]},
 				RefColumns: []*schema.Column{SurveyColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -281,6 +282,10 @@ var (
 		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
 		{Name: "survey_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_id", Default: 0},
 		{Name: "respondent", Type: field.TypeString, Nullable: true, Comment: "受访人", Default: ""},
+		{Name: "respondent_phone", Type: field.TypeString, Nullable: true, Comment: "受访人联系电话", Default: ""},
+		{Name: "researcher", Type: field.TypeString, Nullable: true, Comment: "调研员", Default: ""},
+		{Name: "researcher_phone", Type: field.TypeString, Nullable: true, Comment: "调研员联系电话", Default: ""},
+		{Name: "pic", Type: field.TypeString, Nullable: true, Comment: "合照照片", Default: ""},
 		{Name: "ip", Type: field.TypeString, Nullable: true, Comment: "用户IP地址", Default: ""},
 		{Name: "map", Type: field.TypeString, Nullable: true, Comment: "用户地图坐标", Default: ""},
 		{Name: "device", Type: field.TypeString, Nullable: true, Comment: "设备信息", Default: ""},

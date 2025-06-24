@@ -49,11 +49,11 @@ struct StatusCodeReq {
 }
 
 struct Tree  {
- 1:	string title ="" (api.raw = "title")
- 2:	string value="" (api.raw = "value")
- 3:	string key="" (api.raw = "key")
- 4:	string method="" (api.raw = "method")
- 5:	list<Tree> children={} (api.raw = "children")
+ 1:optional	string title ="" (api.raw = "title")
+ 2:optional	string value="" (api.raw = "value")
+ 3:optional	string key="" (api.raw = "key")
+ 4:optional	string method="" (api.raw = "method")
+ 5:optional	list<Tree> children={} (api.raw = "children")
 }
 
 struct Seat{
@@ -62,16 +62,6 @@ struct Seat{
     2: optional i64 x =0 (api.raw = "x" )
     3: optional i64 y =0 (api.raw = "y" )
 }
-
-
-
-
-
-
-
-
-
-
 
 
 enum Err {

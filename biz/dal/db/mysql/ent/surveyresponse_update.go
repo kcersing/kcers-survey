@@ -169,6 +169,86 @@ func (sru *SurveyResponseUpdate) ClearRespondent() *SurveyResponseUpdate {
 	return sru
 }
 
+// SetRespondentPhone sets the "respondent_phone" field.
+func (sru *SurveyResponseUpdate) SetRespondentPhone(s string) *SurveyResponseUpdate {
+	sru.mutation.SetRespondentPhone(s)
+	return sru
+}
+
+// SetNillableRespondentPhone sets the "respondent_phone" field if the given value is not nil.
+func (sru *SurveyResponseUpdate) SetNillableRespondentPhone(s *string) *SurveyResponseUpdate {
+	if s != nil {
+		sru.SetRespondentPhone(*s)
+	}
+	return sru
+}
+
+// ClearRespondentPhone clears the value of the "respondent_phone" field.
+func (sru *SurveyResponseUpdate) ClearRespondentPhone() *SurveyResponseUpdate {
+	sru.mutation.ClearRespondentPhone()
+	return sru
+}
+
+// SetResearcher sets the "researcher" field.
+func (sru *SurveyResponseUpdate) SetResearcher(s string) *SurveyResponseUpdate {
+	sru.mutation.SetResearcher(s)
+	return sru
+}
+
+// SetNillableResearcher sets the "researcher" field if the given value is not nil.
+func (sru *SurveyResponseUpdate) SetNillableResearcher(s *string) *SurveyResponseUpdate {
+	if s != nil {
+		sru.SetResearcher(*s)
+	}
+	return sru
+}
+
+// ClearResearcher clears the value of the "researcher" field.
+func (sru *SurveyResponseUpdate) ClearResearcher() *SurveyResponseUpdate {
+	sru.mutation.ClearResearcher()
+	return sru
+}
+
+// SetResearcherPhone sets the "researcher_phone" field.
+func (sru *SurveyResponseUpdate) SetResearcherPhone(s string) *SurveyResponseUpdate {
+	sru.mutation.SetResearcherPhone(s)
+	return sru
+}
+
+// SetNillableResearcherPhone sets the "researcher_phone" field if the given value is not nil.
+func (sru *SurveyResponseUpdate) SetNillableResearcherPhone(s *string) *SurveyResponseUpdate {
+	if s != nil {
+		sru.SetResearcherPhone(*s)
+	}
+	return sru
+}
+
+// ClearResearcherPhone clears the value of the "researcher_phone" field.
+func (sru *SurveyResponseUpdate) ClearResearcherPhone() *SurveyResponseUpdate {
+	sru.mutation.ClearResearcherPhone()
+	return sru
+}
+
+// SetPic sets the "pic" field.
+func (sru *SurveyResponseUpdate) SetPic(s string) *SurveyResponseUpdate {
+	sru.mutation.SetPic(s)
+	return sru
+}
+
+// SetNillablePic sets the "pic" field if the given value is not nil.
+func (sru *SurveyResponseUpdate) SetNillablePic(s *string) *SurveyResponseUpdate {
+	if s != nil {
+		sru.SetPic(*s)
+	}
+	return sru
+}
+
+// ClearPic clears the value of the "pic" field.
+func (sru *SurveyResponseUpdate) ClearPic() *SurveyResponseUpdate {
+	sru.mutation.ClearPic()
+	return sru
+}
+
 // SetIP sets the "ip" field.
 func (sru *SurveyResponseUpdate) SetIP(s string) *SurveyResponseUpdate {
 	sru.mutation.SetIP(s)
@@ -356,6 +436,30 @@ func (sru *SurveyResponseUpdate) sqlSave(ctx context.Context) (n int, err error)
 	if sru.mutation.RespondentCleared() {
 		_spec.ClearField(surveyresponse.FieldRespondent, field.TypeString)
 	}
+	if value, ok := sru.mutation.RespondentPhone(); ok {
+		_spec.SetField(surveyresponse.FieldRespondentPhone, field.TypeString, value)
+	}
+	if sru.mutation.RespondentPhoneCleared() {
+		_spec.ClearField(surveyresponse.FieldRespondentPhone, field.TypeString)
+	}
+	if value, ok := sru.mutation.Researcher(); ok {
+		_spec.SetField(surveyresponse.FieldResearcher, field.TypeString, value)
+	}
+	if sru.mutation.ResearcherCleared() {
+		_spec.ClearField(surveyresponse.FieldResearcher, field.TypeString)
+	}
+	if value, ok := sru.mutation.ResearcherPhone(); ok {
+		_spec.SetField(surveyresponse.FieldResearcherPhone, field.TypeString, value)
+	}
+	if sru.mutation.ResearcherPhoneCleared() {
+		_spec.ClearField(surveyresponse.FieldResearcherPhone, field.TypeString)
+	}
+	if value, ok := sru.mutation.Pic(); ok {
+		_spec.SetField(surveyresponse.FieldPic, field.TypeString, value)
+	}
+	if sru.mutation.PicCleared() {
+		_spec.ClearField(surveyresponse.FieldPic, field.TypeString)
+	}
 	if value, ok := sru.mutation.IP(); ok {
 		_spec.SetField(surveyresponse.FieldIP, field.TypeString, value)
 	}
@@ -539,6 +643,86 @@ func (sruo *SurveyResponseUpdateOne) SetNillableRespondent(s *string) *SurveyRes
 // ClearRespondent clears the value of the "respondent" field.
 func (sruo *SurveyResponseUpdateOne) ClearRespondent() *SurveyResponseUpdateOne {
 	sruo.mutation.ClearRespondent()
+	return sruo
+}
+
+// SetRespondentPhone sets the "respondent_phone" field.
+func (sruo *SurveyResponseUpdateOne) SetRespondentPhone(s string) *SurveyResponseUpdateOne {
+	sruo.mutation.SetRespondentPhone(s)
+	return sruo
+}
+
+// SetNillableRespondentPhone sets the "respondent_phone" field if the given value is not nil.
+func (sruo *SurveyResponseUpdateOne) SetNillableRespondentPhone(s *string) *SurveyResponseUpdateOne {
+	if s != nil {
+		sruo.SetRespondentPhone(*s)
+	}
+	return sruo
+}
+
+// ClearRespondentPhone clears the value of the "respondent_phone" field.
+func (sruo *SurveyResponseUpdateOne) ClearRespondentPhone() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearRespondentPhone()
+	return sruo
+}
+
+// SetResearcher sets the "researcher" field.
+func (sruo *SurveyResponseUpdateOne) SetResearcher(s string) *SurveyResponseUpdateOne {
+	sruo.mutation.SetResearcher(s)
+	return sruo
+}
+
+// SetNillableResearcher sets the "researcher" field if the given value is not nil.
+func (sruo *SurveyResponseUpdateOne) SetNillableResearcher(s *string) *SurveyResponseUpdateOne {
+	if s != nil {
+		sruo.SetResearcher(*s)
+	}
+	return sruo
+}
+
+// ClearResearcher clears the value of the "researcher" field.
+func (sruo *SurveyResponseUpdateOne) ClearResearcher() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearResearcher()
+	return sruo
+}
+
+// SetResearcherPhone sets the "researcher_phone" field.
+func (sruo *SurveyResponseUpdateOne) SetResearcherPhone(s string) *SurveyResponseUpdateOne {
+	sruo.mutation.SetResearcherPhone(s)
+	return sruo
+}
+
+// SetNillableResearcherPhone sets the "researcher_phone" field if the given value is not nil.
+func (sruo *SurveyResponseUpdateOne) SetNillableResearcherPhone(s *string) *SurveyResponseUpdateOne {
+	if s != nil {
+		sruo.SetResearcherPhone(*s)
+	}
+	return sruo
+}
+
+// ClearResearcherPhone clears the value of the "researcher_phone" field.
+func (sruo *SurveyResponseUpdateOne) ClearResearcherPhone() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearResearcherPhone()
+	return sruo
+}
+
+// SetPic sets the "pic" field.
+func (sruo *SurveyResponseUpdateOne) SetPic(s string) *SurveyResponseUpdateOne {
+	sruo.mutation.SetPic(s)
+	return sruo
+}
+
+// SetNillablePic sets the "pic" field if the given value is not nil.
+func (sruo *SurveyResponseUpdateOne) SetNillablePic(s *string) *SurveyResponseUpdateOne {
+	if s != nil {
+		sruo.SetPic(*s)
+	}
+	return sruo
+}
+
+// ClearPic clears the value of the "pic" field.
+func (sruo *SurveyResponseUpdateOne) ClearPic() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearPic()
 	return sruo
 }
 
@@ -758,6 +942,30 @@ func (sruo *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	}
 	if sruo.mutation.RespondentCleared() {
 		_spec.ClearField(surveyresponse.FieldRespondent, field.TypeString)
+	}
+	if value, ok := sruo.mutation.RespondentPhone(); ok {
+		_spec.SetField(surveyresponse.FieldRespondentPhone, field.TypeString, value)
+	}
+	if sruo.mutation.RespondentPhoneCleared() {
+		_spec.ClearField(surveyresponse.FieldRespondentPhone, field.TypeString)
+	}
+	if value, ok := sruo.mutation.Researcher(); ok {
+		_spec.SetField(surveyresponse.FieldResearcher, field.TypeString, value)
+	}
+	if sruo.mutation.ResearcherCleared() {
+		_spec.ClearField(surveyresponse.FieldResearcher, field.TypeString)
+	}
+	if value, ok := sruo.mutation.ResearcherPhone(); ok {
+		_spec.SetField(surveyresponse.FieldResearcherPhone, field.TypeString, value)
+	}
+	if sruo.mutation.ResearcherPhoneCleared() {
+		_spec.ClearField(surveyresponse.FieldResearcherPhone, field.TypeString)
+	}
+	if value, ok := sruo.mutation.Pic(); ok {
+		_spec.SetField(surveyresponse.FieldPic, field.TypeString, value)
+	}
+	if sruo.mutation.PicCleared() {
+		_spec.ClearField(surveyresponse.FieldPic, field.TypeString)
 	}
 	if value, ok := sruo.mutation.IP(); ok {
 		_spec.SetField(surveyresponse.FieldIP, field.TypeString, value)

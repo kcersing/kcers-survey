@@ -105,3 +105,8 @@ func _responseMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _treequestionMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

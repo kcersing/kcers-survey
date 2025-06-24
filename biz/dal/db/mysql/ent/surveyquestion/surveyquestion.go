@@ -29,6 +29,8 @@ const (
 	FieldSurveyID = "survey_id"
 	// FieldParentID holds the string denoting the parent_id field in the database.
 	FieldParentID = "parent_id"
+	// FieldSerial holds the string denoting the serial field in the database.
+	FieldSerial = "serial"
 	// FieldContent holds the string denoting the content field in the database.
 	FieldContent = "content"
 	// FieldType holds the string denoting the type field in the database.
@@ -71,6 +73,7 @@ var Columns = []string{
 	FieldStatus,
 	FieldSurveyID,
 	FieldParentID,
+	FieldSerial,
 	FieldContent,
 	FieldType,
 	FieldSort,
@@ -105,6 +108,8 @@ var (
 	DefaultSurveyID int64
 	// DefaultParentID holds the default value on creation for the "parent_id" field.
 	DefaultParentID int64
+	// DefaultSerial holds the default value on creation for the "serial" field.
+	DefaultSerial string
 	// DefaultContent holds the default value on creation for the "content" field.
 	DefaultContent string
 	// DefaultType holds the default value on creation for the "type" field.
@@ -158,6 +163,11 @@ func BySurveyID(opts ...sql.OrderTermOption) OrderOption {
 // ByParentID orders the results by the parent_id field.
 func ByParentID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldParentID, opts...).ToFunc()
+}
+
+// BySerial orders the results by the serial field.
+func BySerial(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSerial, opts...).ToFunc()
 }
 
 // ByContent orders the results by the content field.

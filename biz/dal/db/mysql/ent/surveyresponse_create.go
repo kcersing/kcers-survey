@@ -117,6 +117,62 @@ func (src *SurveyResponseCreate) SetNillableRespondent(s *string) *SurveyRespons
 	return src
 }
 
+// SetRespondentPhone sets the "respondent_phone" field.
+func (src *SurveyResponseCreate) SetRespondentPhone(s string) *SurveyResponseCreate {
+	src.mutation.SetRespondentPhone(s)
+	return src
+}
+
+// SetNillableRespondentPhone sets the "respondent_phone" field if the given value is not nil.
+func (src *SurveyResponseCreate) SetNillableRespondentPhone(s *string) *SurveyResponseCreate {
+	if s != nil {
+		src.SetRespondentPhone(*s)
+	}
+	return src
+}
+
+// SetResearcher sets the "researcher" field.
+func (src *SurveyResponseCreate) SetResearcher(s string) *SurveyResponseCreate {
+	src.mutation.SetResearcher(s)
+	return src
+}
+
+// SetNillableResearcher sets the "researcher" field if the given value is not nil.
+func (src *SurveyResponseCreate) SetNillableResearcher(s *string) *SurveyResponseCreate {
+	if s != nil {
+		src.SetResearcher(*s)
+	}
+	return src
+}
+
+// SetResearcherPhone sets the "researcher_phone" field.
+func (src *SurveyResponseCreate) SetResearcherPhone(s string) *SurveyResponseCreate {
+	src.mutation.SetResearcherPhone(s)
+	return src
+}
+
+// SetNillableResearcherPhone sets the "researcher_phone" field if the given value is not nil.
+func (src *SurveyResponseCreate) SetNillableResearcherPhone(s *string) *SurveyResponseCreate {
+	if s != nil {
+		src.SetResearcherPhone(*s)
+	}
+	return src
+}
+
+// SetPic sets the "pic" field.
+func (src *SurveyResponseCreate) SetPic(s string) *SurveyResponseCreate {
+	src.mutation.SetPic(s)
+	return src
+}
+
+// SetNillablePic sets the "pic" field if the given value is not nil.
+func (src *SurveyResponseCreate) SetNillablePic(s *string) *SurveyResponseCreate {
+	if s != nil {
+		src.SetPic(*s)
+	}
+	return src
+}
+
 // SetIP sets the "ip" field.
 func (src *SurveyResponseCreate) SetIP(s string) *SurveyResponseCreate {
 	src.mutation.SetIP(s)
@@ -242,6 +298,22 @@ func (src *SurveyResponseCreate) defaults() {
 		v := surveyresponse.DefaultRespondent
 		src.mutation.SetRespondent(v)
 	}
+	if _, ok := src.mutation.RespondentPhone(); !ok {
+		v := surveyresponse.DefaultRespondentPhone
+		src.mutation.SetRespondentPhone(v)
+	}
+	if _, ok := src.mutation.Researcher(); !ok {
+		v := surveyresponse.DefaultResearcher
+		src.mutation.SetResearcher(v)
+	}
+	if _, ok := src.mutation.ResearcherPhone(); !ok {
+		v := surveyresponse.DefaultResearcherPhone
+		src.mutation.SetResearcherPhone(v)
+	}
+	if _, ok := src.mutation.Pic(); !ok {
+		v := surveyresponse.DefaultPic
+		src.mutation.SetPic(v)
+	}
 	if _, ok := src.mutation.IP(); !ok {
 		v := surveyresponse.DefaultIP
 		src.mutation.SetIP(v)
@@ -321,6 +393,22 @@ func (src *SurveyResponseCreate) createSpec() (*SurveyResponse, *sqlgraph.Create
 	if value, ok := src.mutation.Respondent(); ok {
 		_spec.SetField(surveyresponse.FieldRespondent, field.TypeString, value)
 		_node.Respondent = value
+	}
+	if value, ok := src.mutation.RespondentPhone(); ok {
+		_spec.SetField(surveyresponse.FieldRespondentPhone, field.TypeString, value)
+		_node.RespondentPhone = value
+	}
+	if value, ok := src.mutation.Researcher(); ok {
+		_spec.SetField(surveyresponse.FieldResearcher, field.TypeString, value)
+		_node.Researcher = value
+	}
+	if value, ok := src.mutation.ResearcherPhone(); ok {
+		_spec.SetField(surveyresponse.FieldResearcherPhone, field.TypeString, value)
+		_node.ResearcherPhone = value
+	}
+	if value, ok := src.mutation.Pic(); ok {
+		_spec.SetField(surveyresponse.FieldPic, field.TypeString, value)
+		_node.Pic = value
 	}
 	if value, ok := src.mutation.IP(); ok {
 		_spec.SetField(surveyresponse.FieldIP, field.TypeString, value)

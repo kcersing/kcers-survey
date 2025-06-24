@@ -20,6 +20,7 @@ func (SurveyQuestion) Fields() []ent.Field {
 
 		field.Int64("survey_id").Optional().Default(0).Comment("survey_id"),
 		field.Int64("parent_id").Optional().Default(0).Comment("parent_id"),
+		field.String("serial").Optional().Default("").Comment("serial"),
 		field.Text("content").Optional().Default("").Comment("content"),
 		field.String("type").Optional().Default("").Comment("type"),
 

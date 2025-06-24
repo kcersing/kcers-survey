@@ -27,6 +27,14 @@ const (
 	FieldSurveyID = "survey_id"
 	// FieldRespondent holds the string denoting the respondent field in the database.
 	FieldRespondent = "respondent"
+	// FieldRespondentPhone holds the string denoting the respondent_phone field in the database.
+	FieldRespondentPhone = "respondent_phone"
+	// FieldResearcher holds the string denoting the researcher field in the database.
+	FieldResearcher = "researcher"
+	// FieldResearcherPhone holds the string denoting the researcher_phone field in the database.
+	FieldResearcherPhone = "researcher_phone"
+	// FieldPic holds the string denoting the pic field in the database.
+	FieldPic = "pic"
 	// FieldIP holds the string denoting the ip field in the database.
 	FieldIP = "ip"
 	// FieldMap holds the string denoting the map field in the database.
@@ -49,6 +57,10 @@ var Columns = []string{
 	FieldStatus,
 	FieldSurveyID,
 	FieldRespondent,
+	FieldRespondentPhone,
+	FieldResearcher,
+	FieldResearcherPhone,
+	FieldPic,
 	FieldIP,
 	FieldMap,
 	FieldDevice,
@@ -82,6 +94,14 @@ var (
 	DefaultSurveyID int64
 	// DefaultRespondent holds the default value on creation for the "respondent" field.
 	DefaultRespondent string
+	// DefaultRespondentPhone holds the default value on creation for the "respondent_phone" field.
+	DefaultRespondentPhone string
+	// DefaultResearcher holds the default value on creation for the "researcher" field.
+	DefaultResearcher string
+	// DefaultResearcherPhone holds the default value on creation for the "researcher_phone" field.
+	DefaultResearcherPhone string
+	// DefaultPic holds the default value on creation for the "pic" field.
+	DefaultPic string
 	// DefaultIP holds the default value on creation for the "ip" field.
 	DefaultIP string
 	// DefaultMap holds the default value on creation for the "map" field.
@@ -133,6 +153,26 @@ func BySurveyID(opts ...sql.OrderTermOption) OrderOption {
 // ByRespondent orders the results by the respondent field.
 func ByRespondent(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRespondent, opts...).ToFunc()
+}
+
+// ByRespondentPhone orders the results by the respondent_phone field.
+func ByRespondentPhone(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRespondentPhone, opts...).ToFunc()
+}
+
+// ByResearcher orders the results by the researcher field.
+func ByResearcher(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldResearcher, opts...).ToFunc()
+}
+
+// ByResearcherPhone orders the results by the researcher_phone field.
+func ByResearcherPhone(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldResearcherPhone, opts...).ToFunc()
+}
+
+// ByPic orders the results by the pic field.
+func ByPic(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPic, opts...).ToFunc()
 }
 
 // ByIP orders the results by the ip field.

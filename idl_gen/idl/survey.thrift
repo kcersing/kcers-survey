@@ -17,6 +17,9 @@ service SurveyService {
 	base.NilResponse ListQuestion(1: QuestionListReq req)  (api.post = "/service/survey/question/list")
 	base.NilResponse DeleteQuestion(1: base.IDReq req)  (api.post = "/service/survey/question/delete")
 
+	base.NilResponse TreeQuestion(1: QuestionListReq req)  (api.post = "/service/survey/question/tree")
+
+
 	base.NilResponse CreateResponse(1: CreateOrUpdateResponseReq req) (api.post = "/service/survey/response/create")
 	base.NilResponse UpdateResponse(1: CreateOrUpdateResponseReq req) (api.post = "/service/survey/response/update")
 	base.NilResponse GetResponse(1: base.IDReq req)  (api.post = "/service/survey/response/info")
@@ -70,7 +73,8 @@ struct CreateOrUpdateQuestionReq {
   5:optional i64 parentId=0 (api.raw = "parentId")
   6:optional i64 sort=0 (api.raw = "sort")
   7:optional i64 required=1 (api.raw = "required")
-  8:optional i64 to=0 (api.raw = "to")
+  8:optional JumpRules jumpRules={} (api.raw = "jumpRules")
+  9:optional list<Options> options={} (api.raw = "options")
 }
 
 
@@ -78,12 +82,12 @@ struct CreateOrUpdateQuestionReq {
 struct Question  {
 	  1:optional string content="" (api.raw = "content")
       2:optional string type="" (api.raw = "type")
-      3:optional list<Options> options (api.raw = "options")
+      3:optional list<Options> options={} (api.raw = "options")
       4:optional i64 required=1 (api.raw = "required")
       5:optional i64 sort=0 (api.raw = "sort")
       6:optional i64 id=0 (api.raw = "id")
       7:optional list<Question> subQuestions={} (api.raw = "subQuestions")
-      8:optional JumpRules jumpRules (api.raw = "jumpRules")
+      8:optional JumpRules jumpRules={} (api.raw = "jumpRules")
       9:optional i64 surveyId=0 (api.raw = "surveyId")
       10:optional i64 parentId=0 (api.raw = "parentId")
 
@@ -116,6 +120,9 @@ struct Response  {
 }
 
 struct ResponseListReq {
-    1: optional i64 page=0 (api.raw = "page")
+    1: optional i64 page=1 (api.raw = "page")
     2: optional i64 pageSize=100 (api.raw = "pageSize")
 }
+
+
+

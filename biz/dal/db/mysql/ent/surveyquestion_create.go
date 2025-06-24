@@ -120,6 +120,20 @@ func (sqc *SurveyQuestionCreate) SetNillableParentID(i *int64) *SurveyQuestionCr
 	return sqc
 }
 
+// SetSerial sets the "serial" field.
+func (sqc *SurveyQuestionCreate) SetSerial(s string) *SurveyQuestionCreate {
+	sqc.mutation.SetSerial(s)
+	return sqc
+}
+
+// SetNillableSerial sets the "serial" field if the given value is not nil.
+func (sqc *SurveyQuestionCreate) SetNillableSerial(s *string) *SurveyQuestionCreate {
+	if s != nil {
+		sqc.SetSerial(*s)
+	}
+	return sqc
+}
+
 // SetContent sets the "content" field.
 func (sqc *SurveyQuestionCreate) SetContent(s string) *SurveyQuestionCreate {
 	sqc.mutation.SetContent(s)
@@ -279,6 +293,10 @@ func (sqc *SurveyQuestionCreate) defaults() {
 		v := surveyquestion.DefaultParentID
 		sqc.mutation.SetParentID(v)
 	}
+	if _, ok := sqc.mutation.Serial(); !ok {
+		v := surveyquestion.DefaultSerial
+		sqc.mutation.SetSerial(v)
+	}
 	if _, ok := sqc.mutation.Content(); !ok {
 		v := surveyquestion.DefaultContent
 		sqc.mutation.SetContent(v)
@@ -358,6 +376,10 @@ func (sqc *SurveyQuestionCreate) createSpec() (*SurveyQuestion, *sqlgraph.Create
 	if value, ok := sqc.mutation.ParentID(); ok {
 		_spec.SetField(surveyquestion.FieldParentID, field.TypeInt64, value)
 		_node.ParentID = value
+	}
+	if value, ok := sqc.mutation.Serial(); ok {
+		_spec.SetField(surveyquestion.FieldSerial, field.TypeString, value)
+		_node.Serial = value
 	}
 	if value, ok := sqc.mutation.Content(); ok {
 		_spec.SetField(surveyquestion.FieldContent, field.TypeString, value)

@@ -35,6 +35,8 @@ type SurveyQuestion struct {
 	SurveyID int64 `json:"survey_id,omitempty"`
 	// parent_id
 	ParentID int64 `json:"parent_id,omitempty"`
+	// serial
+	Serial string `json:"serial,omitempty"`
 	// content
 	Content string `json:"content,omitempty"`
 	// type
@@ -91,7 +93,7 @@ func (*SurveyQuestion) scanValues(columns []string) ([]any, error) {
 			values[i] = new([]byte)
 		case surveyquestion.FieldID, surveyquestion.FieldDelete, surveyquestion.FieldCreatedID, surveyquestion.FieldStatus, surveyquestion.FieldSurveyID, surveyquestion.FieldParentID, surveyquestion.FieldSort, surveyquestion.FieldRequired:
 			values[i] = new(sql.NullInt64)
-		case surveyquestion.FieldContent, surveyquestion.FieldType:
+		case surveyquestion.FieldSerial, surveyquestion.FieldContent, surveyquestion.FieldType:
 			values[i] = new(sql.NullString)
 		case surveyquestion.FieldCreatedAt, surveyquestion.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -157,6 +159,12 @@ func (sq *SurveyQuestion) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field parent_id", values[i])
 			} else if value.Valid {
 				sq.ParentID = value.Int64
+			}
+		case surveyquestion.FieldSerial:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field serial", values[i])
+			} else if value.Valid {
+				sq.Serial = value.String
 			}
 		case surveyquestion.FieldContent:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -256,6 +264,9 @@ func (sq *SurveyQuestion) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("parent_id=")
 	builder.WriteString(fmt.Sprintf("%v", sq.ParentID))
+	builder.WriteString(", ")
+	builder.WriteString("serial=")
+	builder.WriteString(sq.Serial)
 	builder.WriteString(", ")
 	builder.WriteString("content=")
 	builder.WriteString(sq.Content)

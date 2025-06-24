@@ -13,7 +13,9 @@ import (
 	"kcers-survey/biz/infras/do"
 	"kcers-survey/biz/infras/service/common"
 	"kcers-survey/biz/pkg/utils"
+	"kcers-survey/idl_gen/model/base"
 	"kcers-survey/idl_gen/model/service"
+	"strconv"
 	"time"
 )
 
@@ -23,6 +25,44 @@ type Survey struct {
 	salt  string
 	db    *ent.Client
 	cache *ristretto.Cache
+}
+
+func (s Survey) TreeQuestion(req *service.QuestionListReq) (resp []*base.Tree, err error) {
+	var predicates []predicate.SurveyQuestion
+
+	if req.SurveyId != 0 {
+		predicates = append(predicates, surveyquestion2.SurveyID(req.SurveyId))
+	}
+	predicates = append(predicates, surveyquestion2.Delete(0))
+	all, err := s.db.SurveyQuestion.
+		Query().
+		Where(predicates...).
+		Offset(int(req.Page-1) * int(req.PageSize)).
+		Limit(int(req.PageSize)).All(s.ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	resp = findTreeQuestionChildren(all, 0)
+	return resp, nil
+}
+
+func findTreeQuestionChildren(data []*ent.SurveyQuestion, parentID int64) []*base.Tree {
+	if data == nil {
+		return nil
+	}
+	var result []*base.Tree
+	for _, v := range data {
+		if v.ParentID == parentID && v.ID != parentID {
+			var m = new(base.Tree)
+			m.Title = v.Content
+			m.Value = strconv.FormatInt(v.ID, 10)
+			m.Key = strconv.FormatInt(v.ID, 10)
+			m.Children = findTreeQuestionChildren(data, v.ID)
+			result = append(result, m)
+		}
+	}
+	return result
 }
 
 func (s Survey) CreateSurvey(req *service.CreateOrUpdateSurveyReq) (err error) {
@@ -168,35 +208,64 @@ func (s Survey) DeleteSurvey(id int64) (err error) {
 
 func (s Survey) CreateQuestion(req *service.CreateOrUpdateQuestionReq) (err error) {
 
-	_, err = s.db.SurveyQuestion.Create().
+	sq := s.db.SurveyQuestion.Create().
 		SetContent(req.Content).
 		SetType(req.Type).
 		SetSurveyID(req.SurveyId).
 		SetParentID(req.ParentId).
 		SetSort(req.Sort).
-		SetRequired(req.Required).
-		Save(s.ctx)
+		SetRequired(req.Required)
 
+	if req.JumpRules != nil {
+		sq.SetJumpRules(*req.JumpRules)
+	}
+	save, err := sq.Save(s.ctx)
 	if err != nil {
 		return err
 	}
+	if len(req.Options) > 0 {
+		_, err := s.db.SurveyQuestionOptions.MapCreateBulk(req.Options, func(c *ent.SurveyQuestionOptionsCreate, i int) {
+			c.SetContent(req.Options[i].Content).
+				SetSerial(req.Options[i].Serial).
+				SetQuestion(save)
+		}).Save(s.ctx)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
 func (s Survey) UpdateQuestion(req *service.CreateOrUpdateQuestionReq) (err error) {
-	_, err = s.db.SurveyQuestion.Update().
+	sq := s.db.SurveyQuestion.Update().
 		Where(surveyquestion2.IDEQ(req.ID)).
 		SetContent(req.Content).
 		SetType(req.Type).
 		SetSurveyID(req.SurveyId).
 		SetParentID(req.ParentId).
 		SetSort(req.Sort).
-		SetRequired(req.Required).
-		Save(s.ctx)
+		SetRequired(req.Required)
 
+	if req.JumpRules != nil {
+		sq.SetJumpRules(*req.JumpRules)
+	}
+	_, err = sq.Save(s.ctx)
 	if err != nil {
 		return err
 	}
+
+	if len(req.Options) > 0 {
+		_, err := s.db.SurveyQuestionOptions.MapCreateBulk(req.Options, func(c *ent.SurveyQuestionOptionsCreate, i int) {
+			c.SetContent(req.Options[i].Content).
+				SetSerial(req.Options[i].Serial).
+				SetQuestionID(req.ID)
+		}).Save(s.ctx)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 func (s Survey) GetQuestion(id int64) (resp *service.Question, err error) {

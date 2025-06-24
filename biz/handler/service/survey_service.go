@@ -309,3 +309,23 @@ func ListQuestion(ctx context.Context, c *app.RequestContext) {
 	utils.SendResponse(c, errno.Success, list, int64(total), "")
 	return
 }
+
+// TreeQuestion .
+// @router /service/survey/question/tree [POST]
+func TreeQuestion(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req service.QuestionListReq
+	err = c.BindAndValidate(&req)
+
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	list, err := surveyService.NewSurvey(ctx, c).TreeQuestion(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, list, 0, "")
+	return
+}

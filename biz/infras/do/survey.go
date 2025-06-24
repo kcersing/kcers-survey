@@ -1,6 +1,9 @@
 package do
 
-import "kcers-survey/idl_gen/model/service"
+import (
+	"kcers-survey/idl_gen/model/base"
+	"kcers-survey/idl_gen/model/service"
+)
 
 type Survey interface {
 	CreateSurvey(req *service.CreateOrUpdateSurveyReq) (err error)
@@ -8,6 +11,8 @@ type Survey interface {
 	GetSurvey(id int64) (resp *service.Survey, err error)
 	ListSurvey(req *service.SurveyListReq) (resp []*service.Survey, total int, err error)
 	DeleteSurvey(id int64) (err error)
+
+	TreeQuestion(req *service.QuestionListReq) (resp []*base.Tree, err error)
 
 	CreateQuestion(req *service.CreateOrUpdateQuestionReq) (err error)
 	UpdateQuestion(req *service.CreateOrUpdateQuestionReq) (err error)

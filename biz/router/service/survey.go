@@ -32,6 +32,7 @@ func Register(r *server.Hertz) {
 				_question.POST("/delete", append(_deletequestionMw(), service.DeleteQuestion)...)
 				_question.POST("/info", append(_getquestionMw(), service.GetQuestion)...)
 				_question.POST("/list", append(_listquestionMw(), service.ListQuestion)...)
+				_question.POST("/tree", append(_treequestionMw(), service.TreeQuestion)...)
 				_question.POST("/update", append(_updatequestionMw(), service.UpdateQuestion)...)
 			}
 			{
