@@ -110,6 +110,7 @@ const TableList: React.FC = () => {
     {
       title:'问卷名称',
       dataIndex: 'title',
+      ellipsis: true,
       tip: '问卷调查的标题',
       render: (dom, entity) => {
         return (
@@ -128,6 +129,7 @@ const TableList: React.FC = () => {
       title: '概览',
       dataIndex: 'desc',
       valueType: 'textarea',
+      ellipsis: true,
     },
     {
       title: '创建时间',

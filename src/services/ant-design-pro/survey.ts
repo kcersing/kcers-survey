@@ -128,6 +128,26 @@ export async function listQuestion(
   });
 }
 
+
+
+
+export async function treeQuestion(
+  params: {
+    surveyId?: number;
+    keywords?:string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<Record<string, any>>(Urls.TreeQuestion, {
+    method: 'POST',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
+
 export async function deleteQuestion(options?: { [key: string]: any }) {
   return request<Record<string, any>>(Urls.DeleteQuestion, {
     method: 'POST',

@@ -13,10 +13,18 @@ import {
   ProTable,
   ProFormGroup,
   ProFormList,
+  ProFormTreeSelect,
 
 } from '@ant-design/pro-components';
 import { Button, message, Modal, Divider ,Segmented } from 'antd';
-import { listQuestion, getSurvey,createQuestion, updateQuestion, deleteQuestion,listSurvey } from '@/services/ant-design-pro/survey';
+import {
+  listQuestion,
+  getSurvey,
+  createQuestion,
+  updateQuestion,
+  deleteQuestion,
+  treeQuestion,
+} from '@/services/ant-design-pro/survey';
 
 import { DeleteOutlined, MenuOutlined, PlusOutlined ,CloseCircleOutlined, SmileOutlined, SnippetsOutlined,CloseOutlined} from '@ant-design/icons';
 
@@ -146,9 +154,9 @@ const Designer =  () => {
 
       let questionData = {
         ...values,
-        type:values.questionType,
-        survey_id: surveyId,
+        surveyId: surveyId,
         question_type: questionType,
+        type: questionType,
       };
       console.log(questionData)
       if (questionType === 'single_choice' || questionType === 'multiple_choice') {
@@ -272,6 +280,7 @@ const Designer =  () => {
             // 完全自定义整个区域
             render: (props, doms) => {
               console.log(props);
+              console.log(doms);
               return (
                 <div className="flex justify-end mt-4">
                   <Button onClick={() => setVisible(false)} style={{ marginRight: 8 }}>
@@ -285,22 +294,27 @@ const Designer =  () => {
             },
           }}
         >
-          <ProFormSelect
+
+
+
+          <ProFormTreeSelect
             name="parentId"
             label="上级问题"
-            showSearch
-            request={async ({ keyWords }) => {
-              const questionAll = await listQuestion({ surveyId: surveyId, keywords: keyWords });
+            params={{}}
 
-              return questionAll.data.map((q) => ({
-                value: q.id,
-                label: q.content,
-              }));
+            request={async ({ keyWords }) => {
+              const questionAll = await treeQuestion({ surveyId: surveyId, keywords: keyWords });
+
+              return questionAll.data;
+
             }}
+            fieldNames ={ [{label: 'title', value: 'value', children: 'children'}] }
             rules={[{ required: true, message: 'Please select your country!' }]}
             style={{ width: '100%' }}
             placeholder="Please select"
             onChange={handleChange}
+            showSearch={false}
+
           />
 
           <ProFormText
@@ -345,30 +359,49 @@ const Designer =  () => {
             fieldProps={{ precision: 0 }}
             placeholder="请输入排序号"
           />
-          {console.log(options)}
-          {console.log(questionType)}
-          {console.log(['single_choice', 'multiple_choice'].includes(questionType))}
-          {/* 选项设置（针对单选题和多选题） */}
-          {['single_choice', 'multiple_choice'].includes(questionType) && (
-            <div>
-              <h3 className="font-medium mb-2">选项设置</h3>
 
+
+          {questionType === 'single_choice' && (
+            <>
               <ProFormList
+                label="选项设置"
                 copyIconProps={{ Icon: SnippetsOutlined }}
                 initialValue={options}
                 deleteIconProps={{ Icon: CloseOutlined }}
                 name="options"
               >
                 <ProFormGroup key="group">
-                <ProFormText key="serial" hidden={true} name="serial" label="序号" />
-                <ProFormText key="content" name="content" label="选项" />
+                  {/*<ProFormText key="serial" name="serial" label="序号" />*/}
+                  <ProFormText key="content" name="content" label="选项" />
                 </ProFormGroup>
               </ProFormList>
-
-
-
-            </div>
+            </>
           )}
+          {questionType === 'multiple_choice' && (
+            <>
+              <ProFormList
+                label="选项设置"
+                copyIconProps={{ Icon: SnippetsOutlined }}
+                initialValue={options}
+                deleteIconProps={{ Icon: CloseOutlined }}
+                name="options"
+              >
+                <ProFormGroup key="group">
+                  {/*<ProFormText key="serial" name="serial" label="序号" />*/}
+                  <ProFormText key="content" name="content" label="选项" />
+                </ProFormGroup>
+              </ProFormList>
+            <ProFormDigit
+            name="valueNumber"
+            label="最多选中"
+            fieldProps={{ precision: 0 }}
+            placeholder="3"
+            />
+            </>
+          )}
+
+
+
 
           {/* 矩阵设置（针对矩阵单选题） */}
           {/*{questionType === 'matrix_single' && (*/}

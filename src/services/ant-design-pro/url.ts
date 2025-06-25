@@ -16,6 +16,9 @@ export enum Urls {
   ListQuestion='/service/survey/question/list',
   DeleteQuestion='/service/survey/question/delete',
 
+  TreeQuestion='/service/survey/question/tree',
+
+
 
 
 }
