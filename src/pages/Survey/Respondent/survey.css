@@ -1,0 +1,174 @@
+
+/* survey.css */
+.survey-container {
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f9fafb;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.survey-card {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ant-card-meta-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.question-number {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.survey-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 25px;
+  gap: 15px;
+}
+
+.next-button {
+  background-color: #3f8600;
+  border-color: #3f8600;
+  padding: 12px 24px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.next-button:hover {
+  background-color: #357000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(63, 134, 0, 0.25);
+}
+
+.ant-radio, .ant-checkbox {
+  margin-right: 0;
+  margin-bottom: 12px;
+}
+
+.ant-radio-wrapper, .ant-checkbox-wrapper {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.ant-radio-wrapper:hover, .ant-checkbox-wrapper:hover {
+  background-color: #f0f9eb;
+}
+
+.ant-radio-input:focus + .ant-radio-label,
+.ant-checkbox-input:focus + .ant-checkbox-label {
+  outline: none;
+}
+
+.ant-radio-checked .ant-radio-inner,
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #3f8600;
+  border-color: #3f8600;
+}
+
+.ant-radio-checked .ant-radio-inner:after,
+.ant-checkbox-checked .ant-checkbox-inner:after {
+  border-color: white;
+}
+
+.ant-form-item-label > label {
+  font-weight: 500;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.thank-you-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9fafb;
+}
+
+.thank-you-card {
+  width: 100%;
+  max-width: 500px;
+  padding: 30px;
+  text-align: center;
+  border-radius: 16px;
+  background-color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  animation: popIn 0.5s ease-in-out;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.thank-you-icon {
+  font-size: 48px;
+  color: #3f8600;
+  margin-bottom: 20px;
+}
+
+.thank-you-card h3 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.thank-you-card p {
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.finish-button {
+  background-color: #3f8600;
+  border-color: #3f8600;
+  padding: 12px 30px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+.finish-button:hover {
+  background-color: #357000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(63, 134, 0, 0.25);
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+  .survey-container, .thank-you-container {
+    padding: 15px;
+  }
+
+  .survey-card, .thank-you-card {
+    padding: 20px;
+  }
+
+  .ant-card-meta-title {
+    font-size: 1.3rem;
+  }
+
+  .ant-form-item-label > label {
+    font-size: 1rem;
+  }
+}
