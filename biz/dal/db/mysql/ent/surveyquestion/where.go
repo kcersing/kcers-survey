@@ -670,6 +670,16 @@ func TypeContainsFold(v string) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldContainsFold(FieldType, v))
 }
 
+// OptionsIsNil applies the IsNil predicate on the "options" field.
+func OptionsIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldOptions))
+}
+
+// OptionsNotNil applies the NotNil predicate on the "options" field.
+func OptionsNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldOptions))
+}
+
 // SortEQ applies the EQ predicate on the "sort" field.
 func SortEQ(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldSort, v))
@@ -778,29 +788,6 @@ func RequiredIsNil() predicate.SurveyQuestion {
 // RequiredNotNil applies the NotNil predicate on the "required" field.
 func RequiredNotNil() predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldNotNull(FieldRequired))
-}
-
-// HasOption applies the HasEdge predicate on the "option" edge.
-func HasOption() predicate.SurveyQuestion {
-	return predicate.SurveyQuestion(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, OptionTable, OptionColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasOptionWith applies the HasEdge predicate on the "option" edge with a given conditions (other predicates).
-func HasOptionWith(preds ...predicate.SurveyQuestionOptions) predicate.SurveyQuestion {
-	return predicate.SurveyQuestion(func(s *sql.Selector) {
-		step := newOptionStep()
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
 }
 
 // HasSurvey applies the HasEdge predicate on the "survey" edge.

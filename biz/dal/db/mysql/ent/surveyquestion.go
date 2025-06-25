@@ -41,6 +41,8 @@ type SurveyQuestion struct {
 	Content string `json:"content,omitempty"`
 	// type
 	Type string `json:"type,omitempty"`
+	// options
+	Options []*service.Options `json:"options,omitempty"`
 	// sort
 	Sort int64 `json:"sort,omitempty"`
 	// 跳题规则
@@ -55,22 +57,11 @@ type SurveyQuestion struct {
 
 // SurveyQuestionEdges holds the relations/edges for other nodes in the graph.
 type SurveyQuestionEdges struct {
-	// Option holds the value of the option edge.
-	Option []*SurveyQuestionOptions `json:"option,omitempty"`
 	// Survey holds the value of the survey edge.
 	Survey *Survey `json:"survey,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
-}
-
-// OptionOrErr returns the Option value or an error if the edge
-// was not loaded in eager-loading.
-func (e SurveyQuestionEdges) OptionOrErr() ([]*SurveyQuestionOptions, error) {
-	if e.loadedTypes[0] {
-		return e.Option, nil
-	}
-	return nil, &NotLoadedError{edge: "option"}
+	loadedTypes [1]bool
 }
 
 // SurveyOrErr returns the Survey value or an error if the edge
@@ -78,7 +69,7 @@ func (e SurveyQuestionEdges) OptionOrErr() ([]*SurveyQuestionOptions, error) {
 func (e SurveyQuestionEdges) SurveyOrErr() (*Survey, error) {
 	if e.Survey != nil {
 		return e.Survey, nil
-	} else if e.loadedTypes[1] {
+	} else if e.loadedTypes[0] {
 		return nil, &NotFoundError{label: survey.Label}
 	}
 	return nil, &NotLoadedError{edge: "survey"}
@@ -89,7 +80,7 @@ func (*SurveyQuestion) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case surveyquestion.FieldJumpRules:
+		case surveyquestion.FieldOptions, surveyquestion.FieldJumpRules:
 			values[i] = new([]byte)
 		case surveyquestion.FieldID, surveyquestion.FieldDelete, surveyquestion.FieldCreatedID, surveyquestion.FieldStatus, surveyquestion.FieldSurveyID, surveyquestion.FieldParentID, surveyquestion.FieldSort, surveyquestion.FieldRequired:
 			values[i] = new(sql.NullInt64)
@@ -178,6 +169,14 @@ func (sq *SurveyQuestion) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sq.Type = value.String
 			}
+		case surveyquestion.FieldOptions:
+			if value, ok := values[i].(*[]byte); !ok {
+				return fmt.Errorf("unexpected type %T for field options", values[i])
+			} else if value != nil && len(*value) > 0 {
+				if err := json.Unmarshal(*value, &sq.Options); err != nil {
+					return fmt.Errorf("unmarshal field options: %w", err)
+				}
+			}
 		case surveyquestion.FieldSort:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field sort", values[i])
@@ -209,11 +208,6 @@ func (sq *SurveyQuestion) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (sq *SurveyQuestion) Value(name string) (ent.Value, error) {
 	return sq.selectValues.Get(name)
-}
-
-// QueryOption queries the "option" edge of the SurveyQuestion entity.
-func (sq *SurveyQuestion) QueryOption() *SurveyQuestionOptionsQuery {
-	return NewSurveyQuestionClient(sq.config).QueryOption(sq)
 }
 
 // QuerySurvey queries the "survey" edge of the SurveyQuestion entity.
@@ -273,6 +267,9 @@ func (sq *SurveyQuestion) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("type=")
 	builder.WriteString(sq.Type)
+	builder.WriteString(", ")
+	builder.WriteString("options=")
+	builder.WriteString(fmt.Sprintf("%v", sq.Options))
 	builder.WriteString(", ")
 	builder.WriteString("sort=")
 	builder.WriteString(fmt.Sprintf("%v", sq.Sort))

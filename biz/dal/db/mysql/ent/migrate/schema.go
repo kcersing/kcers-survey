@@ -227,6 +227,7 @@ var (
 		{Name: "serial", Type: field.TypeString, Nullable: true, Comment: "serial", Default: ""},
 		{Name: "content", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "content", Default: ""},
 		{Name: "type", Type: field.TypeString, Nullable: true, Comment: "type", Default: ""},
+		{Name: "options", Type: field.TypeJSON, Nullable: true, Comment: "options"},
 		{Name: "sort", Type: field.TypeInt64, Nullable: true, Comment: "sort", Default: 0},
 		{Name: "jump_rules", Type: field.TypeJSON, Nullable: true, Comment: "跳题规则"},
 		{Name: "required", Type: field.TypeInt64, Nullable: true, Comment: "是否必填 1必填 2选填", Default: 1},
@@ -240,34 +241,8 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "survey_question_survey_question",
-				Columns:    []*schema.Column{SurveyQuestionColumns[13]},
+				Columns:    []*schema.Column{SurveyQuestionColumns[14]},
 				RefColumns: []*schema.Column{SurveyColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-		},
-	}
-	// SurveyQuestionOptionsColumns holds the columns for the "survey_question_options" table.
-	SurveyQuestionOptionsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt64, Increment: true, Comment: "primary key"},
-		{Name: "created_at", Type: field.TypeTime, Nullable: true, Comment: "created time"},
-		{Name: "updated_at", Type: field.TypeTime, Nullable: true, Comment: "last update time"},
-		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
-		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
-		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
-		{Name: "serial", Type: field.TypeString, Nullable: true, Comment: "serial", Default: ""},
-		{Name: "content", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "content", Default: ""},
-		{Name: "survey_question_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_question_id", Default: 0},
-	}
-	// SurveyQuestionOptionsTable holds the schema information for the "survey_question_options" table.
-	SurveyQuestionOptionsTable = &schema.Table{
-		Name:       "survey_question_options",
-		Columns:    SurveyQuestionOptionsColumns,
-		PrimaryKey: []*schema.Column{SurveyQuestionOptionsColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "survey_question_options_survey_question_option",
-				Columns:    []*schema.Column{SurveyQuestionOptionsColumns[8]},
-				RefColumns: []*schema.Column{SurveyQuestionColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
@@ -467,7 +442,6 @@ var (
 		SysRolesTable,
 		SurveyTable,
 		SurveyQuestionTable,
-		SurveyQuestionOptionsTable,
 		SurveyResponseTable,
 		SurveyResponseAnswersTable,
 		SysTokensTable,
@@ -508,10 +482,6 @@ func init() {
 	SurveyQuestionTable.ForeignKeys[0].RefTable = SurveyTable
 	SurveyQuestionTable.Annotation = &entsql.Annotation{
 		Table: "survey_question",
-	}
-	SurveyQuestionOptionsTable.ForeignKeys[0].RefTable = SurveyQuestionTable
-	SurveyQuestionOptionsTable.Annotation = &entsql.Annotation{
-		Table: "survey_question_options",
 	}
 	SurveyResponseTable.Annotation = &entsql.Annotation{
 		Table: "survey_response",

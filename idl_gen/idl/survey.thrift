@@ -97,11 +97,13 @@ struct JumpRules {
       2:optional string answer="" (api.raw = "answer")// 触发条件的回答
       3:optional i64 nextQuestionId=0 (api.raw = "nextQuestionId")// 跳转的目标问题ID
       4:optional string operators="" (api.raw = "operators")
+      5:optional i64 valueNumber=0 (api.raw = "valueNumber")
 }
 
 struct Options {
-	  1:optional string serial="" (api.raw = "serial")
+	  1:optional i64 serial=1 (api.raw = "serial")
       2:optional string content="" (api.raw = "content")
+      3:optional i64 inputs=1 (api.raw = "inputs")
 }
 
 struct CreateOrUpdateResponseReq {

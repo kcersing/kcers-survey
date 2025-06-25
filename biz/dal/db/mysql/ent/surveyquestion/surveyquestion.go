@@ -35,25 +35,18 @@ const (
 	FieldContent = "content"
 	// FieldType holds the string denoting the type field in the database.
 	FieldType = "type"
+	// FieldOptions holds the string denoting the options field in the database.
+	FieldOptions = "options"
 	// FieldSort holds the string denoting the sort field in the database.
 	FieldSort = "sort"
 	// FieldJumpRules holds the string denoting the jump_rules field in the database.
 	FieldJumpRules = "jump_rules"
 	// FieldRequired holds the string denoting the required field in the database.
 	FieldRequired = "required"
-	// EdgeOption holds the string denoting the option edge name in mutations.
-	EdgeOption = "option"
 	// EdgeSurvey holds the string denoting the survey edge name in mutations.
 	EdgeSurvey = "survey"
 	// Table holds the table name of the surveyquestion in the database.
 	Table = "survey_question"
-	// OptionTable is the table that holds the option relation/edge.
-	OptionTable = "survey_question_options"
-	// OptionInverseTable is the table name for the SurveyQuestionOptions entity.
-	// It exists in this package in order to avoid circular dependency with the "surveyquestionoptions" package.
-	OptionInverseTable = "survey_question_options"
-	// OptionColumn is the table column denoting the option relation/edge.
-	OptionColumn = "survey_question_id"
 	// SurveyTable is the table that holds the survey relation/edge.
 	SurveyTable = "survey_question"
 	// SurveyInverseTable is the table name for the Survey entity.
@@ -76,6 +69,7 @@ var Columns = []string{
 	FieldSerial,
 	FieldContent,
 	FieldType,
+	FieldOptions,
 	FieldSort,
 	FieldJumpRules,
 	FieldRequired,
@@ -190,32 +184,11 @@ func ByRequired(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRequired, opts...).ToFunc()
 }
 
-// ByOptionCount orders the results by option count.
-func ByOptionCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newOptionStep(), opts...)
-	}
-}
-
-// ByOption orders the results by option terms.
-func ByOption(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newOptionStep(), append([]sql.OrderTerm{term}, terms...)...)
-	}
-}
-
 // BySurveyField orders the results by survey field.
 func BySurveyField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newSurveyStep(), sql.OrderByField(field, opts...))
 	}
-}
-func newOptionStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(OptionInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, OptionTable, OptionColumn),
-	)
 }
 func newSurveyStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(

@@ -9,7 +9,6 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/predicate"
 	survey2 "kcers-survey/biz/dal/db/mysql/ent/survey"
 	surveyquestion2 "kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
-	surveyquestionoptions2 "kcers-survey/biz/dal/db/mysql/ent/surveyquestionoptions"
 	"kcers-survey/biz/infras/do"
 	"kcers-survey/biz/infras/service/common"
 	"kcers-survey/biz/pkg/utils"
@@ -105,31 +104,13 @@ func (s Survey) entToQuestionAll(all []*ent.SurveyQuestion, parentID int64) []*s
 			sq := &service.Question{
 				Content:   v.Content,
 				Type:      v.Type,
-				Options:   nil,
+				Options:   v.Options,
 				Required:  v.Required,
 				Sort:      v.Sort,
 				ID:        v.ID,
 				JumpRules: &v.JumpRules,
 				SurveyId:  v.SurveyID,
 				ParentId:  v.ParentID,
-			}
-			option, _ := s.db.SurveyQuestionOptions.
-				Query().
-				Where(
-					surveyquestionoptions2.SurveyQuestionID(v.ID),
-					surveyquestionoptions2.DeleteEQ(0),
-				).
-				All(s.ctx)
-
-			if len(option) > 0 {
-				var options []*service.Options
-				for _, o := range option {
-					options = append(options, &service.Options{
-						Serial:  o.Serial,
-						Content: o.Content,
-					})
-				}
-				sq.Options = options
 			}
 
 			sq.Children = s.entToQuestionAll(all, v.ID)
@@ -144,7 +125,7 @@ func (s Survey) entToQuestion(v *ent.SurveyQuestion) *service.Question {
 	sq := &service.Question{
 		Content:   v.Content,
 		Type:      v.Type,
-		Options:   nil,
+		Options:   v.Options,
 		Required:  v.Required,
 		Sort:      v.Sort,
 		ID:        v.ID,
@@ -152,24 +133,6 @@ func (s Survey) entToQuestion(v *ent.SurveyQuestion) *service.Question {
 		JumpRules: &v.JumpRules,
 		SurveyId:  v.SurveyID,
 		ParentId:  v.ParentID,
-	}
-	option, _ := s.db.SurveyQuestionOptions.
-		Query().
-		Where(
-			surveyquestionoptions2.SurveyQuestionID(v.ID),
-			surveyquestionoptions2.DeleteEQ(0),
-		).
-		All(s.ctx)
-
-	if len(option) > 0 {
-		var options []*service.Options
-		for _, o := range option {
-			options = append(options, &service.Options{
-				Serial:  o.Serial,
-				Content: o.Content,
-			})
-		}
-		sq.Options = options
 	}
 
 	return sq
@@ -221,24 +184,20 @@ func (s Survey) CreateQuestion(req *service.CreateOrUpdateQuestionReq) (err erro
 		SetSurveyID(req.SurveyId).
 		SetParentID(req.ParentId).
 		SetSort(req.Sort).
-		SetRequired(req.Required)
+		SetRequired(req.Required).
+		SetOptions(req.Options)
 
+	if req.Options != nil {
+		sq.SetOptions(req.Options)
+	}
 	if req.JumpRules != nil {
 		sq.SetJumpRules(*req.JumpRules)
 	}
-	save, err := sq.Save(s.ctx)
+
+	_, err = sq.Save(s.ctx)
+
 	if err != nil {
 		return err
-	}
-	if len(req.Options) > 0 {
-		_, err := s.db.SurveyQuestionOptions.MapCreateBulk(req.Options, func(c *ent.SurveyQuestionOptionsCreate, i int) {
-			c.SetContent(req.Options[i].Content).
-				SetSerial(req.Options[i].Serial).
-				SetQuestion(save)
-		}).Save(s.ctx)
-		if err != nil {
-			return err
-		}
 	}
 
 	return nil
@@ -254,23 +213,15 @@ func (s Survey) UpdateQuestion(req *service.CreateOrUpdateQuestionReq) (err erro
 		SetSort(req.Sort).
 		SetRequired(req.Required)
 
+	if req.Options != nil {
+		sq.SetOptions(req.Options)
+	}
 	if req.JumpRules != nil {
 		sq.SetJumpRules(*req.JumpRules)
 	}
 	_, err = sq.Save(s.ctx)
 	if err != nil {
 		return err
-	}
-
-	if len(req.Options) > 0 {
-		_, err := s.db.SurveyQuestionOptions.MapCreateBulk(req.Options, func(c *ent.SurveyQuestionOptionsCreate, i int) {
-			c.SetContent(req.Options[i].Content).
-				SetSerial(req.Options[i].Serial).
-				SetQuestionID(req.ID)
-		}).Save(s.ctx)
-		if err != nil {
-			return err
-		}
 	}
 
 	return nil

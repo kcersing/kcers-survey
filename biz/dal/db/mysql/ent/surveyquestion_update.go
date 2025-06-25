@@ -9,12 +9,12 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/predicate"
 	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyquestionoptions"
 	"kcers-survey/idl_gen/model/service"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema/field"
 )
 
@@ -232,6 +232,24 @@ func (squ *SurveyQuestionUpdate) ClearType() *SurveyQuestionUpdate {
 	return squ
 }
 
+// SetOptions sets the "options" field.
+func (squ *SurveyQuestionUpdate) SetOptions(s []*service.Options) *SurveyQuestionUpdate {
+	squ.mutation.SetOptions(s)
+	return squ
+}
+
+// AppendOptions appends s to the "options" field.
+func (squ *SurveyQuestionUpdate) AppendOptions(s []*service.Options) *SurveyQuestionUpdate {
+	squ.mutation.AppendOptions(s)
+	return squ
+}
+
+// ClearOptions clears the value of the "options" field.
+func (squ *SurveyQuestionUpdate) ClearOptions() *SurveyQuestionUpdate {
+	squ.mutation.ClearOptions()
+	return squ
+}
+
 // SetSort sets the "sort" field.
 func (squ *SurveyQuestionUpdate) SetSort(i int64) *SurveyQuestionUpdate {
 	squ.mutation.ResetSort()
@@ -306,21 +324,6 @@ func (squ *SurveyQuestionUpdate) ClearRequired() *SurveyQuestionUpdate {
 	return squ
 }
 
-// AddOptionIDs adds the "option" edge to the SurveyQuestionOptions entity by IDs.
-func (squ *SurveyQuestionUpdate) AddOptionIDs(ids ...int64) *SurveyQuestionUpdate {
-	squ.mutation.AddOptionIDs(ids...)
-	return squ
-}
-
-// AddOption adds the "option" edges to the SurveyQuestionOptions entity.
-func (squ *SurveyQuestionUpdate) AddOption(s ...*SurveyQuestionOptions) *SurveyQuestionUpdate {
-	ids := make([]int64, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return squ.AddOptionIDs(ids...)
-}
-
 // SetSurvey sets the "survey" edge to the Survey entity.
 func (squ *SurveyQuestionUpdate) SetSurvey(s *Survey) *SurveyQuestionUpdate {
 	return squ.SetSurveyID(s.ID)
@@ -329,27 +332,6 @@ func (squ *SurveyQuestionUpdate) SetSurvey(s *Survey) *SurveyQuestionUpdate {
 // Mutation returns the SurveyQuestionMutation object of the builder.
 func (squ *SurveyQuestionUpdate) Mutation() *SurveyQuestionMutation {
 	return squ.mutation
-}
-
-// ClearOption clears all "option" edges to the SurveyQuestionOptions entity.
-func (squ *SurveyQuestionUpdate) ClearOption() *SurveyQuestionUpdate {
-	squ.mutation.ClearOption()
-	return squ
-}
-
-// RemoveOptionIDs removes the "option" edge to SurveyQuestionOptions entities by IDs.
-func (squ *SurveyQuestionUpdate) RemoveOptionIDs(ids ...int64) *SurveyQuestionUpdate {
-	squ.mutation.RemoveOptionIDs(ids...)
-	return squ
-}
-
-// RemoveOption removes "option" edges to SurveyQuestionOptions entities.
-func (squ *SurveyQuestionUpdate) RemoveOption(s ...*SurveyQuestionOptions) *SurveyQuestionUpdate {
-	ids := make([]int64, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return squ.RemoveOptionIDs(ids...)
 }
 
 // ClearSurvey clears the "survey" edge to the Survey entity.
@@ -472,6 +454,17 @@ func (squ *SurveyQuestionUpdate) sqlSave(ctx context.Context) (n int, err error)
 	if squ.mutation.TypeCleared() {
 		_spec.ClearField(surveyquestion.FieldType, field.TypeString)
 	}
+	if value, ok := squ.mutation.Options(); ok {
+		_spec.SetField(surveyquestion.FieldOptions, field.TypeJSON, value)
+	}
+	if value, ok := squ.mutation.AppendedOptions(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyquestion.FieldOptions, value)
+		})
+	}
+	if squ.mutation.OptionsCleared() {
+		_spec.ClearField(surveyquestion.FieldOptions, field.TypeJSON)
+	}
 	if value, ok := squ.mutation.Sort(); ok {
 		_spec.SetField(surveyquestion.FieldSort, field.TypeInt64, value)
 	}
@@ -495,51 +488,6 @@ func (squ *SurveyQuestionUpdate) sqlSave(ctx context.Context) (n int, err error)
 	}
 	if squ.mutation.RequiredCleared() {
 		_spec.ClearField(surveyquestion.FieldRequired, field.TypeInt64)
-	}
-	if squ.mutation.OptionCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   surveyquestion.OptionTable,
-			Columns: []string{surveyquestion.OptionColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(surveyquestionoptions.FieldID, field.TypeInt64),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := squ.mutation.RemovedOptionIDs(); len(nodes) > 0 && !squ.mutation.OptionCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   surveyquestion.OptionTable,
-			Columns: []string{surveyquestion.OptionColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(surveyquestionoptions.FieldID, field.TypeInt64),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := squ.mutation.OptionIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   surveyquestion.OptionTable,
-			Columns: []string{surveyquestion.OptionColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(surveyquestionoptions.FieldID, field.TypeInt64),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if squ.mutation.SurveyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -792,6 +740,24 @@ func (squo *SurveyQuestionUpdateOne) ClearType() *SurveyQuestionUpdateOne {
 	return squo
 }
 
+// SetOptions sets the "options" field.
+func (squo *SurveyQuestionUpdateOne) SetOptions(s []*service.Options) *SurveyQuestionUpdateOne {
+	squo.mutation.SetOptions(s)
+	return squo
+}
+
+// AppendOptions appends s to the "options" field.
+func (squo *SurveyQuestionUpdateOne) AppendOptions(s []*service.Options) *SurveyQuestionUpdateOne {
+	squo.mutation.AppendOptions(s)
+	return squo
+}
+
+// ClearOptions clears the value of the "options" field.
+func (squo *SurveyQuestionUpdateOne) ClearOptions() *SurveyQuestionUpdateOne {
+	squo.mutation.ClearOptions()
+	return squo
+}
+
 // SetSort sets the "sort" field.
 func (squo *SurveyQuestionUpdateOne) SetSort(i int64) *SurveyQuestionUpdateOne {
 	squo.mutation.ResetSort()
@@ -866,21 +832,6 @@ func (squo *SurveyQuestionUpdateOne) ClearRequired() *SurveyQuestionUpdateOne {
 	return squo
 }
 
-// AddOptionIDs adds the "option" edge to the SurveyQuestionOptions entity by IDs.
-func (squo *SurveyQuestionUpdateOne) AddOptionIDs(ids ...int64) *SurveyQuestionUpdateOne {
-	squo.mutation.AddOptionIDs(ids...)
-	return squo
-}
-
-// AddOption adds the "option" edges to the SurveyQuestionOptions entity.
-func (squo *SurveyQuestionUpdateOne) AddOption(s ...*SurveyQuestionOptions) *SurveyQuestionUpdateOne {
-	ids := make([]int64, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return squo.AddOptionIDs(ids...)
-}
-
 // SetSurvey sets the "survey" edge to the Survey entity.
 func (squo *SurveyQuestionUpdateOne) SetSurvey(s *Survey) *SurveyQuestionUpdateOne {
 	return squo.SetSurveyID(s.ID)
@@ -889,27 +840,6 @@ func (squo *SurveyQuestionUpdateOne) SetSurvey(s *Survey) *SurveyQuestionUpdateO
 // Mutation returns the SurveyQuestionMutation object of the builder.
 func (squo *SurveyQuestionUpdateOne) Mutation() *SurveyQuestionMutation {
 	return squo.mutation
-}
-
-// ClearOption clears all "option" edges to the SurveyQuestionOptions entity.
-func (squo *SurveyQuestionUpdateOne) ClearOption() *SurveyQuestionUpdateOne {
-	squo.mutation.ClearOption()
-	return squo
-}
-
-// RemoveOptionIDs removes the "option" edge to SurveyQuestionOptions entities by IDs.
-func (squo *SurveyQuestionUpdateOne) RemoveOptionIDs(ids ...int64) *SurveyQuestionUpdateOne {
-	squo.mutation.RemoveOptionIDs(ids...)
-	return squo
-}
-
-// RemoveOption removes "option" edges to SurveyQuestionOptions entities.
-func (squo *SurveyQuestionUpdateOne) RemoveOption(s ...*SurveyQuestionOptions) *SurveyQuestionUpdateOne {
-	ids := make([]int64, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return squo.RemoveOptionIDs(ids...)
 }
 
 // ClearSurvey clears the "survey" edge to the Survey entity.
@@ -1062,6 +992,17 @@ func (squo *SurveyQuestionUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	if squo.mutation.TypeCleared() {
 		_spec.ClearField(surveyquestion.FieldType, field.TypeString)
 	}
+	if value, ok := squo.mutation.Options(); ok {
+		_spec.SetField(surveyquestion.FieldOptions, field.TypeJSON, value)
+	}
+	if value, ok := squo.mutation.AppendedOptions(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyquestion.FieldOptions, value)
+		})
+	}
+	if squo.mutation.OptionsCleared() {
+		_spec.ClearField(surveyquestion.FieldOptions, field.TypeJSON)
+	}
 	if value, ok := squo.mutation.Sort(); ok {
 		_spec.SetField(surveyquestion.FieldSort, field.TypeInt64, value)
 	}
@@ -1085,51 +1026,6 @@ func (squo *SurveyQuestionUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	}
 	if squo.mutation.RequiredCleared() {
 		_spec.ClearField(surveyquestion.FieldRequired, field.TypeInt64)
-	}
-	if squo.mutation.OptionCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   surveyquestion.OptionTable,
-			Columns: []string{surveyquestion.OptionColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(surveyquestionoptions.FieldID, field.TypeInt64),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := squo.mutation.RemovedOptionIDs(); len(nodes) > 0 && !squo.mutation.OptionCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   surveyquestion.OptionTable,
-			Columns: []string{surveyquestion.OptionColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(surveyquestionoptions.FieldID, field.TypeInt64),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := squo.mutation.OptionIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   surveyquestion.OptionTable,
-			Columns: []string{surveyquestion.OptionColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(surveyquestionoptions.FieldID, field.TypeInt64),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if squo.mutation.SurveyCleared() {
 		edge := &sqlgraph.EdgeSpec{

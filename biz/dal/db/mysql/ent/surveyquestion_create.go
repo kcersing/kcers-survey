@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyquestionoptions"
 	"kcers-survey/idl_gen/model/service"
 	"time"
 
@@ -162,6 +161,12 @@ func (sqc *SurveyQuestionCreate) SetNillableType(s *string) *SurveyQuestionCreat
 	return sqc
 }
 
+// SetOptions sets the "options" field.
+func (sqc *SurveyQuestionCreate) SetOptions(s []*service.Options) *SurveyQuestionCreate {
+	sqc.mutation.SetOptions(s)
+	return sqc
+}
+
 // SetSort sets the "sort" field.
 func (sqc *SurveyQuestionCreate) SetSort(i int64) *SurveyQuestionCreate {
 	sqc.mutation.SetSort(i)
@@ -208,21 +213,6 @@ func (sqc *SurveyQuestionCreate) SetNillableRequired(i *int64) *SurveyQuestionCr
 func (sqc *SurveyQuestionCreate) SetID(i int64) *SurveyQuestionCreate {
 	sqc.mutation.SetID(i)
 	return sqc
-}
-
-// AddOptionIDs adds the "option" edge to the SurveyQuestionOptions entity by IDs.
-func (sqc *SurveyQuestionCreate) AddOptionIDs(ids ...int64) *SurveyQuestionCreate {
-	sqc.mutation.AddOptionIDs(ids...)
-	return sqc
-}
-
-// AddOption adds the "option" edges to the SurveyQuestionOptions entity.
-func (sqc *SurveyQuestionCreate) AddOption(s ...*SurveyQuestionOptions) *SurveyQuestionCreate {
-	ids := make([]int64, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
-	}
-	return sqc.AddOptionIDs(ids...)
 }
 
 // SetSurvey sets the "survey" edge to the Survey entity.
@@ -389,6 +379,10 @@ func (sqc *SurveyQuestionCreate) createSpec() (*SurveyQuestion, *sqlgraph.Create
 		_spec.SetField(surveyquestion.FieldType, field.TypeString, value)
 		_node.Type = value
 	}
+	if value, ok := sqc.mutation.Options(); ok {
+		_spec.SetField(surveyquestion.FieldOptions, field.TypeJSON, value)
+		_node.Options = value
+	}
 	if value, ok := sqc.mutation.Sort(); ok {
 		_spec.SetField(surveyquestion.FieldSort, field.TypeInt64, value)
 		_node.Sort = value
@@ -400,22 +394,6 @@ func (sqc *SurveyQuestionCreate) createSpec() (*SurveyQuestion, *sqlgraph.Create
 	if value, ok := sqc.mutation.Required(); ok {
 		_spec.SetField(surveyquestion.FieldRequired, field.TypeInt64, value)
 		_node.Required = value
-	}
-	if nodes := sqc.mutation.OptionIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   surveyquestion.OptionTable,
-			Columns: []string{surveyquestion.OptionColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(surveyquestionoptions.FieldID, field.TypeInt64),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := sqc.mutation.SurveyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

@@ -24,6 +24,8 @@ func (SurveyQuestion) Fields() []ent.Field {
 		field.Text("content").Optional().Default("").Comment("content"),
 		field.String("type").Optional().Default("").Comment("type"),
 
+		field.JSON("options", []*service.Options{}).Optional().Comment("options"),
+
 		field.Int64("sort").Optional().Default(0).Comment("sort"),
 		field.JSON("jump_rules", service.JumpRules{}).Optional().Default(service.JumpRules{}).Comment("跳题规则"),
 		field.Int64("required").Optional().Default(1).Comment("是否必填 1必填 2选填"),
@@ -39,7 +41,7 @@ func (SurveyQuestion) Mixin() []ent.Mixin {
 
 func (SurveyQuestion) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("option", SurveyQuestionOptions.Type),
+
 		edge.From("survey", Survey.Type).Ref("question").Field("survey_id").Unique(),
 	}
 }

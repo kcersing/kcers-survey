@@ -15,7 +15,6 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/role"
 	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyquestionoptions"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"kcers-survey/biz/dal/db/mysql/ent/token"
@@ -95,7 +94,6 @@ func checkColumn(table, column string) error {
 			role.Table:                  role.ValidColumn,
 			survey.Table:                survey.ValidColumn,
 			surveyquestion.Table:        surveyquestion.ValidColumn,
-			surveyquestionoptions.Table: surveyquestionoptions.ValidColumn,
 			surveyresponse.Table:        surveyresponse.ValidColumn,
 			surveyresponseanswers.Table: surveyresponseanswers.ValidColumn,
 			token.Table:                 token.ValidColumn,
