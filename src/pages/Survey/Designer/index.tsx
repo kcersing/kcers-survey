@@ -89,6 +89,14 @@ const Designer =  () => {
       width: 120,
       className: 'drag-visible',
     },
+
+    {
+      title: '编号',
+      dataIndex: 'serial',
+      width: 120,
+      className: 'drag-visible',
+    },
+
     {
       title: '问题内容',
       dataIndex: 'content',
@@ -138,6 +146,13 @@ const Designer =  () => {
   const handleAddQuestion = () => {
     // 重置表单和状态
     form.resetFields();
+
+    // form.setFieldValue('options',[]);
+
+
+
+
+
     setEditingQuestion(null);
     setQuestionType('single_choice');
     setOptions([]);
@@ -155,10 +170,12 @@ const Designer =  () => {
       let questionData = {
         ...values,
         surveyId: surveyId,
-        question_type: questionType,
+        questionType: questionType,
         type: questionType,
+        parentId:parseInt(values.parentId),
+        required:parseInt(values.required),
       };
-      console.log(questionData)
+
       if (questionType === 'single_choice' || questionType === 'multiple_choice') {
         questionData.options = values.options;
       }
@@ -173,7 +190,7 @@ const Designer =  () => {
         message.success('问题更新成功');
       } else {
         // 创建新问题
-        questionData.sort = questions.length + 1;
+        questionData.sort =  questions ? questions.length + 1 : 0;
         await createQuestion(questionData);
         message.success('问题创建成功');
       }
@@ -191,11 +208,11 @@ const Designer =  () => {
     handleAddQuestion()
     form.setFieldsValue({
       content: question.content,
-      question_type: question.type,
+      questionType: question.type,
       required: question.required,
       sort: question.sort,
-      jump_rules: question.jumpRules,
-      parent_id: question.parentId,
+      jumpRules: question.jumpRules,
+      parentId: question.parentId,
     });
 
     setEditingQuestion(question);
@@ -261,7 +278,7 @@ const Designer =  () => {
         <ProForm
           form={form}
           layout="vertical"
-          initialValues={editingQuestion || { required: true, sort: questions.length + 1 }}
+          initialValues={editingQuestion || { required: 1,  questionType:'single_choice', sort: questions ? questions.length + 1 : 0 }}
           submitter={{
             // 配置按钮文本
             searchConfig: {
@@ -309,14 +326,17 @@ const Designer =  () => {
 
             }}
             fieldNames ={ [{label: 'title', value: 'value', children: 'children'}] }
-            rules={[{ required: true, message: 'Please select your country!' }]}
+
             style={{ width: '100%' }}
             placeholder="Please select"
             onChange={handleChange}
             showSearch={false}
 
           />
-
+          <ProFormText
+              name="serial"
+              label="编号"
+          />
           <ProFormText
             name="content"
             label="问题内容"
@@ -325,7 +345,7 @@ const Designer =  () => {
           />
 
           <ProFormSelect
-            name="question_type"
+            name="questionType"
             label="问题类型"
             onChange={(value) => setQuestionType(value as QuestionType)}
             options={[
@@ -370,9 +390,19 @@ const Designer =  () => {
                 deleteIconProps={{ Icon: CloseOutlined }}
                 name="options"
               >
-                <ProFormGroup key="group">
-                  {/*<ProFormText key="serial" name="serial" label="序号" />*/}
-                  <ProFormText key="content" name="content" label="选项" />
+                  <ProFormGroup key="group">
+                  <ProFormDigit name="serial" label="序号"/>
+                  <ProFormText  name="content" label="选项" />
+
+                  <ProFormRadio.Group
+                      name="inputs"
+                      label="是否可填写"
+                      value={1}
+                      options={[
+                        { label: '否', value: 1 },
+                        { label: '是', value: 2 },
+                      ]}
+                  />
                 </ProFormGroup>
               </ProFormList>
             </>
@@ -387,8 +417,18 @@ const Designer =  () => {
                 name="options"
               >
                 <ProFormGroup key="group">
-                  {/*<ProFormText key="serial" name="serial" label="序号" />*/}
-                  <ProFormText key="content" name="content" label="选项" />
+                  <ProFormDigit name="serial" label="序号"/>
+                  <ProFormText  name="content" label="选项" />
+
+                  <ProFormRadio.Group
+                      name="inputs"
+                      label="是否可填写"
+                      value={1}
+                      options={[
+                        { label: '否', value: 1 },
+                        { label: '是', value: 2 },
+                      ]}
+                  />
                 </ProFormGroup>
               </ProFormList>
             <ProFormDigit
