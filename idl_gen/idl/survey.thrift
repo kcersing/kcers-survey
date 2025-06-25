@@ -90,6 +90,7 @@ struct Question  {
       8:optional JumpRules jumpRules={} (api.raw = "jumpRules")
       9:optional i64 surveyId=0 (api.raw = "surveyId")
       10:optional i64 parentId=0 (api.raw = "parentId")
+      11:optional string serial="" (api.raw = "serial")
 
 }
 struct JumpRules {

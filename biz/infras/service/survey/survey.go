@@ -111,6 +111,7 @@ func (s Survey) entToQuestionAll(all []*ent.SurveyQuestion, parentID int64) []*s
 				JumpRules: &v.JumpRules,
 				SurveyId:  v.SurveyID,
 				ParentId:  v.ParentID,
+				Serial:    v.Serial,
 			}
 
 			sq.Children = s.entToQuestionAll(all, v.ID)
@@ -133,6 +134,7 @@ func (s Survey) entToQuestion(v *ent.SurveyQuestion) *service.Question {
 		JumpRules: &v.JumpRules,
 		SurveyId:  v.SurveyID,
 		ParentId:  v.ParentID,
+		Serial:    v.Serial,
 	}
 
 	return sq
