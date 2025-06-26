@@ -9339,35 +9339,36 @@ func (m *SurveyMutation) ResetEdge(name string) error {
 // SurveyQuestionMutation represents an operation that mutates the SurveyQuestion nodes in the graph.
 type SurveyQuestionMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *int64
-	created_at    *time.Time
-	updated_at    *time.Time
-	delete        *int64
-	adddelete     *int64
-	created_id    *int64
-	addcreated_id *int64
-	status        *int64
-	addstatus     *int64
-	parent_id     *int64
-	addparent_id  *int64
-	serial        *string
-	content       *string
-	_type         *string
-	options       *[]*service.Options
-	appendoptions []*service.Options
-	sort          *int64
-	addsort       *int64
-	jump_rules    *service.JumpRules
-	required      *int64
-	addrequired   *int64
-	clearedFields map[string]struct{}
-	survey        *int64
-	clearedsurvey bool
-	done          bool
-	oldValue      func(context.Context) (*SurveyQuestion, error)
-	predicates    []predicate.SurveyQuestion
+	op               Op
+	typ              string
+	id               *int64
+	created_at       *time.Time
+	updated_at       *time.Time
+	delete           *int64
+	adddelete        *int64
+	created_id       *int64
+	addcreated_id    *int64
+	status           *int64
+	addstatus        *int64
+	parent_id        *int64
+	addparent_id     *int64
+	serial           *string
+	content          *string
+	_type            *string
+	options          *[]*service.Options
+	appendoptions    []*service.Options
+	sort             *int64
+	addsort          *int64
+	jump_rules       *[]*service.JumpRules
+	appendjump_rules []*service.JumpRules
+	required         *int64
+	addrequired      *int64
+	clearedFields    map[string]struct{}
+	survey           *int64
+	clearedsurvey    bool
+	done             bool
+	oldValue         func(context.Context) (*SurveyQuestion, error)
+	predicates       []predicate.SurveyQuestion
 }
 
 var _ ent.Mutation = (*SurveyQuestionMutation)(nil)
@@ -10184,12 +10185,13 @@ func (m *SurveyQuestionMutation) ResetSort() {
 }
 
 // SetJumpRules sets the "jump_rules" field.
-func (m *SurveyQuestionMutation) SetJumpRules(sr service.JumpRules) {
+func (m *SurveyQuestionMutation) SetJumpRules(sr []*service.JumpRules) {
 	m.jump_rules = &sr
+	m.appendjump_rules = nil
 }
 
 // JumpRules returns the value of the "jump_rules" field in the mutation.
-func (m *SurveyQuestionMutation) JumpRules() (r service.JumpRules, exists bool) {
+func (m *SurveyQuestionMutation) JumpRules() (r []*service.JumpRules, exists bool) {
 	v := m.jump_rules
 	if v == nil {
 		return
@@ -10200,7 +10202,7 @@ func (m *SurveyQuestionMutation) JumpRules() (r service.JumpRules, exists bool) 
 // OldJumpRules returns the old "jump_rules" field's value of the SurveyQuestion entity.
 // If the SurveyQuestion object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SurveyQuestionMutation) OldJumpRules(ctx context.Context) (v service.JumpRules, err error) {
+func (m *SurveyQuestionMutation) OldJumpRules(ctx context.Context) (v []*service.JumpRules, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldJumpRules is only allowed on UpdateOne operations")
 	}
@@ -10214,9 +10216,23 @@ func (m *SurveyQuestionMutation) OldJumpRules(ctx context.Context) (v service.Ju
 	return oldValue.JumpRules, nil
 }
 
+// AppendJumpRules adds sr to the "jump_rules" field.
+func (m *SurveyQuestionMutation) AppendJumpRules(sr []*service.JumpRules) {
+	m.appendjump_rules = append(m.appendjump_rules, sr...)
+}
+
+// AppendedJumpRules returns the list of values that were appended to the "jump_rules" field in this mutation.
+func (m *SurveyQuestionMutation) AppendedJumpRules() ([]*service.JumpRules, bool) {
+	if len(m.appendjump_rules) == 0 {
+		return nil, false
+	}
+	return m.appendjump_rules, true
+}
+
 // ClearJumpRules clears the value of the "jump_rules" field.
 func (m *SurveyQuestionMutation) ClearJumpRules() {
 	m.jump_rules = nil
+	m.appendjump_rules = nil
 	m.clearedFields[surveyquestion.FieldJumpRules] = struct{}{}
 }
 
@@ -10229,6 +10245,7 @@ func (m *SurveyQuestionMutation) JumpRulesCleared() bool {
 // ResetJumpRules resets all changes to the "jump_rules" field.
 func (m *SurveyQuestionMutation) ResetJumpRules() {
 	m.jump_rules = nil
+	m.appendjump_rules = nil
 	delete(m.clearedFields, surveyquestion.FieldJumpRules)
 }
 
@@ -10573,7 +10590,7 @@ func (m *SurveyQuestionMutation) SetField(name string, value ent.Value) error {
 		m.SetSort(v)
 		return nil
 	case surveyquestion.FieldJumpRules:
-		v, ok := value.(service.JumpRules)
+		v, ok := value.([]*service.JumpRules)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

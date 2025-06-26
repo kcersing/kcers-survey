@@ -73,7 +73,7 @@ struct CreateOrUpdateQuestionReq {
   5:optional i64 parentId=0 (api.raw = "parentId")
   6:optional i64 sort=0 (api.raw = "sort")
   7:optional i64 required=1 (api.raw = "required")
-  8:optional JumpRules jumpRules={} (api.raw = "jumpRules")
+  8:optional list<JumpRules> jumpRules={} (api.raw = "jumpRules")
   9:optional list<Options> options={} (api.raw = "options")
 }
 
@@ -87,18 +87,16 @@ struct Question  {
       5:optional i64 sort=0 (api.raw = "sort")
       6:optional i64 id=0 (api.raw = "id")
       7:optional list<Question> children={} (api.raw = "childrens")
-      8:optional JumpRules jumpRules={} (api.raw = "jumpRules")
+      8:optional list<JumpRules> jumpRules={} (api.raw = "jumpRules")
       9:optional i64 surveyId=0 (api.raw = "surveyId")
       10:optional i64 parentId=0 (api.raw = "parentId")
       11:optional string serial="" (api.raw = "serial")
-
+      12:optional i64 valueNumber=0 (api.raw = "valueNumber")
 }
 struct JumpRules {
-	  1:optional i64 questionId=0 (api.raw = "questionId")// 触发跳题的问题ID
       2:optional string answer="" (api.raw = "answer")// 触发条件的回答
       3:optional i64 nextQuestionId=0 (api.raw = "nextQuestionId")// 跳转的目标问题ID
       4:optional string operators="" (api.raw = "operators")
-      5:optional i64 valueNumber=0 (api.raw = "valueNumber")
 }
 
 struct Options {

@@ -108,7 +108,7 @@ func (s Survey) entToQuestionAll(all []*ent.SurveyQuestion, parentID int64) []*s
 				Required:  v.Required,
 				Sort:      v.Sort,
 				ID:        v.ID,
-				JumpRules: &v.JumpRules,
+				JumpRules: v.JumpRules,
 				SurveyId:  v.SurveyID,
 				ParentId:  v.ParentID,
 				Serial:    v.Serial,
@@ -131,7 +131,7 @@ func (s Survey) entToQuestion(v *ent.SurveyQuestion) *service.Question {
 		Sort:      v.Sort,
 		ID:        v.ID,
 		Children:  nil,
-		JumpRules: &v.JumpRules,
+		JumpRules: v.JumpRules,
 		SurveyId:  v.SurveyID,
 		ParentId:  v.ParentID,
 		Serial:    v.Serial,
@@ -189,11 +189,11 @@ func (s Survey) CreateQuestion(req *service.CreateOrUpdateQuestionReq) (err erro
 		SetRequired(req.Required).
 		SetOptions(req.Options)
 
-	if req.Options != nil {
+	if len(req.Options) > 0 {
 		sq.SetOptions(req.Options)
 	}
-	if req.JumpRules != nil {
-		sq.SetJumpRules(*req.JumpRules)
+	if len(req.JumpRules) > 0 {
+		sq.SetJumpRules(req.JumpRules)
 	}
 
 	_, err = sq.Save(s.ctx)
@@ -215,11 +215,11 @@ func (s Survey) UpdateQuestion(req *service.CreateOrUpdateQuestionReq) (err erro
 		SetSort(req.Sort).
 		SetRequired(req.Required)
 
-	if req.Options != nil {
+	if len(req.Options) > 0 {
 		sq.SetOptions(req.Options)
 	}
-	if req.JumpRules != nil {
-		sq.SetJumpRules(*req.JumpRules)
+	if len(req.JumpRules) > 0 {
+		sq.SetJumpRules(req.JumpRules)
 	}
 	_, err = sq.Save(s.ctx)
 	if err != nil {

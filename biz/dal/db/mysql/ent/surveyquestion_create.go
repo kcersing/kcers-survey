@@ -182,16 +182,8 @@ func (sqc *SurveyQuestionCreate) SetNillableSort(i *int64) *SurveyQuestionCreate
 }
 
 // SetJumpRules sets the "jump_rules" field.
-func (sqc *SurveyQuestionCreate) SetJumpRules(sr service.JumpRules) *SurveyQuestionCreate {
+func (sqc *SurveyQuestionCreate) SetJumpRules(sr []*service.JumpRules) *SurveyQuestionCreate {
 	sqc.mutation.SetJumpRules(sr)
-	return sqc
-}
-
-// SetNillableJumpRules sets the "jump_rules" field if the given value is not nil.
-func (sqc *SurveyQuestionCreate) SetNillableJumpRules(sr *service.JumpRules) *SurveyQuestionCreate {
-	if sr != nil {
-		sqc.SetJumpRules(*sr)
-	}
 	return sqc
 }
 

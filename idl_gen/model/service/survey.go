@@ -1834,15 +1834,15 @@ func (p *QuestionListReq) String() string {
 }
 
 type CreateOrUpdateQuestionReq struct {
-	ID        int64      `thrift:"id,1,optional" form:"id" json:"id" query:"id"`
-	Content   string     `thrift:"content,2,optional" form:"content" json:"content" query:"content"`
-	Type      string     `thrift:"type,3,optional" form:"type" json:"type" query:"type"`
-	SurveyId  int64      `thrift:"surveyId,4,optional" form:"surveyId" json:"surveyId" query:"surveyId"`
-	ParentId  int64      `thrift:"parentId,5,optional" form:"parentId" json:"parentId" query:"parentId"`
-	Sort      int64      `thrift:"sort,6,optional" form:"sort" json:"sort" query:"sort"`
-	Required  int64      `thrift:"required,7,optional" form:"required" json:"required" query:"required"`
-	JumpRules *JumpRules `thrift:"jumpRules,8,optional" form:"jumpRules" json:"jumpRules" query:"jumpRules"`
-	Options   []*Options `thrift:"options,9,optional" form:"options" json:"options" query:"options"`
+	ID        int64        `thrift:"id,1,optional" form:"id" json:"id" query:"id"`
+	Content   string       `thrift:"content,2,optional" form:"content" json:"content" query:"content"`
+	Type      string       `thrift:"type,3,optional" form:"type" json:"type" query:"type"`
+	SurveyId  int64        `thrift:"surveyId,4,optional" form:"surveyId" json:"surveyId" query:"surveyId"`
+	ParentId  int64        `thrift:"parentId,5,optional" form:"parentId" json:"parentId" query:"parentId"`
+	Sort      int64        `thrift:"sort,6,optional" form:"sort" json:"sort" query:"sort"`
+	Required  int64        `thrift:"required,7,optional" form:"required" json:"required" query:"required"`
+	JumpRules []*JumpRules `thrift:"jumpRules,8,optional" form:"jumpRules" json:"jumpRules" query:"jumpRules"`
+	Options   []*Options   `thrift:"options,9,optional" form:"options" json:"options" query:"options"`
 }
 
 func NewCreateOrUpdateQuestionReq() *CreateOrUpdateQuestionReq {
@@ -1855,7 +1855,7 @@ func NewCreateOrUpdateQuestionReq() *CreateOrUpdateQuestionReq {
 		ParentId:  0,
 		Sort:      0,
 		Required:  1,
-		JumpRules: &JumpRules{},
+		JumpRules: []*JumpRules{},
 		Options:   []*Options{},
 	}
 }
@@ -1868,7 +1868,7 @@ func (p *CreateOrUpdateQuestionReq) InitDefault() {
 	p.ParentId = 0
 	p.Sort = 0
 	p.Required = 1
-	p.JumpRules = &JumpRules{}
+	p.JumpRules = []*JumpRules{}
 	p.Options = []*Options{}
 }
 
@@ -1935,9 +1935,9 @@ func (p *CreateOrUpdateQuestionReq) GetRequired() (v int64) {
 	return p.Required
 }
 
-var CreateOrUpdateQuestionReq_JumpRules_DEFAULT *JumpRules = &JumpRules{}
+var CreateOrUpdateQuestionReq_JumpRules_DEFAULT []*JumpRules = []*JumpRules{}
 
-func (p *CreateOrUpdateQuestionReq) GetJumpRules() (v *JumpRules) {
+func (p *CreateOrUpdateQuestionReq) GetJumpRules() (v []*JumpRules) {
 	if !p.IsSetJumpRules() {
 		return CreateOrUpdateQuestionReq_JumpRules_DEFAULT
 	}
@@ -2077,7 +2077,7 @@ func (p *CreateOrUpdateQuestionReq) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 8:
-			if fieldTypeId == thrift.STRUCT {
+			if fieldTypeId == thrift.LIST {
 				if err = p.ReadField8(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2199,8 +2199,23 @@ func (p *CreateOrUpdateQuestionReq) ReadField7(iprot thrift.TProtocol) error {
 	return nil
 }
 func (p *CreateOrUpdateQuestionReq) ReadField8(iprot thrift.TProtocol) error {
-	_field := NewJumpRules()
-	if err := _field.Read(iprot); err != nil {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	_field := make([]*JumpRules, 0, size)
+	values := make([]JumpRules, size)
+	for i := 0; i < size; i++ {
+		_elem := &values[i]
+		_elem.InitDefault()
+
+		if err := _elem.Read(iprot); err != nil {
+			return err
+		}
+
+		_field = append(_field, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
 		return err
 	}
 	p.JumpRules = _field
@@ -2426,10 +2441,18 @@ WriteFieldEndError:
 
 func (p *CreateOrUpdateQuestionReq) writeField8(oprot thrift.TProtocol) (err error) {
 	if p.IsSetJumpRules() {
-		if err = oprot.WriteFieldBegin("jumpRules", thrift.STRUCT, 8); err != nil {
+		if err = oprot.WriteFieldBegin("jumpRules", thrift.LIST, 8); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := p.JumpRules.Write(oprot); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRUCT, len(p.JumpRules)); err != nil {
+			return err
+		}
+		for _, v := range p.JumpRules {
+			if err := v.Write(oprot); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteListEnd(); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -2480,33 +2503,35 @@ func (p *CreateOrUpdateQuestionReq) String() string {
 
 // QuestionRequest 问题请求
 type Question struct {
-	Content   string      `thrift:"content,1,optional" form:"content" json:"content" query:"content"`
-	Type      string      `thrift:"type,2,optional" form:"type" json:"type" query:"type"`
-	Options   []*Options  `thrift:"options,3,optional" form:"options" json:"options" query:"options"`
-	Required  int64       `thrift:"required,4,optional" form:"required" json:"required" query:"required"`
-	Sort      int64       `thrift:"sort,5,optional" form:"sort" json:"sort" query:"sort"`
-	ID        int64       `thrift:"id,6,optional" form:"id" json:"id" query:"id"`
-	Children  []*Question `thrift:"children,7,optional" form:"children" json:"children" query:"children"`
-	JumpRules *JumpRules  `thrift:"jumpRules,8,optional" form:"jumpRules" json:"jumpRules" query:"jumpRules"`
-	SurveyId  int64       `thrift:"surveyId,9,optional" form:"surveyId" json:"surveyId" query:"surveyId"`
-	ParentId  int64       `thrift:"parentId,10,optional" form:"parentId" json:"parentId" query:"parentId"`
-	Serial    string      `thrift:"serial,11,optional" form:"serial" json:"serial" query:"serial"`
+	Content     string       `thrift:"content,1,optional" form:"content" json:"content" query:"content"`
+	Type        string       `thrift:"type,2,optional" form:"type" json:"type" query:"type"`
+	Options     []*Options   `thrift:"options,3,optional" form:"options" json:"options" query:"options"`
+	Required    int64        `thrift:"required,4,optional" form:"required" json:"required" query:"required"`
+	Sort        int64        `thrift:"sort,5,optional" form:"sort" json:"sort" query:"sort"`
+	ID          int64        `thrift:"id,6,optional" form:"id" json:"id" query:"id"`
+	Children    []*Question  `thrift:"children,7,optional" form:"children" json:"children" query:"children"`
+	JumpRules   []*JumpRules `thrift:"jumpRules,8,optional" form:"jumpRules" json:"jumpRules" query:"jumpRules"`
+	SurveyId    int64        `thrift:"surveyId,9,optional" form:"surveyId" json:"surveyId" query:"surveyId"`
+	ParentId    int64        `thrift:"parentId,10,optional" form:"parentId" json:"parentId" query:"parentId"`
+	Serial      string       `thrift:"serial,11,optional" form:"serial" json:"serial" query:"serial"`
+	ValueNumber int64        `thrift:"valueNumber,12,optional" form:"valueNumber" json:"valueNumber" query:"valueNumber"`
 }
 
 func NewQuestion() *Question {
 	return &Question{
 
-		Content:   "",
-		Type:      "",
-		Options:   []*Options{},
-		Required:  1,
-		Sort:      0,
-		ID:        0,
-		Children:  []*Question{},
-		JumpRules: &JumpRules{},
-		SurveyId:  0,
-		ParentId:  0,
-		Serial:    "",
+		Content:     "",
+		Type:        "",
+		Options:     []*Options{},
+		Required:    1,
+		Sort:        0,
+		ID:          0,
+		Children:    []*Question{},
+		JumpRules:   []*JumpRules{},
+		SurveyId:    0,
+		ParentId:    0,
+		Serial:      "",
+		ValueNumber: 0,
 	}
 }
 
@@ -2518,10 +2543,11 @@ func (p *Question) InitDefault() {
 	p.Sort = 0
 	p.ID = 0
 	p.Children = []*Question{}
-	p.JumpRules = &JumpRules{}
+	p.JumpRules = []*JumpRules{}
 	p.SurveyId = 0
 	p.ParentId = 0
 	p.Serial = ""
+	p.ValueNumber = 0
 }
 
 var Question_Content_DEFAULT string = ""
@@ -2587,9 +2613,9 @@ func (p *Question) GetChildren() (v []*Question) {
 	return p.Children
 }
 
-var Question_JumpRules_DEFAULT *JumpRules = &JumpRules{}
+var Question_JumpRules_DEFAULT []*JumpRules = []*JumpRules{}
 
-func (p *Question) GetJumpRules() (v *JumpRules) {
+func (p *Question) GetJumpRules() (v []*JumpRules) {
 	if !p.IsSetJumpRules() {
 		return Question_JumpRules_DEFAULT
 	}
@@ -2623,6 +2649,15 @@ func (p *Question) GetSerial() (v string) {
 	return p.Serial
 }
 
+var Question_ValueNumber_DEFAULT int64 = 0
+
+func (p *Question) GetValueNumber() (v int64) {
+	if !p.IsSetValueNumber() {
+		return Question_ValueNumber_DEFAULT
+	}
+	return p.ValueNumber
+}
+
 var fieldIDToName_Question = map[int16]string{
 	1:  "content",
 	2:  "type",
@@ -2635,6 +2670,7 @@ var fieldIDToName_Question = map[int16]string{
 	9:  "surveyId",
 	10: "parentId",
 	11: "serial",
+	12: "valueNumber",
 }
 
 func (p *Question) IsSetContent() bool {
@@ -2679,6 +2715,10 @@ func (p *Question) IsSetParentId() bool {
 
 func (p *Question) IsSetSerial() bool {
 	return p.Serial != Question_Serial_DEFAULT
+}
+
+func (p *Question) IsSetValueNumber() bool {
+	return p.ValueNumber != Question_ValueNumber_DEFAULT
 }
 
 func (p *Question) Read(iprot thrift.TProtocol) (err error) {
@@ -2757,7 +2797,7 @@ func (p *Question) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 8:
-			if fieldTypeId == thrift.STRUCT {
+			if fieldTypeId == thrift.LIST {
 				if err = p.ReadField8(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2783,6 +2823,14 @@ func (p *Question) Read(iprot thrift.TProtocol) (err error) {
 		case 11:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField11(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 12:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField12(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -2919,8 +2967,23 @@ func (p *Question) ReadField7(iprot thrift.TProtocol) error {
 	return nil
 }
 func (p *Question) ReadField8(iprot thrift.TProtocol) error {
-	_field := NewJumpRules()
-	if err := _field.Read(iprot); err != nil {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	_field := make([]*JumpRules, 0, size)
+	values := make([]JumpRules, size)
+	for i := 0; i < size; i++ {
+		_elem := &values[i]
+		_elem.InitDefault()
+
+		if err := _elem.Read(iprot); err != nil {
+			return err
+		}
+
+		_field = append(_field, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
 		return err
 	}
 	p.JumpRules = _field
@@ -2957,6 +3020,17 @@ func (p *Question) ReadField11(iprot thrift.TProtocol) error {
 		_field = v
 	}
 	p.Serial = _field
+	return nil
+}
+func (p *Question) ReadField12(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.ValueNumber = _field
 	return nil
 }
 
@@ -3009,6 +3083,10 @@ func (p *Question) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField11(oprot); err != nil {
 			fieldId = 11
+			goto WriteFieldError
+		}
+		if err = p.writeField12(oprot); err != nil {
+			fieldId = 12
 			goto WriteFieldError
 		}
 	}
@@ -3180,10 +3258,18 @@ WriteFieldEndError:
 
 func (p *Question) writeField8(oprot thrift.TProtocol) (err error) {
 	if p.IsSetJumpRules() {
-		if err = oprot.WriteFieldBegin("jumpRules", thrift.STRUCT, 8); err != nil {
+		if err = oprot.WriteFieldBegin("jumpRules", thrift.LIST, 8); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := p.JumpRules.Write(oprot); err != nil {
+		if err := oprot.WriteListBegin(thrift.STRUCT, len(p.JumpRules)); err != nil {
+			return err
+		}
+		for _, v := range p.JumpRules {
+			if err := v.Write(oprot); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteListEnd(); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -3254,6 +3340,25 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 11 end error: ", p), err)
 }
 
+func (p *Question) writeField12(oprot thrift.TProtocol) (err error) {
+	if p.IsSetValueNumber() {
+		if err = oprot.WriteFieldBegin("valueNumber", thrift.I64, 12); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.ValueNumber); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 12 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 12 end error: ", p), err)
+}
+
 func (p *Question) String() string {
 	if p == nil {
 		return "<nil>"
@@ -3263,42 +3368,26 @@ func (p *Question) String() string {
 }
 
 type JumpRules struct {
-	// 触发跳题的问题ID
-	QuestionId int64 `thrift:"questionId,1,optional" form:"questionId" json:"questionId" query:"questionId"`
 	// 触发条件的回答
 	Answer string `thrift:"answer,2,optional" form:"answer" json:"answer" query:"answer"`
 	// 跳转的目标问题ID
 	NextQuestionId int64  `thrift:"nextQuestionId,3,optional" form:"nextQuestionId" json:"nextQuestionId" query:"nextQuestionId"`
 	Operators      string `thrift:"operators,4,optional" form:"operators" json:"operators" query:"operators"`
-	ValueNumber    int64  `thrift:"valueNumber,5,optional" form:"valueNumber" json:"valueNumber" query:"valueNumber"`
 }
 
 func NewJumpRules() *JumpRules {
 	return &JumpRules{
 
-		QuestionId:     0,
 		Answer:         "",
 		NextQuestionId: 0,
 		Operators:      "",
-		ValueNumber:    0,
 	}
 }
 
 func (p *JumpRules) InitDefault() {
-	p.QuestionId = 0
 	p.Answer = ""
 	p.NextQuestionId = 0
 	p.Operators = ""
-	p.ValueNumber = 0
-}
-
-var JumpRules_QuestionId_DEFAULT int64 = 0
-
-func (p *JumpRules) GetQuestionId() (v int64) {
-	if !p.IsSetQuestionId() {
-		return JumpRules_QuestionId_DEFAULT
-	}
-	return p.QuestionId
 }
 
 var JumpRules_Answer_DEFAULT string = ""
@@ -3328,25 +3417,10 @@ func (p *JumpRules) GetOperators() (v string) {
 	return p.Operators
 }
 
-var JumpRules_ValueNumber_DEFAULT int64 = 0
-
-func (p *JumpRules) GetValueNumber() (v int64) {
-	if !p.IsSetValueNumber() {
-		return JumpRules_ValueNumber_DEFAULT
-	}
-	return p.ValueNumber
-}
-
 var fieldIDToName_JumpRules = map[int16]string{
-	1: "questionId",
 	2: "answer",
 	3: "nextQuestionId",
 	4: "operators",
-	5: "valueNumber",
-}
-
-func (p *JumpRules) IsSetQuestionId() bool {
-	return p.QuestionId != JumpRules_QuestionId_DEFAULT
 }
 
 func (p *JumpRules) IsSetAnswer() bool {
@@ -3359,10 +3433,6 @@ func (p *JumpRules) IsSetNextQuestionId() bool {
 
 func (p *JumpRules) IsSetOperators() bool {
 	return p.Operators != JumpRules_Operators_DEFAULT
-}
-
-func (p *JumpRules) IsSetValueNumber() bool {
-	return p.ValueNumber != JumpRules_ValueNumber_DEFAULT
 }
 
 func (p *JumpRules) Read(iprot thrift.TProtocol) (err error) {
@@ -3384,14 +3454,6 @@ func (p *JumpRules) Read(iprot thrift.TProtocol) (err error) {
 		}
 
 		switch fieldId {
-		case 1:
-			if fieldTypeId == thrift.I64 {
-				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
 		case 2:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField2(iprot); err != nil {
@@ -3411,14 +3473,6 @@ func (p *JumpRules) Read(iprot thrift.TProtocol) (err error) {
 		case 4:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField4(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 5:
-			if fieldTypeId == thrift.I64 {
-				if err = p.ReadField5(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -3453,17 +3507,6 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *JumpRules) ReadField1(iprot thrift.TProtocol) error {
-
-	var _field int64
-	if v, err := iprot.ReadI64(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.QuestionId = _field
-	return nil
-}
 func (p *JumpRules) ReadField2(iprot thrift.TProtocol) error {
 
 	var _field string
@@ -3497,17 +3540,6 @@ func (p *JumpRules) ReadField4(iprot thrift.TProtocol) error {
 	p.Operators = _field
 	return nil
 }
-func (p *JumpRules) ReadField5(iprot thrift.TProtocol) error {
-
-	var _field int64
-	if v, err := iprot.ReadI64(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.ValueNumber = _field
-	return nil
-}
 
 func (p *JumpRules) Write(oprot thrift.TProtocol) (err error) {
 
@@ -3516,10 +3548,6 @@ func (p *JumpRules) Write(oprot thrift.TProtocol) (err error) {
 		goto WriteStructBeginError
 	}
 	if p != nil {
-		if err = p.writeField1(oprot); err != nil {
-			fieldId = 1
-			goto WriteFieldError
-		}
 		if err = p.writeField2(oprot); err != nil {
 			fieldId = 2
 			goto WriteFieldError
@@ -3530,10 +3558,6 @@ func (p *JumpRules) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField4(oprot); err != nil {
 			fieldId = 4
-			goto WriteFieldError
-		}
-		if err = p.writeField5(oprot); err != nil {
-			fieldId = 5
 			goto WriteFieldError
 		}
 	}
@@ -3552,25 +3576,6 @@ WriteFieldStopError:
 	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *JumpRules) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.IsSetQuestionId() {
-		if err = oprot.WriteFieldBegin("questionId", thrift.I64, 1); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteI64(p.QuestionId); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *JumpRules) writeField2(oprot thrift.TProtocol) (err error) {
@@ -3628,25 +3633,6 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
-}
-
-func (p *JumpRules) writeField5(oprot thrift.TProtocol) (err error) {
-	if p.IsSetValueNumber() {
-		if err = oprot.WriteFieldBegin("valueNumber", thrift.I64, 5); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteI64(p.ValueNumber); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
 }
 
 func (p *JumpRules) String() string {

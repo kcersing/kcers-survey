@@ -46,7 +46,7 @@ type SurveyQuestion struct {
 	// sort
 	Sort int64 `json:"sort,omitempty"`
 	// 跳题规则
-	JumpRules service.JumpRules `json:"jump_rules,omitempty"`
+	JumpRules []*service.JumpRules `json:"jump_rules,omitempty"`
 	// 是否必填 1必填 2选填
 	Required int64 `json:"required,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.

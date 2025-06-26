@@ -278,16 +278,14 @@ func (squ *SurveyQuestionUpdate) ClearSort() *SurveyQuestionUpdate {
 }
 
 // SetJumpRules sets the "jump_rules" field.
-func (squ *SurveyQuestionUpdate) SetJumpRules(sr service.JumpRules) *SurveyQuestionUpdate {
+func (squ *SurveyQuestionUpdate) SetJumpRules(sr []*service.JumpRules) *SurveyQuestionUpdate {
 	squ.mutation.SetJumpRules(sr)
 	return squ
 }
 
-// SetNillableJumpRules sets the "jump_rules" field if the given value is not nil.
-func (squ *SurveyQuestionUpdate) SetNillableJumpRules(sr *service.JumpRules) *SurveyQuestionUpdate {
-	if sr != nil {
-		squ.SetJumpRules(*sr)
-	}
+// AppendJumpRules appends sr to the "jump_rules" field.
+func (squ *SurveyQuestionUpdate) AppendJumpRules(sr []*service.JumpRules) *SurveyQuestionUpdate {
+	squ.mutation.AppendJumpRules(sr)
 	return squ
 }
 
@@ -476,6 +474,11 @@ func (squ *SurveyQuestionUpdate) sqlSave(ctx context.Context) (n int, err error)
 	}
 	if value, ok := squ.mutation.JumpRules(); ok {
 		_spec.SetField(surveyquestion.FieldJumpRules, field.TypeJSON, value)
+	}
+	if value, ok := squ.mutation.AppendedJumpRules(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyquestion.FieldJumpRules, value)
+		})
 	}
 	if squ.mutation.JumpRulesCleared() {
 		_spec.ClearField(surveyquestion.FieldJumpRules, field.TypeJSON)
@@ -786,16 +789,14 @@ func (squo *SurveyQuestionUpdateOne) ClearSort() *SurveyQuestionUpdateOne {
 }
 
 // SetJumpRules sets the "jump_rules" field.
-func (squo *SurveyQuestionUpdateOne) SetJumpRules(sr service.JumpRules) *SurveyQuestionUpdateOne {
+func (squo *SurveyQuestionUpdateOne) SetJumpRules(sr []*service.JumpRules) *SurveyQuestionUpdateOne {
 	squo.mutation.SetJumpRules(sr)
 	return squo
 }
 
-// SetNillableJumpRules sets the "jump_rules" field if the given value is not nil.
-func (squo *SurveyQuestionUpdateOne) SetNillableJumpRules(sr *service.JumpRules) *SurveyQuestionUpdateOne {
-	if sr != nil {
-		squo.SetJumpRules(*sr)
-	}
+// AppendJumpRules appends sr to the "jump_rules" field.
+func (squo *SurveyQuestionUpdateOne) AppendJumpRules(sr []*service.JumpRules) *SurveyQuestionUpdateOne {
+	squo.mutation.AppendJumpRules(sr)
 	return squo
 }
 
@@ -1014,6 +1015,11 @@ func (squo *SurveyQuestionUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	}
 	if value, ok := squo.mutation.JumpRules(); ok {
 		_spec.SetField(surveyquestion.FieldJumpRules, field.TypeJSON, value)
+	}
+	if value, ok := squo.mutation.AppendedJumpRules(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyquestion.FieldJumpRules, value)
+		})
 	}
 	if squo.mutation.JumpRulesCleared() {
 		_spec.ClearField(surveyquestion.FieldJumpRules, field.TypeJSON)

@@ -341,7 +341,7 @@ func init() {
 	// surveyquestionDescJumpRules is the schema descriptor for jump_rules field.
 	surveyquestionDescJumpRules := surveyquestionFields[7].Descriptor()
 	// surveyquestion.DefaultJumpRules holds the default value on creation for the jump_rules field.
-	surveyquestion.DefaultJumpRules = surveyquestionDescJumpRules.Default.(service.JumpRules)
+	surveyquestion.DefaultJumpRules = surveyquestionDescJumpRules.Default.([]*service.JumpRules)
 	// surveyquestionDescRequired is the schema descriptor for required field.
 	surveyquestionDescRequired := surveyquestionFields[8].Descriptor()
 	// surveyquestion.DefaultRequired holds the default value on creation for the required field.

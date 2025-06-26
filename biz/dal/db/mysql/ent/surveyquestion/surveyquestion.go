@@ -111,7 +111,7 @@ var (
 	// DefaultSort holds the default value on creation for the "sort" field.
 	DefaultSort int64
 	// DefaultJumpRules holds the default value on creation for the "jump_rules" field.
-	DefaultJumpRules service.JumpRules
+	DefaultJumpRules []*service.JumpRules
 	// DefaultRequired holds the default value on creation for the "required" field.
 	DefaultRequired int64
 )
