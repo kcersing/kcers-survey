@@ -152,10 +152,12 @@ const TableList: React.FC = () => {
         }>编辑</a>,
 
 
-        <a  key="config" onClick={() => {history.push(`/survey/${record.id}/design`)}}>设计</a>,
-        <a  key="config" onClick={() => { history.push(`/survey/${record.id}/respond`)}}>预览</a>,
-        <a  key="config" onClick={() => { history.push(`/survey/${record.id}/statistics`)}}>统计</a>,
-        <a  key="remove" onClick={() => { remove(record).then()}}>删除</a>,
+        <a key="config" onClick={() => {history.push(`/survey/${record.id}/design`)}}>设计</a>,
+        <a target="_blank" key="config" onClick={() => {history.push(`/survey/${record.id}/respondent`)}}>答题</a>,
+
+        <a key="config" onClick={() => { history.push(`/survey/${record.id}/respond`)}}>预览</a>,
+        <a key="config" onClick={() => { history.push(`/survey/${record.id}/statistics`)}}>统计</a>,
+        <a key="remove" onClick={() => { remove(record).then()}}>删除</a>,
 
       ],
     },

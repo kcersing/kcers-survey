@@ -33,10 +33,8 @@ type QuestionType = 'h2' | 'page' | 'rate' | 'single_choice' | 'multiple_choice'
 const Designer =  () => {
 
   const actionRef = useRef<ActionType>();
-
-
   const [questions, setQuestions] = useState<API.Questions[]>([]);
-  const [survey, setSurvey] = useState<any>({});
+  const [survey, setSurvey] = useState<API.Survey>({});
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState<API.Questions | null>(null);
@@ -147,9 +145,6 @@ const Designer =  () => {
     form.resetFields();
 
     // form.setFieldValue('options',[]);
-
-
-
 
 
     setEditingQuestion(null);
@@ -310,9 +305,6 @@ const Designer =  () => {
             },
           }}
         >
-
-
-
           <ProFormTreeSelect
             name="parentId"
             label="上级问题"
@@ -348,8 +340,8 @@ const Designer =  () => {
             label="问题类型"
             onChange={(value) => setQuestionType(value as QuestionType)}
             options={[
-              { label: '标题', value: 'h2' },
-              { label: '单页', value: 'page' },
+              { label: '标题1', value: 'h2' },
+              { label: '标题2', value: 'h3' },
               { label: '单选题', value: 'single_choice' },
               { label: '多选题', value: 'multiple_choice' },
               { label: '文本题', value: 'text' },
