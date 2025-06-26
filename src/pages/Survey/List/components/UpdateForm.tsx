@@ -4,7 +4,6 @@ import {
   ProFormTextArea,
   ProForm,
 } from '@ant-design/pro-components';
-import { FormattedMessage } from '@umijs/max';
 import { Modal } from 'antd';
 import React from 'react';
 
@@ -54,12 +53,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
           rules={[
             {
               required: true,
-              message: (
-                <FormattedMessage
-                  id="pages.searchTable.updateForm.ruleName.nameRules"
-                  defaultMessage="请输入问卷标题！"
-                />
-              ),
+              message: '请输入问卷标题',
             },
           ]}
         />
@@ -104,7 +98,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
             },
           ]}
         />
-      
+
     </ProForm>
   );
 };

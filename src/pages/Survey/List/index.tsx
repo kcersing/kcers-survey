@@ -9,11 +9,10 @@ import {
   ProFormTextArea,
   ProTable,
 } from '@ant-design/pro-components';
-import { FormattedMessage, useIntl } from '@umijs/max';
 import { Button, Drawer, Input, message } from 'antd';
 import React, { useRef, useState } from 'react';
-import type { FormValueType } from '@/pages/Survey/List/components/UpdateForm';
-import UpdateForm from '@/pages/Survey/List/components/UpdateForm';
+import type { FormValueType } from '@/pages/survey/list/components/UpdateForm';
+import UpdateForm from '@/pages/survey/list/components/UpdateForm';
 import { history } from '@@/core/history';
 
 /**
@@ -100,12 +99,6 @@ const TableList: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<API.Survey>();
 
 
-  /**
-   * @en-US International configuration
-   * @zh-CN 国际化配置
-   * */
-  const intl = useIntl();
-
   const columns: ProColumns<API.Survey>[] = [
     {
       title:'问卷名称',
@@ -142,15 +135,7 @@ const TableList: React.FC = () => {
           return false;
         }
         if (`${status}` === '2') {
-          return (
-            <Input
-              {...rest}
-              placeholder={intl.formatMessage({
-                id: 'pages.searchTable.exception',
-                defaultMessage: 'Please enter the reason for the exception!',
-              })}
-            />
-          );
+          return (<Input {...rest} placeholder="输入异常"/>);
         }
         return defaultRender(item);
       },
@@ -167,9 +152,9 @@ const TableList: React.FC = () => {
         }>编辑</a>,
 
 
-        <a  key="config" onClick={() => {history.push(`/Survey/${record.id}/design`)}}>设计</a>,
-        <a  key="config" onClick={() => { history.push(`/Survey/${record.id}/respond`)}}>预览</a>,
-        <a  key="config" onClick={() => { history.push(`/Survey/${record.id}/statistics`)}}>统计</a>,
+        <a  key="config" onClick={() => {history.push(`/survey/${record.id}/design`)}}>设计</a>,
+        <a  key="config" onClick={() => { history.push(`/survey/${record.id}/respond`)}}>预览</a>,
+        <a  key="config" onClick={() => { history.push(`/survey/${record.id}/statistics`)}}>统计</a>,
         <a  key="remove" onClick={() => { remove(record).then()}}>删除</a>,
 
       ],
@@ -179,10 +164,6 @@ const TableList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.Survey>
-        headerTitle={intl.formatMessage({
-          id: 'pages.searchTable.title',
-          defaultMessage: 'Enquiry form',
-        })}
         actionRef={actionRef}
         rowKey="key"
         search={{labelWidth: 120,}}
@@ -194,7 +175,7 @@ const TableList: React.FC = () => {
               handleModalOpen(true);
             }}
           >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+           新增
           </Button>,
         ]}
 

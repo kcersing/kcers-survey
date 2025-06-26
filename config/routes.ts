@@ -18,7 +18,7 @@ export default [
       {
         name: 'login',
         path: '/user/login',
-        component: './User/Login',
+        component: './user/login',
       },
     ],
   },
@@ -52,16 +52,17 @@ export default [
   //   component: './TableList',
   // },
   {
-    path: '/Survey',
+    path: '/survey',
     name: '问卷管理',
     icon: 'form',
     routes: [
-      { path: '/Survey/List', component: '@/pages/Survey/List', name: '问卷列表' },
-      { path: '/Survey/:id/design', component: '@/pages/Survey/Designer', name: '设计页面' , hideInMenu: true, },
-      { path: '/Survey/:id/respondent', component: '@/pages/Survey/Respondent', name: '答题'  },
+      { path: '/survey/list', component: '@/pages/survey/list', name: '问卷列表' },
+      { path: '/survey/:id/design', component: '@/pages/survey/designer', name: '设计页面' , hideInMenu: true, },
+
+      { path: '/survey/:id/respondent', component: '@/pages/survey/respondent', name: '统计分析' ,hideInMenu: true, },
     ],
   },
-
+  { path: '/survey/:id/respondent', component: '@/pages/survey/respondent', name: '答题',layout: false,  },
 
   // {
   //   path: '/Survey',

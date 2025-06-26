@@ -1,10 +1,8 @@
 import {
-  ProFormDateTimePicker,
   ProFormText,
-  ProFormTextArea,
   ProForm, ProFormSelect, ProFormRadio,
 } from '@ant-design/pro-components';
-import { FormattedMessage } from '@umijs/max';
+
 import { Button, Divider, message, Modal } from 'antd';
 import React, { useState } from 'react';
 import { DeleteOutlined,MenuOutlined, PlusOutlined } from '@ant-design/icons';

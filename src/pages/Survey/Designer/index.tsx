@@ -1,6 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { useParams } from "react-router"
-import { FormattedMessage } from '@umijs/max';
 import {
   type ActionType,
   ProColumns,
@@ -16,7 +15,7 @@ import {
   ProFormTreeSelect,
 
 } from '@ant-design/pro-components';
-import { Button, message, Modal, Divider ,Segmented } from 'antd';
+import { Button, message, Modal, Divider  } from 'antd';
 import {
   listQuestion,
   getSurvey,
@@ -26,7 +25,7 @@ import {
   treeQuestion,
 } from '@/services/ant-design-pro/survey';
 
-import { DeleteOutlined, MenuOutlined, PlusOutlined ,CloseCircleOutlined, SmileOutlined, SnippetsOutlined,CloseOutlined} from '@ant-design/icons';
+import { PlusOutlined , SnippetsOutlined,CloseOutlined} from '@ant-design/icons';
 
 type QuestionType = 'h2' | 'page' | 'rate' | 'single_choice' | 'multiple_choice' | 'text' | 'number' | 'date' | 'matrix_single';
 
