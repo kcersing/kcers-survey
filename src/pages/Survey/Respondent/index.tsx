@@ -29,349 +29,12 @@ import ProCard from '@ant-design/pro-card';
 
 import './survey.css';
 import moment from 'moment';
+import {useParams} from "react-router";
+import {getSurvey, listQuestion} from "@/services/ant-design-pro/survey";
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
 const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
-
-// 问卷数据 - 包含所有类型的问题
-const surveyData = [
-  {
-    "content": "养老服务调查问卷",
-    "type": "h2",
-    "options": null,
-    "required": 1,
-    "sort": 1,
-    "id": 1,
-    "children": [
-      {
-        "content": "基本信息",
-        "type": "h3",
-        "options": null,
-        "required": 1,
-        "sort": 2,
-        "id": 2,
-        "children": [
-          {
-            "content": "您的年龄：",
-            "type": "number",
-            "options": null,
-            "required": 1,
-            "sort": 3,
-            "id": 3,
-            "children": null,
-            "jumpRules": null,
-            "surveyId": 1,
-            "parentId": 2,
-            "serial": "1",
-            "valueNumber": 0
-          },
-          {
-            "content": "您的出生日期：",
-            "type": "date",
-            "options": null,
-            "required": 1,
-            "sort": 4,
-            "id": 4,
-            "children": null,
-            "jumpRules": null,
-            "surveyId": 1,
-            "parentId": 2,
-            "serial": "2",
-            "valueNumber": 0
-          },
-          {
-            "content": "您的性别：",
-            "type": "single_choice",
-            "options": [
-              { "serial": 0, "content": "男", "inputs": 0 },
-              { "serial": 1, "content": "女", "inputs": 1 },
-              { "serial": 2, "content": "不愿透露", "inputs": 2 }
-            ],
-            "required": 1,
-            "sort": 5,
-            "id": 5,
-            "children": null,
-            "jumpRules": null,
-            "surveyId": 1,
-            "parentId": 2,
-            "serial": "3",
-            "valueNumber": 0
-          }
-        ],
-        "jumpRules": null,
-        "surveyId": 1,
-        "parentId": 1,
-        "serial": "",
-        "valueNumber": 0
-      },
-      {
-        "content": "养老观念与意愿",
-        "type": "h3",
-        "options": null,
-        "required": 1,
-        "sort": 6,
-        "id": 6,
-        "children": [
-          {
-            "content": "您是否愿意入住养老机构？",
-            "type": "single_choice",
-            "options": [
-              { "serial": 0, "content": "完全不愿意", "inputs": 0 },
-              { "serial": 1, "content": "比较不愿意", "inputs": 1 },
-              { "serial": 2, "content": "一般", "inputs": 2 },
-              { "serial": 3, "content": "比较愿意", "inputs": 3 },
-              { "serial": 4, "content": "非常愿意", "inputs": 4 }
-            ],
-            "required": 1,
-            "sort": 7,
-            "id": 7,
-            "children": [
-              {
-                "content": "您希望选择哪种类型的养老机构？",
-                "type": "single_choice",
-                "options": [
-                  { "serial": 0, "content": "公立养老院", "inputs": 0 },
-                  { "serial": 1, "content": "私立高端养老院", "inputs": 1 },
-                  { "serial": 2, "content": "医养结合型机构", "inputs": 2 }
-                ],
-                "required": false,
-                "sort": 11,
-                "id": 11,
-                "children": null,
-                "jumpRules": null,
-                "surveyId": 1,
-                "parentId": 7,
-                "serial": "7",
-                "valueNumber": 0
-              }
-            ],
-            "jumpRules": [
-              { "answer": "一般", "nextQuestionId": 9, "operators": "equals" },
-              { "answer": "比较愿意", "nextQuestionId": 9, "operators": "equals" },
-              { "answer": "非常愿意", "nextQuestionId": 10, "operators": "equals" }
-            ],
-            "surveyId": 1,
-            "parentId": 6,
-            "serial": "4",
-            "valueNumber": 0
-          },
-          {
-            "content": "您不愿意入住养老机构的原因是什么？",
-            "type": "multiple_choice",
-            "options": [
-              { "serial": 0, "content": "担心别人议论", "inputs": 0 },
-              { "serial": 1, "content": "费用高", "inputs": 1 },
-              { "serial": 2, "content": "离家远", "inputs": 2 },
-              { "serial": 3, "content": "服务差", "inputs": 3 },
-              { "serial": 4, "content": "没有私密性", "inputs": 4 },
-              { "serial": 5, "content": "害怕难适应", "inputs": 5 },
-              { "serial": 6, "content": "其他（请说明）", "inputs": 6 }
-            ],
-            "required": 1,
-            "sort": 8,
-            "id": 8,
-            "children": [
-              {
-                "content": "如果费用是主要原因，您认为合理的收费标准是多少？",
-                "type": "number",
-                "options": null,
-                "required": false,
-                "sort": 12,
-                "id": 12,
-                "children": null,
-                "jumpRules": null,
-                "surveyId": 1,
-                "parentId": 8,
-                "serial": "8",
-                "valueNumber": 0
-              }
-            ],
-            "jumpRules": null,
-            "surveyId": 1,
-            "parentId": 6,
-            "serial": "5",
-            "valueNumber": 0
-          },
-          {
-            "content": "您希望机构能够提供以下哪些服务？",
-            "type": "multiple_choice",
-            "options": [
-              { "serial": 0, "content": "日常生活照料", "inputs": 0 },
-              { "serial": 1, "content": "医疗护理", "inputs": 1 },
-              { "serial": 2, "content": "康复训练", "inputs": 2 },
-              { "serial": 3, "content": "心理慰藉", "inputs": 3 },
-              { "serial": 4, "content": "临终关怀", "inputs": 4 },
-              { "serial": 5, "content": "其他（请说明）", "inputs": 5 }
-            ],
-            "required": 1,
-            "sort": 9,
-            "id": 9,
-            "children": [
-              {
-                "content": "如果选择了医疗护理，您希望多久进行一次健康检查？",
-                "type": "single_choice",
-                "options": [
-                  { "serial": 0, "content": "每天", "inputs": 0 },
-                  { "serial": 1, "content": "每周", "inputs": 1 },
-                  { "serial": 2, "content": "每月", "inputs": 2 },
-                  { "serial": 3, "content": "每季度", "inputs": 3 }
-                ],
-                "required": false,
-                "sort": 13,
-                "id": 13,
-                "children": null,
-                "jumpRules": null,
-                "surveyId": 1,
-                "parentId": 9,
-                "serial": "9",
-                "valueNumber": 0
-              }
-            ],
-            "jumpRules": null,
-            "surveyId": 1,
-            "parentId": 6,
-            "serial": "6",
-            "valueNumber": 0
-          },
-          {
-            "content": "您每月最多能够承担的养老机构费用：（元）",
-            "type": "number",
-            "options": null,
-            "required": 1,
-            "sort": 10,
-            "id": 10,
-            "children": [
-              {
-                "content": "如果您的预算较高，是否考虑过高端养老社区？",
-                "type": "single_choice",
-                "options": [
-                  { "serial": 0, "content": "是", "inputs": 0 },
-                  { "serial": 1, "content": "否", "inputs": 1 }
-                ],
-                "required": false,
-                "sort": 14,
-                "id": 14,
-                "children": null,
-                "jumpRules": null,
-                "surveyId": 1,
-                "parentId": 10,
-                "serial": "10",
-                "valueNumber": 0
-              }
-            ],
-            "jumpRules": null,
-            "surveyId": 1,
-            "parentId": 6,
-            "serial": "7",
-            "valueNumber": 0
-          },
-          {
-            "content": "您对当前养老服务的满意度：",
-            "type": "rate",
-            "options": null,
-            "required": 1,
-            "sort": 15,
-            "id": 15,
-            "children": null,
-            "jumpRules": null,
-            "surveyId": 1,
-            "parentId": 6,
-            "serial": "11",
-            "valueNumber": 0
-          }
-        ],
-        "jumpRules": null,
-        "surveyId": 1,
-        "parentId": 1,
-        "serial": "",
-        "valueNumber": 0
-      },
-      {
-        "content": "改进建议",
-        "type": "h3",
-        "options": null,
-        "required": 1,
-        "sort": 16,
-        "id": 16,
-        "children": [
-          {
-            "content": "您觉得当前农村养老服务在哪些方面还不能满足您的实际需要？",
-            "type": "text",
-            "options": null,
-            "required": 1,
-            "sort": 17,
-            "id": 17,
-            "children": [
-              {
-                "content": "您认为最需要优先改进的是？",
-                "type": "single_choice",
-                "options": [
-                  { "serial": 0, "content": "基础设施建设", "inputs": 0 },
-                  { "serial": 1, "content": "医疗资源配置", "inputs": 1 },
-                  { "serial": 2, "content": "服务人员培训", "inputs": 2 },
-                  { "serial": 3, "content": "政策宣传落实", "inputs": 3 }
-                ],
-                "required": false,
-                "sort": 18,
-                "id": 18,
-                "children": null,
-                "jumpRules": null,
-                "surveyId": 1,
-                "parentId": 17,
-                "serial": "12",
-                "valueNumber": 0
-              },
-              {
-                "content": "请上传相关图片或文件（可选）",
-                "type": "uploadImage",
-                "options": null,
-                "required": false,
-                "sort": 19,
-                "id": 19,
-                "children": null,
-                "jumpRules": null,
-                "surveyId": 1,
-                "parentId": 17,
-                "serial": "13",
-                "valueNumber": 0
-              },
-              {
-                "content": "请上传相关文件（可选）",
-                "type": "uploadFile",
-                "options": null,
-                "required": false,
-                "sort": 20,
-                "id": 20,
-                "children": null,
-                "jumpRules": null,
-                "surveyId": 1,
-                "parentId": 17,
-                "serial": "14",
-                "valueNumber": 0
-              }
-            ],
-            "jumpRules": null,
-            "surveyId": 1,
-            "parentId": 16,
-            "serial": "12",
-            "valueNumber": 0
-          }
-        ],
-        "jumpRules": null,
-        "surveyId": 1,
-        "parentId": 1,
-        "serial": "",
-        "valueNumber": 0
-      }
-    ],
-    "jumpRules": null,
-    "surveyId": 1,
-    "parentId": 0,
-    "serial": "",
-    "valueNumber": 0
-  }
-];
 
 // 问卷调查组件
 const Survey = () => {
@@ -383,6 +46,38 @@ const Survey = () => {
   const [uploading, setUploading] = useState(false);
   const navigate = useNavigate();
   const firstRender = useRef(true); // 用于标记首次渲染
+
+
+  const [loading, setLoading] = useState(false);
+  const [questions, setQuestions] = useState<API.Questions[]>([]);
+  const [survey, setSurvey] = useState<API.Survey>({});
+
+  let params = useParams();
+  const surveyId =parseInt(params.id)
+  // 问卷数据
+
+
+  const loadSurveyAndQuestions = async () => {
+    try {
+      // 并行加载问卷和问题
+      const [surveyData, questionsData] = await Promise.all([
+        getSurvey({id:surveyId}),
+        listQuestion({surveyId:surveyId}),
+      ]);
+      setSurvey(surveyData.data);
+      setQuestions(questionsData.data);
+      setLoading(true);
+
+    } catch (error) {
+      message.error('加载问卷数据失败');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadSurveyAndQuestions()
+  }, []);
 
   // 获取当前问题
   const getCurrentQuestion = (data, path) => {
@@ -420,7 +115,7 @@ const Survey = () => {
     for (const rule of question.jumpRules) {
       // 根据操作符判断是否满足条件
       if (rule.operators === 'equals' && selectedAnswer + '' === rule.answer) {
-        return findPathById(surveyData, rule.nextQuestionId);
+        return findPathById(questions, rule.nextQuestionId);
       }
     }
     return null;
@@ -428,7 +123,7 @@ const Survey = () => {
 
   // 移动到下一个问题
   const moveToNextQuestion = () => {
-    const currentQuestion = getCurrentQuestion(surveyData, currentPath);
+    const currentQuestion = getCurrentQuestion(questions, currentPath);
     if (!currentQuestion) {
       handleSurveySubmit();
       return;
@@ -452,7 +147,7 @@ const Survey = () => {
     newPath.pop();
 
     // 找到下一个兄弟节点
-    let nextSibling = findNextSibling(surveyData, newPath);
+    let nextSibling = findNextSibling(questions, newPath);
     if (nextSibling) {
       setCurrentPath(nextSibling);
       return;
@@ -460,7 +155,7 @@ const Survey = () => {
 
     // 如果没有下一个兄弟节点，继续向上查找
     while (newPath.length > 0) {
-      nextSibling = findNextSibling(surveyData, newPath);
+      nextSibling = findNextSibling(questions, newPath);
       if (nextSibling) {
         setCurrentPath(nextSibling);
         return;
@@ -501,7 +196,7 @@ const Survey = () => {
     const newPath = [...currentPath];
 
     // 尝试查找当前节点的最后一个子节点
-    let current = getCurrentQuestion(surveyData, newPath);
+    let current = getCurrentQuestion(questions, newPath);
     if (current && current.children && Array.isArray(current.children) && current.children.length > 0) {
       // 找到最后一个子节点
       let childPath = [...newPath];
@@ -535,7 +230,7 @@ const Survey = () => {
 
   // 处理问题提交
   const handleQuestionSubmit = (values) => {
-    const currentQuestion = getCurrentQuestion(surveyData, currentPath);
+    const currentQuestion = getCurrentQuestion(questions, currentPath);
     if (currentQuestion) {
       setAnswers(prev => ({
         ...prev,
@@ -791,7 +486,7 @@ const Survey = () => {
 
   // 渲染导航按钮
   const renderNavigationButtons = () => {
-    const currentQuestion = getCurrentQuestion(surveyData, currentPath);
+    const currentQuestion = getCurrentQuestion(questions, currentPath);
     const isFirstQuestion = currentPath.length === 0 || (currentPath.length === 3 && currentPath[2] === 0);
     const hasChildren = currentQuestion && currentQuestion.children && Array.isArray(currentQuestion.children) && currentQuestion.children.length > 0;
 
@@ -858,7 +553,7 @@ const Survey = () => {
       }
     };
 
-    countQuestions(surveyData[0]);
+    countQuestions(questions[0]);
 
     return `${answeredQuestions}/${totalQuestions}`;
   };
@@ -874,8 +569,8 @@ const Survey = () => {
 
   // 首次渲染时不执行路径重置，避免无限循环
   const currentQuestion = firstRender.current
-    ? getCurrentQuestion(surveyData, currentPath)
-    : getCurrentQuestion(surveyData, currentPath);
+    ? getCurrentQuestion(questions, currentPath)
+    : getCurrentQuestion(questions, currentPath);
 
   if (!currentQuestion && !firstRender.current) {
     // 如果找不到当前问题，重置到第一个问题
@@ -887,37 +582,37 @@ const Survey = () => {
     );
   }
 
-  return (
-    <div className="survey-container">
-      <ProCard
-        className="survey-card"
-        title={currentQuestion?.content || '加载中...'}
-        extra={firstRender.current ? null : <Text type="secondary">答题进度: {formatProgress()}</Text>}
-        bordered={false}
-      >
-        <Form form={form} onFinish={handleQuestionSubmit} layout="vertical">
-          {firstRender.current ? null : renderQuestion(currentQuestion, currentPath.length)}
-
-          {firstRender.current ? null : (
-            currentQuestion && currentQuestion.type !== 'h2' && currentQuestion.type !== 'h3' && renderNavigationButtons()
-          )}
-
-          {/* 递归渲染子问题 */}
-          {firstRender.current ? null : (
-            currentQuestion && currentQuestion.children && Array.isArray(currentQuestion.children) && currentQuestion.children.length > 0 && (
-              <div className="children-questions">
-                {currentQuestion.children.map((child, index) => (
-                  <div key={index} style={{ paddingLeft: `${currentPath.length * 20}px` }}>
-                    {renderQuestion(child, currentPath.length + 1)}
-                  </div>
-                ))}
-              </div>
-            )
-          )}
-        </Form>
-      </ProCard>
-    </div>
-  );
+  // return (
+  //   <div className="survey-container">
+  //     <ProCard
+  //       className="survey-card"
+  //       title={currentQuestion?.content || '加载中...'}
+  //       extra={firstRender.current ? null : <Text type="secondary">答题进度: {formatProgress()}</Text>}
+  //       bordered={false}
+  //     >
+  //       <Form form={form} onFinish={handleQuestionSubmit} layout="vertical">
+  //         {firstRender.current ? null : renderQuestion(currentQuestion, currentPath.length)}
+  //
+  //         {firstRender.current ? null : (
+  //           currentQuestion && currentQuestion.type !== 'h2' && currentQuestion.type !== 'h3' && renderNavigationButtons()
+  //         )}
+  //
+  //         {/* 递归渲染子问题 */}
+  //         {firstRender.current ? null : (
+  //           currentQuestion && currentQuestion.children && Array.isArray(currentQuestion.children) && currentQuestion.children.length > 0 && (
+  //             <div className="children-questions">
+  //               {currentQuestion.children.map((child, index) => (
+  //                 <div key={index} style={{ paddingLeft: `${currentPath.length * 20}px` }}>
+  //                   {renderQuestion(child, currentPath.length + 1)}
+  //                 </div>
+  //               ))}
+  //             </div>
+  //           )
+  //         )}
+  //       </Form>
+  //     </ProCard>
+  //   </div>
+  // );
 };
 
 export default Survey;
