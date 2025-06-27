@@ -145,7 +145,7 @@ declare namespace API {
     children?: Questions[];
     surveyId?: number;
     parentId?: number;
-    jumpRules?: JumpRules;
+    jumpRules?: JumpRules[];
     matrixRows?: string;
     matrixColumns?: string;
 

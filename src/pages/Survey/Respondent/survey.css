@@ -1,4 +1,11 @@
 /* survey.css */
+.survey-container { padding: 20px; }
+.heading-depth-1 { margin: 20px 0; }
+.question-depth-1 { margin-bottom: 20px; }
+.children-questions { padding-left: 20px; }
+.survey-buttons { margin-top: 30px; display: flex; gap: 16px; }
+.thank-you-container { display: flex; justify-content: center; align-items: center; height: 100vh; }
+
 .survey-container {
   min-height: 100vh;
   padding: 20px;
