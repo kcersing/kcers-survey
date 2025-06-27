@@ -43,6 +43,8 @@ const (
 	FieldDevice = "device"
 	// FieldAudio holds the string denoting the audio field in the database.
 	FieldAudio = "audio"
+	// FieldQuestions holds the string denoting the questions field in the database.
+	FieldQuestions = "questions"
 	// Table holds the table name of the surveyresponse in the database.
 	Table = "survey_response"
 )
@@ -65,6 +67,7 @@ var Columns = []string{
 	FieldMap,
 	FieldDevice,
 	FieldAudio,
+	FieldQuestions,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).

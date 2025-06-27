@@ -229,6 +229,12 @@ func (src *SurveyResponseCreate) SetNillableAudio(s *string) *SurveyResponseCrea
 	return src
 }
 
+// SetQuestions sets the "questions" field.
+func (src *SurveyResponseCreate) SetQuestions(m []map[int64]string) *SurveyResponseCreate {
+	src.mutation.SetQuestions(m)
+	return src
+}
+
 // SetID sets the "id" field.
 func (src *SurveyResponseCreate) SetID(i int64) *SurveyResponseCreate {
 	src.mutation.SetID(i)
@@ -425,6 +431,10 @@ func (src *SurveyResponseCreate) createSpec() (*SurveyResponse, *sqlgraph.Create
 	if value, ok := src.mutation.Audio(); ok {
 		_spec.SetField(surveyresponse.FieldAudio, field.TypeString, value)
 		_node.Audio = value
+	}
+	if value, ok := src.mutation.Questions(); ok {
+		_spec.SetField(surveyresponse.FieldQuestions, field.TypeJSON, value)
+		_node.Questions = value
 	}
 	return _node, _spec
 }

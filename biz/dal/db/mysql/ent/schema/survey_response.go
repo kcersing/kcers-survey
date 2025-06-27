@@ -27,6 +27,8 @@ func (SurveyResponse) Fields() []ent.Field {
 		field.String("map").Optional().Default("").Comment("用户地图坐标"),
 		field.String("device").Optional().Default("").Comment("设备信息"),
 		field.String("audio").Optional().Default("").Comment("音频"),
+
+		field.JSON("questions", []map[int64]string{}).Optional().Comment(""),
 	}
 }
 

@@ -3,6 +3,7 @@
 package ent
 
 import (
+	"encoding/json"
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
 	"strings"
@@ -47,7 +48,9 @@ type SurveyResponse struct {
 	// 设备信息
 	Device string `json:"device,omitempty"`
 	// 音频
-	Audio        string `json:"audio,omitempty"`
+	Audio string `json:"audio,omitempty"`
+	// Questions holds the value of the "questions" field.
+	Questions    []map[int64]string `json:"questions,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -56,6 +59,8 @@ func (*SurveyResponse) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case surveyresponse.FieldQuestions:
+			values[i] = new([]byte)
 		case surveyresponse.FieldID, surveyresponse.FieldDelete, surveyresponse.FieldCreatedID, surveyresponse.FieldStatus, surveyresponse.FieldSurveyID:
 			values[i] = new(sql.NullInt64)
 		case surveyresponse.FieldRespondent, surveyresponse.FieldRespondentPhone, surveyresponse.FieldResearcher, surveyresponse.FieldResearcherPhone, surveyresponse.FieldPic, surveyresponse.FieldIP, surveyresponse.FieldMap, surveyresponse.FieldDevice, surveyresponse.FieldAudio:
@@ -173,6 +178,14 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sr.Audio = value.String
 			}
+		case surveyresponse.FieldQuestions:
+			if value, ok := values[i].(*[]byte); !ok {
+				return fmt.Errorf("unexpected type %T for field questions", values[i])
+			} else if value != nil && len(*value) > 0 {
+				if err := json.Unmarshal(*value, &sr.Questions); err != nil {
+					return fmt.Errorf("unmarshal field questions: %w", err)
+				}
+			}
 		default:
 			sr.selectValues.Set(columns[i], values[i])
 		}
@@ -253,6 +266,9 @@ func (sr *SurveyResponse) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("audio=")
 	builder.WriteString(sr.Audio)
+	builder.WriteString(", ")
+	builder.WriteString("questions=")
+	builder.WriteString(fmt.Sprintf("%v", sr.Questions))
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -12,6 +12,7 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema/field"
 )
 
@@ -329,6 +330,24 @@ func (sru *SurveyResponseUpdate) ClearAudio() *SurveyResponseUpdate {
 	return sru
 }
 
+// SetQuestions sets the "questions" field.
+func (sru *SurveyResponseUpdate) SetQuestions(m []map[int64]string) *SurveyResponseUpdate {
+	sru.mutation.SetQuestions(m)
+	return sru
+}
+
+// AppendQuestions appends m to the "questions" field.
+func (sru *SurveyResponseUpdate) AppendQuestions(m []map[int64]string) *SurveyResponseUpdate {
+	sru.mutation.AppendQuestions(m)
+	return sru
+}
+
+// ClearQuestions clears the value of the "questions" field.
+func (sru *SurveyResponseUpdate) ClearQuestions() *SurveyResponseUpdate {
+	sru.mutation.ClearQuestions()
+	return sru
+}
+
 // Mutation returns the SurveyResponseMutation object of the builder.
 func (sru *SurveyResponseUpdate) Mutation() *SurveyResponseMutation {
 	return sru.mutation
@@ -483,6 +502,17 @@ func (sru *SurveyResponseUpdate) sqlSave(ctx context.Context) (n int, err error)
 	}
 	if sru.mutation.AudioCleared() {
 		_spec.ClearField(surveyresponse.FieldAudio, field.TypeString)
+	}
+	if value, ok := sru.mutation.Questions(); ok {
+		_spec.SetField(surveyresponse.FieldQuestions, field.TypeJSON, value)
+	}
+	if value, ok := sru.mutation.AppendedQuestions(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponse.FieldQuestions, value)
+		})
+	}
+	if sru.mutation.QuestionsCleared() {
+		_spec.ClearField(surveyresponse.FieldQuestions, field.TypeJSON)
 	}
 	_spec.AddModifiers(sru.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, sru.driver, _spec); err != nil {
@@ -806,6 +836,24 @@ func (sruo *SurveyResponseUpdateOne) ClearAudio() *SurveyResponseUpdateOne {
 	return sruo
 }
 
+// SetQuestions sets the "questions" field.
+func (sruo *SurveyResponseUpdateOne) SetQuestions(m []map[int64]string) *SurveyResponseUpdateOne {
+	sruo.mutation.SetQuestions(m)
+	return sruo
+}
+
+// AppendQuestions appends m to the "questions" field.
+func (sruo *SurveyResponseUpdateOne) AppendQuestions(m []map[int64]string) *SurveyResponseUpdateOne {
+	sruo.mutation.AppendQuestions(m)
+	return sruo
+}
+
+// ClearQuestions clears the value of the "questions" field.
+func (sruo *SurveyResponseUpdateOne) ClearQuestions() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearQuestions()
+	return sruo
+}
+
 // Mutation returns the SurveyResponseMutation object of the builder.
 func (sruo *SurveyResponseUpdateOne) Mutation() *SurveyResponseMutation {
 	return sruo.mutation
@@ -990,6 +1038,17 @@ func (sruo *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	}
 	if sruo.mutation.AudioCleared() {
 		_spec.ClearField(surveyresponse.FieldAudio, field.TypeString)
+	}
+	if value, ok := sruo.mutation.Questions(); ok {
+		_spec.SetField(surveyresponse.FieldQuestions, field.TypeJSON, value)
+	}
+	if value, ok := sruo.mutation.AppendedQuestions(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponse.FieldQuestions, value)
+		})
+	}
+	if sruo.mutation.QuestionsCleared() {
+		_spec.ClearField(surveyresponse.FieldQuestions, field.TypeJSON)
 	}
 	_spec.AddModifiers(sruo.modifiers...)
 	_node = &SurveyResponse{config: sruo.config}

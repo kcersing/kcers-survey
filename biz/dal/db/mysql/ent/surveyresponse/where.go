@@ -1104,6 +1104,16 @@ func AudioContainsFold(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldContainsFold(FieldAudio, v))
 }
 
+// QuestionsIsNil applies the IsNil predicate on the "questions" field.
+func QuestionsIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldQuestions))
+}
+
+// QuestionsNotNil applies the NotNil predicate on the "questions" field.
+func QuestionsNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldQuestions))
+}
+
 // And groups predicates with the AND operator between them.
 func And(predicates ...predicate.SurveyResponse) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.AndPredicates(predicates...))

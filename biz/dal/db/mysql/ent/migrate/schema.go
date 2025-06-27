@@ -265,6 +265,7 @@ var (
 		{Name: "map", Type: field.TypeString, Nullable: true, Comment: "用户地图坐标", Default: ""},
 		{Name: "device", Type: field.TypeString, Nullable: true, Comment: "设备信息", Default: ""},
 		{Name: "audio", Type: field.TypeString, Nullable: true, Comment: "音频", Default: ""},
+		{Name: "questions", Type: field.TypeJSON, Nullable: true},
 	}
 	// SurveyResponseTable holds the schema information for the "survey_response" table.
 	SurveyResponseTable = &schema.Table{

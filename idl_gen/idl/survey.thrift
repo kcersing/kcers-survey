@@ -107,13 +107,14 @@ struct Options {
 
 struct CreateOrUpdateResponseReq {
   1:optional i64 surveyId=0 (api.raw = "surveyId")
-  2:optional list<Answer> answers={} (api.raw = "answers")
+  2:optional list<map<i64,string>> question={} (api.raw = "question")
+  3:optional string researcher="" (api.raw = "researcher")
+  4:optional string researcherPhone="" (api.raw = "researcherPhone")
+  5:optional string respondent="" (api.raw = "respondent")
+  6:optional string respondentPhone="" (api.raw = "respondentPhone")
+
 }
-struct Answer  {
-    1:optional i64 questionId=0 (api.raw = "questionId")
-    2:optional string answers="" (api.raw = "answers")
-    3:optional list<Answer> subAnswers={} (api.raw = "subAnswers")
-}
+
 
 struct Response  {
     1:optional i64 Id=0 (api.raw = "Id")
@@ -124,6 +125,9 @@ struct ResponseListReq {
     1: optional i64 page=1 (api.raw = "page")
     2: optional i64 pageSize=100 (api.raw = "pageSize")
 }
+
+
+
 
 
 

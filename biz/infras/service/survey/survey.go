@@ -314,8 +314,29 @@ func (s Survey) DeleteQuestion(id int64) (err error) {
 }
 
 func (s Survey) CreateResponse(req *service.CreateOrUpdateResponseReq) (err error) {
-	//TODO implement me
-	panic("implement me")
+	_, err = s.db.SurveyResponse.Create().
+		SetSurveyID(req.SurveyId).
+		SetResearcher(req.Researcher).
+		SetResearcherPhone(req.ResearcherPhone).
+		SetResearcher(req.Researcher).
+		SetRespondent(req.Respondent).
+		SetRespondentPhone(req.RespondentPhone).
+		//SetIP(req.Ip).
+		//SetDevice()
+		SetQuestions(req.Question).
+		Save(s.ctx)
+
+	if err != nil {
+		return err
+	}
+
+	//s.db.SurveyResponseAnswers.Create().
+	//	SetSurveyID(req.SurveyId).
+	//	SetSurveyResponseID(sq.ID).
+	//	SetAnswerText(req.Question).
+	//	Save(s.ctx)
+
+	return nil
 }
 
 func (s Survey) UpdateResponse(req *service.CreateOrUpdateResponseReq) (err error) {
