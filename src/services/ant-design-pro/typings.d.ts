@@ -151,13 +151,14 @@ declare namespace API {
 
   };
   type JumpRules = {
-    questionId?: number;// 触发跳题的问题ID
     answer?: string;// 触发条件的回答
     nextQuestionId?: number;// 跳转的目标问题ID
     operators?: string;
   };
   type Options = {
+    inputs?: number;
     serial?: string;
     content?: string;
   };
+
 }

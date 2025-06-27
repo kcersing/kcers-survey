@@ -19,6 +19,6 @@ export enum Urls {
   TreeQuestion='/service/survey/question/tree',
 
 
-
+  CreateRespondent='/service/survey/response/create',
 
 }

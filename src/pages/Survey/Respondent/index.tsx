@@ -25,135 +25,11 @@ import './survey.css';
 import { getSurvey, listQuestion } from '@/services/ant-design-pro/survey';
 const { Title, Text } = Typography;
 
+import RecursionQuestion from '@/pages/survey/respondent/components/RecursionQuestion';
+
 
 // 问题渲染组件 - 使用 memo 优化
-const QuestionRenderer = memo(({
-                                 question,
-                                 depth,
-                                 form,
-                                 answers,
-                                 onUploadStart,
-                                 onUploadSuccess,
-                                 onUploadError
-                               }) => {
 
-console.log(question)
-  // 普通问题
-  return (
-    <div className={`question question-depth-${depth}`}>
-      <ProForm.Item
-        name={`question${question.id}`}
-        label={question.content}
-        rules={question.required ? [{ required: true, message: '此字段为必填项' }] : []}
-        initialValue={answers[question.id]?.[`question${question.id}`]}
-      >
-        {renderQuestionControl(question, depth, {
-          onUploadStart,
-          onUploadSuccess,
-          onUploadError
-        })}
-      </ProForm.Item>
-    </div>
-  );
-}, (prevProps, nextProps) => {
-  // 浅比较问题和答案，避免不必要的渲染
-  return prevProps.question.id === nextProps.question.id &&
-    prevProps.answers[prevProps.question.id] === nextProps.answers[nextProps.question.id];
-});
-
-// 问题控件渲染
-const renderQuestionControl = (
-  question:API.Questions,
-  depth: number,
-  uploadHandlers: {
-    onUploadStart: (type: string) => void;
-    onUploadSuccess: (type: string, file: any) => void;
-    onUploadError: (type: string, error: any) => void;
-  }
-) => {
-  const { onUploadStart, onUploadSuccess, onUploadError } = uploadHandlers;
-  console.log(question)
-
-  switch (question.type) {
-    case 'single_choice':
-      return (
-      <ProFormRadio.Group
-        name={question.id}
-        options={question.options.map(option => ({
-          value:option.content,
-          label: option.content,
-        }))}
-      />
-      );
-
-    case 'multiple_choice':
-      return (
-      <ProFormCheckbox.Group
-        name={question.id}
-        options={question.options.map(option => ({
-          value:option.content,
-          label: option.content,
-        }))}
-      />
-      );
-
-    case 'text':
-      return <ProFormTextArea name={question.id} label="名称"  placeholder="请输入内容..." />;
-
-    case 'number':
-      return <ProFormDigit placeholder="请输入数字"
-                           name={question.id}
-                           min={1}
-                           max={10} />;
-
-    case 'date':
-      return <ProFormDatePicker  name={question.id} placeholder="请选择日期" />;
-
-    case 'rate':
-      return (
-        <ProFormRate name={question.id} label="Rate" />
-      );
-
-    case 'uploadImage':
-      return (
-        <ProFormUploadButton  name={question.id} label="Upload" />
-        // <ProFormUploadDragger
-        //   name="file"
-        //   className="upload-image"
-        //   onStart={() => onUploadStart('image')}
-        //   onSuccess={(info) => onUploadSuccess('image', info)}
-        //   onError={(error) => onUploadError('image', error)}
-        // >
-        //   <Button icon={<PlusOutlined />}>上传图片</Button>
-        // </ProFormUploadDragger>
-      );
-
-    case 'uploadFile':
-      return (
-        <ProFormUploadButton name={question.id} label="Upload" />
-        // <ProFormUploadDragger
-        //   name="file"
-        //   className="upload-file"
-        //   onStart={() => onUploadStart('file')}
-        //   onSuccess={(info) => onUploadSuccess('file', info)}
-        //   onError={(error) => onUploadError('file', error)}
-        // >
-        //   <Button icon={<PlusOutlined />}>上传文件</Button>
-        // </ProFormUploadDragger>
-      );
-    case 'h2':
-      return (
-        <h3>{question.content}</h3>
-      );
-    case 'h3':
-      return (
-          <h4>{question.content}</h4>
-      );
-
-    default:
-      return null;
-  }
-};
 
 // 导航按钮组件 - 使用 memo 优化
 const NavigationButtons = memo(({
@@ -235,13 +111,6 @@ const Survey = () => {
   const [questions, setQuestions] = useState<API.Questions[]>([]);
   const [survey, setSurvey] = useState<API.Survey>({});
 
-  // // 预处理问题数据
-  // const [processedQuestions, setProcessedQuestions] = useState({
-  //   allQuestions: [] as API.Questions[],
-  //   questionMap: new Map<number,API.Questions>(),
-  //   pathMap: new Map<number, number[]>(),
-  // });
-
   const navigate = useNavigate();
   const firstRender = useRef(true);
   const { id } = useParams();
@@ -295,7 +164,7 @@ const Survey = () => {
 
   // 获取当前问题 - 只考虑根问题
   const getCurrentQuestion = useCallback((path: number[]) => {
-console.log(path)
+
     if (!path || path.length === 0) {
       return questions[0];
     }
@@ -306,15 +175,16 @@ console.log(path)
 
   // 查找下一个根问题 - 简化版本
   const findNextRootQuestion = useCallback(() => {
-    console.log(3)
-    // 获取当前问题在根问题列表中的索引
 
+    // 获取当前问题在根问题列表中的索引
     const currentIndex = currentPath.length > 0 ? currentPath[0] : -1;
 
     // 查找下一个非标题类型的根问题
     for (let i = currentIndex + 1; i < questions.length; i++) {
-      console.log([i])
+       console.log([i])
+      // if (questions[i].type !== 'h2' && questions[i].type !== 'h3') {
         return [i]; // 返回根问题的路径
+      // }
     }
 
     return null; // 没有更多根问题
@@ -322,15 +192,14 @@ console.log(path)
 
   // 查找上一个根问题 - 简化版本
   const findPrevRootQuestion = useCallback(() => {
-    console.log(2)
     // 获取当前问题在根问题列表中的索引
     const currentIndex = currentPath.length > 0 ? currentPath[0] : 0;
 
     // 查找上一个非标题类型的根问题
     for (let i = currentIndex - 1; i >= 0; i--) {
-      if (questions[i].type !== 'h2' && questions[i].type !== 'h3') {
+      // if (questions[i].type !== 'h2' && questions[i].type !== 'h3') {
         return [i]; // 返回根问题的路径
-      }
+      // }
     }
 
     return null; // 没有更多根问题
@@ -452,19 +321,15 @@ console.log(path)
   // 格式化进度显示 - 只考虑根问题
   const formatProgress = useCallback(() => {
     console.log(7)
-    const allQuestions = questions.filter(q => q.type !== 'h2' && q.type !== 'h3');
+    const allQuestions = questions;
     const answeredCount = allQuestions.filter(q =>
       answers[q.id] !== undefined &&
       answers[q.id][`question${q.id}`] !== undefined &&
       answers[q.id][`question${q.id}`] !== null
     ).length;
 
-    return `${answeredCount}/${questions.length}`;
+    return `${answeredCount}/${allQuestions.length}`;
   }, [answers, questions]);
-
-
-
-
 
 
   // 处理文件上传
@@ -527,37 +392,6 @@ console.log(path)
   const currentQuestion = getCurrentQuestion(currentPath);
 
 
-  const recursionQuestion =(currentQuestion,currentPath,form,answers,handleUploadStart,handleUploadSuccess,handleUploadError)=>{
-
-    console.log(8)
-    return (
-      <>
-      {currentQuestion && (
-      <QuestionRenderer
-        question={currentQuestion}
-        depth={currentPath.length}
-        form={form}
-        answers={answers}
-        onUploadStart={handleUploadStart}
-        onUploadSuccess={handleUploadSuccess}
-        onUploadError={handleUploadError}
-      />
-    )}
-
-    {/* 渲染子问题 - 只在有子问题时显示 */}
-    {currentQuestion && currentQuestion.children && currentQuestion.children.length > 0 && (
-      <div className="children-questions">
-        {currentQuestion.children.map((child, index) => (
-          <div key={child.id} style={{ paddingLeft: '20px' }}>
-
-            { recursionQuestion(child,currentPath,form,answers,handleUploadStart,handleUploadSuccess,handleUploadError)}
-
-          </div>
-        ))}
-      </div>
-    )} </>);
-  }
-
 
 
   return (
@@ -569,29 +403,8 @@ console.log(path)
         bordered={false}
       >
         <ProForm form={form} onFinish={handleQuestionSubmit} layout="vertical">
-
           {console.log(currentQuestion)}
-          {currentQuestion && recursionQuestion(currentQuestion,currentPath,form,answers,handleUploadStart,handleUploadSuccess,handleUploadError)}
-
-          {/*/!* 渲染子问题 - 只在有子问题时显示 *!/*/}
-          {/*{currentQuestion && currentQuestion.children && currentQuestion.children.length > 0 && (*/}
-          {/*  <div className="children-questions">*/}
-          {/*    {currentQuestion.children.map((child, index) => (*/}
-          {/*      <div key={child.id} style={{ paddingLeft: '20px' }}>*/}
-          {/*        <QuestionRenderer*/}
-          {/*          question={child}*/}
-          {/*          depth={currentPath.length + 1}*/}
-          {/*          form={form}*/}
-          {/*          answers={answers}*/}
-          {/*          onUploadStart={handleUploadStart}*/}
-          {/*          onUploadSuccess={handleUploadSuccess}*/}
-          {/*          onUploadError={handleUploadError}*/}
-          {/*        />*/}
-          {/*      </div>*/}
-          {/*    ))}*/}
-          {/*  </div>*/}
-          {/*)}*/}
-
+          {currentQuestion && RecursionQuestion(currentQuestion,currentPath,form,answers,handleUploadStart,handleUploadSuccess,handleUploadError)}
           <NavigationButtons
             isFirstQuestion={currentPath.length === 0}
             isSubmitting={surveyState.isSubmitting}

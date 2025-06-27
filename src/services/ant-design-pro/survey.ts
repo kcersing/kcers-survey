@@ -75,7 +75,15 @@ export async function listSurvey(
   }
 
 
-
+export async function createRespondent(options?: { [key: string]: any }) {
+  return request<Record<string, any>>(Urls.CreateRespondent, {
+    method: 'POST',
+    data: {
+      method: 'post',
+      ...(options || {}),
+    },
+  });
+}
 
 export async function createQuestion(options?: { [key: string]: any }) {
   return request<Record<string, any>>(Urls.CreateQuestion, {

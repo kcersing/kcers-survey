@@ -247,3 +247,42 @@
     min-width: 0;
   }
 }
+/* 通用样式 */
+.survey-container {
+  padding: 16px;
+}
+
+.survey-card {
+  padding: 16px;
+}
+
+.survey-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+/* 手机端样式 */
+@media (max-width: 768px) {
+  .survey-container {
+    padding: 8px;
+  }
+
+  .survey-card {
+    padding: 8px;
+  }
+
+  .ant-btn {
+    font-size: 14px;
+    padding: 0 12px;
+    height: 32px;
+  }
+
+  .ant-typography-title {
+    font-size: 18px;
+  }
+
+  .ant-typography-text {
+    font-size: 14px;
+  }
+}
