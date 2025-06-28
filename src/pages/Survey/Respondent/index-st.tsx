@@ -1,9 +1,8 @@
-import React, {useEffect, useRef, useState,useCallback} from "react";
-import {getSurvey, listQuestion, createRespondent, createSurvey} from "@/services/ant-design-pro/survey";
+import React, {useEffect, useRef, useState} from "react";
+import {getSurvey, listQuestion, createRespondent} from "@/services/ant-design-pro/survey";
 
 import { useParams} from "@@/exports";
 import {
-  FormInstance,
   ProFormCheckbox,
   ProFormDatePicker,
   ProFormDigit,
@@ -14,9 +13,8 @@ import {
   ProFormUploadButton,
   ProFormText,
   StepsForm,
-  ProForm,
 } from '@ant-design/pro-components';
-import { message,  Button, Input} from 'antd';
+import { message,Button,  Input} from 'antd';
 import type { ProFormInstance } from '@ant-design/pro-components';
 
 import './st.css';
@@ -48,16 +46,17 @@ function treeToArray(treeNodes) {
 const  Respondent=()=>{
 
   const formRef = useRef<ProFormInstance>();
-  const [form] = StepsForm.useForm();
 
   const [survey, setSurvey] = useState<API.Survey>({});
-  const [questions, setQuestions] = useState([]);
 
   const [steps, setSteps] = useState([]);
 
   const [currentNum, setCurrentNum] = useState(0);
 
 const [generateRandom, setGenerateRandom] = useState("");
+
+  const [questionsh2, setQuestionsh2] = useState("");
+  const [questionsh3, setQuestionsh3] = useState("");
 
 
   useEffect(() => {
@@ -67,9 +66,6 @@ const [generateRandom, setGenerateRandom] = useState("");
   const formMapRef = useRef<
     React.MutableRefObject<ProFormInstance<any> | undefined>[]
   >([]);
-
-
-
 
 
   const { id } = useParams();
@@ -82,7 +78,7 @@ const [generateRandom, setGenerateRandom] = useState("");
   // 加载问卷和问题数据
   const loadSurveyAndQuestions = async () => {
 
-    // try {
+    try {
       if (!surveyId) return;
 
 
@@ -92,21 +88,22 @@ const [generateRandom, setGenerateRandom] = useState("");
       ]);
 
 
-
       setSurvey(surveyData.data || {});
 
 
       const flatArray = treeToArray(questionsData.data);
 
-      setQuestions(questionsData.data);
 
       setSteps(flatArray);
+    } catch (error: any) {
+      console.error('加载问卷数据失败', error);
+      message.error(error.message || '加载问卷数据失败');
+    } finally {
 
+    }
 
   };
-  useEffect(() => {
-    formRef.current= currentNum
-  }, [currentNum]);
+
 
 // 查找目标问题的索引
   const findTargetQuestionIndex = (nextQuestionId: string | number) => {
@@ -117,6 +114,8 @@ const [generateRandom, setGenerateRandom] = useState("");
   const toPro=(question:API.Questions)=> {
     let opt = [];
     if (!question)return null;
+
+
 
     switch (question.type) {
       case 'single_choice':
@@ -161,7 +160,7 @@ const [generateRandom, setGenerateRandom] = useState("");
             name={['question', "'"+question.id+"'"]}
             rules={[{ required: question.required===1, message: '必填项' }]}
             onChange={(e) => {
-
+console.log(     e,)
               addRespondent({
                 surveyId:surveyId,
                 type:question.type,
@@ -244,7 +243,7 @@ console.log(e)
                   surveyId:surveyId,
                   type:question.type,
                   questionId:question.id,
-                  value:e.target.value,
+                  value:e,
                   sn:generateRandom,
                 })
 
@@ -275,7 +274,7 @@ console.log(e)
           />
         );
       case 'text':
-        return <ProFormTextArea label={question.content} name={['question', question.id]} placeholder="请输入内容..."
+        return <ProFormTextArea  width="md" label={question.content} name={['question', question.id]} placeholder="请输入内容..."
 
                                 onChange={(e) => {
                                   console.log(e)
@@ -294,7 +293,7 @@ console.log(e)
 
       case 'number':
 
-        return <ProFormDigit label={question.content} placeholder="请输入数字" name={['question', question.id]} style={{ maxWidth: 120 }}
+        return <ProFormDigit  width="md" label={question.content} placeholder="请输入数字" name={['question', question.id]} style={{ maxWidth: 120 }}
 
                              onChange={(e) => {
                               console.log(e)
@@ -311,7 +310,7 @@ console.log(e)
 
                              rules={[{ required: question.required===1, message: '必填项' }]}/>;
       case 'date':
-        return <ProFormDatePicker label={question.content}  name={['question', question.id]}
+        return <ProFormDatePicker  width="md" label={question.content}  name={['question', question.id]}
                                   onChange={(e) => {
                                     console.log(e)
 
@@ -355,17 +354,16 @@ console.log(e)
         );
       case 'h2':
         return (
-          <ProCard title={question.content}  style={{ minHeight: 300 }}>
-            开始
+          <ProCard style={{ minHeight: 240 }}>
+            <h3> {question.content}</h3>
           </ProCard>
         );
       case 'h3':
         return (
-          <ProCard title={question.content}  style={{ minHeight: 300 }}>
-            开始
+          <ProCard style={{ minHeight: 240 }}>
+           <h4> {question.content}</h4>
           </ProCard>
         );
-
       default:
         return null;
     }
@@ -375,46 +373,6 @@ console.log(e)
 
 
 
-  // 上一步
-  const moveToPreviousQuestion = () => {
-    if (currentNum > 0) {
-      setCurrentNum(currentNum - 1);
-    }
-  };
-
-
-  // 下一步
-  const moveToNextQuestion =async () => {
-    if (formRef.current) {
-
-
-      try {
-        // 验证当前问题
-          formRef.current.validateFields();
-        if (currentNum < steps.length ) {
-          setCurrentNum(currentNum + 1);
-        }
-      } catch (error) {
-        console.error("当前问题校验失败", error);
-        message.error("请填写当前问题的所有必填项");
-      }
-    }
-  };
-
-  // 提交问卷
-  const handleSubmit = async () => {
-
-    if (formRef.current) {
-      try {
-        const values = await formRef.current.validateFields();
-        console.log('表单提交值:', values);
-        formRef.current.submit();
-      } catch (error) {
-        console.error("表单验证失败", error);
-        message.error("请填写所有必填项");
-      }
-    }
-  };
 
 
   useEffect(() => {
@@ -425,11 +383,6 @@ console.log(e)
   useEffect(() => {
     console.log('formRef:', formRef);
   }, [formRef]);
-
-
-
-
-
 
 
 
@@ -452,77 +405,89 @@ console.log(e)
 
 
 
-
-
   return (
     <div className="respondent-container">
     <ProCard
-      title={survey.title ? survey.title  : null}
+      boxShadow layout="center"
     >
+      <h3>{survey.title ? survey.title  : null}</h3>
+    </ProCard>
+      <ProCard
+        style={{ marginBlockStart: 16 }}
+        boxShadow
+        title={questionsh2? questionsh2 : null}
+      >
     <StepsForm
       formRef={formRef}
       formMapRef={formMapRef}
+      stepsProps={{
+        direction: 'vertical',
+        size:"small",
+        current:1,
+        // style:{width: 60},
+      }}
+      current={currentNum}
+      onFinish={(values) => {
+        // addRespondent(values)
+        console.log(values);
+        return Promise.resolve(true);
+      }}
+      stepsRender={()=>{
+        return (<></>);
+      }}
 
-      // current={currentNum}
-      // onFinish={(values) => {
-      //   // addRespondent(values)
-      //   console.log(values);
-      //   return Promise.resolve(true);
-      // }}
-      style={{ maxWidth: 500 }}
-      // submitter={{
-      //   render: (props) => {
-      //
-      //     return (
-      //       <div style={{ marginTop: 16, textAlign: "right" }}>
-      //         {currentNum > 0 && (
-      //           <Button onClick={moveToPreviousQuestion} style={{ marginRight: 8 }}>
-      //             上一步
-      //           </Button>
-      //         )}
-      //         {currentNum < steps.length  ? (
-      //           <Button type="primary" onClick={moveToNextQuestion}>
-      //             下一步
-      //           </Button>
-      //         ) : (
-      //           <Button type="primary" onClick={handleSubmit}>
-      //             提交
-      //           </Button>
-      //         )}
-      //       </div>
-      //     );
-      //
-      //   },
-      // }}
+
+
+      submitter={{
+        render: (props) => {
+          console.log(props)
+          if (props.step === 0) {
+            return (
+              <Button type="primary" onClick={() => setCurrentNum(+1)}>
+                下一步 {'>'}
+              </Button>
+            );
+          }
+
+          return [
+            <Button key="gotoTwo" onClick={() => setCurrentNum(-1)}>
+              {'<'} 返回上一题
+            </Button>,
+            <Button
+              type="primary"
+              key="goToTree"
+              onClick={() => props.onSubmit?.()}
+            >
+              提交 √
+            </Button>,
+          ];
+        },
+      }}
+
     >
 
+      <StepsForm.StepForm
+        // style={{ minHeight: 300 }}
+        key={`key_0}`}
+        rules={[{ required: true, message: '必填项' }]}
 
-
-
-
-
-
-      {/*<StepsForm.StepForm*/}
-      {/*  style={{ minHeight: 300 }}*/}
-      {/*  name="step1"*/}
-      {/*  rules={[{ required: true, message: '必填项' }]}*/}
-      {/*  title="问卷信息">*/}
-      {/*  <ProFormText label="访谈人姓名" rules={[{ required: true, message: '必填项' }]} name={'respondent'} />*/}
-      {/*  <ProFormText label="联系电话" rules={[{ required: true, message: '必填项' }]}  name={'respondent_phone'} />*/}
-      {/*  <ProFormText label="调研员姓名" rules={[{ required: true, message: '必填项' }]} name={'researcher'} />*/}
-      {/*  <ProFormText label="联系电话"   rules={[{ required: true, message: '必填项' }]} name={'researcher_phone'} />*/}
-      {/*  <ProFormText label="联系电话" name={'ditu'} />*/}
-      {/*</StepsForm.StepForm>*/}
-
+      >
+        <ProFormText  width="md" label="访谈人姓名" rules={[{ required: true, message: '必填项' }]} name={'respondent'} />
+        <ProFormText  width="md" label="联系电话" rules={[{ required: true, message: '必填项' }]}  name={'respondent_phone'} />
+        <ProFormText  width="md" label="调研员姓名" rules={[{ required: true, message: '必填项' }]} name={'researcher'} />
+        <ProFormText  width="md" label="联系电话"   rules={[{ required: true, message: '必填项' }]} name={'researcher_phone'} />
+        <ProFormText  width="md" label="联系电话" name={'ditu'} />
+      </StepsForm.StepForm>
 
           {steps.map((question) => (
 
             <StepsForm.StepForm
-              style={{ minHeight: 300 }}
-              name={`step${question.id}`}
+              title={questionsh3? questionsh3 : null}
+              key={`key_${question.id}`}
+              // style={{ minHeight: 300 }}
+
 
               rules={[{ required: true, message: '必填项' }]}
-              title={question.content}
             >
               {toPro(question)}
             </StepsForm.StepForm>
