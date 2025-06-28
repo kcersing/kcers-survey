@@ -43,7 +43,7 @@ function treeToArray(treeNodes) {
 
 
 
-const  Respondent=()=>{
+const  Preview=()=>{
 
   const formRef = useRef<ProFormInstance>();
 
@@ -58,6 +58,10 @@ const [generateRandom, setGenerateRandom] = useState("");
   const [questionsh2, setQuestionsh2] = useState("");
   const [questionsh3, setQuestionsh3] = useState("");
 
+
+  useEffect(() => {
+    setGenerateRandom( Math.random().toString(36).substring(2, 2 + length) )
+  }, []);
 
   const formMapRef = useRef<
     React.MutableRefObject<ProFormInstance<any> | undefined>[]
@@ -89,7 +93,7 @@ const [generateRandom, setGenerateRandom] = useState("");
 
       const flatArray = treeToArray(questionsData.data);
 
-      setGenerateRandom( generateRandomString(18))
+
       setSteps(flatArray);
     } catch (error: any) {
       console.error('加载问卷数据失败', error);
@@ -100,9 +104,6 @@ const [generateRandom, setGenerateRandom] = useState("");
 
   };
 
-  function generateRandomString(length: number): string {
-    return Math.random().toString(36).substring(2, 2 + length);
-  }
 
 // 查找目标问题的索引
   const findTargetQuestionIndex = (nextQuestionId: string | number) => {
@@ -113,6 +114,8 @@ const [generateRandom, setGenerateRandom] = useState("");
   const toPro=(question:API.Questions)=> {
     let opt = [];
     if (!question)return null;
+
+
 
     switch (question.type) {
       case 'single_choice':
@@ -386,21 +389,21 @@ console.log(e)
 
 
   const addRespondent = async (fields) => {
-
-    try {
-      await  createRespondent({ ...fields });
-
-      return true;
-
-    } catch (error) {
-
-      message.error('提交失败!');
-      return false;
-    }
+      return
+    // try {
+    //   await  createRespondent({ ...fields });
+    //
+    //   return true;
+    //
+    // } catch (error) {
+    //
+    //   message.error('提交失败!');
+    //   return false;
+    // }
   };
 
   // 上一步
-  const moveToPreviousQuestion = async() => {
+  const moveToPreviousQuestion = () => {
     if (currentNum > 0) {
       setCurrentNum(currentNum - 1);
     }
@@ -410,6 +413,8 @@ console.log(e)
   // 下一步
   const moveToNextQuestion =async () => {
     if (formRef.current) {
+
+
       try {
         // 验证当前问题
         formRef.current.validateFields();
@@ -477,96 +482,29 @@ console.log(e)
 
           return (
             <>
-            <Button key="gotoTwo" onClick={() => moveToPreviousQuestion}>
-              {'<'} 上一题
-            </Button>
-
-            {currentNum < steps.length  ? (
-                <Button type="primary" onClick={moveToNextQuestion}>
-                  下一步  {'>'}
-                </Button>
-              ) : (
-                <Button type="primary" onClick={handleSubmit}>
-                  提交 √
-                </Button>
-              )}
             </>);
         },
       }}
     >
 
       <StepsForm.StepForm
+        key={`key_${survey.id}`}
         // style={{ minHeight: 300 }}
-        key={`key_0}`}
-        rules={[{ required: true, message: '必填项' }]}
-
       >
-        <ProFormText  width="md" label="访谈人姓名" rules={[{ required: true, message: '必填项' }]}
-                      onChange={(e) => {
-                        console.log(e)
-                        addRespondent({
-                          surveyId:surveyId,
-                          type:"respondent",
-                          value:e,
-                          sn:generateRandom,
-                        })
-                      }}
-                      name={'respondent'} />
 
-        <ProFormText  width="md" label="联系电话" rules={[{ required: true, message: '必填项' }]}
-                      onChange={(e) => {
-                        console.log(e)
-                        addRespondent({
-                          surveyId:surveyId,
-                          type:"respondentPhone",
-                          value:e,
-                          sn:generateRandom,
-                        })
-                      }}
-                      name={'respondentPhone'} />
-
-        <ProFormText  width="md" label="调研员姓名" rules={[{ required: true, message: '必填项' }]}
-                      onChange={(e) => {
-                        console.log(e)
-                        addRespondent({
-                          surveyId:surveyId,
-                          type:"researcher",
-                          value:e,
-                          sn:generateRandom,
-                        })
-                      }}
-                      name={'researcher'} />
-
-        <ProFormText  width="md" label="联系电话"   rules={[{ required: true, message: '必填项' }]}
-                      onChange={(e) => {
-                        console.log(e)
-                        addRespondent({
-                          surveyId:surveyId,
-                          type:"researcherPhone",
-                          value:e,
-                          sn:generateRandom,
-                        })
-                      }}
-                      name={'researcherPhone'} />
+        <ProFormText  width="md" label="访谈人姓名" rules={[{ required: true, message: '必填项' }]} name={'respondent'} />
+        <ProFormText  width="md" label="联系电话" rules={[{ required: true, message: '必填项' }]}  name={'respondent_phone'} />
+        <ProFormText  width="md" label="调研员姓名" rules={[{ required: true, message: '必填项' }]} name={'researcher'} />
+        <ProFormText  width="md" label="联系电话"   rules={[{ required: true, message: '必填项' }]} name={'researcher_phone'} />
+        <ProFormText  width="md" label="联系电话" name={'ditu'} />
 
 
-        <ProFormText  width="md" label="地图插件预留" name={'ditu'} />
-      </StepsForm.StepForm>
+
 
           {steps.map((question) => (
-
-            <StepsForm.StepForm
-              title={questionsh3? questionsh3 : null}
-              key={`key_${question.id}`}
-              // style={{ minHeight: 300 }}
-
-
-              rules={[{ required: true, message: '必填项' }]}
-            >
-              {toPro(question)}
-            </StepsForm.StepForm>
+<div>              {toPro(question)}</div>
             ))}
-
+            </StepsForm.StepForm>
     </StepsForm>
 
     </ProCard>
@@ -574,6 +512,6 @@ console.log(e)
   );
 }
 
-export default Respondent;
+export default Preview;
 
 

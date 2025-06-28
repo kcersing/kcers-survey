@@ -1,0 +1,57 @@
+/* 全局样式，设置基础字体大小 */
+body {
+  font-size: 16px;
+}
+
+/* 容器样式 */
+.respondent-container {
+  padding: 16px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* ProCard 样式 */
+.ant-pro-card {
+  max-width: 100%;
+}
+
+/* StepsForm 样式 */
+.ant-pro-form-steps-form {
+  max-width: 100%;
+}
+
+/* 输入框样式 */
+.ant-input,
+.ant-pro-form-textarea textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 媒体查询，针对小屏幕设备（如手机） */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  .respondent-container {
+    padding: 8px;
+  }
+
+  .ant-pro-form-steps-form-step-form {
+    min-height: auto;
+  }
+
+  .ant-pro-form-item {
+    margin-bottom: 16px;
+  }
+
+  .ant-pro-form-radio-group,
+  .ant-pro-form-checkbox-group {
+    flex-direction: column;
+  }
+
+  .ant-pro-form-radio-group .ant-radio-button-wrapper,
+  .ant-pro-form-checkbox-group .ant-checkbox-wrapper {
+    margin-bottom: 8px;
+  }
+}
