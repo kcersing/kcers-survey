@@ -31,6 +31,8 @@ type SurveyResponse struct {
 	Status int64 `json:"status,omitempty"`
 	// survey_id
 	SurveyID int64 `json:"survey_id,omitempty"`
+	// sn
+	Sn string `json:"sn,omitempty"`
 	// 受访人
 	Respondent string `json:"respondent,omitempty"`
 	// 受访人联系电话
@@ -63,7 +65,7 @@ func (*SurveyResponse) scanValues(columns []string) ([]any, error) {
 			values[i] = new([]byte)
 		case surveyresponse.FieldID, surveyresponse.FieldDelete, surveyresponse.FieldCreatedID, surveyresponse.FieldStatus, surveyresponse.FieldSurveyID:
 			values[i] = new(sql.NullInt64)
-		case surveyresponse.FieldRespondent, surveyresponse.FieldRespondentPhone, surveyresponse.FieldResearcher, surveyresponse.FieldResearcherPhone, surveyresponse.FieldPic, surveyresponse.FieldIP, surveyresponse.FieldMap, surveyresponse.FieldDevice, surveyresponse.FieldAudio:
+		case surveyresponse.FieldSn, surveyresponse.FieldRespondent, surveyresponse.FieldRespondentPhone, surveyresponse.FieldResearcher, surveyresponse.FieldResearcherPhone, surveyresponse.FieldPic, surveyresponse.FieldIP, surveyresponse.FieldMap, surveyresponse.FieldDevice, surveyresponse.FieldAudio:
 			values[i] = new(sql.NullString)
 		case surveyresponse.FieldCreatedAt, surveyresponse.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -123,6 +125,12 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field survey_id", values[i])
 			} else if value.Valid {
 				sr.SurveyID = value.Int64
+			}
+		case surveyresponse.FieldSn:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field sn", values[i])
+			} else if value.Valid {
+				sr.Sn = value.String
 			}
 		case surveyresponse.FieldRespondent:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -239,6 +247,9 @@ func (sr *SurveyResponse) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("survey_id=")
 	builder.WriteString(fmt.Sprintf("%v", sr.SurveyID))
+	builder.WriteString(", ")
+	builder.WriteString("sn=")
+	builder.WriteString(sr.Sn)
 	builder.WriteString(", ")
 	builder.WriteString("respondent=")
 	builder.WriteString(sr.Respondent)

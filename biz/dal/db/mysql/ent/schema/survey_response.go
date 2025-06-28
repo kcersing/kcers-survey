@@ -17,6 +17,7 @@ type SurveyResponse struct {
 func (SurveyResponse) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int64("survey_id").Optional().Default(0).Comment("survey_id"),
+		field.String("sn").Optional().Default("").Comment("sn"),
 		field.String("respondent").Optional().Default("").Comment("受访人"),
 		field.String("respondent_phone").Optional().Default("").Comment("受访人联系电话"),
 

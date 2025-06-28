@@ -379,40 +379,44 @@ func init() {
 	surveyresponseDescSurveyID := surveyresponseFields[0].Descriptor()
 	// surveyresponse.DefaultSurveyID holds the default value on creation for the survey_id field.
 	surveyresponse.DefaultSurveyID = surveyresponseDescSurveyID.Default.(int64)
+	// surveyresponseDescSn is the schema descriptor for sn field.
+	surveyresponseDescSn := surveyresponseFields[1].Descriptor()
+	// surveyresponse.DefaultSn holds the default value on creation for the sn field.
+	surveyresponse.DefaultSn = surveyresponseDescSn.Default.(string)
 	// surveyresponseDescRespondent is the schema descriptor for respondent field.
-	surveyresponseDescRespondent := surveyresponseFields[1].Descriptor()
+	surveyresponseDescRespondent := surveyresponseFields[2].Descriptor()
 	// surveyresponse.DefaultRespondent holds the default value on creation for the respondent field.
 	surveyresponse.DefaultRespondent = surveyresponseDescRespondent.Default.(string)
 	// surveyresponseDescRespondentPhone is the schema descriptor for respondent_phone field.
-	surveyresponseDescRespondentPhone := surveyresponseFields[2].Descriptor()
+	surveyresponseDescRespondentPhone := surveyresponseFields[3].Descriptor()
 	// surveyresponse.DefaultRespondentPhone holds the default value on creation for the respondent_phone field.
 	surveyresponse.DefaultRespondentPhone = surveyresponseDescRespondentPhone.Default.(string)
 	// surveyresponseDescResearcher is the schema descriptor for researcher field.
-	surveyresponseDescResearcher := surveyresponseFields[3].Descriptor()
+	surveyresponseDescResearcher := surveyresponseFields[4].Descriptor()
 	// surveyresponse.DefaultResearcher holds the default value on creation for the researcher field.
 	surveyresponse.DefaultResearcher = surveyresponseDescResearcher.Default.(string)
 	// surveyresponseDescResearcherPhone is the schema descriptor for researcher_phone field.
-	surveyresponseDescResearcherPhone := surveyresponseFields[4].Descriptor()
+	surveyresponseDescResearcherPhone := surveyresponseFields[5].Descriptor()
 	// surveyresponse.DefaultResearcherPhone holds the default value on creation for the researcher_phone field.
 	surveyresponse.DefaultResearcherPhone = surveyresponseDescResearcherPhone.Default.(string)
 	// surveyresponseDescPic is the schema descriptor for pic field.
-	surveyresponseDescPic := surveyresponseFields[5].Descriptor()
+	surveyresponseDescPic := surveyresponseFields[6].Descriptor()
 	// surveyresponse.DefaultPic holds the default value on creation for the pic field.
 	surveyresponse.DefaultPic = surveyresponseDescPic.Default.(string)
 	// surveyresponseDescIP is the schema descriptor for ip field.
-	surveyresponseDescIP := surveyresponseFields[6].Descriptor()
+	surveyresponseDescIP := surveyresponseFields[7].Descriptor()
 	// surveyresponse.DefaultIP holds the default value on creation for the ip field.
 	surveyresponse.DefaultIP = surveyresponseDescIP.Default.(string)
 	// surveyresponseDescMap is the schema descriptor for map field.
-	surveyresponseDescMap := surveyresponseFields[7].Descriptor()
+	surveyresponseDescMap := surveyresponseFields[8].Descriptor()
 	// surveyresponse.DefaultMap holds the default value on creation for the map field.
 	surveyresponse.DefaultMap = surveyresponseDescMap.Default.(string)
 	// surveyresponseDescDevice is the schema descriptor for device field.
-	surveyresponseDescDevice := surveyresponseFields[8].Descriptor()
+	surveyresponseDescDevice := surveyresponseFields[9].Descriptor()
 	// surveyresponse.DefaultDevice holds the default value on creation for the device field.
 	surveyresponse.DefaultDevice = surveyresponseDescDevice.Default.(string)
 	// surveyresponseDescAudio is the schema descriptor for audio field.
-	surveyresponseDescAudio := surveyresponseFields[9].Descriptor()
+	surveyresponseDescAudio := surveyresponseFields[10].Descriptor()
 	// surveyresponse.DefaultAudio holds the default value on creation for the audio field.
 	surveyresponse.DefaultAudio = surveyresponseDescAudio.Default.(string)
 	surveyresponseanswersMixin := schema.SurveyResponseAnswers{}.Mixin()
@@ -516,20 +520,16 @@ func init() {
 	userDescGender := userFields[2].Descriptor()
 	// user.DefaultGender holds the default value on creation for the gender field.
 	user.DefaultGender = userDescGender.Default.(int64)
-	// userDescJobTime is the schema descriptor for job_time field.
-	userDescJobTime := userFields[6].Descriptor()
-	// user.DefaultJobTime holds the default value on creation for the job_time field.
-	user.DefaultJobTime = userDescJobTime.Default.(int64)
 	// userDescSideMode is the schema descriptor for side_mode field.
-	userDescSideMode := userFields[8].Descriptor()
+	userDescSideMode := userFields[6].Descriptor()
 	// user.DefaultSideMode holds the default value on creation for the side_mode field.
 	user.DefaultSideMode = userDescSideMode.Default.(string)
 	// userDescBaseColor is the schema descriptor for base_color field.
-	userDescBaseColor := userFields[9].Descriptor()
+	userDescBaseColor := userFields[7].Descriptor()
 	// user.DefaultBaseColor holds the default value on creation for the base_color field.
 	user.DefaultBaseColor = userDescBaseColor.Default.(string)
 	// userDescActiveColor is the schema descriptor for active_color field.
-	userDescActiveColor := userFields[10].Descriptor()
+	userDescActiveColor := userFields[8].Descriptor()
 	// user.DefaultActiveColor holds the default value on creation for the active_color field.
 	user.DefaultActiveColor = userDescActiveColor.Default.(string)
 }

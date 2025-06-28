@@ -105,11 +105,6 @@ func Password(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldPassword, v))
 }
 
-// JobTime applies equality check predicate on the "job_time" field. It's identical to JobTimeEQ.
-func JobTime(v int64) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldJobTime, v))
-}
-
 // Detail applies equality check predicate on the "detail" field. It's identical to DetailEQ.
 func Detail(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldDetail, v))
@@ -138,16 +133,6 @@ func Email(v string) predicate.User {
 // Wecom applies equality check predicate on the "wecom" field. It's identical to WecomEQ.
 func Wecom(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldWecom, v))
-}
-
-// Organization applies equality check predicate on the "organization" field. It's identical to OrganizationEQ.
-func Organization(v string) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldOrganization, v))
-}
-
-// DefaultVenueID applies equality check predicate on the "default_venue_id" field. It's identical to DefaultVenueIDEQ.
-func DefaultVenueID(v int64) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldDefaultVenueID, v))
 }
 
 // Avatar applies equality check predicate on the "avatar" field. It's identical to AvatarEQ.
@@ -730,56 +715,6 @@ func PasswordContainsFold(v string) predicate.User {
 	return predicate.User(sql.FieldContainsFold(FieldPassword, v))
 }
 
-// JobTimeEQ applies the EQ predicate on the "job_time" field.
-func JobTimeEQ(v int64) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldJobTime, v))
-}
-
-// JobTimeNEQ applies the NEQ predicate on the "job_time" field.
-func JobTimeNEQ(v int64) predicate.User {
-	return predicate.User(sql.FieldNEQ(FieldJobTime, v))
-}
-
-// JobTimeIn applies the In predicate on the "job_time" field.
-func JobTimeIn(vs ...int64) predicate.User {
-	return predicate.User(sql.FieldIn(FieldJobTime, vs...))
-}
-
-// JobTimeNotIn applies the NotIn predicate on the "job_time" field.
-func JobTimeNotIn(vs ...int64) predicate.User {
-	return predicate.User(sql.FieldNotIn(FieldJobTime, vs...))
-}
-
-// JobTimeGT applies the GT predicate on the "job_time" field.
-func JobTimeGT(v int64) predicate.User {
-	return predicate.User(sql.FieldGT(FieldJobTime, v))
-}
-
-// JobTimeGTE applies the GTE predicate on the "job_time" field.
-func JobTimeGTE(v int64) predicate.User {
-	return predicate.User(sql.FieldGTE(FieldJobTime, v))
-}
-
-// JobTimeLT applies the LT predicate on the "job_time" field.
-func JobTimeLT(v int64) predicate.User {
-	return predicate.User(sql.FieldLT(FieldJobTime, v))
-}
-
-// JobTimeLTE applies the LTE predicate on the "job_time" field.
-func JobTimeLTE(v int64) predicate.User {
-	return predicate.User(sql.FieldLTE(FieldJobTime, v))
-}
-
-// JobTimeIsNil applies the IsNil predicate on the "job_time" field.
-func JobTimeIsNil() predicate.User {
-	return predicate.User(sql.FieldIsNull(FieldJobTime))
-}
-
-// JobTimeNotNil applies the NotNil predicate on the "job_time" field.
-func JobTimeNotNil() predicate.User {
-	return predicate.User(sql.FieldNotNull(FieldJobTime))
-}
-
 // DetailEQ applies the EQ predicate on the "detail" field.
 func DetailEQ(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldDetail, v))
@@ -1228,131 +1163,6 @@ func WecomEqualFold(v string) predicate.User {
 // WecomContainsFold applies the ContainsFold predicate on the "wecom" field.
 func WecomContainsFold(v string) predicate.User {
 	return predicate.User(sql.FieldContainsFold(FieldWecom, v))
-}
-
-// OrganizationEQ applies the EQ predicate on the "organization" field.
-func OrganizationEQ(v string) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldOrganization, v))
-}
-
-// OrganizationNEQ applies the NEQ predicate on the "organization" field.
-func OrganizationNEQ(v string) predicate.User {
-	return predicate.User(sql.FieldNEQ(FieldOrganization, v))
-}
-
-// OrganizationIn applies the In predicate on the "organization" field.
-func OrganizationIn(vs ...string) predicate.User {
-	return predicate.User(sql.FieldIn(FieldOrganization, vs...))
-}
-
-// OrganizationNotIn applies the NotIn predicate on the "organization" field.
-func OrganizationNotIn(vs ...string) predicate.User {
-	return predicate.User(sql.FieldNotIn(FieldOrganization, vs...))
-}
-
-// OrganizationGT applies the GT predicate on the "organization" field.
-func OrganizationGT(v string) predicate.User {
-	return predicate.User(sql.FieldGT(FieldOrganization, v))
-}
-
-// OrganizationGTE applies the GTE predicate on the "organization" field.
-func OrganizationGTE(v string) predicate.User {
-	return predicate.User(sql.FieldGTE(FieldOrganization, v))
-}
-
-// OrganizationLT applies the LT predicate on the "organization" field.
-func OrganizationLT(v string) predicate.User {
-	return predicate.User(sql.FieldLT(FieldOrganization, v))
-}
-
-// OrganizationLTE applies the LTE predicate on the "organization" field.
-func OrganizationLTE(v string) predicate.User {
-	return predicate.User(sql.FieldLTE(FieldOrganization, v))
-}
-
-// OrganizationContains applies the Contains predicate on the "organization" field.
-func OrganizationContains(v string) predicate.User {
-	return predicate.User(sql.FieldContains(FieldOrganization, v))
-}
-
-// OrganizationHasPrefix applies the HasPrefix predicate on the "organization" field.
-func OrganizationHasPrefix(v string) predicate.User {
-	return predicate.User(sql.FieldHasPrefix(FieldOrganization, v))
-}
-
-// OrganizationHasSuffix applies the HasSuffix predicate on the "organization" field.
-func OrganizationHasSuffix(v string) predicate.User {
-	return predicate.User(sql.FieldHasSuffix(FieldOrganization, v))
-}
-
-// OrganizationIsNil applies the IsNil predicate on the "organization" field.
-func OrganizationIsNil() predicate.User {
-	return predicate.User(sql.FieldIsNull(FieldOrganization))
-}
-
-// OrganizationNotNil applies the NotNil predicate on the "organization" field.
-func OrganizationNotNil() predicate.User {
-	return predicate.User(sql.FieldNotNull(FieldOrganization))
-}
-
-// OrganizationEqualFold applies the EqualFold predicate on the "organization" field.
-func OrganizationEqualFold(v string) predicate.User {
-	return predicate.User(sql.FieldEqualFold(FieldOrganization, v))
-}
-
-// OrganizationContainsFold applies the ContainsFold predicate on the "organization" field.
-func OrganizationContainsFold(v string) predicate.User {
-	return predicate.User(sql.FieldContainsFold(FieldOrganization, v))
-}
-
-// DefaultVenueIDEQ applies the EQ predicate on the "default_venue_id" field.
-func DefaultVenueIDEQ(v int64) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldDefaultVenueID, v))
-}
-
-// DefaultVenueIDNEQ applies the NEQ predicate on the "default_venue_id" field.
-func DefaultVenueIDNEQ(v int64) predicate.User {
-	return predicate.User(sql.FieldNEQ(FieldDefaultVenueID, v))
-}
-
-// DefaultVenueIDIn applies the In predicate on the "default_venue_id" field.
-func DefaultVenueIDIn(vs ...int64) predicate.User {
-	return predicate.User(sql.FieldIn(FieldDefaultVenueID, vs...))
-}
-
-// DefaultVenueIDNotIn applies the NotIn predicate on the "default_venue_id" field.
-func DefaultVenueIDNotIn(vs ...int64) predicate.User {
-	return predicate.User(sql.FieldNotIn(FieldDefaultVenueID, vs...))
-}
-
-// DefaultVenueIDGT applies the GT predicate on the "default_venue_id" field.
-func DefaultVenueIDGT(v int64) predicate.User {
-	return predicate.User(sql.FieldGT(FieldDefaultVenueID, v))
-}
-
-// DefaultVenueIDGTE applies the GTE predicate on the "default_venue_id" field.
-func DefaultVenueIDGTE(v int64) predicate.User {
-	return predicate.User(sql.FieldGTE(FieldDefaultVenueID, v))
-}
-
-// DefaultVenueIDLT applies the LT predicate on the "default_venue_id" field.
-func DefaultVenueIDLT(v int64) predicate.User {
-	return predicate.User(sql.FieldLT(FieldDefaultVenueID, v))
-}
-
-// DefaultVenueIDLTE applies the LTE predicate on the "default_venue_id" field.
-func DefaultVenueIDLTE(v int64) predicate.User {
-	return predicate.User(sql.FieldLTE(FieldDefaultVenueID, v))
-}
-
-// DefaultVenueIDIsNil applies the IsNil predicate on the "default_venue_id" field.
-func DefaultVenueIDIsNil() predicate.User {
-	return predicate.User(sql.FieldIsNull(FieldDefaultVenueID))
-}
-
-// DefaultVenueIDNotNil applies the NotNil predicate on the "default_venue_id" field.
-func DefaultVenueIDNotNil() predicate.User {
-	return predicate.User(sql.FieldNotNull(FieldDefaultVenueID))
 }
 
 // AvatarEQ applies the EQ predicate on the "avatar" field.

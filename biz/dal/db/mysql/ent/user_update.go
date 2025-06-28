@@ -14,7 +14,6 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema/field"
 )
 
@@ -214,45 +213,6 @@ func (uu *UserUpdate) SetNillablePassword(s *string) *UserUpdate {
 	return uu
 }
 
-// SetFunctions sets the "functions" field.
-func (uu *UserUpdate) SetFunctions(s []string) *UserUpdate {
-	uu.mutation.SetFunctions(s)
-	return uu
-}
-
-// AppendFunctions appends s to the "functions" field.
-func (uu *UserUpdate) AppendFunctions(s []string) *UserUpdate {
-	uu.mutation.AppendFunctions(s)
-	return uu
-}
-
-// SetJobTime sets the "job_time" field.
-func (uu *UserUpdate) SetJobTime(i int64) *UserUpdate {
-	uu.mutation.ResetJobTime()
-	uu.mutation.SetJobTime(i)
-	return uu
-}
-
-// SetNillableJobTime sets the "job_time" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableJobTime(i *int64) *UserUpdate {
-	if i != nil {
-		uu.SetJobTime(*i)
-	}
-	return uu
-}
-
-// AddJobTime adds i to the "job_time" field.
-func (uu *UserUpdate) AddJobTime(i int64) *UserUpdate {
-	uu.mutation.AddJobTime(i)
-	return uu
-}
-
-// ClearJobTime clears the value of the "job_time" field.
-func (uu *UserUpdate) ClearJobTime() *UserUpdate {
-	uu.mutation.ClearJobTime()
-	return uu
-}
-
 // SetDetail sets the "detail" field.
 func (uu *UserUpdate) SetDetail(s string) *UserUpdate {
 	uu.mutation.SetDetail(s)
@@ -370,53 +330,6 @@ func (uu *UserUpdate) SetNillableWecom(s *string) *UserUpdate {
 // ClearWecom clears the value of the "wecom" field.
 func (uu *UserUpdate) ClearWecom() *UserUpdate {
 	uu.mutation.ClearWecom()
-	return uu
-}
-
-// SetOrganization sets the "organization" field.
-func (uu *UserUpdate) SetOrganization(s string) *UserUpdate {
-	uu.mutation.SetOrganization(s)
-	return uu
-}
-
-// SetNillableOrganization sets the "organization" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableOrganization(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetOrganization(*s)
-	}
-	return uu
-}
-
-// ClearOrganization clears the value of the "organization" field.
-func (uu *UserUpdate) ClearOrganization() *UserUpdate {
-	uu.mutation.ClearOrganization()
-	return uu
-}
-
-// SetDefaultVenueID sets the "default_venue_id" field.
-func (uu *UserUpdate) SetDefaultVenueID(i int64) *UserUpdate {
-	uu.mutation.ResetDefaultVenueID()
-	uu.mutation.SetDefaultVenueID(i)
-	return uu
-}
-
-// SetNillableDefaultVenueID sets the "default_venue_id" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableDefaultVenueID(i *int64) *UserUpdate {
-	if i != nil {
-		uu.SetDefaultVenueID(*i)
-	}
-	return uu
-}
-
-// AddDefaultVenueID adds i to the "default_venue_id" field.
-func (uu *UserUpdate) AddDefaultVenueID(i int64) *UserUpdate {
-	uu.mutation.AddDefaultVenueID(i)
-	return uu
-}
-
-// ClearDefaultVenueID clears the value of the "default_venue_id" field.
-func (uu *UserUpdate) ClearDefaultVenueID() *UserUpdate {
-	uu.mutation.ClearDefaultVenueID()
 	return uu
 }
 
@@ -637,23 +550,6 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
 	}
-	if value, ok := uu.mutation.Functions(); ok {
-		_spec.SetField(user.FieldFunctions, field.TypeJSON, value)
-	}
-	if value, ok := uu.mutation.AppendedFunctions(); ok {
-		_spec.AddModifier(func(u *sql.UpdateBuilder) {
-			sqljson.Append(u, user.FieldFunctions, value)
-		})
-	}
-	if value, ok := uu.mutation.JobTime(); ok {
-		_spec.SetField(user.FieldJobTime, field.TypeInt64, value)
-	}
-	if value, ok := uu.mutation.AddedJobTime(); ok {
-		_spec.AddField(user.FieldJobTime, field.TypeInt64, value)
-	}
-	if uu.mutation.JobTimeCleared() {
-		_spec.ClearField(user.FieldJobTime, field.TypeInt64)
-	}
 	if value, ok := uu.mutation.Detail(); ok {
 		_spec.SetField(user.FieldDetail, field.TypeString, value)
 	}
@@ -689,21 +585,6 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if uu.mutation.WecomCleared() {
 		_spec.ClearField(user.FieldWecom, field.TypeString)
-	}
-	if value, ok := uu.mutation.Organization(); ok {
-		_spec.SetField(user.FieldOrganization, field.TypeString, value)
-	}
-	if uu.mutation.OrganizationCleared() {
-		_spec.ClearField(user.FieldOrganization, field.TypeString)
-	}
-	if value, ok := uu.mutation.DefaultVenueID(); ok {
-		_spec.SetField(user.FieldDefaultVenueID, field.TypeInt64, value)
-	}
-	if value, ok := uu.mutation.AddedDefaultVenueID(); ok {
-		_spec.AddField(user.FieldDefaultVenueID, field.TypeInt64, value)
-	}
-	if uu.mutation.DefaultVenueIDCleared() {
-		_spec.ClearField(user.FieldDefaultVenueID, field.TypeInt64)
 	}
 	if value, ok := uu.mutation.Avatar(); ok {
 		_spec.SetField(user.FieldAvatar, field.TypeString, value)
@@ -995,45 +876,6 @@ func (uuo *UserUpdateOne) SetNillablePassword(s *string) *UserUpdateOne {
 	return uuo
 }
 
-// SetFunctions sets the "functions" field.
-func (uuo *UserUpdateOne) SetFunctions(s []string) *UserUpdateOne {
-	uuo.mutation.SetFunctions(s)
-	return uuo
-}
-
-// AppendFunctions appends s to the "functions" field.
-func (uuo *UserUpdateOne) AppendFunctions(s []string) *UserUpdateOne {
-	uuo.mutation.AppendFunctions(s)
-	return uuo
-}
-
-// SetJobTime sets the "job_time" field.
-func (uuo *UserUpdateOne) SetJobTime(i int64) *UserUpdateOne {
-	uuo.mutation.ResetJobTime()
-	uuo.mutation.SetJobTime(i)
-	return uuo
-}
-
-// SetNillableJobTime sets the "job_time" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableJobTime(i *int64) *UserUpdateOne {
-	if i != nil {
-		uuo.SetJobTime(*i)
-	}
-	return uuo
-}
-
-// AddJobTime adds i to the "job_time" field.
-func (uuo *UserUpdateOne) AddJobTime(i int64) *UserUpdateOne {
-	uuo.mutation.AddJobTime(i)
-	return uuo
-}
-
-// ClearJobTime clears the value of the "job_time" field.
-func (uuo *UserUpdateOne) ClearJobTime() *UserUpdateOne {
-	uuo.mutation.ClearJobTime()
-	return uuo
-}
-
 // SetDetail sets the "detail" field.
 func (uuo *UserUpdateOne) SetDetail(s string) *UserUpdateOne {
 	uuo.mutation.SetDetail(s)
@@ -1151,53 +993,6 @@ func (uuo *UserUpdateOne) SetNillableWecom(s *string) *UserUpdateOne {
 // ClearWecom clears the value of the "wecom" field.
 func (uuo *UserUpdateOne) ClearWecom() *UserUpdateOne {
 	uuo.mutation.ClearWecom()
-	return uuo
-}
-
-// SetOrganization sets the "organization" field.
-func (uuo *UserUpdateOne) SetOrganization(s string) *UserUpdateOne {
-	uuo.mutation.SetOrganization(s)
-	return uuo
-}
-
-// SetNillableOrganization sets the "organization" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableOrganization(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetOrganization(*s)
-	}
-	return uuo
-}
-
-// ClearOrganization clears the value of the "organization" field.
-func (uuo *UserUpdateOne) ClearOrganization() *UserUpdateOne {
-	uuo.mutation.ClearOrganization()
-	return uuo
-}
-
-// SetDefaultVenueID sets the "default_venue_id" field.
-func (uuo *UserUpdateOne) SetDefaultVenueID(i int64) *UserUpdateOne {
-	uuo.mutation.ResetDefaultVenueID()
-	uuo.mutation.SetDefaultVenueID(i)
-	return uuo
-}
-
-// SetNillableDefaultVenueID sets the "default_venue_id" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableDefaultVenueID(i *int64) *UserUpdateOne {
-	if i != nil {
-		uuo.SetDefaultVenueID(*i)
-	}
-	return uuo
-}
-
-// AddDefaultVenueID adds i to the "default_venue_id" field.
-func (uuo *UserUpdateOne) AddDefaultVenueID(i int64) *UserUpdateOne {
-	uuo.mutation.AddDefaultVenueID(i)
-	return uuo
-}
-
-// ClearDefaultVenueID clears the value of the "default_venue_id" field.
-func (uuo *UserUpdateOne) ClearDefaultVenueID() *UserUpdateOne {
-	uuo.mutation.ClearDefaultVenueID()
 	return uuo
 }
 
@@ -1448,23 +1243,6 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if value, ok := uuo.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
 	}
-	if value, ok := uuo.mutation.Functions(); ok {
-		_spec.SetField(user.FieldFunctions, field.TypeJSON, value)
-	}
-	if value, ok := uuo.mutation.AppendedFunctions(); ok {
-		_spec.AddModifier(func(u *sql.UpdateBuilder) {
-			sqljson.Append(u, user.FieldFunctions, value)
-		})
-	}
-	if value, ok := uuo.mutation.JobTime(); ok {
-		_spec.SetField(user.FieldJobTime, field.TypeInt64, value)
-	}
-	if value, ok := uuo.mutation.AddedJobTime(); ok {
-		_spec.AddField(user.FieldJobTime, field.TypeInt64, value)
-	}
-	if uuo.mutation.JobTimeCleared() {
-		_spec.ClearField(user.FieldJobTime, field.TypeInt64)
-	}
 	if value, ok := uuo.mutation.Detail(); ok {
 		_spec.SetField(user.FieldDetail, field.TypeString, value)
 	}
@@ -1500,21 +1278,6 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if uuo.mutation.WecomCleared() {
 		_spec.ClearField(user.FieldWecom, field.TypeString)
-	}
-	if value, ok := uuo.mutation.Organization(); ok {
-		_spec.SetField(user.FieldOrganization, field.TypeString, value)
-	}
-	if uuo.mutation.OrganizationCleared() {
-		_spec.ClearField(user.FieldOrganization, field.TypeString)
-	}
-	if value, ok := uuo.mutation.DefaultVenueID(); ok {
-		_spec.SetField(user.FieldDefaultVenueID, field.TypeInt64, value)
-	}
-	if value, ok := uuo.mutation.AddedDefaultVenueID(); ok {
-		_spec.AddField(user.FieldDefaultVenueID, field.TypeInt64, value)
-	}
-	if uuo.mutation.DefaultVenueIDCleared() {
-		_spec.ClearField(user.FieldDefaultVenueID, field.TypeInt64)
 	}
 	if value, ok := uuo.mutation.Avatar(); ok {
 		_spec.SetField(user.FieldAvatar, field.TypeString, value)

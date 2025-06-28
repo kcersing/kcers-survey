@@ -29,15 +29,6 @@ type User struct {
 }
 
 func (u *User) SetDefaultVenue(id, venueId int64) error {
-	_, err := u.db.User.Update().
-		Where(user2.IDEQ(id)).
-		SetDefaultVenueID(venueId).
-		Save(u.ctx)
-
-	if err != nil {
-		err = errors.Wrap(err, "update DefaultVenue  ID   failed")
-		return err
-	}
 
 	return nil
 }

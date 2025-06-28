@@ -138,26 +138,6 @@ func (uc *UserCreate) SetPassword(s string) *UserCreate {
 	return uc
 }
 
-// SetFunctions sets the "functions" field.
-func (uc *UserCreate) SetFunctions(s []string) *UserCreate {
-	uc.mutation.SetFunctions(s)
-	return uc
-}
-
-// SetJobTime sets the "job_time" field.
-func (uc *UserCreate) SetJobTime(i int64) *UserCreate {
-	uc.mutation.SetJobTime(i)
-	return uc
-}
-
-// SetNillableJobTime sets the "job_time" field if the given value is not nil.
-func (uc *UserCreate) SetNillableJobTime(i *int64) *UserCreate {
-	if i != nil {
-		uc.SetJobTime(*i)
-	}
-	return uc
-}
-
 // SetDetail sets the "detail" field.
 func (uc *UserCreate) SetDetail(s string) *UserCreate {
 	uc.mutation.SetDetail(s)
@@ -238,34 +218,6 @@ func (uc *UserCreate) SetWecom(s string) *UserCreate {
 func (uc *UserCreate) SetNillableWecom(s *string) *UserCreate {
 	if s != nil {
 		uc.SetWecom(*s)
-	}
-	return uc
-}
-
-// SetOrganization sets the "organization" field.
-func (uc *UserCreate) SetOrganization(s string) *UserCreate {
-	uc.mutation.SetOrganization(s)
-	return uc
-}
-
-// SetNillableOrganization sets the "organization" field if the given value is not nil.
-func (uc *UserCreate) SetNillableOrganization(s *string) *UserCreate {
-	if s != nil {
-		uc.SetOrganization(*s)
-	}
-	return uc
-}
-
-// SetDefaultVenueID sets the "default_venue_id" field.
-func (uc *UserCreate) SetDefaultVenueID(i int64) *UserCreate {
-	uc.mutation.SetDefaultVenueID(i)
-	return uc
-}
-
-// SetNillableDefaultVenueID sets the "default_venue_id" field if the given value is not nil.
-func (uc *UserCreate) SetNillableDefaultVenueID(i *int64) *UserCreate {
-	if i != nil {
-		uc.SetDefaultVenueID(*i)
 	}
 	return uc
 }
@@ -397,10 +349,6 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultGender
 		uc.mutation.SetGender(v)
 	}
-	if _, ok := uc.mutation.JobTime(); !ok {
-		v := user.DefaultJobTime
-		uc.mutation.SetJobTime(v)
-	}
 	if _, ok := uc.mutation.SideMode(); !ok {
 		v := user.DefaultSideMode
 		uc.mutation.SetSideMode(v)
@@ -425,9 +373,6 @@ func (uc *UserCreate) check() error {
 	}
 	if _, ok := uc.mutation.Password(); !ok {
 		return &ValidationError{Name: "password", err: errors.New(`ent: missing required field "User.password"`)}
-	}
-	if _, ok := uc.mutation.Functions(); !ok {
-		return &ValidationError{Name: "functions", err: errors.New(`ent: missing required field "User.functions"`)}
 	}
 	return nil
 }
@@ -501,14 +446,6 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
 		_node.Password = value
 	}
-	if value, ok := uc.mutation.Functions(); ok {
-		_spec.SetField(user.FieldFunctions, field.TypeJSON, value)
-		_node.Functions = value
-	}
-	if value, ok := uc.mutation.JobTime(); ok {
-		_spec.SetField(user.FieldJobTime, field.TypeInt64, value)
-		_node.JobTime = value
-	}
 	if value, ok := uc.mutation.Detail(); ok {
 		_spec.SetField(user.FieldDetail, field.TypeString, value)
 		_node.Detail = value
@@ -532,14 +469,6 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := uc.mutation.Wecom(); ok {
 		_spec.SetField(user.FieldWecom, field.TypeString, value)
 		_node.Wecom = value
-	}
-	if value, ok := uc.mutation.Organization(); ok {
-		_spec.SetField(user.FieldOrganization, field.TypeString, value)
-		_node.Organization = value
-	}
-	if value, ok := uc.mutation.DefaultVenueID(); ok {
-		_spec.SetField(user.FieldDefaultVenueID, field.TypeInt64, value)
-		_node.DefaultVenueID = value
 	}
 	if value, ok := uc.mutation.Avatar(); ok {
 		_spec.SetField(user.FieldAvatar, field.TypeString, value)

@@ -107,11 +107,10 @@ struct Options {
 
 struct CreateOrUpdateResponseReq {
   1:optional i64 surveyId=0 (api.raw = "surveyId")
-  2:optional list<map<i64,string>> question={} (api.raw = "question")
-  3:optional string researcher="" (api.raw = "researcher")
-  4:optional string researcherPhone="" (api.raw = "researcherPhone")
-  5:optional string respondent="" (api.raw = "respondent")
-  6:optional string respondentPhone="" (api.raw = "respondentPhone")
+  3:optional string type="" (api.raw = "type")
+  4:optional i64 questionId=0 (api.raw = "questionId")
+  5:optional string value="" (api.raw = "value")
+  6:optional string sn="" (api.raw = "sn")
 
 }
 

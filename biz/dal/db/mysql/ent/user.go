@@ -3,7 +3,6 @@
 package ent
 
 import (
-	"encoding/json"
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/token"
 	"kcers-survey/biz/dal/db/mysql/ent/user"
@@ -40,10 +39,6 @@ type User struct {
 	Username string `json:"username,omitempty"`
 	// password | 密码
 	Password string `json:"password,omitempty"`
-	// functions | 职能
-	Functions []string `json:"functions,omitempty"`
-	// job time | [1:全职;2:兼职;]
-	JobTime int64 `json:"job_time,omitempty"`
 	// 详情
 	Detail string `json:"detail,omitempty"`
 	// template mode | 布局方式
@@ -56,10 +51,6 @@ type User struct {
 	Email string `json:"email,omitempty"`
 	// wecom | 微信号
 	Wecom string `json:"wecom,omitempty"`
-	// 部门
-	Organization string `json:"organization,omitempty"`
-	// 登陆后默认场馆ID
-	DefaultVenueID int64 `json:"default_venue_id,omitempty"`
 	// avatar | 头像路径
 	Avatar string `json:"avatar,omitempty"`
 	// 出生日期
@@ -106,11 +97,9 @@ func (*User) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case user.FieldFunctions:
-			values[i] = new([]byte)
-		case user.FieldID, user.FieldDelete, user.FieldCreatedID, user.FieldStatus, user.FieldGender, user.FieldJobTime, user.FieldDefaultVenueID:
+		case user.FieldID, user.FieldDelete, user.FieldCreatedID, user.FieldStatus, user.FieldGender:
 			values[i] = new(sql.NullInt64)
-		case user.FieldMobile, user.FieldName, user.FieldUsername, user.FieldPassword, user.FieldDetail, user.FieldSideMode, user.FieldBaseColor, user.FieldActiveColor, user.FieldEmail, user.FieldWecom, user.FieldOrganization, user.FieldAvatar:
+		case user.FieldMobile, user.FieldName, user.FieldUsername, user.FieldPassword, user.FieldDetail, user.FieldSideMode, user.FieldBaseColor, user.FieldActiveColor, user.FieldEmail, user.FieldWecom, user.FieldAvatar:
 			values[i] = new(sql.NullString)
 		case user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldBirthday:
 			values[i] = new(sql.NullTime)
@@ -195,20 +184,6 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.Password = value.String
 			}
-		case user.FieldFunctions:
-			if value, ok := values[i].(*[]byte); !ok {
-				return fmt.Errorf("unexpected type %T for field functions", values[i])
-			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &u.Functions); err != nil {
-					return fmt.Errorf("unmarshal field functions: %w", err)
-				}
-			}
-		case user.FieldJobTime:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field job_time", values[i])
-			} else if value.Valid {
-				u.JobTime = value.Int64
-			}
 		case user.FieldDetail:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field detail", values[i])
@@ -244,18 +219,6 @@ func (u *User) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field wecom", values[i])
 			} else if value.Valid {
 				u.Wecom = value.String
-			}
-		case user.FieldOrganization:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field organization", values[i])
-			} else if value.Valid {
-				u.Organization = value.String
-			}
-		case user.FieldDefaultVenueID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field default_venue_id", values[i])
-			} else if value.Valid {
-				u.DefaultVenueID = value.Int64
 			}
 		case user.FieldAvatar:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -345,12 +308,6 @@ func (u *User) String() string {
 	builder.WriteString("password=")
 	builder.WriteString(u.Password)
 	builder.WriteString(", ")
-	builder.WriteString("functions=")
-	builder.WriteString(fmt.Sprintf("%v", u.Functions))
-	builder.WriteString(", ")
-	builder.WriteString("job_time=")
-	builder.WriteString(fmt.Sprintf("%v", u.JobTime))
-	builder.WriteString(", ")
 	builder.WriteString("detail=")
 	builder.WriteString(u.Detail)
 	builder.WriteString(", ")
@@ -368,12 +325,6 @@ func (u *User) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("wecom=")
 	builder.WriteString(u.Wecom)
-	builder.WriteString(", ")
-	builder.WriteString("organization=")
-	builder.WriteString(u.Organization)
-	builder.WriteString(", ")
-	builder.WriteString("default_venue_id=")
-	builder.WriteString(fmt.Sprintf("%v", u.DefaultVenueID))
 	builder.WriteString(", ")
 	builder.WriteString("avatar=")
 	builder.WriteString(u.Avatar)

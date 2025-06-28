@@ -34,10 +34,6 @@ const (
 	FieldUsername = "username"
 	// FieldPassword holds the string denoting the password field in the database.
 	FieldPassword = "password"
-	// FieldFunctions holds the string denoting the functions field in the database.
-	FieldFunctions = "functions"
-	// FieldJobTime holds the string denoting the job_time field in the database.
-	FieldJobTime = "job_time"
 	// FieldDetail holds the string denoting the detail field in the database.
 	FieldDetail = "detail"
 	// FieldSideMode holds the string denoting the side_mode field in the database.
@@ -50,10 +46,6 @@ const (
 	FieldEmail = "email"
 	// FieldWecom holds the string denoting the wecom field in the database.
 	FieldWecom = "wecom"
-	// FieldOrganization holds the string denoting the organization field in the database.
-	FieldOrganization = "organization"
-	// FieldDefaultVenueID holds the string denoting the default_venue_id field in the database.
-	FieldDefaultVenueID = "default_venue_id"
 	// FieldAvatar holds the string denoting the avatar field in the database.
 	FieldAvatar = "avatar"
 	// FieldBirthday holds the string denoting the birthday field in the database.
@@ -91,16 +83,12 @@ var Columns = []string{
 	FieldGender,
 	FieldUsername,
 	FieldPassword,
-	FieldFunctions,
-	FieldJobTime,
 	FieldDetail,
 	FieldSideMode,
 	FieldBaseColor,
 	FieldActiveColor,
 	FieldEmail,
 	FieldWecom,
-	FieldOrganization,
-	FieldDefaultVenueID,
 	FieldAvatar,
 	FieldBirthday,
 }
@@ -136,8 +124,6 @@ var (
 	DefaultStatus int64
 	// DefaultGender holds the default value on creation for the "gender" field.
 	DefaultGender int64
-	// DefaultJobTime holds the default value on creation for the "job_time" field.
-	DefaultJobTime int64
 	// DefaultSideMode holds the default value on creation for the "side_mode" field.
 	DefaultSideMode string
 	// DefaultBaseColor holds the default value on creation for the "base_color" field.
@@ -204,11 +190,6 @@ func ByPassword(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPassword, opts...).ToFunc()
 }
 
-// ByJobTime orders the results by the job_time field.
-func ByJobTime(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldJobTime, opts...).ToFunc()
-}
-
 // ByDetail orders the results by the detail field.
 func ByDetail(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDetail, opts...).ToFunc()
@@ -237,16 +218,6 @@ func ByEmail(opts ...sql.OrderTermOption) OrderOption {
 // ByWecom orders the results by the wecom field.
 func ByWecom(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldWecom, opts...).ToFunc()
-}
-
-// ByOrganization orders the results by the organization field.
-func ByOrganization(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldOrganization, opts...).ToFunc()
-}
-
-// ByDefaultVenueID orders the results by the default_venue_id field.
-func ByDefaultVenueID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDefaultVenueID, opts...).ToFunc()
 }
 
 // ByAvatar orders the results by the avatar field.

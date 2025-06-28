@@ -103,6 +103,20 @@ func (src *SurveyResponseCreate) SetNillableSurveyID(i *int64) *SurveyResponseCr
 	return src
 }
 
+// SetSn sets the "sn" field.
+func (src *SurveyResponseCreate) SetSn(s string) *SurveyResponseCreate {
+	src.mutation.SetSn(s)
+	return src
+}
+
+// SetNillableSn sets the "sn" field if the given value is not nil.
+func (src *SurveyResponseCreate) SetNillableSn(s *string) *SurveyResponseCreate {
+	if s != nil {
+		src.SetSn(*s)
+	}
+	return src
+}
+
 // SetRespondent sets the "respondent" field.
 func (src *SurveyResponseCreate) SetRespondent(s string) *SurveyResponseCreate {
 	src.mutation.SetRespondent(s)
@@ -300,6 +314,10 @@ func (src *SurveyResponseCreate) defaults() {
 		v := surveyresponse.DefaultSurveyID
 		src.mutation.SetSurveyID(v)
 	}
+	if _, ok := src.mutation.Sn(); !ok {
+		v := surveyresponse.DefaultSn
+		src.mutation.SetSn(v)
+	}
 	if _, ok := src.mutation.Respondent(); !ok {
 		v := surveyresponse.DefaultRespondent
 		src.mutation.SetRespondent(v)
@@ -395,6 +413,10 @@ func (src *SurveyResponseCreate) createSpec() (*SurveyResponse, *sqlgraph.Create
 	if value, ok := src.mutation.SurveyID(); ok {
 		_spec.SetField(surveyresponse.FieldSurveyID, field.TypeInt64, value)
 		_node.SurveyID = value
+	}
+	if value, ok := src.mutation.Sn(); ok {
+		_spec.SetField(surveyresponse.FieldSn, field.TypeString, value)
+		_node.Sn = value
 	}
 	if value, ok := src.mutation.Respondent(); ok {
 		_spec.SetField(surveyresponse.FieldRespondent, field.TypeString, value)

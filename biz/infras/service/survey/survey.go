@@ -9,6 +9,8 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/predicate"
 	survey2 "kcers-survey/biz/dal/db/mysql/ent/survey"
 	surveyquestion2 "kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
+	surveyresponse2 "kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
+	surveyresponseanswers2 "kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"kcers-survey/biz/infras/do"
 	"kcers-survey/biz/infras/service/common"
 	"kcers-survey/biz/pkg/utils"
@@ -314,27 +316,48 @@ func (s Survey) DeleteQuestion(id int64) (err error) {
 }
 
 func (s Survey) CreateResponse(req *service.CreateOrUpdateResponseReq) (err error) {
-	_, err = s.db.SurveyResponse.Create().
-		SetSurveyID(req.SurveyId).
-		SetResearcher(req.Researcher).
-		SetResearcherPhone(req.ResearcherPhone).
-		SetResearcher(req.Researcher).
-		SetRespondent(req.Respondent).
-		SetRespondentPhone(req.RespondentPhone).
-		//SetIP(req.Ip).
-		//SetDevice()
-		SetQuestions(req.Question).
-		Save(s.ctx)
+	sa, _ := s.db.SurveyResponse.Query().
+		Where(
+			surveyresponse2.SurveyID(req.SurveyId),
+			surveyresponse2.Sn(req.Sn),
+		).First(s.ctx)
+	if sa == nil {
+		sa, _ = s.db.SurveyResponse.Create().
+			SetSurveyID(req.SurveyId).
+			SetSn(req.Sn).Save(s.ctx)
+	}
+	sau := sa.Update()
 
+	if req.Type == "respondent" {
+		sau.SetRespondent(req.Value)
+	} else if req.Type == "respondentPhone" {
+		sau.SetRespondentPhone(req.Value)
+	}
+	if req.Type == "researcher" {
+		sau.SetResearcher(req.Value)
+	} else if req.Type == "researcherPhone" {
+		sau.SetResearcherPhone(req.Value)
+	} else {
+		s.db.SurveyResponseAnswers.Update().
+			Where(
+				surveyresponseanswers2.SurveyID(req.SurveyId),
+				surveyresponseanswers2.SurveyResponseID(sa.ID),
+				surveyresponseanswers2.SurveyQuestionID(req.QuestionId),
+			).SetDelete(1).
+			Save(s.ctx)
+
+		s.db.SurveyResponseAnswers.Create().
+			SetSurveyID(req.SurveyId).
+			SetSurveyResponseID(sa.ID).
+			SetSurveyQuestionID(req.QuestionId).
+			SetAnswerText(req.Value).
+			Save(s.ctx)
+	}
+
+	sau.Save(s.ctx)
 	if err != nil {
 		return err
 	}
-
-	//s.db.SurveyResponseAnswers.Create().
-	//	SetSurveyID(req.SurveyId).
-	//	SetSurveyResponseID(sq.ID).
-	//	SetAnswerText(req.Question).
-	//	Save(s.ctx)
 
 	return nil
 }

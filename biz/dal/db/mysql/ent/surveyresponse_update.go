@@ -150,6 +150,26 @@ func (sru *SurveyResponseUpdate) ClearSurveyID() *SurveyResponseUpdate {
 	return sru
 }
 
+// SetSn sets the "sn" field.
+func (sru *SurveyResponseUpdate) SetSn(s string) *SurveyResponseUpdate {
+	sru.mutation.SetSn(s)
+	return sru
+}
+
+// SetNillableSn sets the "sn" field if the given value is not nil.
+func (sru *SurveyResponseUpdate) SetNillableSn(s *string) *SurveyResponseUpdate {
+	if s != nil {
+		sru.SetSn(*s)
+	}
+	return sru
+}
+
+// ClearSn clears the value of the "sn" field.
+func (sru *SurveyResponseUpdate) ClearSn() *SurveyResponseUpdate {
+	sru.mutation.ClearSn()
+	return sru
+}
+
 // SetRespondent sets the "respondent" field.
 func (sru *SurveyResponseUpdate) SetRespondent(s string) *SurveyResponseUpdate {
 	sru.mutation.SetRespondent(s)
@@ -449,6 +469,12 @@ func (sru *SurveyResponseUpdate) sqlSave(ctx context.Context) (n int, err error)
 	if sru.mutation.SurveyIDCleared() {
 		_spec.ClearField(surveyresponse.FieldSurveyID, field.TypeInt64)
 	}
+	if value, ok := sru.mutation.Sn(); ok {
+		_spec.SetField(surveyresponse.FieldSn, field.TypeString, value)
+	}
+	if sru.mutation.SnCleared() {
+		_spec.ClearField(surveyresponse.FieldSn, field.TypeString)
+	}
 	if value, ok := sru.mutation.Respondent(); ok {
 		_spec.SetField(surveyresponse.FieldRespondent, field.TypeString, value)
 	}
@@ -653,6 +679,26 @@ func (sruo *SurveyResponseUpdateOne) AddSurveyID(i int64) *SurveyResponseUpdateO
 // ClearSurveyID clears the value of the "survey_id" field.
 func (sruo *SurveyResponseUpdateOne) ClearSurveyID() *SurveyResponseUpdateOne {
 	sruo.mutation.ClearSurveyID()
+	return sruo
+}
+
+// SetSn sets the "sn" field.
+func (sruo *SurveyResponseUpdateOne) SetSn(s string) *SurveyResponseUpdateOne {
+	sruo.mutation.SetSn(s)
+	return sruo
+}
+
+// SetNillableSn sets the "sn" field if the given value is not nil.
+func (sruo *SurveyResponseUpdateOne) SetNillableSn(s *string) *SurveyResponseUpdateOne {
+	if s != nil {
+		sruo.SetSn(*s)
+	}
+	return sruo
+}
+
+// ClearSn clears the value of the "sn" field.
+func (sruo *SurveyResponseUpdateOne) ClearSn() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearSn()
 	return sruo
 }
 
@@ -984,6 +1030,12 @@ func (sruo *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	}
 	if sruo.mutation.SurveyIDCleared() {
 		_spec.ClearField(surveyresponse.FieldSurveyID, field.TypeInt64)
+	}
+	if value, ok := sruo.mutation.Sn(); ok {
+		_spec.SetField(surveyresponse.FieldSn, field.TypeString, value)
+	}
+	if sruo.mutation.SnCleared() {
+		_spec.ClearField(surveyresponse.FieldSn, field.TypeString)
 	}
 	if value, ok := sruo.mutation.Respondent(); ok {
 		_spec.SetField(surveyresponse.FieldRespondent, field.TypeString, value)

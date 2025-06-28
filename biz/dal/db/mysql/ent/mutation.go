@@ -10950,6 +10950,7 @@ type SurveyResponseMutation struct {
 	addstatus        *int64
 	survey_id        *int64
 	addsurvey_id     *int64
+	sn               *string
 	respondent       *string
 	respondent_phone *string
 	researcher       *string
@@ -11447,6 +11448,55 @@ func (m *SurveyResponseMutation) ResetSurveyID() {
 	m.survey_id = nil
 	m.addsurvey_id = nil
 	delete(m.clearedFields, surveyresponse.FieldSurveyID)
+}
+
+// SetSn sets the "sn" field.
+func (m *SurveyResponseMutation) SetSn(s string) {
+	m.sn = &s
+}
+
+// Sn returns the value of the "sn" field in the mutation.
+func (m *SurveyResponseMutation) Sn() (r string, exists bool) {
+	v := m.sn
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSn returns the old "sn" field's value of the SurveyResponse entity.
+// If the SurveyResponse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurveyResponseMutation) OldSn(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSn is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSn requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSn: %w", err)
+	}
+	return oldValue.Sn, nil
+}
+
+// ClearSn clears the value of the "sn" field.
+func (m *SurveyResponseMutation) ClearSn() {
+	m.sn = nil
+	m.clearedFields[surveyresponse.FieldSn] = struct{}{}
+}
+
+// SnCleared returns if the "sn" field was cleared in this mutation.
+func (m *SurveyResponseMutation) SnCleared() bool {
+	_, ok := m.clearedFields[surveyresponse.FieldSn]
+	return ok
+}
+
+// ResetSn resets all changes to the "sn" field.
+func (m *SurveyResponseMutation) ResetSn() {
+	m.sn = nil
+	delete(m.clearedFields, surveyresponse.FieldSn)
 }
 
 // SetRespondent sets the "respondent" field.
@@ -11989,7 +12039,7 @@ func (m *SurveyResponseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SurveyResponseMutation) Fields() []string {
-	fields := make([]string, 0, 16)
+	fields := make([]string, 0, 17)
 	if m.created_at != nil {
 		fields = append(fields, surveyresponse.FieldCreatedAt)
 	}
@@ -12007,6 +12057,9 @@ func (m *SurveyResponseMutation) Fields() []string {
 	}
 	if m.survey_id != nil {
 		fields = append(fields, surveyresponse.FieldSurveyID)
+	}
+	if m.sn != nil {
+		fields = append(fields, surveyresponse.FieldSn)
 	}
 	if m.respondent != nil {
 		fields = append(fields, surveyresponse.FieldRespondent)
@@ -12058,6 +12111,8 @@ func (m *SurveyResponseMutation) Field(name string) (ent.Value, bool) {
 		return m.Status()
 	case surveyresponse.FieldSurveyID:
 		return m.SurveyID()
+	case surveyresponse.FieldSn:
+		return m.Sn()
 	case surveyresponse.FieldRespondent:
 		return m.Respondent()
 	case surveyresponse.FieldRespondentPhone:
@@ -12099,6 +12154,8 @@ func (m *SurveyResponseMutation) OldField(ctx context.Context, name string) (ent
 		return m.OldStatus(ctx)
 	case surveyresponse.FieldSurveyID:
 		return m.OldSurveyID(ctx)
+	case surveyresponse.FieldSn:
+		return m.OldSn(ctx)
 	case surveyresponse.FieldRespondent:
 		return m.OldRespondent(ctx)
 	case surveyresponse.FieldRespondentPhone:
@@ -12169,6 +12226,13 @@ func (m *SurveyResponseMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetSurveyID(v)
+		return nil
+	case surveyresponse.FieldSn:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSn(v)
 		return nil
 	case surveyresponse.FieldRespondent:
 		v, ok := value.(string)
@@ -12339,6 +12403,9 @@ func (m *SurveyResponseMutation) ClearedFields() []string {
 	if m.FieldCleared(surveyresponse.FieldSurveyID) {
 		fields = append(fields, surveyresponse.FieldSurveyID)
 	}
+	if m.FieldCleared(surveyresponse.FieldSn) {
+		fields = append(fields, surveyresponse.FieldSn)
+	}
 	if m.FieldCleared(surveyresponse.FieldRespondent) {
 		fields = append(fields, surveyresponse.FieldRespondent)
 	}
@@ -12401,6 +12468,9 @@ func (m *SurveyResponseMutation) ClearField(name string) error {
 	case surveyresponse.FieldSurveyID:
 		m.ClearSurveyID()
 		return nil
+	case surveyresponse.FieldSn:
+		m.ClearSn()
+		return nil
 	case surveyresponse.FieldRespondent:
 		m.ClearRespondent()
 		return nil
@@ -12456,6 +12526,9 @@ func (m *SurveyResponseMutation) ResetField(name string) error {
 		return nil
 	case surveyresponse.FieldSurveyID:
 		m.ResetSurveyID()
+		return nil
+	case surveyresponse.FieldSn:
+		m.ResetSn()
 		return nil
 	case surveyresponse.FieldRespondent:
 		m.ResetRespondent()
@@ -14861,47 +14934,40 @@ func (m *TokenMutation) ResetEdge(name string) error {
 // UserMutation represents an operation that mutates the User nodes in the graph.
 type UserMutation struct {
 	config
-	op                  Op
-	typ                 string
-	id                  *int64
-	created_at          *time.Time
-	updated_at          *time.Time
-	delete              *int64
-	adddelete           *int64
-	created_id          *int64
-	addcreated_id       *int64
-	status              *int64
-	addstatus           *int64
-	mobile              *string
-	name                *string
-	gender              *int64
-	addgender           *int64
-	username            *string
-	password            *string
-	functions           *[]string
-	appendfunctions     []string
-	job_time            *int64
-	addjob_time         *int64
-	detail              *string
-	side_mode           *string
-	base_color          *string
-	active_color        *string
-	email               *string
-	wecom               *string
-	organization        *string
-	default_venue_id    *int64
-	adddefault_venue_id *int64
-	avatar              *string
-	birthday            *time.Time
-	clearedFields       map[string]struct{}
-	token               *int64
-	clearedtoken        bool
-	roles               map[int64]struct{}
-	removedroles        map[int64]struct{}
-	clearedroles        bool
-	done                bool
-	oldValue            func(context.Context) (*User, error)
-	predicates          []predicate.User
+	op            Op
+	typ           string
+	id            *int64
+	created_at    *time.Time
+	updated_at    *time.Time
+	delete        *int64
+	adddelete     *int64
+	created_id    *int64
+	addcreated_id *int64
+	status        *int64
+	addstatus     *int64
+	mobile        *string
+	name          *string
+	gender        *int64
+	addgender     *int64
+	username      *string
+	password      *string
+	detail        *string
+	side_mode     *string
+	base_color    *string
+	active_color  *string
+	email         *string
+	wecom         *string
+	avatar        *string
+	birthday      *time.Time
+	clearedFields map[string]struct{}
+	token         *int64
+	clearedtoken  bool
+	roles         map[int64]struct{}
+	removedroles  map[int64]struct{}
+	clearedroles  bool
+	done          bool
+	oldValue      func(context.Context) (*User, error)
+	predicates    []predicate.User
 }
 
 var _ ent.Mutation = (*UserMutation)(nil)
@@ -15543,127 +15609,6 @@ func (m *UserMutation) ResetPassword() {
 	m.password = nil
 }
 
-// SetFunctions sets the "functions" field.
-func (m *UserMutation) SetFunctions(s []string) {
-	m.functions = &s
-	m.appendfunctions = nil
-}
-
-// Functions returns the value of the "functions" field in the mutation.
-func (m *UserMutation) Functions() (r []string, exists bool) {
-	v := m.functions
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldFunctions returns the old "functions" field's value of the User entity.
-// If the User object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldFunctions(ctx context.Context) (v []string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldFunctions is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldFunctions requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldFunctions: %w", err)
-	}
-	return oldValue.Functions, nil
-}
-
-// AppendFunctions adds s to the "functions" field.
-func (m *UserMutation) AppendFunctions(s []string) {
-	m.appendfunctions = append(m.appendfunctions, s...)
-}
-
-// AppendedFunctions returns the list of values that were appended to the "functions" field in this mutation.
-func (m *UserMutation) AppendedFunctions() ([]string, bool) {
-	if len(m.appendfunctions) == 0 {
-		return nil, false
-	}
-	return m.appendfunctions, true
-}
-
-// ResetFunctions resets all changes to the "functions" field.
-func (m *UserMutation) ResetFunctions() {
-	m.functions = nil
-	m.appendfunctions = nil
-}
-
-// SetJobTime sets the "job_time" field.
-func (m *UserMutation) SetJobTime(i int64) {
-	m.job_time = &i
-	m.addjob_time = nil
-}
-
-// JobTime returns the value of the "job_time" field in the mutation.
-func (m *UserMutation) JobTime() (r int64, exists bool) {
-	v := m.job_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldJobTime returns the old "job_time" field's value of the User entity.
-// If the User object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldJobTime(ctx context.Context) (v int64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldJobTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldJobTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldJobTime: %w", err)
-	}
-	return oldValue.JobTime, nil
-}
-
-// AddJobTime adds i to the "job_time" field.
-func (m *UserMutation) AddJobTime(i int64) {
-	if m.addjob_time != nil {
-		*m.addjob_time += i
-	} else {
-		m.addjob_time = &i
-	}
-}
-
-// AddedJobTime returns the value that was added to the "job_time" field in this mutation.
-func (m *UserMutation) AddedJobTime() (r int64, exists bool) {
-	v := m.addjob_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearJobTime clears the value of the "job_time" field.
-func (m *UserMutation) ClearJobTime() {
-	m.job_time = nil
-	m.addjob_time = nil
-	m.clearedFields[user.FieldJobTime] = struct{}{}
-}
-
-// JobTimeCleared returns if the "job_time" field was cleared in this mutation.
-func (m *UserMutation) JobTimeCleared() bool {
-	_, ok := m.clearedFields[user.FieldJobTime]
-	return ok
-}
-
-// ResetJobTime resets all changes to the "job_time" field.
-func (m *UserMutation) ResetJobTime() {
-	m.job_time = nil
-	m.addjob_time = nil
-	delete(m.clearedFields, user.FieldJobTime)
-}
-
 // SetDetail sets the "detail" field.
 func (m *UserMutation) SetDetail(s string) {
 	m.detail = &s
@@ -15958,125 +15903,6 @@ func (m *UserMutation) ResetWecom() {
 	delete(m.clearedFields, user.FieldWecom)
 }
 
-// SetOrganization sets the "organization" field.
-func (m *UserMutation) SetOrganization(s string) {
-	m.organization = &s
-}
-
-// Organization returns the value of the "organization" field in the mutation.
-func (m *UserMutation) Organization() (r string, exists bool) {
-	v := m.organization
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldOrganization returns the old "organization" field's value of the User entity.
-// If the User object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldOrganization(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldOrganization is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldOrganization requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldOrganization: %w", err)
-	}
-	return oldValue.Organization, nil
-}
-
-// ClearOrganization clears the value of the "organization" field.
-func (m *UserMutation) ClearOrganization() {
-	m.organization = nil
-	m.clearedFields[user.FieldOrganization] = struct{}{}
-}
-
-// OrganizationCleared returns if the "organization" field was cleared in this mutation.
-func (m *UserMutation) OrganizationCleared() bool {
-	_, ok := m.clearedFields[user.FieldOrganization]
-	return ok
-}
-
-// ResetOrganization resets all changes to the "organization" field.
-func (m *UserMutation) ResetOrganization() {
-	m.organization = nil
-	delete(m.clearedFields, user.FieldOrganization)
-}
-
-// SetDefaultVenueID sets the "default_venue_id" field.
-func (m *UserMutation) SetDefaultVenueID(i int64) {
-	m.default_venue_id = &i
-	m.adddefault_venue_id = nil
-}
-
-// DefaultVenueID returns the value of the "default_venue_id" field in the mutation.
-func (m *UserMutation) DefaultVenueID() (r int64, exists bool) {
-	v := m.default_venue_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDefaultVenueID returns the old "default_venue_id" field's value of the User entity.
-// If the User object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldDefaultVenueID(ctx context.Context) (v int64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldDefaultVenueID is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldDefaultVenueID requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDefaultVenueID: %w", err)
-	}
-	return oldValue.DefaultVenueID, nil
-}
-
-// AddDefaultVenueID adds i to the "default_venue_id" field.
-func (m *UserMutation) AddDefaultVenueID(i int64) {
-	if m.adddefault_venue_id != nil {
-		*m.adddefault_venue_id += i
-	} else {
-		m.adddefault_venue_id = &i
-	}
-}
-
-// AddedDefaultVenueID returns the value that was added to the "default_venue_id" field in this mutation.
-func (m *UserMutation) AddedDefaultVenueID() (r int64, exists bool) {
-	v := m.adddefault_venue_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearDefaultVenueID clears the value of the "default_venue_id" field.
-func (m *UserMutation) ClearDefaultVenueID() {
-	m.default_venue_id = nil
-	m.adddefault_venue_id = nil
-	m.clearedFields[user.FieldDefaultVenueID] = struct{}{}
-}
-
-// DefaultVenueIDCleared returns if the "default_venue_id" field was cleared in this mutation.
-func (m *UserMutation) DefaultVenueIDCleared() bool {
-	_, ok := m.clearedFields[user.FieldDefaultVenueID]
-	return ok
-}
-
-// ResetDefaultVenueID resets all changes to the "default_venue_id" field.
-func (m *UserMutation) ResetDefaultVenueID() {
-	m.default_venue_id = nil
-	m.adddefault_venue_id = nil
-	delete(m.clearedFields, user.FieldDefaultVenueID)
-}
-
 // SetAvatar sets the "avatar" field.
 func (m *UserMutation) SetAvatar(s string) {
 	m.avatar = &s
@@ -16302,7 +16128,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 22)
+	fields := make([]string, 0, 18)
 	if m.created_at != nil {
 		fields = append(fields, user.FieldCreatedAt)
 	}
@@ -16333,12 +16159,6 @@ func (m *UserMutation) Fields() []string {
 	if m.password != nil {
 		fields = append(fields, user.FieldPassword)
 	}
-	if m.functions != nil {
-		fields = append(fields, user.FieldFunctions)
-	}
-	if m.job_time != nil {
-		fields = append(fields, user.FieldJobTime)
-	}
 	if m.detail != nil {
 		fields = append(fields, user.FieldDetail)
 	}
@@ -16356,12 +16176,6 @@ func (m *UserMutation) Fields() []string {
 	}
 	if m.wecom != nil {
 		fields = append(fields, user.FieldWecom)
-	}
-	if m.organization != nil {
-		fields = append(fields, user.FieldOrganization)
-	}
-	if m.default_venue_id != nil {
-		fields = append(fields, user.FieldDefaultVenueID)
 	}
 	if m.avatar != nil {
 		fields = append(fields, user.FieldAvatar)
@@ -16397,10 +16211,6 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.Username()
 	case user.FieldPassword:
 		return m.Password()
-	case user.FieldFunctions:
-		return m.Functions()
-	case user.FieldJobTime:
-		return m.JobTime()
 	case user.FieldDetail:
 		return m.Detail()
 	case user.FieldSideMode:
@@ -16413,10 +16223,6 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.Email()
 	case user.FieldWecom:
 		return m.Wecom()
-	case user.FieldOrganization:
-		return m.Organization()
-	case user.FieldDefaultVenueID:
-		return m.DefaultVenueID()
 	case user.FieldAvatar:
 		return m.Avatar()
 	case user.FieldBirthday:
@@ -16450,10 +16256,6 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldUsername(ctx)
 	case user.FieldPassword:
 		return m.OldPassword(ctx)
-	case user.FieldFunctions:
-		return m.OldFunctions(ctx)
-	case user.FieldJobTime:
-		return m.OldJobTime(ctx)
 	case user.FieldDetail:
 		return m.OldDetail(ctx)
 	case user.FieldSideMode:
@@ -16466,10 +16268,6 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldEmail(ctx)
 	case user.FieldWecom:
 		return m.OldWecom(ctx)
-	case user.FieldOrganization:
-		return m.OldOrganization(ctx)
-	case user.FieldDefaultVenueID:
-		return m.OldDefaultVenueID(ctx)
 	case user.FieldAvatar:
 		return m.OldAvatar(ctx)
 	case user.FieldBirthday:
@@ -16553,20 +16351,6 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPassword(v)
 		return nil
-	case user.FieldFunctions:
-		v, ok := value.([]string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetFunctions(v)
-		return nil
-	case user.FieldJobTime:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetJobTime(v)
-		return nil
 	case user.FieldDetail:
 		v, ok := value.(string)
 		if !ok {
@@ -16609,20 +16393,6 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetWecom(v)
 		return nil
-	case user.FieldOrganization:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetOrganization(v)
-		return nil
-	case user.FieldDefaultVenueID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDefaultVenueID(v)
-		return nil
 	case user.FieldAvatar:
 		v, ok := value.(string)
 		if !ok {
@@ -16657,12 +16427,6 @@ func (m *UserMutation) AddedFields() []string {
 	if m.addgender != nil {
 		fields = append(fields, user.FieldGender)
 	}
-	if m.addjob_time != nil {
-		fields = append(fields, user.FieldJobTime)
-	}
-	if m.adddefault_venue_id != nil {
-		fields = append(fields, user.FieldDefaultVenueID)
-	}
 	return fields
 }
 
@@ -16679,10 +16443,6 @@ func (m *UserMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedStatus()
 	case user.FieldGender:
 		return m.AddedGender()
-	case user.FieldJobTime:
-		return m.AddedJobTime()
-	case user.FieldDefaultVenueID:
-		return m.AddedDefaultVenueID()
 	}
 	return nil, false
 }
@@ -16720,20 +16480,6 @@ func (m *UserMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddGender(v)
 		return nil
-	case user.FieldJobTime:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddJobTime(v)
-		return nil
-	case user.FieldDefaultVenueID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddDefaultVenueID(v)
-		return nil
 	}
 	return fmt.Errorf("unknown User numeric field %s", name)
 }
@@ -16763,9 +16509,6 @@ func (m *UserMutation) ClearedFields() []string {
 	if m.FieldCleared(user.FieldGender) {
 		fields = append(fields, user.FieldGender)
 	}
-	if m.FieldCleared(user.FieldJobTime) {
-		fields = append(fields, user.FieldJobTime)
-	}
 	if m.FieldCleared(user.FieldDetail) {
 		fields = append(fields, user.FieldDetail)
 	}
@@ -16783,12 +16526,6 @@ func (m *UserMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(user.FieldWecom) {
 		fields = append(fields, user.FieldWecom)
-	}
-	if m.FieldCleared(user.FieldOrganization) {
-		fields = append(fields, user.FieldOrganization)
-	}
-	if m.FieldCleared(user.FieldDefaultVenueID) {
-		fields = append(fields, user.FieldDefaultVenueID)
 	}
 	if m.FieldCleared(user.FieldAvatar) {
 		fields = append(fields, user.FieldAvatar)
@@ -16831,9 +16568,6 @@ func (m *UserMutation) ClearField(name string) error {
 	case user.FieldGender:
 		m.ClearGender()
 		return nil
-	case user.FieldJobTime:
-		m.ClearJobTime()
-		return nil
 	case user.FieldDetail:
 		m.ClearDetail()
 		return nil
@@ -16851,12 +16585,6 @@ func (m *UserMutation) ClearField(name string) error {
 		return nil
 	case user.FieldWecom:
 		m.ClearWecom()
-		return nil
-	case user.FieldOrganization:
-		m.ClearOrganization()
-		return nil
-	case user.FieldDefaultVenueID:
-		m.ClearDefaultVenueID()
 		return nil
 	case user.FieldAvatar:
 		m.ClearAvatar()
@@ -16902,12 +16630,6 @@ func (m *UserMutation) ResetField(name string) error {
 	case user.FieldPassword:
 		m.ResetPassword()
 		return nil
-	case user.FieldFunctions:
-		m.ResetFunctions()
-		return nil
-	case user.FieldJobTime:
-		m.ResetJobTime()
-		return nil
 	case user.FieldDetail:
 		m.ResetDetail()
 		return nil
@@ -16925,12 +16647,6 @@ func (m *UserMutation) ResetField(name string) error {
 		return nil
 	case user.FieldWecom:
 		m.ResetWecom()
-		return nil
-	case user.FieldOrganization:
-		m.ResetOrganization()
-		return nil
-	case user.FieldDefaultVenueID:
-		m.ResetDefaultVenueID()
 		return nil
 	case user.FieldAvatar:
 		m.ResetAvatar()

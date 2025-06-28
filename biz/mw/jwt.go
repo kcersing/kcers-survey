@@ -2,7 +2,6 @@ package mw
 
 import (
 	"context"
-	"errors"
 	"github.com/casbin/casbin/v2"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -88,7 +87,7 @@ func newJWT(enforcer *casbin.Enforcer) (jwtMiddleware *jwt.HertzJWTMiddleware, e
 				Password: password,
 			})
 			if err != nil {
-				return nil, errors.New("账号或密码错误")
+				return nil, err
 			}
 
 			payLoadMap := make(map[string]interface{})

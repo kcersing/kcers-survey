@@ -25,6 +25,8 @@ const (
 	FieldStatus = "status"
 	// FieldSurveyID holds the string denoting the survey_id field in the database.
 	FieldSurveyID = "survey_id"
+	// FieldSn holds the string denoting the sn field in the database.
+	FieldSn = "sn"
 	// FieldRespondent holds the string denoting the respondent field in the database.
 	FieldRespondent = "respondent"
 	// FieldRespondentPhone holds the string denoting the respondent_phone field in the database.
@@ -58,6 +60,7 @@ var Columns = []string{
 	FieldCreatedID,
 	FieldStatus,
 	FieldSurveyID,
+	FieldSn,
 	FieldRespondent,
 	FieldRespondentPhone,
 	FieldResearcher,
@@ -95,6 +98,8 @@ var (
 	DefaultStatus int64
 	// DefaultSurveyID holds the default value on creation for the "survey_id" field.
 	DefaultSurveyID int64
+	// DefaultSn holds the default value on creation for the "sn" field.
+	DefaultSn string
 	// DefaultRespondent holds the default value on creation for the "respondent" field.
 	DefaultRespondent string
 	// DefaultRespondentPhone holds the default value on creation for the "respondent_phone" field.
@@ -151,6 +156,11 @@ func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 // BySurveyID orders the results by the survey_id field.
 func BySurveyID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSurveyID, opts...).ToFunc()
+}
+
+// BySn orders the results by the sn field.
+func BySn(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSn, opts...).ToFunc()
 }
 
 // ByRespondent orders the results by the respondent field.
