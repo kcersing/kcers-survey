@@ -62,8 +62,8 @@ export default [
       { path: '/survey/:id/respondent', component: '@/pages/survey/respondent', name: '统计分析' ,hideInMenu: true, },
     ],
   },
-  { path: '/survey/:id/respondent', component: '@/pages/survey/respondent/index-st', name: '答题',layout: false,  },
-  
+  { path: '/survey/:id/respondent', component: '@/pages/survey/respondent/index-st1', name: '答题',layout: false,  },
+
 
   // {
   //   path: '/Survey',

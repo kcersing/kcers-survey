@@ -131,8 +131,6 @@ const [generateRandom, setGenerateRandom] = useState("");
 
 
                     onChange={(e) => {
-                      console.log(e)
-
                       addRespondent({
                         surveyId:surveyId,
                         type:"input",
@@ -140,8 +138,8 @@ const [generateRandom, setGenerateRandom] = useState("");
                         value:e,
                         sn:generateRandom,
                       })
-
                     }}
+
                   />
                 </>
               ),
