@@ -5,27 +5,29 @@ import type { RadioChangeEvent } from 'antd';
 import { Input, DatePicker,Form,Checkbox } from 'antd';
 import {ProFormDatePicker, ProFormRate, ProFormTextArea} from '@ant-design/pro-components';
 import dayjs from 'dayjs';
+import QJumpRules from '@/pages/survey/respondent/components/QJumpRules';
 
 
 const QDate = (props) => {
 
   const { surveyId, question, generateRandom, addRespondent, setCurrentNum } = props;
-
+  const [value, setValue] = useState(0);
   if (!question ){return null}
-  const onChange = (e: RadioChangeEvent) => {
+  const onChange = (date: dayjs.Dayjs | null) => {
 
-    console.log(e)
-
+    const formattedDate = date?.format('YYYY-MM-DD') || '';
+    console.log(formattedDate);
+    setValue(e.target.value);
     addRespondent({
       surveyId:surveyId,
       questionId:question.id,
       type:question.type,
-      value:e,
+      value: [formattedDate],
       sn:generateRandom,
     })
     if (question.jumpRules) {
       for (const jumpRule of question.jumpRules) {
-        if (String(e) === jumpRule.answer) {
+        if (jumpRule.operators === 'equals' && String(formattedDate) === jumpRule.answer) {
           setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
         }
       }
@@ -43,7 +45,17 @@ const QDate = (props) => {
       defaultValue={dayjs('1965-01-01', 'YYYY-MM-DD')}
       defaultPickerValue={dayjs('1965-01-01', 'YYYY-MM-DD')}
       onChange={onChange}
-      rules={[{required: question.required === 1, message: '必填项'}]}/>;
+      format={"YYYY-MM-DD"}
+      rules={[{required: question.required === 1, message: '必填项'}]}/>
+
+      <QJumpRules
+        surveyId={surveyId}
+        question={question}
+        generateRandom={generateRandom}
+        addRespondent={addRespondent}
+        setCurrentNum={setCurrentNum}
+        value={value}
+      />
     </Form.Item>
   );
 };

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import type { RadioChangeEvent } from 'antd';
 import { Input, Form,Checkbox } from 'antd';
+import QJumpRules from '@/pages/survey/respondent/components/QJumpRules';
 
 const style: React.CSSProperties = {
   display: 'flex',
@@ -12,7 +13,7 @@ const style: React.CSSProperties = {
 
 const MultipleChoice = (props) => {
   const { surveyId, question, generateRandom, addRespondent, setCurrentNum } = props;
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(0);
   if (!question ){return null}
   const onChange = (e: RadioChangeEvent) => {
 
@@ -21,12 +22,12 @@ const MultipleChoice = (props) => {
       surveyId:surveyId,
       type:question.type,
       questionId:question.id,
-      value:e.toString(),
+      value:e,
       sn:generateRandom,
     })
     if(question.jumpRules){
       for (const jumpRule of question.jumpRules) {
-        if (jumpRule.operators === 'equals' && String(e.target.value) === jumpRule.answer) {
+        if (jumpRule.operators === 'equals' &&  e.includes(jumpRule.answer)) {
           setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
         }
 
@@ -41,7 +42,7 @@ const MultipleChoice = (props) => {
       surveyId:surveyId,
       type:"input",
       questionId:question.id,
-      value:e.target.value,
+      value:[e.target.value.toString()],
       sn:generateRandom,
     })
   };
@@ -58,7 +59,7 @@ const MultipleChoice = (props) => {
           label: option.inputs!==2? option.content:
             <>
               {option.content}...
-              {value === option.content && (
+              {value!==0 && value &&  value.length > 0   && value.includes(option.content )  && (
                 <Input
                   onChange={onChange1}
                   variant="filled"
@@ -69,6 +70,15 @@ const MultipleChoice = (props) => {
             </>
           ,
         }))}
+      />
+
+      <QJumpRules
+        surveyId={surveyId}
+        question={question}
+        generateRandom={generateRandom}
+        addRespondent={addRespondent}
+        setCurrentNum={setCurrentNum}
+        value={value}
       />
     </Form.Item>
   );

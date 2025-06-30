@@ -17,9 +17,8 @@ const QRespondent = (props) => {
   setCurrentNum(0)
   return (
     <StepsForm.StepForm
-
       name={`key_${questions.length+1}`}
-  key={`key_${questions.length+1}`}
+      key={`key_${questions.length+1}`}
   // onBlur={e => {   console.log(e.target.value)}}
 >
   <ProFormText width="md"

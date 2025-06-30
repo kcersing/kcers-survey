@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import type { RadioChangeEvent } from 'antd';
 import { Input, Form,Checkbox } from 'antd';
 import {ProFormTextArea} from "@ant-design/pro-components";
+import QJumpRules from '@/pages/survey/respondent/components/QJumpRules';
 
 const style: React.CSSProperties = {
   display: 'flex',
@@ -14,22 +15,23 @@ const style: React.CSSProperties = {
 const QText = (props) => {
 
   const { surveyId, question, generateRandom, addRespondent, setCurrentNum } = props;
-
+  const [value, setValue] = useState(0);
   if (!question ){return null}
   const onChange = (e: RadioChangeEvent) => {
 
     console.log(e)
+    setValue(e.target.value);
 
     addRespondent({
       surveyId:surveyId,
       type:question.type,
       questionId:question.id,
-      value:e,
+      value:[e.toString()],
       sn:generateRandom,
     })
     if (question.jumpRules) {
       for (const jumpRule of question.jumpRules) {
-        if (String(e) === jumpRule.answer) {
+        if (jumpRule.operators === 'equals' && String(e) === jumpRule.answer) {
           setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
         }
       }
@@ -46,6 +48,14 @@ const QText = (props) => {
         placeholder="请输入内容..."
         onChange={onChange}
         rules={[{required: question.required === 1, message: '必填项'}]}
+      />
+      <QJumpRules
+        surveyId={surveyId}
+        question={question}
+        generateRandom={generateRandom}
+        addRespondent={addRespondent}
+        setCurrentNum={setCurrentNum}
+        value={value}
       />
     </Form.Item>
   );

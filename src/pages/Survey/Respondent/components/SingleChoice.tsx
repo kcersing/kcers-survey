@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import type { RadioChangeEvent } from 'antd';
 import { Input, Form,Radio } from 'antd';
+import QJumpRules from "@/pages/survey/respondent/components/QJumpRules";
 
 const style: React.CSSProperties = {
   display: 'flex',
@@ -12,16 +13,20 @@ const style: React.CSSProperties = {
 
 const SingleChoice = (props) => {
   const { surveyId, question, generateRandom, addRespondent, setCurrentNum } = props;
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(0);
 if (!question ){return null}
-  const onChange = (e: RadioChangeEvent) => {
 
+
+
+
+  const onChange = (e: RadioChangeEvent) => {
+    console.log(e.target.value);
     setValue(e.target.value);
     addRespondent({
       surveyId:surveyId,
       type:question.type,
       questionId:question.id,
-      value:e.target.value,
+      value:[e.target.value.toString()],
       sn:generateRandom,
     })
     if(question.jumpRules){
@@ -41,17 +46,17 @@ if (!question ){return null}
       surveyId:surveyId,
       type:"input",
       questionId:question.id,
-      value:e.target.value,
+      value:[e.target.value.toString()],
       sn:generateRandom,
     })
   };
 
   return (
+    <>
   <Form.Item name={['question', "'"+question.id+"'"]} required >
     <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
     <Radio.Group
       onChange={onChange}
-
       style={style}
         options={question.options.map(option => ({
         value:option.content,
@@ -70,8 +75,24 @@ if (!question ){return null}
           ,
       }))}
   />
+
+
+
 </Form.Item>
-  );
+
+
+
+      <QJumpRules
+        surveyId={surveyId}
+        question={question}
+        generateRandom={generateRandom}
+        addRespondent={addRespondent}
+        setCurrentNum={setCurrentNum}
+        value={value}
+      />
+
+
+    </> );
 };
 
 export default SingleChoice;

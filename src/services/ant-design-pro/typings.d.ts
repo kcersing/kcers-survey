@@ -148,6 +148,7 @@ declare namespace API {
     jumpRules?: JumpRules[];
     matrixRows?: string;
     matrixColumns?: string;
+    show?:number;
 
   };
   type JumpRules = {

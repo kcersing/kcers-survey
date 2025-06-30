@@ -136,11 +136,7 @@ const renderQuestionControl = (
   }
 };
 
-
-
 const RecursionQuestion =(currentQuestion,currentPath,form,answers,handleUploadStart,handleUploadSuccess,handleUploadError)=>{
-
-  console.log(8)
   return (
     <>
       {currentQuestion && (

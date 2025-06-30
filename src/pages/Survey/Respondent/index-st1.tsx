@@ -28,26 +28,7 @@ import QRate from '@/pages/survey/respondent/components/QRate';
 import QDate from '@/pages/survey/respondent/components/QDate';
 
 import QRespondent from '@/pages/survey/respondent/components/QRespondent';
-function treeToArray(treeNodes) {
-  let result = [];
-
-  //递归函数 traverse，用于处理单个节点
-  function traverse(node) {
-    const newNode = { ...node };
-    delete newNode.children;
-    // 将没有子节点的新节点添加到结果数组中
-    result.push(newNode);
-
-    // 如果当前节点包含 children 属性（即有子节点）
-    if (node.children) {
-      node.children.forEach(traverse);
-    }
-  }
-  if(treeNodes){
-    treeNodes.forEach(traverse);
-  }
-  return result;
-}
+import QuestuinSun from "@/pages/survey/respondent/components/QuestuinSun";
 
 
 const  Respondent=()=>{
@@ -57,10 +38,18 @@ const  Respondent=()=>{
   const [current, setCurrent] = useState(0);
   const [currentNum, setCurrentNum] = useState(0);
   const [generateRandom, setGenerateRandom] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   const formMapRef = useRef<
     React.MutableRefObject<ProFormInstance<any> | undefined>[]
   >([]);
+
+
+  // 新增经纬度状态
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
+
 
 
   const { id } = useParams();
@@ -69,7 +58,41 @@ const  Respondent=()=>{
   // 加载问卷和问题数据
   useEffect(() => {
     loadSurveyAndQuestions();
+
+    // 获取经纬度信息
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setLatitude(position.coords.latitude);
+            setLongitude(position.coords.longitude);
+          },
+          (error) => {
+            console.error('获取地理位置失败:', error);
+            message.error('获取地理位置失败，请检查您的设置');
+          }
+      );
+    } else {
+      message.error('您的浏览器不支持地理位置功能');
+    }
+
   }, [surveyId]);
+
+
+  useEffect(() => {
+    if (latitude && longitude) {
+      addRespondent({
+        type: 'location',
+        surveyId:surveyId,
+        latitude: latitude.toString(),
+        longitude: longitude.toString(),
+        sn:generateRandom,
+      })
+      ;
+    }
+  }, [generateRandom,latitude,longitude]);
+
+
+
   // 加载问卷和问题数据
   const loadSurveyAndQuestions = async () => {
 
@@ -82,6 +105,7 @@ const  Respondent=()=>{
       setSurvey(surveyData.data);
       setQuestions(questionsData.data);
       setGenerateRandom( generateRandomString(18))
+      setLoading(true);
     } catch (error: any) {
       console.error('加载问卷数据失败', error);
       message.error(error.message || '加载问卷数据失败');
@@ -94,41 +118,10 @@ const  Respondent=()=>{
     return Math.random().toString(36).substring(2, 2 + length);
   }
 
-// 查找目标问题的索引
-//   const findTargetQuestionIndex = (nextQuestionId: string | number) => {
-//     return questions.findIndex((step) => step.id === nextQuestionId) ;
-//   };
-
-
-
-  // useEffect(() => {
-  //   console.log("当前问题索引:", currentNum);
-  // }, [currentNum]);
-
-
-  // useEffect(() => {
-  //   console.log('formRef:', formRef);
-  // }, [formRef]);
-
-  // onChange={(e) => {
-  //   console.log(e)
-  //   addRespondent({
-  //     surveyId: surveyId,
-  //     type: "input",
-  //     questionId: question.id,
-  //     value: e,
-  //     sn: generateRandom,
-  //   })
-  //
-  // }}
-
-
-
   const addRespondent = async (fields) => {
 
     try {
       await  createRespondent({ ...fields });
-
       return true;
 
     } catch (error) {
@@ -144,7 +137,6 @@ const  Respondent=()=>{
       setCurrent(current - 1);
     }
   };
-
 
   // 下一步
   const moveToNextQuestion = async () => {
@@ -193,7 +185,6 @@ const  Respondent=()=>{
     }
   };
 
-
   function List({ items }) {
     return (
       <ul>
@@ -208,6 +199,10 @@ const  Respondent=()=>{
   }
 
   const rq =(question,parentname)=> {
+
+    if (question.show === 1) {
+      return (<></>);
+    }
 
     return (
       <>
@@ -230,95 +225,25 @@ const  Respondent=()=>{
       </>
     )}
 
-
   const RenderQuestionControl = (question:API.Questions) => {
-
-    if (question.type === "single_choice") {
-
-      return (
-        <SingleChoice
-          surveyId={surveyId}
-          question={question}
-          generateRandom={generateRandom}
-          addRespondent={addRespondent}
-          setCurrentNum={setCurrentNum}
-        />
-      );
-    }
-    if (question.type === 'multiple_choice'){
-
-      return (
-        <MultipleChoice
-          surveyId={surveyId}
-          question={question}
-          generateRandom={generateRandom}
-          addRespondent={addRespondent}
-          setCurrentNum={setCurrentNum}
-        />);
-    }
-    if (question.type === 'text'){
-      return (
-        <QText
-          surveyId={surveyId}
-          question={question}
-          generateRandom={generateRandom}
-          addRespondent={addRespondent}
-          setCurrentNum={setCurrentNum}
-        />);
-
-    }
-    if (question.type === 'number'){
-      return (
-        <QNumber
-        surveyId={surveyId}
-        question={question}
-        generateRandom={generateRandom}
-        addRespondent={addRespondent}
-        setCurrentNum={setCurrentNum}
-      ></QNumber>)
-
-    }
-    if (question.type === 'date'){
-      return (
-        <QDate
-          surveyId={surveyId}
-          question={question}
-          generateRandom={generateRandom}
-          addRespondent={addRespondent}
-          setCurrentNum={setCurrentNum}
-        ></QDate>)
-    }
-    if (question.type === 'rate'){
-      return (
-        <QRate
-          surveyId={surveyId}
-          question={question}
-          generateRandom={generateRandom}
-          addRespondent={addRespondent}
-          setCurrentNum={setCurrentNum}
-        ></QRate>)
-
-    }
 
     if (question.type === 'h2') {
       return (<h2 style={{width:300}} ><b>{question.content}</b> </h2>)
-    }
-    if (question.type === 'h3') {
+    }else if (question.type === 'h3') {
       return (<h3 style={{width:300}} ><b>{question.serial}-{question.content }</b> </h3>)
-    }
+    }else {
 
+      return (
+          <QuestuinSun
+              surveyId={surveyId}
+              question={question}
+              generateRandom={generateRandom}
+              addRespondent={addRespondent}
+              setCurrentNum={setCurrentNum}
+          ></QuestuinSun>)
+    }
 
   }
-
-
-
-
-  const onChange = (e,type) => {
-
-    console.log(e)
-
-
-  };
 
   const respondent=()=>{
       return (
@@ -364,24 +289,22 @@ const  Respondent=()=>{
         boxShadow
       >
         <StepsForm
-          formRef={formRef}
-          formMapRef={formMapRef}
-          stepsProps={{
-            direction: 'vertical',
-            size:"small",
-            current:1,
-            // style:{width: 60},
-          }}
-      current={current}
-      onFinish={(values) => {
-        // addRespondent(values)
-        console.log(values);
-        return Promise.resolve(true);
-      }}
-      stepsRender={()=>{
-        return (<></>);
-      }}
-
+            loading={loading}
+            formRef={formRef}
+            formMapRef={formMapRef}
+            stepsProps={{
+              direction: 'vertical',
+              size:"small",
+              current:1,
+            }}
+            current={current}
+            onFinish={(values) => {
+              console.log(values);
+              return Promise.resolve(true);
+            }}
+            stepsRender={()=>{
+              return (<></>);
+            }}
 
       submitter={{ render: () => {
         return (<>
