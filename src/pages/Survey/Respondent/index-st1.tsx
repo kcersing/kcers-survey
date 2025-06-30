@@ -1,7 +1,9 @@
 import React, {useEffect, useRef, useState} from "react";
 import {getSurvey, listQuestion, createRespondent} from "@/services/ant-design-pro/survey";
 
-import { useParams} from "@@/exports";
+import {useNavigate, useParams} from "@@/exports";
+
+
 import {
   ProFormCheckbox,
   ProFormDatePicker,
@@ -14,12 +16,18 @@ import {
   ProFormText,
   StepsForm,
 } from '@ant-design/pro-components';
-import { message,Button,  Input} from 'antd';
+import { message,Button, Checkbox,Radio, Input} from 'antd';
 import type { ProFormInstance } from '@ant-design/pro-components';
 
 import './st.css';
-import RecursionQuestion from "@/pages/survey/respondent/components/RecursionQuestion";
+import MultipleChoice from "@/pages/survey/respondent/components/MultipleChoice";
+import SingleChoice from '@/pages/survey/respondent/components/SingleChoice';
+import QText from '@/pages/survey/respondent/components/QText';
+import QNumber from "@/pages/survey/respondent/components/QNumber";
+import QRate from '@/pages/survey/respondent/components/QRate';
+import QDate from '@/pages/survey/respondent/components/QDate';
 
+import QRespondent from '@/pages/survey/respondent/components/QRespondent';
 function treeToArray(treeNodes) {
   let result = [];
 
@@ -43,19 +51,13 @@ function treeToArray(treeNodes) {
 
 
 const  Respondent=()=>{
-
   const formRef = useRef<ProFormInstance>();
-
   const [survey, setSurvey] = useState<API.Survey>({});
   const [questions, setQuestions] =  useState([]);
-
   const [current, setCurrent] = useState(0);
   const [currentNum, setCurrentNum] = useState(0);
-
-const [generateRandom, setGenerateRandom] = useState("");
-
-
-
+  const [generateRandom, setGenerateRandom] = useState("");
+  const navigate = useNavigate();
   const formMapRef = useRef<
     React.MutableRefObject<ProFormInstance<any> | undefined>[]
   >([]);
@@ -93,9 +95,9 @@ const [generateRandom, setGenerateRandom] = useState("");
   }
 
 // 查找目标问题的索引
-  const findTargetQuestionIndex = (nextQuestionId: string | number) => {
-    return questions.findIndex((step) => step.id === nextQuestionId) + 1;
-  };
+//   const findTargetQuestionIndex = (nextQuestionId: string | number) => {
+//     return questions.findIndex((step) => step.id === nextQuestionId) ;
+//   };
 
 
 
@@ -159,6 +161,7 @@ const [generateRandom, setGenerateRandom] = useState("");
 
 // console.log(currentNum)
 //         console.log(current)
+        console.log(currentNum)
         if (currentNum >0 ) {
           setCurrent(currentNum);
           setCurrentNum(0);
@@ -229,213 +232,79 @@ const [generateRandom, setGenerateRandom] = useState("");
 
 
   const RenderQuestionControl = (question:API.Questions) => {
-    let opt = [];
+
     if (question.type === "single_choice") {
 
-      for (const option of question.options) {
-        if (option.inputs !== 2) {
-          opt.push({value: option.content, label: option.content})
-        }else{
-          opt.push({
-            value: option.content,
-            label: (
-              <>
-                {option.content}...
-                <Input name={['question', question.id]} placeholder="其他请输入" style={{width: 120, marginInlineStart: 12}}/>
-              </>
-            ),
-          })
-        }
-      }
       return (
-        <ProFormRadio.Group
-          label={question.content}
-          options={opt}
-          style={style_radio_group}
-          name={['question', "'" + question.id + "'"]}
-          rules={[{required: question.required === 1, message: '必填项'}]}
-          onChange={(e) => {
-            addRespondent({
-              surveyId:surveyId,
-              type:question.type,
-              questionId:question.id,
-              value:e.target.value,
-              sn:generateRandom,
-            })
-
-            if (question.jumpRules) {
-              for (const jumpRule of question.jumpRules) {
-                if (jumpRule.operators === 'equals' && String(e.target.value) === jumpRule.answer) {
-                  // 找到目标问题在根问题中的索引
-
-                  const targetIndex = findTargetQuestionIndex(
-                    jumpRule.nextQuestionId
-                  );
-
-                  if (targetIndex !== -1) {
-                    setCurrentNum(targetIndex);
-                  }
-                }
-              }
-            }
-          }
-          }
+        <SingleChoice
+          surveyId={surveyId}
+          question={question}
+          generateRandom={generateRandom}
+          addRespondent={addRespondent}
+          setCurrentNum={setCurrentNum}
         />
       );
     }
     if (question.type === 'multiple_choice'){
-      for (const option of question.options) {
-        if (option.inputs === 2) {
-          opt.push({
-            value: option.content,
-            label: (
-              <>
-                {option.content}...
-                <Input
-                  name={['question', question.id]}
-                  variant="filled"
-                  name={[question.id, 'input']}
-                  placeholder="其他请输入"
-                  style={{width: 120, marginInlineStart: 12}}
-                />
-              </>
-            ),
-          });
-        } else {
-          opt.push({value: option.content, label: option.content})
-        }
-      }
+
       return (
-        <ProFormCheckbox.Group
-          label={question.content}
-          options={opt}
-          name={['question', question.id]}
-          rules={[{required: question.required === 1, message: '必填项'}]}
-          onChange={(e) => {
-            addRespondent({
-              surveyId:surveyId,
-              type:"input",
-              questionId:question.id,
-              value:e.toString(),
-              sn:generateRandom,
-            })
-            if (question.jumpRules) {
-              for (const jumpRule of question.jumpRules) {
-                if (
-                  jumpRule.operators === "includes" &&
-                  e.includes(jumpRule.answer)
-                ) {
-
-
-
-
-                  const targetIndex = findTargetQuestionIndex(
-                    jumpRule.nextQuestionId
-                  );
-                  if (targetIndex !== -1) {
-                    setCurrentNum(targetIndex);
-                  }
-                }
-
-              }
-            }
-          }}
-        />
-      );
+        <MultipleChoice
+          surveyId={surveyId}
+          question={question}
+          generateRandom={generateRandom}
+          addRespondent={addRespondent}
+          setCurrentNum={setCurrentNum}
+        />);
     }
     if (question.type === 'text'){
-      return <ProFormTextArea width="md" label={question.content} name={['question', question.id]}
-                              placeholder="请输入内容..."
-                              onChange={(e) => {
-                                console.log(e)
-
-                                addRespondent({
-                                  surveyId:surveyId,
-                                  type:question.type,
-                                  questionId:question.id,
-                                  value:e,
-                                  sn:generateRandom,
-                                })
-
-                              }}
-                              rules={[{required: question.required === 1, message: '必填项'}]}/>;
-
+      return (
+        <QText
+          surveyId={surveyId}
+          question={question}
+          generateRandom={generateRandom}
+          addRespondent={addRespondent}
+          setCurrentNum={setCurrentNum}
+        />);
 
     }
     if (question.type === 'number'){
-      return <ProFormDigit width="md" label={question.content} placeholder="请输入数字"
-                           name={['question', question.id]} style={{maxWidth: 120}}
-                           onChange={(e) => {
-                             console.log(e)
-
-                             addRespondent({
-                               surveyId:surveyId,
-                               questionId:question.id,
-                               type:question.type,
-                               value:e,
-                               sn:generateRandom,
-                             })
-
-                           }}
-                           rules={[{required: question.required === 1, message: '必填项'}]}/>;
+      return (
+        <QNumber
+        surveyId={surveyId}
+        question={question}
+        generateRandom={generateRandom}
+        addRespondent={addRespondent}
+        setCurrentNum={setCurrentNum}
+      ></QNumber>)
 
     }
     if (question.type === 'date'){
-      return <ProFormDatePicker width="md" label={question.content} name={['question', question.id]}
-                                placeholder="请选择日期"
-
-                                onChange={(e) => {
-                                  console.log(e)
-
-                                  addRespondent({
-                                    surveyId:surveyId,
-                                    questionId:question.id,
-                                    type:question.type,
-                                    value:e,
-                                    sn:generateRandom,
-                                  })
-
-                                }}
-
-                                rules={[{required: question.required === 1, message: '必填项'}]}/>;
-
-
+      return (
+        <QDate
+          surveyId={surveyId}
+          question={question}
+          generateRandom={generateRandom}
+          addRespondent={addRespondent}
+          setCurrentNum={setCurrentNum}
+        ></QDate>)
     }
     if (question.type === 'rate'){
       return (
-        <ProFormRate label={question.content} name={['question', question.id]}
+        <QRate
+          surveyId={surveyId}
+          question={question}
+          generateRandom={generateRandom}
+          addRespondent={addRespondent}
+          setCurrentNum={setCurrentNum}
+        ></QRate>)
 
-                     onChange={(e) => {
-                       console.log(e)
-
-                       addRespondent({
-                         surveyId:surveyId,
-                         questionId:question.id,
-                         type:question.type,
-                         value:e,
-                         sn:generateRandom,
-                       })
-
-                     }}
-
-                     rules={[{required: question.required === 1, message: '必填项'}]}/>
-      );
     }
-    if (question.type === 'uploadImage') {
-      return (
-        <ProFormUploadButton label={question.content}/>
-      )
-    }
-    if (question.type === 'uploadFile') {
-      return (
-        <ProFormUploadButton label={question.content}/>
-      )
-    }
+
     if (question.type === 'h2') {
-      return (<h3> {question.content  } </h3>)
+      return (<h2 style={{width:300}} ><b>{question.content}</b> </h2>)
     }
     if (question.type === 'h3') {
-      return (<h4> {question.content  } </h4>)
+      return (<h3 style={{width:300}} ><b>{question.serial}-{question.content }</b> </h3>)
     }
 
 
@@ -444,75 +313,65 @@ const [generateRandom, setGenerateRandom] = useState("");
 
 
 
-  const style_radio_group: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 8,
-  };
+  const onChange = (e,type) => {
 
+    console.log(e)
+
+
+  };
 
   const respondent=()=>{
       return (
-        <StepsForm.StepForm
-
-
-          onFinish={(values) => {
-            console.log(values)
-          }}
-
-          onFieldsChange ={(values) => {
-console.log(values)
-            //    addRespondent({
-            //                             surveyId:surveyId,
-            //                             type:"respondent",
-            //                             value:e,
-            //                             sn:generateRandom,
-            //                           })
-
-            // console.log(values)
-              }}
-          // style={{ minHeight: 300 }}
-          name={`key_${questions.length+1}`}
-          key={`key_${questions.length+1}`}
-          // onBlur={e => {   console.log(e.target.value)}}
-        >
-          <ProFormText width="md" label="访谈人姓名" rules={[{ required: true, message: '必填项' }]} name={'respondent'} />
-
-          <ProFormText width="md" label="联系电话" rules={[{ required: true, message: '必填项' }]} name={'respondentPhone'} />
-
-          <ProFormText width="md" label="调研员姓名" rules={[{ required: true, message: '必填项' }]} name={'researcher'} />
-
-          <ProFormText width="md" label="联系电话"   rules={[{ required: true, message: '必填项' }]} name={'researcherPhone'} />
-          <ProFormText  width="md" label="地图插件预留" name={'ditu'} />
-        </StepsForm.StepForm>
+        <QRespondent
+          surveyId={surveyId}
+          questions={questions}
+          generateRandom={generateRandom}
+          addRespondent={addRespondent}
+          setCurrentNum={setCurrentNum}
+        />
       );
   }
 
-
+  const renderThankYou = () => {
+    return (
+      <StepsForm.StepForm
+        name={`key_${questions.length+2}`}
+        key={`key_${questions.length+2}`}
+      >
+        <ProCard className="thank-you-card" bordered={false}>
+          <p className="thank-you-icon" />
+          <h2 level={3}>感谢您参与调查！</h2>
+          <Text>您的反馈对我们非常重要，我们将根据您的意见改进服务。</Text>
+          <Button
+            type="primary"
+            onClick={() => navigate('/')}
+            className="finish-button"
+          >
+            完成
+          </Button>
+        </ProCard>
+      </StepsForm.StepForm>
+    );
+  };
 
   return (
-    <div className="respondent-container">
-    <ProCard
-      boxShadow layout="center"
-    >
+    <div  className="respondent-container">
+    <ProCard boxShadow layout="center">
       <h3>{survey.title ? survey.title  : null}</h3>
-      {/*<List items={questions}/>*/}
     </ProCard>
       <ProCard
         style={{ marginBlockStart: 16 }}
         boxShadow
       >
-
-
         <StepsForm
-      formRef={formRef}
-      formMapRef={formMapRef}
-      stepsProps={{
-        direction: 'vertical',
-        size:"small",
-        current:1,
-        // style:{width: 60},
-      }}
+          formRef={formRef}
+          formMapRef={formMapRef}
+          stepsProps={{
+            direction: 'vertical',
+            size:"small",
+            current:1,
+            // style:{width: 60},
+          }}
       current={current}
       onFinish={(values) => {
         // addRespondent(values)
@@ -524,53 +383,47 @@ console.log(values)
       }}
 
 
-      submitter={{
-        render: (props) => {
-
-          return (
-            <div>
+      submitter={{ render: () => {
+        return (<>
+          <ProCard   style={{ marginBlockStart: 16 }}>
             <Button key="gotoTwo" onClick={moveToPreviousQuestion}>{'<'} 上一题</Button>
+            <Button type="primary" onClick={moveToNextQuestion}>下一步  {'>'}</Button>
+            {/*{current < questions.length  ? (*/}
+            {/*    <Button type="primary" onClick={moveToNextQuestion}>下一步  {'>'}</Button>*/}
+            {/*  ) : (*/}
+            {/*    <Button type="primary" onClick={handleSubmit}>提交 √</Button>*/}
+            {/*  )}*/}
+          </ProCard>
+        </>);}}}
 
-            {currentNum < questions.length  ? (
-                <Button type="primary" onClick={moveToNextQuestion}>下一步  {'>'}</Button>
-              ) : (
-                <Button type="primary" onClick={handleSubmit}>提交 √</Button>
-              )}
-            </div>);
-        },
-      }}
+
+
     >
-
-
-
           {questions.map((question) => (
             <>
               {question.children.map((que) => (
                 <StepsForm.StepForm
-                  name={que.content}
-                  title={que.content}
-                  key={que.content}
+                  style={{width:360}}
+                  name={que.id}
+                  title={que.id}
+                  key={que.id}
                   onFinish={(values) => {
                     console.log(values)
                   }}
                   onValuesChange={(values) => {
                     console.log(values)
                   }}
-
-                  // style={{ minHeight: 300 }}
-
                 >
                   {rq(que,question.content)}
-
                 </StepsForm.StepForm>
-
               ))}
             </>
           ))}
-
       {respondent()}
-
+          {renderThankYou}
     </StepsForm>
+
+
 
     </ProCard>
     </div>
