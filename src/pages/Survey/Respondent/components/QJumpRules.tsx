@@ -7,7 +7,7 @@ import QuestuinSun from '@/pages/survey/respondent/components/QuestuinSun';
 
 
 const QJumpRules = (props) => {
-  const { surveyId, question, generateRandom, addRespondent, setCurrentNum ,value} = props;
+  const { surveyId, question, generateRandom, addRespondent, setCurrentNum ,setCurrent,value} = props;
 
 let dren=[];
   if(question.jumpRules){
@@ -21,6 +21,7 @@ let dren=[];
               generateRandom={generateRandom}
               addRespondent={addRespondent}
               setCurrentNum={setCurrentNum}
+              setCurrent={setCurrent}
             />)
           }
         }

@@ -12,7 +12,7 @@ const style: React.CSSProperties = {
 };
 
 const SingleChoice = (props) => {
-  const { surveyId, question, generateRandom, addRespondent, setCurrentNum } = props;
+  const { surveyId, question, generateRandom, addRespondent, setCurrentNum ,setCurrent} = props;
   const [value, setValue] = useState(0);
 if (!question ){return null}
 
@@ -32,7 +32,8 @@ if (!question ){return null}
     if(question.jumpRules){
       for (const jumpRule of question.jumpRules) {
         if (jumpRule.operators === 'equals' && String(e.target.value) === jumpRule.answer) {
-          setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
+          // setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
+          setCurrent(parseInt(jumpRule.nextQuestionId)-1);
         }
 
       }
@@ -67,7 +68,7 @@ if (!question ){return null}
               <Input
                 onChange={onChange1}
                 variant="filled"
-                placeholder="please input"
+                placeholder="请输入..."
                 style={{ width: 120, marginInlineStart: 12 }}
               />
             )}
@@ -88,6 +89,7 @@ if (!question ){return null}
         generateRandom={generateRandom}
         addRespondent={addRespondent}
         setCurrentNum={setCurrentNum}
+        setCurrent={setCurrent}
         value={value}
       />
 

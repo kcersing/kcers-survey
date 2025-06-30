@@ -9,7 +9,7 @@ import QJumpRules from '@/pages/survey/respondent/components/QJumpRules';
 
 const QRate = (props) => {
 
-  const { surveyId, question, generateRandom, addRespondent, setCurrentNum } = props;
+  const { surveyId, question, generateRandom, addRespondent, setCurrentNum ,setCurrent} = props;
   const [value, setValue] = useState(0);
   if (!question ){return null}
   const onChange = (e: RadioChangeEvent) => {
@@ -27,7 +27,8 @@ const QRate = (props) => {
     if (question.jumpRules) {
       for (const jumpRule of question.jumpRules) {
         if (jumpRule.operators === 'equals' && String(e) === jumpRule.answer) {
-          setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
+          // setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
+          setCurrent(parseInt(jumpRule.nextQuestionId)-1);
         }
       }
     }
@@ -50,6 +51,7 @@ const QRate = (props) => {
         generateRandom={generateRandom}
         addRespondent={addRespondent}
         setCurrentNum={setCurrentNum}
+        setCurrent={setCurrent}
         value={value}
       />
     </Form.Item>

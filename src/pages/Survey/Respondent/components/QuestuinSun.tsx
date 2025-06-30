@@ -11,7 +11,7 @@ import QRate from '@/pages/survey/respondent/components/QRate';
 
 
 const QuestuinSun = (props) => {
-  const { surveyId, question, generateRandom, addRespondent, setCurrentNum } = props;
+  const { surveyId, question, generateRandom, addRespondent, setCurrentNum ,setCurrent} = props;
 
   if (question.type === "single_choice") {
 
@@ -22,6 +22,7 @@ const QuestuinSun = (props) => {
         generateRandom={generateRandom}
         addRespondent={addRespondent}
         setCurrentNum={setCurrentNum}
+        setCurrent={setCurrent}
       />
     );
   }
@@ -34,6 +35,7 @@ const QuestuinSun = (props) => {
         generateRandom={generateRandom}
         addRespondent={addRespondent}
         setCurrentNum={setCurrentNum}
+        setCurrent={setCurrent}
       />);
   }
   if (question.type === 'text'){
@@ -44,6 +46,7 @@ const QuestuinSun = (props) => {
         generateRandom={generateRandom}
         addRespondent={addRespondent}
         setCurrentNum={setCurrentNum}
+        setCurrent={setCurrent}
       />);
 
   }
@@ -55,6 +58,7 @@ const QuestuinSun = (props) => {
         generateRandom={generateRandom}
         addRespondent={addRespondent}
         setCurrentNum={setCurrentNum}
+        setCurrent={setCurrent}
       ></QNumber>)
 
   }
@@ -66,6 +70,7 @@ const QuestuinSun = (props) => {
         generateRandom={generateRandom}
         addRespondent={addRespondent}
         setCurrentNum={setCurrentNum}
+        setCurrent={setCurrent}
       ></QDate>)
   }
   if (question.type === 'rate'){
@@ -76,6 +81,7 @@ const QuestuinSun = (props) => {
         generateRandom={generateRandom}
         addRespondent={addRespondent}
         setCurrentNum={setCurrentNum}
+        setCurrent={setCurrent}
       ></QRate>)
 
   }

@@ -14,7 +14,7 @@ const style: React.CSSProperties = {
 
 const QText = (props) => {
 
-  const { surveyId, question, generateRandom, addRespondent, setCurrentNum } = props;
+  const { surveyId, question, generateRandom, addRespondent, setCurrentNum ,setCurrent} = props;
   const [value, setValue] = useState(0);
   if (!question ){return null}
   const onChange = (e: RadioChangeEvent) => {
@@ -32,7 +32,8 @@ const QText = (props) => {
     if (question.jumpRules) {
       for (const jumpRule of question.jumpRules) {
         if (jumpRule.operators === 'equals' && String(e) === jumpRule.answer) {
-          setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
+          // setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
+          setCurrent(parseInt(jumpRule.nextQuestionId)-1);
         }
       }
     }
@@ -45,7 +46,7 @@ const QText = (props) => {
       <ProFormTextArea
         width="md"
         name={['question', question.id]}
-        placeholder="请输入内容..."
+        placeholder="请输入..."
         onChange={onChange}
         rules={[{required: question.required === 1, message: '必填项'}]}
       />
@@ -55,6 +56,7 @@ const QText = (props) => {
         generateRandom={generateRandom}
         addRespondent={addRespondent}
         setCurrentNum={setCurrentNum}
+        setCurrent={setCurrent}
         value={value}
       />
     </Form.Item>

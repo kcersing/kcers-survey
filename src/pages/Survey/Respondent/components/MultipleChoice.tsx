@@ -12,7 +12,7 @@ const style: React.CSSProperties = {
 };
 
 const MultipleChoice = (props) => {
-  const { surveyId, question, generateRandom, addRespondent, setCurrentNum } = props;
+  const { surveyId, question, generateRandom, addRespondent, setCurrentNum,setCurrent } = props;
   const [value, setValue] = useState(0);
   if (!question ){return null}
   const onChange = (e: RadioChangeEvent) => {
@@ -28,7 +28,8 @@ const MultipleChoice = (props) => {
     if(question.jumpRules){
       for (const jumpRule of question.jumpRules) {
         if (jumpRule.operators === 'equals' &&  e.includes(jumpRule.answer)) {
-          setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
+          // setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
+          setCurrent(parseInt(jumpRule.nextQuestionId)-1);
         }
 
       }
@@ -63,7 +64,7 @@ const MultipleChoice = (props) => {
                 <Input
                   onChange={onChange1}
                   variant="filled"
-                  placeholder="please input"
+                  placeholder="请输入..."
                   style={{ width: 120, marginInlineStart: 12 }}
                 />
               )}
@@ -78,6 +79,7 @@ const MultipleChoice = (props) => {
         generateRandom={generateRandom}
         addRespondent={addRespondent}
         setCurrentNum={setCurrentNum}
+        setCurrent={setCurrent}
         value={value}
       />
     </Form.Item>

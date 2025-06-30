@@ -92,6 +92,10 @@ const  Respondent=()=>{
   }, [generateRandom,latitude,longitude]);
 
 
+  useEffect(() => {
+   console.log(currentNum)
+  }, [currentNum]);
+
 
   // 加载问卷和问题数据
   const loadSurveyAndQuestions = async () => {
@@ -153,15 +157,15 @@ const  Respondent=()=>{
 
 // console.log(currentNum)
 //         console.log(current)
-        console.log(currentNum)
-        if (currentNum >0 ) {
-          setCurrent(currentNum);
-          setCurrentNum(0);
-        }else{
+//         console.log(currentNum)
+        // if (currentNum >0 ) {
+        //   setCurrent(currentNum);
+        //   setCurrentNum(0);
+        // }else{
 
             setCurrent(current + 1);
 
-        }
+        // }
 
       } catch (error) {
         console.error("当前问题校验失败", error);
@@ -240,6 +244,7 @@ const  Respondent=()=>{
               generateRandom={generateRandom}
               addRespondent={addRespondent}
               setCurrentNum={setCurrentNum}
+              setCurrent={setCurrent}
           ></QuestuinSun>)
     }
 
@@ -253,6 +258,7 @@ const  Respondent=()=>{
           generateRandom={generateRandom}
           addRespondent={addRespondent}
           setCurrentNum={setCurrentNum}
+          setCurrent={setCurrent}
         />
       );
   }

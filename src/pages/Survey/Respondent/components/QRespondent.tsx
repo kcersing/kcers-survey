@@ -13,7 +13,7 @@ const style: React.CSSProperties = {
 
 const QRespondent = (props) => {
 
-  const { surveyId,questions, generateRandom, addRespondent, setCurrentNum } = props;
+  const { surveyId,questions, generateRandom, addRespondent, setCurrentNum ,setCurrent} = props;
   setCurrentNum(0)
   return (
     <StepsForm.StepForm

@@ -10,7 +10,7 @@ import QJumpRules from '@/pages/survey/respondent/components/QJumpRules';
 
 const QDate = (props) => {
 
-  const { surveyId, question, generateRandom, addRespondent, setCurrentNum } = props;
+  const { surveyId, question, generateRandom, addRespondent, setCurrentNum ,setCurrent} = props;
   const [value, setValue] = useState(0);
   if (!question ){return null}
   const onChange = (date: dayjs.Dayjs | null) => {
@@ -28,7 +28,8 @@ const QDate = (props) => {
     if (question.jumpRules) {
       for (const jumpRule of question.jumpRules) {
         if (jumpRule.operators === 'equals' && String(formattedDate) === jumpRule.answer) {
-          setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
+          // setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
+          setCurrent(parseInt(jumpRule.nextQuestionId)-1);
         }
       }
     }
@@ -54,6 +55,7 @@ const QDate = (props) => {
         generateRandom={generateRandom}
         addRespondent={addRespondent}
         setCurrentNum={setCurrentNum}
+        setCurrent={setCurrent}
         value={value}
       />
     </Form.Item>
