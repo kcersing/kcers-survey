@@ -92,6 +92,7 @@ struct Question  {
       10:optional i64 parentId=0 (api.raw = "parentId")
       11:optional string serial="" (api.raw = "serial")
       12:optional i64 valueNumber=0 (api.raw = "valueNumber")
+      13:optional i64 show=0 (api.raw = "show")
 }
 struct JumpRules {
       2:optional string answer="" (api.raw = "answer")// 触发条件的回答
@@ -109,9 +110,10 @@ struct CreateOrUpdateResponseReq {
   1:optional i64 surveyId=0 (api.raw = "surveyId")
   3:optional string type="" (api.raw = "type")
   4:optional i64 questionId=0 (api.raw = "questionId")
-  5:optional string value="" (api.raw = "value")
+  5:optional list<string> value="" (api.raw = "value")
   6:optional string sn="" (api.raw = "sn")
-
+  7:optional string latitude="" (api.raw = "latitude")
+  8:optional string longitude="" (api.raw = "longitude")
 }
 
 

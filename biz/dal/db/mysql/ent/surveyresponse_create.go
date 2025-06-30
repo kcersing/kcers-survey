@@ -201,16 +201,30 @@ func (src *SurveyResponseCreate) SetNillableIP(s *string) *SurveyResponseCreate 
 	return src
 }
 
-// SetMap sets the "map" field.
-func (src *SurveyResponseCreate) SetMap(s string) *SurveyResponseCreate {
-	src.mutation.SetMap(s)
+// SetLatitude sets the "latitude" field.
+func (src *SurveyResponseCreate) SetLatitude(s string) *SurveyResponseCreate {
+	src.mutation.SetLatitude(s)
 	return src
 }
 
-// SetNillableMap sets the "map" field if the given value is not nil.
-func (src *SurveyResponseCreate) SetNillableMap(s *string) *SurveyResponseCreate {
+// SetNillableLatitude sets the "latitude" field if the given value is not nil.
+func (src *SurveyResponseCreate) SetNillableLatitude(s *string) *SurveyResponseCreate {
 	if s != nil {
-		src.SetMap(*s)
+		src.SetLatitude(*s)
+	}
+	return src
+}
+
+// SetLongitude sets the "longitude" field.
+func (src *SurveyResponseCreate) SetLongitude(s string) *SurveyResponseCreate {
+	src.mutation.SetLongitude(s)
+	return src
+}
+
+// SetNillableLongitude sets the "longitude" field if the given value is not nil.
+func (src *SurveyResponseCreate) SetNillableLongitude(s *string) *SurveyResponseCreate {
+	if s != nil {
+		src.SetLongitude(*s)
 	}
 	return src
 }
@@ -240,12 +254,6 @@ func (src *SurveyResponseCreate) SetNillableAudio(s *string) *SurveyResponseCrea
 	if s != nil {
 		src.SetAudio(*s)
 	}
-	return src
-}
-
-// SetQuestions sets the "questions" field.
-func (src *SurveyResponseCreate) SetQuestions(m []map[int64]string) *SurveyResponseCreate {
-	src.mutation.SetQuestions(m)
 	return src
 }
 
@@ -342,9 +350,13 @@ func (src *SurveyResponseCreate) defaults() {
 		v := surveyresponse.DefaultIP
 		src.mutation.SetIP(v)
 	}
-	if _, ok := src.mutation.Map(); !ok {
-		v := surveyresponse.DefaultMap
-		src.mutation.SetMap(v)
+	if _, ok := src.mutation.Latitude(); !ok {
+		v := surveyresponse.DefaultLatitude
+		src.mutation.SetLatitude(v)
+	}
+	if _, ok := src.mutation.Longitude(); !ok {
+		v := surveyresponse.DefaultLongitude
+		src.mutation.SetLongitude(v)
 	}
 	if _, ok := src.mutation.Device(); !ok {
 		v := surveyresponse.DefaultDevice
@@ -442,9 +454,13 @@ func (src *SurveyResponseCreate) createSpec() (*SurveyResponse, *sqlgraph.Create
 		_spec.SetField(surveyresponse.FieldIP, field.TypeString, value)
 		_node.IP = value
 	}
-	if value, ok := src.mutation.Map(); ok {
-		_spec.SetField(surveyresponse.FieldMap, field.TypeString, value)
-		_node.Map = value
+	if value, ok := src.mutation.Latitude(); ok {
+		_spec.SetField(surveyresponse.FieldLatitude, field.TypeString, value)
+		_node.Latitude = value
+	}
+	if value, ok := src.mutation.Longitude(); ok {
+		_spec.SetField(surveyresponse.FieldLongitude, field.TypeString, value)
+		_node.Longitude = value
 	}
 	if value, ok := src.mutation.Device(); ok {
 		_spec.SetField(surveyresponse.FieldDevice, field.TypeString, value)
@@ -453,10 +469,6 @@ func (src *SurveyResponseCreate) createSpec() (*SurveyResponse, *sqlgraph.Create
 	if value, ok := src.mutation.Audio(); ok {
 		_spec.SetField(surveyresponse.FieldAudio, field.TypeString, value)
 		_node.Audio = value
-	}
-	if value, ok := src.mutation.Questions(); ok {
-		_spec.SetField(surveyresponse.FieldQuestions, field.TypeJSON, value)
-		_node.Questions = value
 	}
 	return _node, _spec
 }

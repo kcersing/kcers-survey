@@ -119,9 +119,14 @@ func IP(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldEQ(FieldIP, v))
 }
 
-// Map applies equality check predicate on the "map" field. It's identical to MapEQ.
-func Map(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEQ(FieldMap, v))
+// Latitude applies equality check predicate on the "latitude" field. It's identical to LatitudeEQ.
+func Latitude(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldLatitude, v))
+}
+
+// Longitude applies equality check predicate on the "longitude" field. It's identical to LongitudeEQ.
+func Longitude(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldLongitude, v))
 }
 
 // Device applies equality check predicate on the "device" field. It's identical to DeviceEQ.
@@ -959,79 +964,154 @@ func IPContainsFold(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldContainsFold(FieldIP, v))
 }
 
-// MapEQ applies the EQ predicate on the "map" field.
-func MapEQ(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEQ(FieldMap, v))
+// LatitudeEQ applies the EQ predicate on the "latitude" field.
+func LatitudeEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldLatitude, v))
 }
 
-// MapNEQ applies the NEQ predicate on the "map" field.
-func MapNEQ(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNEQ(FieldMap, v))
+// LatitudeNEQ applies the NEQ predicate on the "latitude" field.
+func LatitudeNEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldLatitude, v))
 }
 
-// MapIn applies the In predicate on the "map" field.
-func MapIn(vs ...string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldIn(FieldMap, vs...))
+// LatitudeIn applies the In predicate on the "latitude" field.
+func LatitudeIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldLatitude, vs...))
 }
 
-// MapNotIn applies the NotIn predicate on the "map" field.
-func MapNotIn(vs ...string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNotIn(FieldMap, vs...))
+// LatitudeNotIn applies the NotIn predicate on the "latitude" field.
+func LatitudeNotIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldLatitude, vs...))
 }
 
-// MapGT applies the GT predicate on the "map" field.
-func MapGT(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGT(FieldMap, v))
+// LatitudeGT applies the GT predicate on the "latitude" field.
+func LatitudeGT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldLatitude, v))
 }
 
-// MapGTE applies the GTE predicate on the "map" field.
-func MapGTE(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGTE(FieldMap, v))
+// LatitudeGTE applies the GTE predicate on the "latitude" field.
+func LatitudeGTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldLatitude, v))
 }
 
-// MapLT applies the LT predicate on the "map" field.
-func MapLT(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLT(FieldMap, v))
+// LatitudeLT applies the LT predicate on the "latitude" field.
+func LatitudeLT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldLatitude, v))
 }
 
-// MapLTE applies the LTE predicate on the "map" field.
-func MapLTE(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLTE(FieldMap, v))
+// LatitudeLTE applies the LTE predicate on the "latitude" field.
+func LatitudeLTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldLatitude, v))
 }
 
-// MapContains applies the Contains predicate on the "map" field.
-func MapContains(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldContains(FieldMap, v))
+// LatitudeContains applies the Contains predicate on the "latitude" field.
+func LatitudeContains(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContains(FieldLatitude, v))
 }
 
-// MapHasPrefix applies the HasPrefix predicate on the "map" field.
-func MapHasPrefix(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldMap, v))
+// LatitudeHasPrefix applies the HasPrefix predicate on the "latitude" field.
+func LatitudeHasPrefix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldLatitude, v))
 }
 
-// MapHasSuffix applies the HasSuffix predicate on the "map" field.
-func MapHasSuffix(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldMap, v))
+// LatitudeHasSuffix applies the HasSuffix predicate on the "latitude" field.
+func LatitudeHasSuffix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldLatitude, v))
 }
 
-// MapIsNil applies the IsNil predicate on the "map" field.
-func MapIsNil() predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldIsNull(FieldMap))
+// LatitudeIsNil applies the IsNil predicate on the "latitude" field.
+func LatitudeIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldLatitude))
 }
 
-// MapNotNil applies the NotNil predicate on the "map" field.
-func MapNotNil() predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNotNull(FieldMap))
+// LatitudeNotNil applies the NotNil predicate on the "latitude" field.
+func LatitudeNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldLatitude))
 }
 
-// MapEqualFold applies the EqualFold predicate on the "map" field.
-func MapEqualFold(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEqualFold(FieldMap, v))
+// LatitudeEqualFold applies the EqualFold predicate on the "latitude" field.
+func LatitudeEqualFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEqualFold(FieldLatitude, v))
 }
 
-// MapContainsFold applies the ContainsFold predicate on the "map" field.
-func MapContainsFold(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldContainsFold(FieldMap, v))
+// LatitudeContainsFold applies the ContainsFold predicate on the "latitude" field.
+func LatitudeContainsFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContainsFold(FieldLatitude, v))
+}
+
+// LongitudeEQ applies the EQ predicate on the "longitude" field.
+func LongitudeEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldLongitude, v))
+}
+
+// LongitudeNEQ applies the NEQ predicate on the "longitude" field.
+func LongitudeNEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldLongitude, v))
+}
+
+// LongitudeIn applies the In predicate on the "longitude" field.
+func LongitudeIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldLongitude, vs...))
+}
+
+// LongitudeNotIn applies the NotIn predicate on the "longitude" field.
+func LongitudeNotIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldLongitude, vs...))
+}
+
+// LongitudeGT applies the GT predicate on the "longitude" field.
+func LongitudeGT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldLongitude, v))
+}
+
+// LongitudeGTE applies the GTE predicate on the "longitude" field.
+func LongitudeGTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldLongitude, v))
+}
+
+// LongitudeLT applies the LT predicate on the "longitude" field.
+func LongitudeLT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldLongitude, v))
+}
+
+// LongitudeLTE applies the LTE predicate on the "longitude" field.
+func LongitudeLTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldLongitude, v))
+}
+
+// LongitudeContains applies the Contains predicate on the "longitude" field.
+func LongitudeContains(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContains(FieldLongitude, v))
+}
+
+// LongitudeHasPrefix applies the HasPrefix predicate on the "longitude" field.
+func LongitudeHasPrefix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldLongitude, v))
+}
+
+// LongitudeHasSuffix applies the HasSuffix predicate on the "longitude" field.
+func LongitudeHasSuffix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldLongitude, v))
+}
+
+// LongitudeIsNil applies the IsNil predicate on the "longitude" field.
+func LongitudeIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldLongitude))
+}
+
+// LongitudeNotNil applies the NotNil predicate on the "longitude" field.
+func LongitudeNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldLongitude))
+}
+
+// LongitudeEqualFold applies the EqualFold predicate on the "longitude" field.
+func LongitudeEqualFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEqualFold(FieldLongitude, v))
+}
+
+// LongitudeContainsFold applies the ContainsFold predicate on the "longitude" field.
+func LongitudeContainsFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContainsFold(FieldLongitude, v))
 }
 
 // DeviceEQ applies the EQ predicate on the "device" field.
@@ -1182,16 +1262,6 @@ func AudioEqualFold(v string) predicate.SurveyResponse {
 // AudioContainsFold applies the ContainsFold predicate on the "audio" field.
 func AudioContainsFold(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldContainsFold(FieldAudio, v))
-}
-
-// QuestionsIsNil applies the IsNil predicate on the "questions" field.
-func QuestionsIsNil() predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldIsNull(FieldQuestions))
-}
-
-// QuestionsNotNil applies the NotNil predicate on the "questions" field.
-func QuestionsNotNil() predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNotNull(FieldQuestions))
 }
 
 // And groups predicates with the AND operator between them.

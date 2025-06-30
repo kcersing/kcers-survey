@@ -43,6 +43,8 @@ type SurveyQuestion struct {
 	Type string `json:"type,omitempty"`
 	// options
 	Options []*service.Options `json:"options,omitempty"`
+	// show
+	Show int64 `json:"show,omitempty"`
 	// sort
 	Sort int64 `json:"sort,omitempty"`
 	// 跳题规则
@@ -82,7 +84,7 @@ func (*SurveyQuestion) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case surveyquestion.FieldOptions, surveyquestion.FieldJumpRules:
 			values[i] = new([]byte)
-		case surveyquestion.FieldID, surveyquestion.FieldDelete, surveyquestion.FieldCreatedID, surveyquestion.FieldStatus, surveyquestion.FieldSurveyID, surveyquestion.FieldParentID, surveyquestion.FieldSort, surveyquestion.FieldRequired:
+		case surveyquestion.FieldID, surveyquestion.FieldDelete, surveyquestion.FieldCreatedID, surveyquestion.FieldStatus, surveyquestion.FieldSurveyID, surveyquestion.FieldParentID, surveyquestion.FieldShow, surveyquestion.FieldSort, surveyquestion.FieldRequired:
 			values[i] = new(sql.NullInt64)
 		case surveyquestion.FieldSerial, surveyquestion.FieldContent, surveyquestion.FieldType:
 			values[i] = new(sql.NullString)
@@ -177,6 +179,12 @@ func (sq *SurveyQuestion) assignValues(columns []string, values []any) error {
 					return fmt.Errorf("unmarshal field options: %w", err)
 				}
 			}
+		case surveyquestion.FieldShow:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field show", values[i])
+			} else if value.Valid {
+				sq.Show = value.Int64
+			}
 		case surveyquestion.FieldSort:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field sort", values[i])
@@ -270,6 +278,9 @@ func (sq *SurveyQuestion) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("options=")
 	builder.WriteString(fmt.Sprintf("%v", sq.Options))
+	builder.WriteString(", ")
+	builder.WriteString("show=")
+	builder.WriteString(fmt.Sprintf("%v", sq.Show))
 	builder.WriteString(", ")
 	builder.WriteString("sort=")
 	builder.WriteString(fmt.Sprintf("%v", sq.Sort))

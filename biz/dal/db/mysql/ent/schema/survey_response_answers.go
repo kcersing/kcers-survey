@@ -20,7 +20,7 @@ func (SurveyResponseAnswers) Fields() []ent.Field {
 		field.Int64("survey_response_id").Optional().Default(0).Comment("survey_response_id"),
 		field.Int64("survey_question_id").Optional().Default(0).Comment("survey_question_id"),
 		field.String("answer_text").Optional().Comment("回答文本"),
-		field.Int64("answer_value").Optional().Default(1).Comment("回答数值"),
+		field.JSON("answer", []string{}).Optional().Comment("answer"),
 	}
 }
 

@@ -145,17 +145,9 @@ func (srac *SurveyResponseAnswersCreate) SetNillableAnswerText(s *string) *Surve
 	return srac
 }
 
-// SetAnswerValue sets the "answer_value" field.
-func (srac *SurveyResponseAnswersCreate) SetAnswerValue(i int64) *SurveyResponseAnswersCreate {
-	srac.mutation.SetAnswerValue(i)
-	return srac
-}
-
-// SetNillableAnswerValue sets the "answer_value" field if the given value is not nil.
-func (srac *SurveyResponseAnswersCreate) SetNillableAnswerValue(i *int64) *SurveyResponseAnswersCreate {
-	if i != nil {
-		srac.SetAnswerValue(*i)
-	}
+// SetAnswer sets the "answer" field.
+func (srac *SurveyResponseAnswersCreate) SetAnswer(s []string) *SurveyResponseAnswersCreate {
+	srac.mutation.SetAnswer(s)
 	return srac
 }
 
@@ -232,10 +224,6 @@ func (srac *SurveyResponseAnswersCreate) defaults() {
 		v := surveyresponseanswers.DefaultSurveyQuestionID
 		srac.mutation.SetSurveyQuestionID(v)
 	}
-	if _, ok := srac.mutation.AnswerValue(); !ok {
-		v := surveyresponseanswers.DefaultAnswerValue
-		srac.mutation.SetAnswerValue(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -308,9 +296,9 @@ func (srac *SurveyResponseAnswersCreate) createSpec() (*SurveyResponseAnswers, *
 		_spec.SetField(surveyresponseanswers.FieldAnswerText, field.TypeString, value)
 		_node.AnswerText = value
 	}
-	if value, ok := srac.mutation.AnswerValue(); ok {
-		_spec.SetField(surveyresponseanswers.FieldAnswerValue, field.TypeInt64, value)
-		_node.AnswerValue = value
+	if value, ok := srac.mutation.Answer(); ok {
+		_spec.SetField(surveyresponseanswers.FieldAnswer, field.TypeJSON, value)
+		_node.Answer = value
 	}
 	return _node, _spec
 }

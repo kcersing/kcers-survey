@@ -105,6 +105,11 @@ func Type(v string) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldType, v))
 }
 
+// Show applies equality check predicate on the "show" field. It's identical to ShowEQ.
+func Show(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldShow, v))
+}
+
 // Sort applies equality check predicate on the "sort" field. It's identical to SortEQ.
 func Sort(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldSort, v))
@@ -678,6 +683,56 @@ func OptionsIsNil() predicate.SurveyQuestion {
 // OptionsNotNil applies the NotNil predicate on the "options" field.
 func OptionsNotNil() predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldNotNull(FieldOptions))
+}
+
+// ShowEQ applies the EQ predicate on the "show" field.
+func ShowEQ(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldShow, v))
+}
+
+// ShowNEQ applies the NEQ predicate on the "show" field.
+func ShowNEQ(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNEQ(FieldShow, v))
+}
+
+// ShowIn applies the In predicate on the "show" field.
+func ShowIn(vs ...int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIn(FieldShow, vs...))
+}
+
+// ShowNotIn applies the NotIn predicate on the "show" field.
+func ShowNotIn(vs ...int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotIn(FieldShow, vs...))
+}
+
+// ShowGT applies the GT predicate on the "show" field.
+func ShowGT(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGT(FieldShow, v))
+}
+
+// ShowGTE applies the GTE predicate on the "show" field.
+func ShowGTE(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGTE(FieldShow, v))
+}
+
+// ShowLT applies the LT predicate on the "show" field.
+func ShowLT(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLT(FieldShow, v))
+}
+
+// ShowLTE applies the LTE predicate on the "show" field.
+func ShowLTE(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLTE(FieldShow, v))
+}
+
+// ShowIsNil applies the IsNil predicate on the "show" field.
+func ShowIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldShow))
+}
+
+// ShowNotNil applies the NotNil predicate on the "show" field.
+func ShowNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldShow))
 }
 
 // SortEQ applies the EQ predicate on the "sort" field.

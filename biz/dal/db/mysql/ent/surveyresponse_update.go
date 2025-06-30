@@ -12,7 +12,6 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema/field"
 )
 
@@ -290,23 +289,43 @@ func (sru *SurveyResponseUpdate) ClearIP() *SurveyResponseUpdate {
 	return sru
 }
 
-// SetMap sets the "map" field.
-func (sru *SurveyResponseUpdate) SetMap(s string) *SurveyResponseUpdate {
-	sru.mutation.SetMap(s)
+// SetLatitude sets the "latitude" field.
+func (sru *SurveyResponseUpdate) SetLatitude(s string) *SurveyResponseUpdate {
+	sru.mutation.SetLatitude(s)
 	return sru
 }
 
-// SetNillableMap sets the "map" field if the given value is not nil.
-func (sru *SurveyResponseUpdate) SetNillableMap(s *string) *SurveyResponseUpdate {
+// SetNillableLatitude sets the "latitude" field if the given value is not nil.
+func (sru *SurveyResponseUpdate) SetNillableLatitude(s *string) *SurveyResponseUpdate {
 	if s != nil {
-		sru.SetMap(*s)
+		sru.SetLatitude(*s)
 	}
 	return sru
 }
 
-// ClearMap clears the value of the "map" field.
-func (sru *SurveyResponseUpdate) ClearMap() *SurveyResponseUpdate {
-	sru.mutation.ClearMap()
+// ClearLatitude clears the value of the "latitude" field.
+func (sru *SurveyResponseUpdate) ClearLatitude() *SurveyResponseUpdate {
+	sru.mutation.ClearLatitude()
+	return sru
+}
+
+// SetLongitude sets the "longitude" field.
+func (sru *SurveyResponseUpdate) SetLongitude(s string) *SurveyResponseUpdate {
+	sru.mutation.SetLongitude(s)
+	return sru
+}
+
+// SetNillableLongitude sets the "longitude" field if the given value is not nil.
+func (sru *SurveyResponseUpdate) SetNillableLongitude(s *string) *SurveyResponseUpdate {
+	if s != nil {
+		sru.SetLongitude(*s)
+	}
+	return sru
+}
+
+// ClearLongitude clears the value of the "longitude" field.
+func (sru *SurveyResponseUpdate) ClearLongitude() *SurveyResponseUpdate {
+	sru.mutation.ClearLongitude()
 	return sru
 }
 
@@ -347,24 +366,6 @@ func (sru *SurveyResponseUpdate) SetNillableAudio(s *string) *SurveyResponseUpda
 // ClearAudio clears the value of the "audio" field.
 func (sru *SurveyResponseUpdate) ClearAudio() *SurveyResponseUpdate {
 	sru.mutation.ClearAudio()
-	return sru
-}
-
-// SetQuestions sets the "questions" field.
-func (sru *SurveyResponseUpdate) SetQuestions(m []map[int64]string) *SurveyResponseUpdate {
-	sru.mutation.SetQuestions(m)
-	return sru
-}
-
-// AppendQuestions appends m to the "questions" field.
-func (sru *SurveyResponseUpdate) AppendQuestions(m []map[int64]string) *SurveyResponseUpdate {
-	sru.mutation.AppendQuestions(m)
-	return sru
-}
-
-// ClearQuestions clears the value of the "questions" field.
-func (sru *SurveyResponseUpdate) ClearQuestions() *SurveyResponseUpdate {
-	sru.mutation.ClearQuestions()
 	return sru
 }
 
@@ -511,11 +512,17 @@ func (sru *SurveyResponseUpdate) sqlSave(ctx context.Context) (n int, err error)
 	if sru.mutation.IPCleared() {
 		_spec.ClearField(surveyresponse.FieldIP, field.TypeString)
 	}
-	if value, ok := sru.mutation.Map(); ok {
-		_spec.SetField(surveyresponse.FieldMap, field.TypeString, value)
+	if value, ok := sru.mutation.Latitude(); ok {
+		_spec.SetField(surveyresponse.FieldLatitude, field.TypeString, value)
 	}
-	if sru.mutation.MapCleared() {
-		_spec.ClearField(surveyresponse.FieldMap, field.TypeString)
+	if sru.mutation.LatitudeCleared() {
+		_spec.ClearField(surveyresponse.FieldLatitude, field.TypeString)
+	}
+	if value, ok := sru.mutation.Longitude(); ok {
+		_spec.SetField(surveyresponse.FieldLongitude, field.TypeString, value)
+	}
+	if sru.mutation.LongitudeCleared() {
+		_spec.ClearField(surveyresponse.FieldLongitude, field.TypeString)
 	}
 	if value, ok := sru.mutation.Device(); ok {
 		_spec.SetField(surveyresponse.FieldDevice, field.TypeString, value)
@@ -528,17 +535,6 @@ func (sru *SurveyResponseUpdate) sqlSave(ctx context.Context) (n int, err error)
 	}
 	if sru.mutation.AudioCleared() {
 		_spec.ClearField(surveyresponse.FieldAudio, field.TypeString)
-	}
-	if value, ok := sru.mutation.Questions(); ok {
-		_spec.SetField(surveyresponse.FieldQuestions, field.TypeJSON, value)
-	}
-	if value, ok := sru.mutation.AppendedQuestions(); ok {
-		_spec.AddModifier(func(u *sql.UpdateBuilder) {
-			sqljson.Append(u, surveyresponse.FieldQuestions, value)
-		})
-	}
-	if sru.mutation.QuestionsCleared() {
-		_spec.ClearField(surveyresponse.FieldQuestions, field.TypeJSON)
 	}
 	_spec.AddModifiers(sru.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, sru.driver, _spec); err != nil {
@@ -822,23 +818,43 @@ func (sruo *SurveyResponseUpdateOne) ClearIP() *SurveyResponseUpdateOne {
 	return sruo
 }
 
-// SetMap sets the "map" field.
-func (sruo *SurveyResponseUpdateOne) SetMap(s string) *SurveyResponseUpdateOne {
-	sruo.mutation.SetMap(s)
+// SetLatitude sets the "latitude" field.
+func (sruo *SurveyResponseUpdateOne) SetLatitude(s string) *SurveyResponseUpdateOne {
+	sruo.mutation.SetLatitude(s)
 	return sruo
 }
 
-// SetNillableMap sets the "map" field if the given value is not nil.
-func (sruo *SurveyResponseUpdateOne) SetNillableMap(s *string) *SurveyResponseUpdateOne {
+// SetNillableLatitude sets the "latitude" field if the given value is not nil.
+func (sruo *SurveyResponseUpdateOne) SetNillableLatitude(s *string) *SurveyResponseUpdateOne {
 	if s != nil {
-		sruo.SetMap(*s)
+		sruo.SetLatitude(*s)
 	}
 	return sruo
 }
 
-// ClearMap clears the value of the "map" field.
-func (sruo *SurveyResponseUpdateOne) ClearMap() *SurveyResponseUpdateOne {
-	sruo.mutation.ClearMap()
+// ClearLatitude clears the value of the "latitude" field.
+func (sruo *SurveyResponseUpdateOne) ClearLatitude() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearLatitude()
+	return sruo
+}
+
+// SetLongitude sets the "longitude" field.
+func (sruo *SurveyResponseUpdateOne) SetLongitude(s string) *SurveyResponseUpdateOne {
+	sruo.mutation.SetLongitude(s)
+	return sruo
+}
+
+// SetNillableLongitude sets the "longitude" field if the given value is not nil.
+func (sruo *SurveyResponseUpdateOne) SetNillableLongitude(s *string) *SurveyResponseUpdateOne {
+	if s != nil {
+		sruo.SetLongitude(*s)
+	}
+	return sruo
+}
+
+// ClearLongitude clears the value of the "longitude" field.
+func (sruo *SurveyResponseUpdateOne) ClearLongitude() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearLongitude()
 	return sruo
 }
 
@@ -879,24 +895,6 @@ func (sruo *SurveyResponseUpdateOne) SetNillableAudio(s *string) *SurveyResponse
 // ClearAudio clears the value of the "audio" field.
 func (sruo *SurveyResponseUpdateOne) ClearAudio() *SurveyResponseUpdateOne {
 	sruo.mutation.ClearAudio()
-	return sruo
-}
-
-// SetQuestions sets the "questions" field.
-func (sruo *SurveyResponseUpdateOne) SetQuestions(m []map[int64]string) *SurveyResponseUpdateOne {
-	sruo.mutation.SetQuestions(m)
-	return sruo
-}
-
-// AppendQuestions appends m to the "questions" field.
-func (sruo *SurveyResponseUpdateOne) AppendQuestions(m []map[int64]string) *SurveyResponseUpdateOne {
-	sruo.mutation.AppendQuestions(m)
-	return sruo
-}
-
-// ClearQuestions clears the value of the "questions" field.
-func (sruo *SurveyResponseUpdateOne) ClearQuestions() *SurveyResponseUpdateOne {
-	sruo.mutation.ClearQuestions()
 	return sruo
 }
 
@@ -1073,11 +1071,17 @@ func (sruo *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	if sruo.mutation.IPCleared() {
 		_spec.ClearField(surveyresponse.FieldIP, field.TypeString)
 	}
-	if value, ok := sruo.mutation.Map(); ok {
-		_spec.SetField(surveyresponse.FieldMap, field.TypeString, value)
+	if value, ok := sruo.mutation.Latitude(); ok {
+		_spec.SetField(surveyresponse.FieldLatitude, field.TypeString, value)
 	}
-	if sruo.mutation.MapCleared() {
-		_spec.ClearField(surveyresponse.FieldMap, field.TypeString)
+	if sruo.mutation.LatitudeCleared() {
+		_spec.ClearField(surveyresponse.FieldLatitude, field.TypeString)
+	}
+	if value, ok := sruo.mutation.Longitude(); ok {
+		_spec.SetField(surveyresponse.FieldLongitude, field.TypeString, value)
+	}
+	if sruo.mutation.LongitudeCleared() {
+		_spec.ClearField(surveyresponse.FieldLongitude, field.TypeString)
 	}
 	if value, ok := sruo.mutation.Device(); ok {
 		_spec.SetField(surveyresponse.FieldDevice, field.TypeString, value)
@@ -1090,17 +1094,6 @@ func (sruo *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	}
 	if sruo.mutation.AudioCleared() {
 		_spec.ClearField(surveyresponse.FieldAudio, field.TypeString)
-	}
-	if value, ok := sruo.mutation.Questions(); ok {
-		_spec.SetField(surveyresponse.FieldQuestions, field.TypeJSON, value)
-	}
-	if value, ok := sruo.mutation.AppendedQuestions(); ok {
-		_spec.AddModifier(func(u *sql.UpdateBuilder) {
-			sqljson.Append(u, surveyresponse.FieldQuestions, value)
-		})
-	}
-	if sruo.mutation.QuestionsCleared() {
-		_spec.ClearField(surveyresponse.FieldQuestions, field.TypeJSON)
 	}
 	_spec.AddModifiers(sruo.modifiers...)
 	_node = &SurveyResponse{config: sruo.config}

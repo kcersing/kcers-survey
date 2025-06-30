@@ -25,11 +25,11 @@ func (SurveyResponse) Fields() []ent.Field {
 		field.String("researcher_phone").Optional().Default("").Comment("调研员联系电话"),
 		field.String("pic").Optional().Default("").Comment("合照照片"),
 		field.String("ip").Optional().Default("").Comment("用户IP地址"),
-		field.String("map").Optional().Default("").Comment("用户地图坐标"),
+		field.String("latitude").Optional().Default("").Comment("latitude"),
+		field.String("longitude").Optional().Default("").Comment("longitude"),
+
 		field.String("device").Optional().Default("").Comment("设备信息"),
 		field.String("audio").Optional().Default("").Comment("音频"),
-
-		field.JSON("questions", []map[int64]string{}).Optional().Comment(""),
 	}
 }
 

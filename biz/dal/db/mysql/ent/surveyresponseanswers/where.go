@@ -99,11 +99,6 @@ func AnswerText(v string) predicate.SurveyResponseAnswers {
 	return predicate.SurveyResponseAnswers(sql.FieldEQ(FieldAnswerText, v))
 }
 
-// AnswerValue applies equality check predicate on the "answer_value" field. It's identical to AnswerValueEQ.
-func AnswerValue(v int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldEQ(FieldAnswerValue, v))
-}
-
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.SurveyResponseAnswers {
 	return predicate.SurveyResponseAnswers(sql.FieldEQ(FieldCreatedAt, v))
@@ -579,54 +574,14 @@ func AnswerTextContainsFold(v string) predicate.SurveyResponseAnswers {
 	return predicate.SurveyResponseAnswers(sql.FieldContainsFold(FieldAnswerText, v))
 }
 
-// AnswerValueEQ applies the EQ predicate on the "answer_value" field.
-func AnswerValueEQ(v int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldEQ(FieldAnswerValue, v))
+// AnswerIsNil applies the IsNil predicate on the "answer" field.
+func AnswerIsNil() predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(sql.FieldIsNull(FieldAnswer))
 }
 
-// AnswerValueNEQ applies the NEQ predicate on the "answer_value" field.
-func AnswerValueNEQ(v int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldNEQ(FieldAnswerValue, v))
-}
-
-// AnswerValueIn applies the In predicate on the "answer_value" field.
-func AnswerValueIn(vs ...int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldIn(FieldAnswerValue, vs...))
-}
-
-// AnswerValueNotIn applies the NotIn predicate on the "answer_value" field.
-func AnswerValueNotIn(vs ...int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldNotIn(FieldAnswerValue, vs...))
-}
-
-// AnswerValueGT applies the GT predicate on the "answer_value" field.
-func AnswerValueGT(v int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldGT(FieldAnswerValue, v))
-}
-
-// AnswerValueGTE applies the GTE predicate on the "answer_value" field.
-func AnswerValueGTE(v int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldGTE(FieldAnswerValue, v))
-}
-
-// AnswerValueLT applies the LT predicate on the "answer_value" field.
-func AnswerValueLT(v int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldLT(FieldAnswerValue, v))
-}
-
-// AnswerValueLTE applies the LTE predicate on the "answer_value" field.
-func AnswerValueLTE(v int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldLTE(FieldAnswerValue, v))
-}
-
-// AnswerValueIsNil applies the IsNil predicate on the "answer_value" field.
-func AnswerValueIsNil() predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldIsNull(FieldAnswerValue))
-}
-
-// AnswerValueNotNil applies the NotNil predicate on the "answer_value" field.
-func AnswerValueNotNil() predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldNotNull(FieldAnswerValue))
+// AnswerNotNil applies the NotNil predicate on the "answer" field.
+func AnswerNotNil() predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(sql.FieldNotNull(FieldAnswer))
 }
 
 // And groups predicates with the AND operator between them.

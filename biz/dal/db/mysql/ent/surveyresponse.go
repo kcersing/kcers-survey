@@ -3,7 +3,6 @@
 package ent
 
 import (
-	"encoding/json"
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
 	"strings"
@@ -45,14 +44,14 @@ type SurveyResponse struct {
 	Pic string `json:"pic,omitempty"`
 	// 用户IP地址
 	IP string `json:"ip,omitempty"`
-	// 用户地图坐标
-	Map string `json:"map,omitempty"`
+	// latitude
+	Latitude string `json:"latitude,omitempty"`
+	// longitude
+	Longitude string `json:"longitude,omitempty"`
 	// 设备信息
 	Device string `json:"device,omitempty"`
 	// 音频
-	Audio string `json:"audio,omitempty"`
-	// Questions holds the value of the "questions" field.
-	Questions    []map[int64]string `json:"questions,omitempty"`
+	Audio        string `json:"audio,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -61,11 +60,9 @@ func (*SurveyResponse) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case surveyresponse.FieldQuestions:
-			values[i] = new([]byte)
 		case surveyresponse.FieldID, surveyresponse.FieldDelete, surveyresponse.FieldCreatedID, surveyresponse.FieldStatus, surveyresponse.FieldSurveyID:
 			values[i] = new(sql.NullInt64)
-		case surveyresponse.FieldSn, surveyresponse.FieldRespondent, surveyresponse.FieldRespondentPhone, surveyresponse.FieldResearcher, surveyresponse.FieldResearcherPhone, surveyresponse.FieldPic, surveyresponse.FieldIP, surveyresponse.FieldMap, surveyresponse.FieldDevice, surveyresponse.FieldAudio:
+		case surveyresponse.FieldSn, surveyresponse.FieldRespondent, surveyresponse.FieldRespondentPhone, surveyresponse.FieldResearcher, surveyresponse.FieldResearcherPhone, surveyresponse.FieldPic, surveyresponse.FieldIP, surveyresponse.FieldLatitude, surveyresponse.FieldLongitude, surveyresponse.FieldDevice, surveyresponse.FieldAudio:
 			values[i] = new(sql.NullString)
 		case surveyresponse.FieldCreatedAt, surveyresponse.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -168,11 +165,17 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sr.IP = value.String
 			}
-		case surveyresponse.FieldMap:
+		case surveyresponse.FieldLatitude:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field map", values[i])
+				return fmt.Errorf("unexpected type %T for field latitude", values[i])
 			} else if value.Valid {
-				sr.Map = value.String
+				sr.Latitude = value.String
+			}
+		case surveyresponse.FieldLongitude:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field longitude", values[i])
+			} else if value.Valid {
+				sr.Longitude = value.String
 			}
 		case surveyresponse.FieldDevice:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -185,14 +188,6 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field audio", values[i])
 			} else if value.Valid {
 				sr.Audio = value.String
-			}
-		case surveyresponse.FieldQuestions:
-			if value, ok := values[i].(*[]byte); !ok {
-				return fmt.Errorf("unexpected type %T for field questions", values[i])
-			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &sr.Questions); err != nil {
-					return fmt.Errorf("unmarshal field questions: %w", err)
-				}
 			}
 		default:
 			sr.selectValues.Set(columns[i], values[i])
@@ -269,17 +264,17 @@ func (sr *SurveyResponse) String() string {
 	builder.WriteString("ip=")
 	builder.WriteString(sr.IP)
 	builder.WriteString(", ")
-	builder.WriteString("map=")
-	builder.WriteString(sr.Map)
+	builder.WriteString("latitude=")
+	builder.WriteString(sr.Latitude)
+	builder.WriteString(", ")
+	builder.WriteString("longitude=")
+	builder.WriteString(sr.Longitude)
 	builder.WriteString(", ")
 	builder.WriteString("device=")
 	builder.WriteString(sr.Device)
 	builder.WriteString(", ")
 	builder.WriteString("audio=")
 	builder.WriteString(sr.Audio)
-	builder.WriteString(", ")
-	builder.WriteString("questions=")
-	builder.WriteString(fmt.Sprintf("%v", sr.Questions))
 	builder.WriteByte(')')
 	return builder.String()
 }

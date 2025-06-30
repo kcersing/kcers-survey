@@ -250,6 +250,33 @@ func (squ *SurveyQuestionUpdate) ClearOptions() *SurveyQuestionUpdate {
 	return squ
 }
 
+// SetShow sets the "show" field.
+func (squ *SurveyQuestionUpdate) SetShow(i int64) *SurveyQuestionUpdate {
+	squ.mutation.ResetShow()
+	squ.mutation.SetShow(i)
+	return squ
+}
+
+// SetNillableShow sets the "show" field if the given value is not nil.
+func (squ *SurveyQuestionUpdate) SetNillableShow(i *int64) *SurveyQuestionUpdate {
+	if i != nil {
+		squ.SetShow(*i)
+	}
+	return squ
+}
+
+// AddShow adds i to the "show" field.
+func (squ *SurveyQuestionUpdate) AddShow(i int64) *SurveyQuestionUpdate {
+	squ.mutation.AddShow(i)
+	return squ
+}
+
+// ClearShow clears the value of the "show" field.
+func (squ *SurveyQuestionUpdate) ClearShow() *SurveyQuestionUpdate {
+	squ.mutation.ClearShow()
+	return squ
+}
+
 // SetSort sets the "sort" field.
 func (squ *SurveyQuestionUpdate) SetSort(i int64) *SurveyQuestionUpdate {
 	squ.mutation.ResetSort()
@@ -462,6 +489,15 @@ func (squ *SurveyQuestionUpdate) sqlSave(ctx context.Context) (n int, err error)
 	}
 	if squ.mutation.OptionsCleared() {
 		_spec.ClearField(surveyquestion.FieldOptions, field.TypeJSON)
+	}
+	if value, ok := squ.mutation.Show(); ok {
+		_spec.SetField(surveyquestion.FieldShow, field.TypeInt64, value)
+	}
+	if value, ok := squ.mutation.AddedShow(); ok {
+		_spec.AddField(surveyquestion.FieldShow, field.TypeInt64, value)
+	}
+	if squ.mutation.ShowCleared() {
+		_spec.ClearField(surveyquestion.FieldShow, field.TypeInt64)
 	}
 	if value, ok := squ.mutation.Sort(); ok {
 		_spec.SetField(surveyquestion.FieldSort, field.TypeInt64, value)
@@ -761,6 +797,33 @@ func (squo *SurveyQuestionUpdateOne) ClearOptions() *SurveyQuestionUpdateOne {
 	return squo
 }
 
+// SetShow sets the "show" field.
+func (squo *SurveyQuestionUpdateOne) SetShow(i int64) *SurveyQuestionUpdateOne {
+	squo.mutation.ResetShow()
+	squo.mutation.SetShow(i)
+	return squo
+}
+
+// SetNillableShow sets the "show" field if the given value is not nil.
+func (squo *SurveyQuestionUpdateOne) SetNillableShow(i *int64) *SurveyQuestionUpdateOne {
+	if i != nil {
+		squo.SetShow(*i)
+	}
+	return squo
+}
+
+// AddShow adds i to the "show" field.
+func (squo *SurveyQuestionUpdateOne) AddShow(i int64) *SurveyQuestionUpdateOne {
+	squo.mutation.AddShow(i)
+	return squo
+}
+
+// ClearShow clears the value of the "show" field.
+func (squo *SurveyQuestionUpdateOne) ClearShow() *SurveyQuestionUpdateOne {
+	squo.mutation.ClearShow()
+	return squo
+}
+
 // SetSort sets the "sort" field.
 func (squo *SurveyQuestionUpdateOne) SetSort(i int64) *SurveyQuestionUpdateOne {
 	squo.mutation.ResetSort()
@@ -1003,6 +1066,15 @@ func (squo *SurveyQuestionUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	}
 	if squo.mutation.OptionsCleared() {
 		_spec.ClearField(surveyquestion.FieldOptions, field.TypeJSON)
+	}
+	if value, ok := squo.mutation.Show(); ok {
+		_spec.SetField(surveyquestion.FieldShow, field.TypeInt64, value)
+	}
+	if value, ok := squo.mutation.AddedShow(); ok {
+		_spec.AddField(surveyquestion.FieldShow, field.TypeInt64, value)
+	}
+	if squo.mutation.ShowCleared() {
+		_spec.ClearField(surveyquestion.FieldShow, field.TypeInt64)
 	}
 	if value, ok := squo.mutation.Sort(); ok {
 		_spec.SetField(surveyquestion.FieldSort, field.TypeInt64, value)

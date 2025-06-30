@@ -167,6 +167,20 @@ func (sqc *SurveyQuestionCreate) SetOptions(s []*service.Options) *SurveyQuestio
 	return sqc
 }
 
+// SetShow sets the "show" field.
+func (sqc *SurveyQuestionCreate) SetShow(i int64) *SurveyQuestionCreate {
+	sqc.mutation.SetShow(i)
+	return sqc
+}
+
+// SetNillableShow sets the "show" field if the given value is not nil.
+func (sqc *SurveyQuestionCreate) SetNillableShow(i *int64) *SurveyQuestionCreate {
+	if i != nil {
+		sqc.SetShow(*i)
+	}
+	return sqc
+}
+
 // SetSort sets the "sort" field.
 func (sqc *SurveyQuestionCreate) SetSort(i int64) *SurveyQuestionCreate {
 	sqc.mutation.SetSort(i)
@@ -287,6 +301,10 @@ func (sqc *SurveyQuestionCreate) defaults() {
 		v := surveyquestion.DefaultType
 		sqc.mutation.SetType(v)
 	}
+	if _, ok := sqc.mutation.Show(); !ok {
+		v := surveyquestion.DefaultShow
+		sqc.mutation.SetShow(v)
+	}
 	if _, ok := sqc.mutation.Sort(); !ok {
 		v := surveyquestion.DefaultSort
 		sqc.mutation.SetSort(v)
@@ -374,6 +392,10 @@ func (sqc *SurveyQuestionCreate) createSpec() (*SurveyQuestion, *sqlgraph.Create
 	if value, ok := sqc.mutation.Options(); ok {
 		_spec.SetField(surveyquestion.FieldOptions, field.TypeJSON, value)
 		_node.Options = value
+	}
+	if value, ok := sqc.mutation.Show(); ok {
+		_spec.SetField(surveyquestion.FieldShow, field.TypeInt64, value)
+		_node.Show = value
 	}
 	if value, ok := sqc.mutation.Sort(); ok {
 		_spec.SetField(surveyquestion.FieldSort, field.TypeInt64, value)

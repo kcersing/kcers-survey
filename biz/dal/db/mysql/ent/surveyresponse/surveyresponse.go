@@ -39,14 +39,14 @@ const (
 	FieldPic = "pic"
 	// FieldIP holds the string denoting the ip field in the database.
 	FieldIP = "ip"
-	// FieldMap holds the string denoting the map field in the database.
-	FieldMap = "map"
+	// FieldLatitude holds the string denoting the latitude field in the database.
+	FieldLatitude = "latitude"
+	// FieldLongitude holds the string denoting the longitude field in the database.
+	FieldLongitude = "longitude"
 	// FieldDevice holds the string denoting the device field in the database.
 	FieldDevice = "device"
 	// FieldAudio holds the string denoting the audio field in the database.
 	FieldAudio = "audio"
-	// FieldQuestions holds the string denoting the questions field in the database.
-	FieldQuestions = "questions"
 	// Table holds the table name of the surveyresponse in the database.
 	Table = "survey_response"
 )
@@ -67,10 +67,10 @@ var Columns = []string{
 	FieldResearcherPhone,
 	FieldPic,
 	FieldIP,
-	FieldMap,
+	FieldLatitude,
+	FieldLongitude,
 	FieldDevice,
 	FieldAudio,
-	FieldQuestions,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -112,8 +112,10 @@ var (
 	DefaultPic string
 	// DefaultIP holds the default value on creation for the "ip" field.
 	DefaultIP string
-	// DefaultMap holds the default value on creation for the "map" field.
-	DefaultMap string
+	// DefaultLatitude holds the default value on creation for the "latitude" field.
+	DefaultLatitude string
+	// DefaultLongitude holds the default value on creation for the "longitude" field.
+	DefaultLongitude string
 	// DefaultDevice holds the default value on creation for the "device" field.
 	DefaultDevice string
 	// DefaultAudio holds the default value on creation for the "audio" field.
@@ -193,9 +195,14 @@ func ByIP(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIP, opts...).ToFunc()
 }
 
-// ByMap orders the results by the map field.
-func ByMap(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMap, opts...).ToFunc()
+// ByLatitude orders the results by the latitude field.
+func ByLatitude(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLatitude, opts...).ToFunc()
+}
+
+// ByLongitude orders the results by the longitude field.
+func ByLongitude(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLongitude, opts...).ToFunc()
 }
 
 // ByDevice orders the results by the device field.

@@ -31,8 +31,8 @@ const (
 	FieldSurveyQuestionID = "survey_question_id"
 	// FieldAnswerText holds the string denoting the answer_text field in the database.
 	FieldAnswerText = "answer_text"
-	// FieldAnswerValue holds the string denoting the answer_value field in the database.
-	FieldAnswerValue = "answer_value"
+	// FieldAnswer holds the string denoting the answer field in the database.
+	FieldAnswer = "answer"
 	// Table holds the table name of the surveyresponseanswers in the database.
 	Table = "survey_response_answers"
 )
@@ -49,7 +49,7 @@ var Columns = []string{
 	FieldSurveyResponseID,
 	FieldSurveyQuestionID,
 	FieldAnswerText,
-	FieldAnswerValue,
+	FieldAnswer,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -81,8 +81,6 @@ var (
 	DefaultSurveyResponseID int64
 	// DefaultSurveyQuestionID holds the default value on creation for the "survey_question_id" field.
 	DefaultSurveyQuestionID int64
-	// DefaultAnswerValue holds the default value on creation for the "answer_value" field.
-	DefaultAnswerValue int64
 )
 
 // OrderOption defines the ordering options for the SurveyResponseAnswers queries.
@@ -136,9 +134,4 @@ func BySurveyQuestionID(opts ...sql.OrderTermOption) OrderOption {
 // ByAnswerText orders the results by the answer_text field.
 func ByAnswerText(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAnswerText, opts...).ToFunc()
-}
-
-// ByAnswerValue orders the results by the answer_value field.
-func ByAnswerValue(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAnswerValue, opts...).ToFunc()
 }

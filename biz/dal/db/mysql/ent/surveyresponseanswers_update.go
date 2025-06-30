@@ -12,6 +12,7 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema/field"
 )
 
@@ -223,30 +224,21 @@ func (srau *SurveyResponseAnswersUpdate) ClearAnswerText() *SurveyResponseAnswer
 	return srau
 }
 
-// SetAnswerValue sets the "answer_value" field.
-func (srau *SurveyResponseAnswersUpdate) SetAnswerValue(i int64) *SurveyResponseAnswersUpdate {
-	srau.mutation.ResetAnswerValue()
-	srau.mutation.SetAnswerValue(i)
+// SetAnswer sets the "answer" field.
+func (srau *SurveyResponseAnswersUpdate) SetAnswer(s []string) *SurveyResponseAnswersUpdate {
+	srau.mutation.SetAnswer(s)
 	return srau
 }
 
-// SetNillableAnswerValue sets the "answer_value" field if the given value is not nil.
-func (srau *SurveyResponseAnswersUpdate) SetNillableAnswerValue(i *int64) *SurveyResponseAnswersUpdate {
-	if i != nil {
-		srau.SetAnswerValue(*i)
-	}
+// AppendAnswer appends s to the "answer" field.
+func (srau *SurveyResponseAnswersUpdate) AppendAnswer(s []string) *SurveyResponseAnswersUpdate {
+	srau.mutation.AppendAnswer(s)
 	return srau
 }
 
-// AddAnswerValue adds i to the "answer_value" field.
-func (srau *SurveyResponseAnswersUpdate) AddAnswerValue(i int64) *SurveyResponseAnswersUpdate {
-	srau.mutation.AddAnswerValue(i)
-	return srau
-}
-
-// ClearAnswerValue clears the value of the "answer_value" field.
-func (srau *SurveyResponseAnswersUpdate) ClearAnswerValue() *SurveyResponseAnswersUpdate {
-	srau.mutation.ClearAnswerValue()
+// ClearAnswer clears the value of the "answer" field.
+func (srau *SurveyResponseAnswersUpdate) ClearAnswer() *SurveyResponseAnswersUpdate {
+	srau.mutation.ClearAnswer()
 	return srau
 }
 
@@ -375,14 +367,16 @@ func (srau *SurveyResponseAnswersUpdate) sqlSave(ctx context.Context) (n int, er
 	if srau.mutation.AnswerTextCleared() {
 		_spec.ClearField(surveyresponseanswers.FieldAnswerText, field.TypeString)
 	}
-	if value, ok := srau.mutation.AnswerValue(); ok {
-		_spec.SetField(surveyresponseanswers.FieldAnswerValue, field.TypeInt64, value)
+	if value, ok := srau.mutation.Answer(); ok {
+		_spec.SetField(surveyresponseanswers.FieldAnswer, field.TypeJSON, value)
 	}
-	if value, ok := srau.mutation.AddedAnswerValue(); ok {
-		_spec.AddField(surveyresponseanswers.FieldAnswerValue, field.TypeInt64, value)
+	if value, ok := srau.mutation.AppendedAnswer(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponseanswers.FieldAnswer, value)
+		})
 	}
-	if srau.mutation.AnswerValueCleared() {
-		_spec.ClearField(surveyresponseanswers.FieldAnswerValue, field.TypeInt64)
+	if srau.mutation.AnswerCleared() {
+		_spec.ClearField(surveyresponseanswers.FieldAnswer, field.TypeJSON)
 	}
 	_spec.AddModifiers(srau.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, srau.driver, _spec); err != nil {
@@ -600,30 +594,21 @@ func (srauo *SurveyResponseAnswersUpdateOne) ClearAnswerText() *SurveyResponseAn
 	return srauo
 }
 
-// SetAnswerValue sets the "answer_value" field.
-func (srauo *SurveyResponseAnswersUpdateOne) SetAnswerValue(i int64) *SurveyResponseAnswersUpdateOne {
-	srauo.mutation.ResetAnswerValue()
-	srauo.mutation.SetAnswerValue(i)
+// SetAnswer sets the "answer" field.
+func (srauo *SurveyResponseAnswersUpdateOne) SetAnswer(s []string) *SurveyResponseAnswersUpdateOne {
+	srauo.mutation.SetAnswer(s)
 	return srauo
 }
 
-// SetNillableAnswerValue sets the "answer_value" field if the given value is not nil.
-func (srauo *SurveyResponseAnswersUpdateOne) SetNillableAnswerValue(i *int64) *SurveyResponseAnswersUpdateOne {
-	if i != nil {
-		srauo.SetAnswerValue(*i)
-	}
+// AppendAnswer appends s to the "answer" field.
+func (srauo *SurveyResponseAnswersUpdateOne) AppendAnswer(s []string) *SurveyResponseAnswersUpdateOne {
+	srauo.mutation.AppendAnswer(s)
 	return srauo
 }
 
-// AddAnswerValue adds i to the "answer_value" field.
-func (srauo *SurveyResponseAnswersUpdateOne) AddAnswerValue(i int64) *SurveyResponseAnswersUpdateOne {
-	srauo.mutation.AddAnswerValue(i)
-	return srauo
-}
-
-// ClearAnswerValue clears the value of the "answer_value" field.
-func (srauo *SurveyResponseAnswersUpdateOne) ClearAnswerValue() *SurveyResponseAnswersUpdateOne {
-	srauo.mutation.ClearAnswerValue()
+// ClearAnswer clears the value of the "answer" field.
+func (srauo *SurveyResponseAnswersUpdateOne) ClearAnswer() *SurveyResponseAnswersUpdateOne {
+	srauo.mutation.ClearAnswer()
 	return srauo
 }
 
@@ -782,14 +767,16 @@ func (srauo *SurveyResponseAnswersUpdateOne) sqlSave(ctx context.Context) (_node
 	if srauo.mutation.AnswerTextCleared() {
 		_spec.ClearField(surveyresponseanswers.FieldAnswerText, field.TypeString)
 	}
-	if value, ok := srauo.mutation.AnswerValue(); ok {
-		_spec.SetField(surveyresponseanswers.FieldAnswerValue, field.TypeInt64, value)
+	if value, ok := srauo.mutation.Answer(); ok {
+		_spec.SetField(surveyresponseanswers.FieldAnswer, field.TypeJSON, value)
 	}
-	if value, ok := srauo.mutation.AddedAnswerValue(); ok {
-		_spec.AddField(surveyresponseanswers.FieldAnswerValue, field.TypeInt64, value)
+	if value, ok := srauo.mutation.AppendedAnswer(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponseanswers.FieldAnswer, value)
+		})
 	}
-	if srauo.mutation.AnswerValueCleared() {
-		_spec.ClearField(surveyresponseanswers.FieldAnswerValue, field.TypeInt64)
+	if srauo.mutation.AnswerCleared() {
+		_spec.ClearField(surveyresponseanswers.FieldAnswer, field.TypeJSON)
 	}
 	_spec.AddModifiers(srauo.modifiers...)
 	_node = &SurveyResponseAnswers{config: srauo.config}

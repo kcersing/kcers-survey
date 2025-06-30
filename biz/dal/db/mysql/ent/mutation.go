@@ -9357,6 +9357,8 @@ type SurveyQuestionMutation struct {
 	_type            *string
 	options          *[]*service.Options
 	appendoptions    []*service.Options
+	show             *int64
+	addshow          *int64
 	sort             *int64
 	addsort          *int64
 	jump_rules       *[]*service.JumpRules
@@ -10114,6 +10116,76 @@ func (m *SurveyQuestionMutation) ResetOptions() {
 	delete(m.clearedFields, surveyquestion.FieldOptions)
 }
 
+// SetShow sets the "show" field.
+func (m *SurveyQuestionMutation) SetShow(i int64) {
+	m.show = &i
+	m.addshow = nil
+}
+
+// Show returns the value of the "show" field in the mutation.
+func (m *SurveyQuestionMutation) Show() (r int64, exists bool) {
+	v := m.show
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldShow returns the old "show" field's value of the SurveyQuestion entity.
+// If the SurveyQuestion object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurveyQuestionMutation) OldShow(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldShow is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldShow requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldShow: %w", err)
+	}
+	return oldValue.Show, nil
+}
+
+// AddShow adds i to the "show" field.
+func (m *SurveyQuestionMutation) AddShow(i int64) {
+	if m.addshow != nil {
+		*m.addshow += i
+	} else {
+		m.addshow = &i
+	}
+}
+
+// AddedShow returns the value that was added to the "show" field in this mutation.
+func (m *SurveyQuestionMutation) AddedShow() (r int64, exists bool) {
+	v := m.addshow
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearShow clears the value of the "show" field.
+func (m *SurveyQuestionMutation) ClearShow() {
+	m.show = nil
+	m.addshow = nil
+	m.clearedFields[surveyquestion.FieldShow] = struct{}{}
+}
+
+// ShowCleared returns if the "show" field was cleared in this mutation.
+func (m *SurveyQuestionMutation) ShowCleared() bool {
+	_, ok := m.clearedFields[surveyquestion.FieldShow]
+	return ok
+}
+
+// ResetShow resets all changes to the "show" field.
+func (m *SurveyQuestionMutation) ResetShow() {
+	m.show = nil
+	m.addshow = nil
+	delete(m.clearedFields, surveyquestion.FieldShow)
+}
+
 // SetSort sets the "sort" field.
 func (m *SurveyQuestionMutation) SetSort(i int64) {
 	m.sort = &i
@@ -10380,7 +10452,7 @@ func (m *SurveyQuestionMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SurveyQuestionMutation) Fields() []string {
-	fields := make([]string, 0, 14)
+	fields := make([]string, 0, 15)
 	if m.created_at != nil {
 		fields = append(fields, surveyquestion.FieldCreatedAt)
 	}
@@ -10413,6 +10485,9 @@ func (m *SurveyQuestionMutation) Fields() []string {
 	}
 	if m.options != nil {
 		fields = append(fields, surveyquestion.FieldOptions)
+	}
+	if m.show != nil {
+		fields = append(fields, surveyquestion.FieldShow)
 	}
 	if m.sort != nil {
 		fields = append(fields, surveyquestion.FieldSort)
@@ -10453,6 +10528,8 @@ func (m *SurveyQuestionMutation) Field(name string) (ent.Value, bool) {
 		return m.GetType()
 	case surveyquestion.FieldOptions:
 		return m.Options()
+	case surveyquestion.FieldShow:
+		return m.Show()
 	case surveyquestion.FieldSort:
 		return m.Sort()
 	case surveyquestion.FieldJumpRules:
@@ -10490,6 +10567,8 @@ func (m *SurveyQuestionMutation) OldField(ctx context.Context, name string) (ent
 		return m.OldType(ctx)
 	case surveyquestion.FieldOptions:
 		return m.OldOptions(ctx)
+	case surveyquestion.FieldShow:
+		return m.OldShow(ctx)
 	case surveyquestion.FieldSort:
 		return m.OldSort(ctx)
 	case surveyquestion.FieldJumpRules:
@@ -10582,6 +10661,13 @@ func (m *SurveyQuestionMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetOptions(v)
 		return nil
+	case surveyquestion.FieldShow:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetShow(v)
+		return nil
 	case surveyquestion.FieldSort:
 		v, ok := value.(int64)
 		if !ok {
@@ -10623,6 +10709,9 @@ func (m *SurveyQuestionMutation) AddedFields() []string {
 	if m.addparent_id != nil {
 		fields = append(fields, surveyquestion.FieldParentID)
 	}
+	if m.addshow != nil {
+		fields = append(fields, surveyquestion.FieldShow)
+	}
 	if m.addsort != nil {
 		fields = append(fields, surveyquestion.FieldSort)
 	}
@@ -10645,6 +10734,8 @@ func (m *SurveyQuestionMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedStatus()
 	case surveyquestion.FieldParentID:
 		return m.AddedParentID()
+	case surveyquestion.FieldShow:
+		return m.AddedShow()
 	case surveyquestion.FieldSort:
 		return m.AddedSort()
 	case surveyquestion.FieldRequired:
@@ -10685,6 +10776,13 @@ func (m *SurveyQuestionMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddParentID(v)
+		return nil
+	case surveyquestion.FieldShow:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddShow(v)
 		return nil
 	case surveyquestion.FieldSort:
 		v, ok := value.(int64)
@@ -10740,6 +10838,9 @@ func (m *SurveyQuestionMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(surveyquestion.FieldOptions) {
 		fields = append(fields, surveyquestion.FieldOptions)
+	}
+	if m.FieldCleared(surveyquestion.FieldShow) {
+		fields = append(fields, surveyquestion.FieldShow)
 	}
 	if m.FieldCleared(surveyquestion.FieldSort) {
 		fields = append(fields, surveyquestion.FieldSort)
@@ -10797,6 +10898,9 @@ func (m *SurveyQuestionMutation) ClearField(name string) error {
 	case surveyquestion.FieldOptions:
 		m.ClearOptions()
 		return nil
+	case surveyquestion.FieldShow:
+		m.ClearShow()
+		return nil
 	case surveyquestion.FieldSort:
 		m.ClearSort()
 		return nil
@@ -10846,6 +10950,9 @@ func (m *SurveyQuestionMutation) ResetField(name string) error {
 		return nil
 	case surveyquestion.FieldOptions:
 		m.ResetOptions()
+		return nil
+	case surveyquestion.FieldShow:
+		m.ResetShow()
 		return nil
 	case surveyquestion.FieldSort:
 		m.ResetSort()
@@ -10957,11 +11064,10 @@ type SurveyResponseMutation struct {
 	researcher_phone *string
 	pic              *string
 	ip               *string
-	_map             *string
+	latitude         *string
+	longitude        *string
 	device           *string
 	audio            *string
-	questions        *[]map[int64]string
-	appendquestions  []map[int64]string
 	clearedFields    map[string]struct{}
 	done             bool
 	oldValue         func(context.Context) (*SurveyResponse, error)
@@ -11793,53 +11899,102 @@ func (m *SurveyResponseMutation) ResetIP() {
 	delete(m.clearedFields, surveyresponse.FieldIP)
 }
 
-// SetMap sets the "map" field.
-func (m *SurveyResponseMutation) SetMap(s string) {
-	m._map = &s
+// SetLatitude sets the "latitude" field.
+func (m *SurveyResponseMutation) SetLatitude(s string) {
+	m.latitude = &s
 }
 
-// Map returns the value of the "map" field in the mutation.
-func (m *SurveyResponseMutation) Map() (r string, exists bool) {
-	v := m._map
+// Latitude returns the value of the "latitude" field in the mutation.
+func (m *SurveyResponseMutation) Latitude() (r string, exists bool) {
+	v := m.latitude
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldMap returns the old "map" field's value of the SurveyResponse entity.
+// OldLatitude returns the old "latitude" field's value of the SurveyResponse entity.
 // If the SurveyResponse object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SurveyResponseMutation) OldMap(ctx context.Context) (v string, err error) {
+func (m *SurveyResponseMutation) OldLatitude(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldMap is only allowed on UpdateOne operations")
+		return v, errors.New("OldLatitude is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldMap requires an ID field in the mutation")
+		return v, errors.New("OldLatitude requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMap: %w", err)
+		return v, fmt.Errorf("querying old value for OldLatitude: %w", err)
 	}
-	return oldValue.Map, nil
+	return oldValue.Latitude, nil
 }
 
-// ClearMap clears the value of the "map" field.
-func (m *SurveyResponseMutation) ClearMap() {
-	m._map = nil
-	m.clearedFields[surveyresponse.FieldMap] = struct{}{}
+// ClearLatitude clears the value of the "latitude" field.
+func (m *SurveyResponseMutation) ClearLatitude() {
+	m.latitude = nil
+	m.clearedFields[surveyresponse.FieldLatitude] = struct{}{}
 }
 
-// MapCleared returns if the "map" field was cleared in this mutation.
-func (m *SurveyResponseMutation) MapCleared() bool {
-	_, ok := m.clearedFields[surveyresponse.FieldMap]
+// LatitudeCleared returns if the "latitude" field was cleared in this mutation.
+func (m *SurveyResponseMutation) LatitudeCleared() bool {
+	_, ok := m.clearedFields[surveyresponse.FieldLatitude]
 	return ok
 }
 
-// ResetMap resets all changes to the "map" field.
-func (m *SurveyResponseMutation) ResetMap() {
-	m._map = nil
-	delete(m.clearedFields, surveyresponse.FieldMap)
+// ResetLatitude resets all changes to the "latitude" field.
+func (m *SurveyResponseMutation) ResetLatitude() {
+	m.latitude = nil
+	delete(m.clearedFields, surveyresponse.FieldLatitude)
+}
+
+// SetLongitude sets the "longitude" field.
+func (m *SurveyResponseMutation) SetLongitude(s string) {
+	m.longitude = &s
+}
+
+// Longitude returns the value of the "longitude" field in the mutation.
+func (m *SurveyResponseMutation) Longitude() (r string, exists bool) {
+	v := m.longitude
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLongitude returns the old "longitude" field's value of the SurveyResponse entity.
+// If the SurveyResponse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurveyResponseMutation) OldLongitude(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLongitude is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLongitude requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLongitude: %w", err)
+	}
+	return oldValue.Longitude, nil
+}
+
+// ClearLongitude clears the value of the "longitude" field.
+func (m *SurveyResponseMutation) ClearLongitude() {
+	m.longitude = nil
+	m.clearedFields[surveyresponse.FieldLongitude] = struct{}{}
+}
+
+// LongitudeCleared returns if the "longitude" field was cleared in this mutation.
+func (m *SurveyResponseMutation) LongitudeCleared() bool {
+	_, ok := m.clearedFields[surveyresponse.FieldLongitude]
+	return ok
+}
+
+// ResetLongitude resets all changes to the "longitude" field.
+func (m *SurveyResponseMutation) ResetLongitude() {
+	m.longitude = nil
+	delete(m.clearedFields, surveyresponse.FieldLongitude)
 }
 
 // SetDevice sets the "device" field.
@@ -11940,71 +12095,6 @@ func (m *SurveyResponseMutation) ResetAudio() {
 	delete(m.clearedFields, surveyresponse.FieldAudio)
 }
 
-// SetQuestions sets the "questions" field.
-func (m *SurveyResponseMutation) SetQuestions(value []map[int64]string) {
-	m.questions = &value
-	m.appendquestions = nil
-}
-
-// Questions returns the value of the "questions" field in the mutation.
-func (m *SurveyResponseMutation) Questions() (r []map[int64]string, exists bool) {
-	v := m.questions
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldQuestions returns the old "questions" field's value of the SurveyResponse entity.
-// If the SurveyResponse object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SurveyResponseMutation) OldQuestions(ctx context.Context) (v []map[int64]string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldQuestions is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldQuestions requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldQuestions: %w", err)
-	}
-	return oldValue.Questions, nil
-}
-
-// AppendQuestions adds value to the "questions" field.
-func (m *SurveyResponseMutation) AppendQuestions(value []map[int64]string) {
-	m.appendquestions = append(m.appendquestions, value...)
-}
-
-// AppendedQuestions returns the list of values that were appended to the "questions" field in this mutation.
-func (m *SurveyResponseMutation) AppendedQuestions() ([]map[int64]string, bool) {
-	if len(m.appendquestions) == 0 {
-		return nil, false
-	}
-	return m.appendquestions, true
-}
-
-// ClearQuestions clears the value of the "questions" field.
-func (m *SurveyResponseMutation) ClearQuestions() {
-	m.questions = nil
-	m.appendquestions = nil
-	m.clearedFields[surveyresponse.FieldQuestions] = struct{}{}
-}
-
-// QuestionsCleared returns if the "questions" field was cleared in this mutation.
-func (m *SurveyResponseMutation) QuestionsCleared() bool {
-	_, ok := m.clearedFields[surveyresponse.FieldQuestions]
-	return ok
-}
-
-// ResetQuestions resets all changes to the "questions" field.
-func (m *SurveyResponseMutation) ResetQuestions() {
-	m.questions = nil
-	m.appendquestions = nil
-	delete(m.clearedFields, surveyresponse.FieldQuestions)
-}
-
 // Where appends a list predicates to the SurveyResponseMutation builder.
 func (m *SurveyResponseMutation) Where(ps ...predicate.SurveyResponse) {
 	m.predicates = append(m.predicates, ps...)
@@ -12079,17 +12169,17 @@ func (m *SurveyResponseMutation) Fields() []string {
 	if m.ip != nil {
 		fields = append(fields, surveyresponse.FieldIP)
 	}
-	if m._map != nil {
-		fields = append(fields, surveyresponse.FieldMap)
+	if m.latitude != nil {
+		fields = append(fields, surveyresponse.FieldLatitude)
+	}
+	if m.longitude != nil {
+		fields = append(fields, surveyresponse.FieldLongitude)
 	}
 	if m.device != nil {
 		fields = append(fields, surveyresponse.FieldDevice)
 	}
 	if m.audio != nil {
 		fields = append(fields, surveyresponse.FieldAudio)
-	}
-	if m.questions != nil {
-		fields = append(fields, surveyresponse.FieldQuestions)
 	}
 	return fields
 }
@@ -12125,14 +12215,14 @@ func (m *SurveyResponseMutation) Field(name string) (ent.Value, bool) {
 		return m.Pic()
 	case surveyresponse.FieldIP:
 		return m.IP()
-	case surveyresponse.FieldMap:
-		return m.Map()
+	case surveyresponse.FieldLatitude:
+		return m.Latitude()
+	case surveyresponse.FieldLongitude:
+		return m.Longitude()
 	case surveyresponse.FieldDevice:
 		return m.Device()
 	case surveyresponse.FieldAudio:
 		return m.Audio()
-	case surveyresponse.FieldQuestions:
-		return m.Questions()
 	}
 	return nil, false
 }
@@ -12168,14 +12258,14 @@ func (m *SurveyResponseMutation) OldField(ctx context.Context, name string) (ent
 		return m.OldPic(ctx)
 	case surveyresponse.FieldIP:
 		return m.OldIP(ctx)
-	case surveyresponse.FieldMap:
-		return m.OldMap(ctx)
+	case surveyresponse.FieldLatitude:
+		return m.OldLatitude(ctx)
+	case surveyresponse.FieldLongitude:
+		return m.OldLongitude(ctx)
 	case surveyresponse.FieldDevice:
 		return m.OldDevice(ctx)
 	case surveyresponse.FieldAudio:
 		return m.OldAudio(ctx)
-	case surveyresponse.FieldQuestions:
-		return m.OldQuestions(ctx)
 	}
 	return nil, fmt.Errorf("unknown SurveyResponse field %s", name)
 }
@@ -12276,12 +12366,19 @@ func (m *SurveyResponseMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetIP(v)
 		return nil
-	case surveyresponse.FieldMap:
+	case surveyresponse.FieldLatitude:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetMap(v)
+		m.SetLatitude(v)
+		return nil
+	case surveyresponse.FieldLongitude:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLongitude(v)
 		return nil
 	case surveyresponse.FieldDevice:
 		v, ok := value.(string)
@@ -12296,13 +12393,6 @@ func (m *SurveyResponseMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetAudio(v)
-		return nil
-	case surveyresponse.FieldQuestions:
-		v, ok := value.([]map[int64]string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetQuestions(v)
 		return nil
 	}
 	return fmt.Errorf("unknown SurveyResponse field %s", name)
@@ -12424,17 +12514,17 @@ func (m *SurveyResponseMutation) ClearedFields() []string {
 	if m.FieldCleared(surveyresponse.FieldIP) {
 		fields = append(fields, surveyresponse.FieldIP)
 	}
-	if m.FieldCleared(surveyresponse.FieldMap) {
-		fields = append(fields, surveyresponse.FieldMap)
+	if m.FieldCleared(surveyresponse.FieldLatitude) {
+		fields = append(fields, surveyresponse.FieldLatitude)
+	}
+	if m.FieldCleared(surveyresponse.FieldLongitude) {
+		fields = append(fields, surveyresponse.FieldLongitude)
 	}
 	if m.FieldCleared(surveyresponse.FieldDevice) {
 		fields = append(fields, surveyresponse.FieldDevice)
 	}
 	if m.FieldCleared(surveyresponse.FieldAudio) {
 		fields = append(fields, surveyresponse.FieldAudio)
-	}
-	if m.FieldCleared(surveyresponse.FieldQuestions) {
-		fields = append(fields, surveyresponse.FieldQuestions)
 	}
 	return fields
 }
@@ -12489,17 +12579,17 @@ func (m *SurveyResponseMutation) ClearField(name string) error {
 	case surveyresponse.FieldIP:
 		m.ClearIP()
 		return nil
-	case surveyresponse.FieldMap:
-		m.ClearMap()
+	case surveyresponse.FieldLatitude:
+		m.ClearLatitude()
+		return nil
+	case surveyresponse.FieldLongitude:
+		m.ClearLongitude()
 		return nil
 	case surveyresponse.FieldDevice:
 		m.ClearDevice()
 		return nil
 	case surveyresponse.FieldAudio:
 		m.ClearAudio()
-		return nil
-	case surveyresponse.FieldQuestions:
-		m.ClearQuestions()
 		return nil
 	}
 	return fmt.Errorf("unknown SurveyResponse nullable field %s", name)
@@ -12548,17 +12638,17 @@ func (m *SurveyResponseMutation) ResetField(name string) error {
 	case surveyresponse.FieldIP:
 		m.ResetIP()
 		return nil
-	case surveyresponse.FieldMap:
-		m.ResetMap()
+	case surveyresponse.FieldLatitude:
+		m.ResetLatitude()
+		return nil
+	case surveyresponse.FieldLongitude:
+		m.ResetLongitude()
 		return nil
 	case surveyresponse.FieldDevice:
 		m.ResetDevice()
 		return nil
 	case surveyresponse.FieldAudio:
 		m.ResetAudio()
-		return nil
-	case surveyresponse.FieldQuestions:
-		m.ResetQuestions()
 		return nil
 	}
 	return fmt.Errorf("unknown SurveyResponse field %s", name)
@@ -12633,8 +12723,8 @@ type SurveyResponseAnswersMutation struct {
 	survey_question_id    *int64
 	addsurvey_question_id *int64
 	answer_text           *string
-	answer_value          *int64
-	addanswer_value       *int64
+	answer                *[]string
+	appendanswer          []string
 	clearedFields         map[string]struct{}
 	done                  bool
 	oldValue              func(context.Context) (*SurveyResponseAnswers, error)
@@ -13312,74 +13402,69 @@ func (m *SurveyResponseAnswersMutation) ResetAnswerText() {
 	delete(m.clearedFields, surveyresponseanswers.FieldAnswerText)
 }
 
-// SetAnswerValue sets the "answer_value" field.
-func (m *SurveyResponseAnswersMutation) SetAnswerValue(i int64) {
-	m.answer_value = &i
-	m.addanswer_value = nil
+// SetAnswer sets the "answer" field.
+func (m *SurveyResponseAnswersMutation) SetAnswer(s []string) {
+	m.answer = &s
+	m.appendanswer = nil
 }
 
-// AnswerValue returns the value of the "answer_value" field in the mutation.
-func (m *SurveyResponseAnswersMutation) AnswerValue() (r int64, exists bool) {
-	v := m.answer_value
+// Answer returns the value of the "answer" field in the mutation.
+func (m *SurveyResponseAnswersMutation) Answer() (r []string, exists bool) {
+	v := m.answer
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldAnswerValue returns the old "answer_value" field's value of the SurveyResponseAnswers entity.
+// OldAnswer returns the old "answer" field's value of the SurveyResponseAnswers entity.
 // If the SurveyResponseAnswers object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SurveyResponseAnswersMutation) OldAnswerValue(ctx context.Context) (v int64, err error) {
+func (m *SurveyResponseAnswersMutation) OldAnswer(ctx context.Context) (v []string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAnswerValue is only allowed on UpdateOne operations")
+		return v, errors.New("OldAnswer is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAnswerValue requires an ID field in the mutation")
+		return v, errors.New("OldAnswer requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAnswerValue: %w", err)
+		return v, fmt.Errorf("querying old value for OldAnswer: %w", err)
 	}
-	return oldValue.AnswerValue, nil
+	return oldValue.Answer, nil
 }
 
-// AddAnswerValue adds i to the "answer_value" field.
-func (m *SurveyResponseAnswersMutation) AddAnswerValue(i int64) {
-	if m.addanswer_value != nil {
-		*m.addanswer_value += i
-	} else {
-		m.addanswer_value = &i
+// AppendAnswer adds s to the "answer" field.
+func (m *SurveyResponseAnswersMutation) AppendAnswer(s []string) {
+	m.appendanswer = append(m.appendanswer, s...)
+}
+
+// AppendedAnswer returns the list of values that were appended to the "answer" field in this mutation.
+func (m *SurveyResponseAnswersMutation) AppendedAnswer() ([]string, bool) {
+	if len(m.appendanswer) == 0 {
+		return nil, false
 	}
+	return m.appendanswer, true
 }
 
-// AddedAnswerValue returns the value that was added to the "answer_value" field in this mutation.
-func (m *SurveyResponseAnswersMutation) AddedAnswerValue() (r int64, exists bool) {
-	v := m.addanswer_value
-	if v == nil {
-		return
-	}
-	return *v, true
+// ClearAnswer clears the value of the "answer" field.
+func (m *SurveyResponseAnswersMutation) ClearAnswer() {
+	m.answer = nil
+	m.appendanswer = nil
+	m.clearedFields[surveyresponseanswers.FieldAnswer] = struct{}{}
 }
 
-// ClearAnswerValue clears the value of the "answer_value" field.
-func (m *SurveyResponseAnswersMutation) ClearAnswerValue() {
-	m.answer_value = nil
-	m.addanswer_value = nil
-	m.clearedFields[surveyresponseanswers.FieldAnswerValue] = struct{}{}
-}
-
-// AnswerValueCleared returns if the "answer_value" field was cleared in this mutation.
-func (m *SurveyResponseAnswersMutation) AnswerValueCleared() bool {
-	_, ok := m.clearedFields[surveyresponseanswers.FieldAnswerValue]
+// AnswerCleared returns if the "answer" field was cleared in this mutation.
+func (m *SurveyResponseAnswersMutation) AnswerCleared() bool {
+	_, ok := m.clearedFields[surveyresponseanswers.FieldAnswer]
 	return ok
 }
 
-// ResetAnswerValue resets all changes to the "answer_value" field.
-func (m *SurveyResponseAnswersMutation) ResetAnswerValue() {
-	m.answer_value = nil
-	m.addanswer_value = nil
-	delete(m.clearedFields, surveyresponseanswers.FieldAnswerValue)
+// ResetAnswer resets all changes to the "answer" field.
+func (m *SurveyResponseAnswersMutation) ResetAnswer() {
+	m.answer = nil
+	m.appendanswer = nil
+	delete(m.clearedFields, surveyresponseanswers.FieldAnswer)
 }
 
 // Where appends a list predicates to the SurveyResponseAnswersMutation builder.
@@ -13444,8 +13529,8 @@ func (m *SurveyResponseAnswersMutation) Fields() []string {
 	if m.answer_text != nil {
 		fields = append(fields, surveyresponseanswers.FieldAnswerText)
 	}
-	if m.answer_value != nil {
-		fields = append(fields, surveyresponseanswers.FieldAnswerValue)
+	if m.answer != nil {
+		fields = append(fields, surveyresponseanswers.FieldAnswer)
 	}
 	return fields
 }
@@ -13473,8 +13558,8 @@ func (m *SurveyResponseAnswersMutation) Field(name string) (ent.Value, bool) {
 		return m.SurveyQuestionID()
 	case surveyresponseanswers.FieldAnswerText:
 		return m.AnswerText()
-	case surveyresponseanswers.FieldAnswerValue:
-		return m.AnswerValue()
+	case surveyresponseanswers.FieldAnswer:
+		return m.Answer()
 	}
 	return nil, false
 }
@@ -13502,8 +13587,8 @@ func (m *SurveyResponseAnswersMutation) OldField(ctx context.Context, name strin
 		return m.OldSurveyQuestionID(ctx)
 	case surveyresponseanswers.FieldAnswerText:
 		return m.OldAnswerText(ctx)
-	case surveyresponseanswers.FieldAnswerValue:
-		return m.OldAnswerValue(ctx)
+	case surveyresponseanswers.FieldAnswer:
+		return m.OldAnswer(ctx)
 	}
 	return nil, fmt.Errorf("unknown SurveyResponseAnswers field %s", name)
 }
@@ -13576,12 +13661,12 @@ func (m *SurveyResponseAnswersMutation) SetField(name string, value ent.Value) e
 		}
 		m.SetAnswerText(v)
 		return nil
-	case surveyresponseanswers.FieldAnswerValue:
-		v, ok := value.(int64)
+	case surveyresponseanswers.FieldAnswer:
+		v, ok := value.([]string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetAnswerValue(v)
+		m.SetAnswer(v)
 		return nil
 	}
 	return fmt.Errorf("unknown SurveyResponseAnswers field %s", name)
@@ -13609,9 +13694,6 @@ func (m *SurveyResponseAnswersMutation) AddedFields() []string {
 	if m.addsurvey_question_id != nil {
 		fields = append(fields, surveyresponseanswers.FieldSurveyQuestionID)
 	}
-	if m.addanswer_value != nil {
-		fields = append(fields, surveyresponseanswers.FieldAnswerValue)
-	}
 	return fields
 }
 
@@ -13632,8 +13714,6 @@ func (m *SurveyResponseAnswersMutation) AddedField(name string) (ent.Value, bool
 		return m.AddedSurveyResponseID()
 	case surveyresponseanswers.FieldSurveyQuestionID:
 		return m.AddedSurveyQuestionID()
-	case surveyresponseanswers.FieldAnswerValue:
-		return m.AddedAnswerValue()
 	}
 	return nil, false
 }
@@ -13685,13 +13765,6 @@ func (m *SurveyResponseAnswersMutation) AddField(name string, value ent.Value) e
 		}
 		m.AddSurveyQuestionID(v)
 		return nil
-	case surveyresponseanswers.FieldAnswerValue:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddAnswerValue(v)
-		return nil
 	}
 	return fmt.Errorf("unknown SurveyResponseAnswers numeric field %s", name)
 }
@@ -13727,8 +13800,8 @@ func (m *SurveyResponseAnswersMutation) ClearedFields() []string {
 	if m.FieldCleared(surveyresponseanswers.FieldAnswerText) {
 		fields = append(fields, surveyresponseanswers.FieldAnswerText)
 	}
-	if m.FieldCleared(surveyresponseanswers.FieldAnswerValue) {
-		fields = append(fields, surveyresponseanswers.FieldAnswerValue)
+	if m.FieldCleared(surveyresponseanswers.FieldAnswer) {
+		fields = append(fields, surveyresponseanswers.FieldAnswer)
 	}
 	return fields
 }
@@ -13771,8 +13844,8 @@ func (m *SurveyResponseAnswersMutation) ClearField(name string) error {
 	case surveyresponseanswers.FieldAnswerText:
 		m.ClearAnswerText()
 		return nil
-	case surveyresponseanswers.FieldAnswerValue:
-		m.ClearAnswerValue()
+	case surveyresponseanswers.FieldAnswer:
+		m.ClearAnswer()
 		return nil
 	}
 	return fmt.Errorf("unknown SurveyResponseAnswers nullable field %s", name)
@@ -13809,8 +13882,8 @@ func (m *SurveyResponseAnswersMutation) ResetField(name string) error {
 	case surveyresponseanswers.FieldAnswerText:
 		m.ResetAnswerText()
 		return nil
-	case surveyresponseanswers.FieldAnswerValue:
-		m.ResetAnswerValue()
+	case surveyresponseanswers.FieldAnswer:
+		m.ResetAnswer()
 		return nil
 	}
 	return fmt.Errorf("unknown SurveyResponseAnswers field %s", name)

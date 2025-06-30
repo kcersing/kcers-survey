@@ -3,6 +3,7 @@
 package ent
 
 import (
+	"encoding/json"
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"strings"
@@ -36,8 +37,8 @@ type SurveyResponseAnswers struct {
 	SurveyQuestionID int64 `json:"survey_question_id,omitempty"`
 	// 回答文本
 	AnswerText string `json:"answer_text,omitempty"`
-	// 回答数值
-	AnswerValue  int64 `json:"answer_value,omitempty"`
+	// answer
+	Answer       []string `json:"answer,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -46,7 +47,9 @@ func (*SurveyResponseAnswers) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case surveyresponseanswers.FieldID, surveyresponseanswers.FieldDelete, surveyresponseanswers.FieldCreatedID, surveyresponseanswers.FieldStatus, surveyresponseanswers.FieldSurveyID, surveyresponseanswers.FieldSurveyResponseID, surveyresponseanswers.FieldSurveyQuestionID, surveyresponseanswers.FieldAnswerValue:
+		case surveyresponseanswers.FieldAnswer:
+			values[i] = new([]byte)
+		case surveyresponseanswers.FieldID, surveyresponseanswers.FieldDelete, surveyresponseanswers.FieldCreatedID, surveyresponseanswers.FieldStatus, surveyresponseanswers.FieldSurveyID, surveyresponseanswers.FieldSurveyResponseID, surveyresponseanswers.FieldSurveyQuestionID:
 			values[i] = new(sql.NullInt64)
 		case surveyresponseanswers.FieldAnswerText:
 			values[i] = new(sql.NullString)
@@ -127,11 +130,13 @@ func (sra *SurveyResponseAnswers) assignValues(columns []string, values []any) e
 			} else if value.Valid {
 				sra.AnswerText = value.String
 			}
-		case surveyresponseanswers.FieldAnswerValue:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field answer_value", values[i])
-			} else if value.Valid {
-				sra.AnswerValue = value.Int64
+		case surveyresponseanswers.FieldAnswer:
+			if value, ok := values[i].(*[]byte); !ok {
+				return fmt.Errorf("unexpected type %T for field answer", values[i])
+			} else if value != nil && len(*value) > 0 {
+				if err := json.Unmarshal(*value, &sra.Answer); err != nil {
+					return fmt.Errorf("unmarshal field answer: %w", err)
+				}
 			}
 		default:
 			sra.selectValues.Set(columns[i], values[i])
@@ -196,8 +201,8 @@ func (sra *SurveyResponseAnswers) String() string {
 	builder.WriteString("answer_text=")
 	builder.WriteString(sra.AnswerText)
 	builder.WriteString(", ")
-	builder.WriteString("answer_value=")
-	builder.WriteString(fmt.Sprintf("%v", sra.AnswerValue))
+	builder.WriteString("answer=")
+	builder.WriteString(fmt.Sprintf("%v", sra.Answer))
 	builder.WriteByte(')')
 	return builder.String()
 }

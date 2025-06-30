@@ -114,6 +114,7 @@ func (s Survey) entToQuestionAll(all []*ent.SurveyQuestion, parentID int64) []*s
 				SurveyId:  v.SurveyID,
 				ParentId:  v.ParentID,
 				Serial:    v.Serial,
+				Show:      v.Show,
 			}
 
 			sq.Children = s.entToQuestionAll(all, v.ID)
@@ -136,6 +137,7 @@ func (s Survey) entToQuestion(v *ent.SurveyQuestion) *service.Question {
 		JumpRules: v.JumpRules,
 		SurveyId:  v.SurveyID,
 		ParentId:  v.ParentID,
+		Show:      v.Show,
 		Serial:    v.Serial,
 	}
 
@@ -320,45 +322,68 @@ func (s Survey) CreateResponse(req *service.CreateOrUpdateResponseReq) (err erro
 		Where(
 			surveyresponse2.SurveyID(req.SurveyId),
 			surveyresponse2.Sn(req.Sn),
-		).First(s.ctx)
+		).
+		First(s.ctx)
 	if sa == nil {
-		sa, _ = s.db.SurveyResponse.Create().
+		sa, err = s.db.SurveyResponse.Create().
 			SetSurveyID(req.SurveyId).
-			SetSn(req.Sn).Save(s.ctx)
+			SetSn(req.Sn).
+			Save(s.ctx)
+		if err != nil {
+			return err
+		}
 	}
 	sau := sa.Update()
-
-	if req.Type == "respondent" {
-		sau.SetRespondent(req.Value)
+	if req.Type == "location" {
+		sau.SetLatitude(req.Latitude)
+		sau.SetLongitude(req.Longitude)
+	} else if req.Type == "respondent" {
+		sau.SetRespondent(req.Value[0])
 	} else if req.Type == "respondentPhone" {
-		sau.SetRespondentPhone(req.Value)
-	}
-	if req.Type == "researcher" {
-		sau.SetResearcher(req.Value)
+		sau.SetRespondentPhone(req.Value[0])
+	} else if req.Type == "researcher" {
+		sau.SetResearcher(req.Value[0])
 	} else if req.Type == "researcherPhone" {
-		sau.SetResearcherPhone(req.Value)
+		sau.SetResearcherPhone(req.Value[0])
 	} else {
-		s.db.SurveyResponseAnswers.Update().
+
+		ra, _ := s.db.SurveyResponseAnswers.Query().
 			Where(
 				surveyresponseanswers2.SurveyID(req.SurveyId),
 				surveyresponseanswers2.SurveyResponseID(sa.ID),
 				surveyresponseanswers2.SurveyQuestionID(req.QuestionId),
-			).SetDelete(1).
-			Save(s.ctx)
+			).
+			First(s.ctx)
+		if ra == nil {
+			ra, err = s.db.SurveyResponseAnswers.Create().
+				SetSurveyID(req.SurveyId).
+				SetSurveyResponseID(sa.ID).
+				SetSurveyQuestionID(req.QuestionId).
+				Save(s.ctx)
+			if err != nil {
+				return err
+			}
+		}
+		rau := ra.Update()
 
-		s.db.SurveyResponseAnswers.Create().
-			SetSurveyID(req.SurveyId).
-			SetSurveyResponseID(sa.ID).
-			SetSurveyQuestionID(req.QuestionId).
-			SetAnswerText(req.Value).
-			Save(s.ctx)
+		if req.Type == "input" {
+
+			rau.SetAnswerText(req.Value[0])
+
+		} else {
+			rau.SetAnswer(req.Value)
+		}
+
+		_, err = rau.Save(s.ctx)
+		if err != nil {
+			return err
+		}
 	}
 
-	sau.Save(s.ctx)
+	_, err = sau.Save(s.ctx)
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 

@@ -228,6 +228,7 @@ var (
 		{Name: "content", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "content", Default: ""},
 		{Name: "type", Type: field.TypeString, Nullable: true, Comment: "type", Default: ""},
 		{Name: "options", Type: field.TypeJSON, Nullable: true, Comment: "options"},
+		{Name: "show", Type: field.TypeInt64, Nullable: true, Comment: "show", Default: 0},
 		{Name: "sort", Type: field.TypeInt64, Nullable: true, Comment: "sort", Default: 0},
 		{Name: "jump_rules", Type: field.TypeJSON, Nullable: true, Comment: "跳题规则"},
 		{Name: "required", Type: field.TypeInt64, Nullable: true, Comment: "是否必填 1必填 2选填", Default: 1},
@@ -241,7 +242,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "survey_question_survey_question",
-				Columns:    []*schema.Column{SurveyQuestionColumns[14]},
+				Columns:    []*schema.Column{SurveyQuestionColumns[15]},
 				RefColumns: []*schema.Column{SurveyColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -263,10 +264,10 @@ var (
 		{Name: "researcher_phone", Type: field.TypeString, Nullable: true, Comment: "调研员联系电话", Default: ""},
 		{Name: "pic", Type: field.TypeString, Nullable: true, Comment: "合照照片", Default: ""},
 		{Name: "ip", Type: field.TypeString, Nullable: true, Comment: "用户IP地址", Default: ""},
-		{Name: "map", Type: field.TypeString, Nullable: true, Comment: "用户地图坐标", Default: ""},
+		{Name: "latitude", Type: field.TypeString, Nullable: true, Comment: "latitude", Default: ""},
+		{Name: "longitude", Type: field.TypeString, Nullable: true, Comment: "longitude", Default: ""},
 		{Name: "device", Type: field.TypeString, Nullable: true, Comment: "设备信息", Default: ""},
 		{Name: "audio", Type: field.TypeString, Nullable: true, Comment: "音频", Default: ""},
-		{Name: "questions", Type: field.TypeJSON, Nullable: true},
 	}
 	// SurveyResponseTable holds the schema information for the "survey_response" table.
 	SurveyResponseTable = &schema.Table{
@@ -286,7 +287,7 @@ var (
 		{Name: "survey_response_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_response_id", Default: 0},
 		{Name: "survey_question_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_question_id", Default: 0},
 		{Name: "answer_text", Type: field.TypeString, Nullable: true, Comment: "回答文本"},
-		{Name: "answer_value", Type: field.TypeInt64, Nullable: true, Comment: "回答数值", Default: 1},
+		{Name: "answer", Type: field.TypeJSON, Nullable: true, Comment: "answer"},
 	}
 	// SurveyResponseAnswersTable holds the schema information for the "survey_response_answers" table.
 	SurveyResponseAnswersTable = &schema.Table{
