@@ -289,12 +289,16 @@ var (
 		{Name: "respondent_phone", Type: field.TypeString, Nullable: true, Comment: "受访人联系电话", Default: ""},
 		{Name: "researcher", Type: field.TypeString, Nullable: true, Comment: "调研员", Default: ""},
 		{Name: "researcher_phone", Type: field.TypeString, Nullable: true, Comment: "调研员联系电话", Default: ""},
-		{Name: "pic", Type: field.TypeString, Nullable: true, Comment: "合照照片", Default: ""},
+		{Name: "pic", Type: field.TypeJSON, Nullable: true, Comment: "合照照片"},
 		{Name: "ip", Type: field.TypeString, Nullable: true, Comment: "用户IP地址", Default: ""},
 		{Name: "latitude", Type: field.TypeString, Nullable: true, Comment: "latitude", Default: ""},
 		{Name: "longitude", Type: field.TypeString, Nullable: true, Comment: "longitude", Default: ""},
 		{Name: "device", Type: field.TypeString, Nullable: true, Comment: "设备信息", Default: ""},
-		{Name: "audio", Type: field.TypeString, Nullable: true, Comment: "音频", Default: ""},
+		{Name: "audio", Type: field.TypeJSON, Nullable: true, Comment: "音频"},
+		{Name: "area", Type: field.TypeString, Nullable: true, Comment: "area", Default: ""},
+		{Name: "city", Type: field.TypeString, Nullable: true, Comment: "city", Default: ""},
+		{Name: "district", Type: field.TypeString, Nullable: true, Comment: "district", Default: ""},
+		{Name: "address", Type: field.TypeString, Nullable: true, Comment: "address", Default: ""},
 	}
 	// SurveyResponseTable holds the schema information for the "survey_response" table.
 	SurveyResponseTable = &schema.Table{

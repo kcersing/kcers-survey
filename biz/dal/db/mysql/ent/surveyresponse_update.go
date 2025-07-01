@@ -12,6 +12,7 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema/field"
 )
 
@@ -250,16 +251,14 @@ func (sru *SurveyResponseUpdate) ClearResearcherPhone() *SurveyResponseUpdate {
 }
 
 // SetPic sets the "pic" field.
-func (sru *SurveyResponseUpdate) SetPic(s string) *SurveyResponseUpdate {
+func (sru *SurveyResponseUpdate) SetPic(s []string) *SurveyResponseUpdate {
 	sru.mutation.SetPic(s)
 	return sru
 }
 
-// SetNillablePic sets the "pic" field if the given value is not nil.
-func (sru *SurveyResponseUpdate) SetNillablePic(s *string) *SurveyResponseUpdate {
-	if s != nil {
-		sru.SetPic(*s)
-	}
+// AppendPic appends s to the "pic" field.
+func (sru *SurveyResponseUpdate) AppendPic(s []string) *SurveyResponseUpdate {
+	sru.mutation.AppendPic(s)
 	return sru
 }
 
@@ -350,22 +349,100 @@ func (sru *SurveyResponseUpdate) ClearDevice() *SurveyResponseUpdate {
 }
 
 // SetAudio sets the "audio" field.
-func (sru *SurveyResponseUpdate) SetAudio(s string) *SurveyResponseUpdate {
+func (sru *SurveyResponseUpdate) SetAudio(s []string) *SurveyResponseUpdate {
 	sru.mutation.SetAudio(s)
 	return sru
 }
 
-// SetNillableAudio sets the "audio" field if the given value is not nil.
-func (sru *SurveyResponseUpdate) SetNillableAudio(s *string) *SurveyResponseUpdate {
-	if s != nil {
-		sru.SetAudio(*s)
-	}
+// AppendAudio appends s to the "audio" field.
+func (sru *SurveyResponseUpdate) AppendAudio(s []string) *SurveyResponseUpdate {
+	sru.mutation.AppendAudio(s)
 	return sru
 }
 
 // ClearAudio clears the value of the "audio" field.
 func (sru *SurveyResponseUpdate) ClearAudio() *SurveyResponseUpdate {
 	sru.mutation.ClearAudio()
+	return sru
+}
+
+// SetArea sets the "area" field.
+func (sru *SurveyResponseUpdate) SetArea(s string) *SurveyResponseUpdate {
+	sru.mutation.SetArea(s)
+	return sru
+}
+
+// SetNillableArea sets the "area" field if the given value is not nil.
+func (sru *SurveyResponseUpdate) SetNillableArea(s *string) *SurveyResponseUpdate {
+	if s != nil {
+		sru.SetArea(*s)
+	}
+	return sru
+}
+
+// ClearArea clears the value of the "area" field.
+func (sru *SurveyResponseUpdate) ClearArea() *SurveyResponseUpdate {
+	sru.mutation.ClearArea()
+	return sru
+}
+
+// SetCity sets the "city" field.
+func (sru *SurveyResponseUpdate) SetCity(s string) *SurveyResponseUpdate {
+	sru.mutation.SetCity(s)
+	return sru
+}
+
+// SetNillableCity sets the "city" field if the given value is not nil.
+func (sru *SurveyResponseUpdate) SetNillableCity(s *string) *SurveyResponseUpdate {
+	if s != nil {
+		sru.SetCity(*s)
+	}
+	return sru
+}
+
+// ClearCity clears the value of the "city" field.
+func (sru *SurveyResponseUpdate) ClearCity() *SurveyResponseUpdate {
+	sru.mutation.ClearCity()
+	return sru
+}
+
+// SetDistrict sets the "district" field.
+func (sru *SurveyResponseUpdate) SetDistrict(s string) *SurveyResponseUpdate {
+	sru.mutation.SetDistrict(s)
+	return sru
+}
+
+// SetNillableDistrict sets the "district" field if the given value is not nil.
+func (sru *SurveyResponseUpdate) SetNillableDistrict(s *string) *SurveyResponseUpdate {
+	if s != nil {
+		sru.SetDistrict(*s)
+	}
+	return sru
+}
+
+// ClearDistrict clears the value of the "district" field.
+func (sru *SurveyResponseUpdate) ClearDistrict() *SurveyResponseUpdate {
+	sru.mutation.ClearDistrict()
+	return sru
+}
+
+// SetAddress sets the "address" field.
+func (sru *SurveyResponseUpdate) SetAddress(s string) *SurveyResponseUpdate {
+	sru.mutation.SetAddress(s)
+	return sru
+}
+
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (sru *SurveyResponseUpdate) SetNillableAddress(s *string) *SurveyResponseUpdate {
+	if s != nil {
+		sru.SetAddress(*s)
+	}
+	return sru
+}
+
+// ClearAddress clears the value of the "address" field.
+func (sru *SurveyResponseUpdate) ClearAddress() *SurveyResponseUpdate {
+	sru.mutation.ClearAddress()
 	return sru
 }
 
@@ -501,10 +578,15 @@ func (sru *SurveyResponseUpdate) sqlSave(ctx context.Context) (n int, err error)
 		_spec.ClearField(surveyresponse.FieldResearcherPhone, field.TypeString)
 	}
 	if value, ok := sru.mutation.Pic(); ok {
-		_spec.SetField(surveyresponse.FieldPic, field.TypeString, value)
+		_spec.SetField(surveyresponse.FieldPic, field.TypeJSON, value)
+	}
+	if value, ok := sru.mutation.AppendedPic(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponse.FieldPic, value)
+		})
 	}
 	if sru.mutation.PicCleared() {
-		_spec.ClearField(surveyresponse.FieldPic, field.TypeString)
+		_spec.ClearField(surveyresponse.FieldPic, field.TypeJSON)
 	}
 	if value, ok := sru.mutation.IP(); ok {
 		_spec.SetField(surveyresponse.FieldIP, field.TypeString, value)
@@ -531,10 +613,39 @@ func (sru *SurveyResponseUpdate) sqlSave(ctx context.Context) (n int, err error)
 		_spec.ClearField(surveyresponse.FieldDevice, field.TypeString)
 	}
 	if value, ok := sru.mutation.Audio(); ok {
-		_spec.SetField(surveyresponse.FieldAudio, field.TypeString, value)
+		_spec.SetField(surveyresponse.FieldAudio, field.TypeJSON, value)
+	}
+	if value, ok := sru.mutation.AppendedAudio(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponse.FieldAudio, value)
+		})
 	}
 	if sru.mutation.AudioCleared() {
-		_spec.ClearField(surveyresponse.FieldAudio, field.TypeString)
+		_spec.ClearField(surveyresponse.FieldAudio, field.TypeJSON)
+	}
+	if value, ok := sru.mutation.Area(); ok {
+		_spec.SetField(surveyresponse.FieldArea, field.TypeString, value)
+	}
+	if sru.mutation.AreaCleared() {
+		_spec.ClearField(surveyresponse.FieldArea, field.TypeString)
+	}
+	if value, ok := sru.mutation.City(); ok {
+		_spec.SetField(surveyresponse.FieldCity, field.TypeString, value)
+	}
+	if sru.mutation.CityCleared() {
+		_spec.ClearField(surveyresponse.FieldCity, field.TypeString)
+	}
+	if value, ok := sru.mutation.District(); ok {
+		_spec.SetField(surveyresponse.FieldDistrict, field.TypeString, value)
+	}
+	if sru.mutation.DistrictCleared() {
+		_spec.ClearField(surveyresponse.FieldDistrict, field.TypeString)
+	}
+	if value, ok := sru.mutation.Address(); ok {
+		_spec.SetField(surveyresponse.FieldAddress, field.TypeString, value)
+	}
+	if sru.mutation.AddressCleared() {
+		_spec.ClearField(surveyresponse.FieldAddress, field.TypeString)
 	}
 	_spec.AddModifiers(sru.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, sru.driver, _spec); err != nil {
@@ -779,16 +890,14 @@ func (sruo *SurveyResponseUpdateOne) ClearResearcherPhone() *SurveyResponseUpdat
 }
 
 // SetPic sets the "pic" field.
-func (sruo *SurveyResponseUpdateOne) SetPic(s string) *SurveyResponseUpdateOne {
+func (sruo *SurveyResponseUpdateOne) SetPic(s []string) *SurveyResponseUpdateOne {
 	sruo.mutation.SetPic(s)
 	return sruo
 }
 
-// SetNillablePic sets the "pic" field if the given value is not nil.
-func (sruo *SurveyResponseUpdateOne) SetNillablePic(s *string) *SurveyResponseUpdateOne {
-	if s != nil {
-		sruo.SetPic(*s)
-	}
+// AppendPic appends s to the "pic" field.
+func (sruo *SurveyResponseUpdateOne) AppendPic(s []string) *SurveyResponseUpdateOne {
+	sruo.mutation.AppendPic(s)
 	return sruo
 }
 
@@ -879,22 +988,100 @@ func (sruo *SurveyResponseUpdateOne) ClearDevice() *SurveyResponseUpdateOne {
 }
 
 // SetAudio sets the "audio" field.
-func (sruo *SurveyResponseUpdateOne) SetAudio(s string) *SurveyResponseUpdateOne {
+func (sruo *SurveyResponseUpdateOne) SetAudio(s []string) *SurveyResponseUpdateOne {
 	sruo.mutation.SetAudio(s)
 	return sruo
 }
 
-// SetNillableAudio sets the "audio" field if the given value is not nil.
-func (sruo *SurveyResponseUpdateOne) SetNillableAudio(s *string) *SurveyResponseUpdateOne {
-	if s != nil {
-		sruo.SetAudio(*s)
-	}
+// AppendAudio appends s to the "audio" field.
+func (sruo *SurveyResponseUpdateOne) AppendAudio(s []string) *SurveyResponseUpdateOne {
+	sruo.mutation.AppendAudio(s)
 	return sruo
 }
 
 // ClearAudio clears the value of the "audio" field.
 func (sruo *SurveyResponseUpdateOne) ClearAudio() *SurveyResponseUpdateOne {
 	sruo.mutation.ClearAudio()
+	return sruo
+}
+
+// SetArea sets the "area" field.
+func (sruo *SurveyResponseUpdateOne) SetArea(s string) *SurveyResponseUpdateOne {
+	sruo.mutation.SetArea(s)
+	return sruo
+}
+
+// SetNillableArea sets the "area" field if the given value is not nil.
+func (sruo *SurveyResponseUpdateOne) SetNillableArea(s *string) *SurveyResponseUpdateOne {
+	if s != nil {
+		sruo.SetArea(*s)
+	}
+	return sruo
+}
+
+// ClearArea clears the value of the "area" field.
+func (sruo *SurveyResponseUpdateOne) ClearArea() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearArea()
+	return sruo
+}
+
+// SetCity sets the "city" field.
+func (sruo *SurveyResponseUpdateOne) SetCity(s string) *SurveyResponseUpdateOne {
+	sruo.mutation.SetCity(s)
+	return sruo
+}
+
+// SetNillableCity sets the "city" field if the given value is not nil.
+func (sruo *SurveyResponseUpdateOne) SetNillableCity(s *string) *SurveyResponseUpdateOne {
+	if s != nil {
+		sruo.SetCity(*s)
+	}
+	return sruo
+}
+
+// ClearCity clears the value of the "city" field.
+func (sruo *SurveyResponseUpdateOne) ClearCity() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearCity()
+	return sruo
+}
+
+// SetDistrict sets the "district" field.
+func (sruo *SurveyResponseUpdateOne) SetDistrict(s string) *SurveyResponseUpdateOne {
+	sruo.mutation.SetDistrict(s)
+	return sruo
+}
+
+// SetNillableDistrict sets the "district" field if the given value is not nil.
+func (sruo *SurveyResponseUpdateOne) SetNillableDistrict(s *string) *SurveyResponseUpdateOne {
+	if s != nil {
+		sruo.SetDistrict(*s)
+	}
+	return sruo
+}
+
+// ClearDistrict clears the value of the "district" field.
+func (sruo *SurveyResponseUpdateOne) ClearDistrict() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearDistrict()
+	return sruo
+}
+
+// SetAddress sets the "address" field.
+func (sruo *SurveyResponseUpdateOne) SetAddress(s string) *SurveyResponseUpdateOne {
+	sruo.mutation.SetAddress(s)
+	return sruo
+}
+
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (sruo *SurveyResponseUpdateOne) SetNillableAddress(s *string) *SurveyResponseUpdateOne {
+	if s != nil {
+		sruo.SetAddress(*s)
+	}
+	return sruo
+}
+
+// ClearAddress clears the value of the "address" field.
+func (sruo *SurveyResponseUpdateOne) ClearAddress() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearAddress()
 	return sruo
 }
 
@@ -1060,10 +1247,15 @@ func (sruo *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 		_spec.ClearField(surveyresponse.FieldResearcherPhone, field.TypeString)
 	}
 	if value, ok := sruo.mutation.Pic(); ok {
-		_spec.SetField(surveyresponse.FieldPic, field.TypeString, value)
+		_spec.SetField(surveyresponse.FieldPic, field.TypeJSON, value)
+	}
+	if value, ok := sruo.mutation.AppendedPic(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponse.FieldPic, value)
+		})
 	}
 	if sruo.mutation.PicCleared() {
-		_spec.ClearField(surveyresponse.FieldPic, field.TypeString)
+		_spec.ClearField(surveyresponse.FieldPic, field.TypeJSON)
 	}
 	if value, ok := sruo.mutation.IP(); ok {
 		_spec.SetField(surveyresponse.FieldIP, field.TypeString, value)
@@ -1090,10 +1282,39 @@ func (sruo *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 		_spec.ClearField(surveyresponse.FieldDevice, field.TypeString)
 	}
 	if value, ok := sruo.mutation.Audio(); ok {
-		_spec.SetField(surveyresponse.FieldAudio, field.TypeString, value)
+		_spec.SetField(surveyresponse.FieldAudio, field.TypeJSON, value)
+	}
+	if value, ok := sruo.mutation.AppendedAudio(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponse.FieldAudio, value)
+		})
 	}
 	if sruo.mutation.AudioCleared() {
-		_spec.ClearField(surveyresponse.FieldAudio, field.TypeString)
+		_spec.ClearField(surveyresponse.FieldAudio, field.TypeJSON)
+	}
+	if value, ok := sruo.mutation.Area(); ok {
+		_spec.SetField(surveyresponse.FieldArea, field.TypeString, value)
+	}
+	if sruo.mutation.AreaCleared() {
+		_spec.ClearField(surveyresponse.FieldArea, field.TypeString)
+	}
+	if value, ok := sruo.mutation.City(); ok {
+		_spec.SetField(surveyresponse.FieldCity, field.TypeString, value)
+	}
+	if sruo.mutation.CityCleared() {
+		_spec.ClearField(surveyresponse.FieldCity, field.TypeString)
+	}
+	if value, ok := sruo.mutation.District(); ok {
+		_spec.SetField(surveyresponse.FieldDistrict, field.TypeString, value)
+	}
+	if sruo.mutation.DistrictCleared() {
+		_spec.ClearField(surveyresponse.FieldDistrict, field.TypeString)
+	}
+	if value, ok := sruo.mutation.Address(); ok {
+		_spec.SetField(surveyresponse.FieldAddress, field.TypeString, value)
+	}
+	if sruo.mutation.AddressCleared() {
+		_spec.ClearField(surveyresponse.FieldAddress, field.TypeString)
 	}
 	_spec.AddModifiers(sruo.modifiers...)
 	_node = &SurveyResponse{config: sruo.config}

@@ -174,16 +174,8 @@ func (src *SurveyResponseCreate) SetNillableResearcherPhone(s *string) *SurveyRe
 }
 
 // SetPic sets the "pic" field.
-func (src *SurveyResponseCreate) SetPic(s string) *SurveyResponseCreate {
+func (src *SurveyResponseCreate) SetPic(s []string) *SurveyResponseCreate {
 	src.mutation.SetPic(s)
-	return src
-}
-
-// SetNillablePic sets the "pic" field if the given value is not nil.
-func (src *SurveyResponseCreate) SetNillablePic(s *string) *SurveyResponseCreate {
-	if s != nil {
-		src.SetPic(*s)
-	}
 	return src
 }
 
@@ -244,15 +236,63 @@ func (src *SurveyResponseCreate) SetNillableDevice(s *string) *SurveyResponseCre
 }
 
 // SetAudio sets the "audio" field.
-func (src *SurveyResponseCreate) SetAudio(s string) *SurveyResponseCreate {
+func (src *SurveyResponseCreate) SetAudio(s []string) *SurveyResponseCreate {
 	src.mutation.SetAudio(s)
 	return src
 }
 
-// SetNillableAudio sets the "audio" field if the given value is not nil.
-func (src *SurveyResponseCreate) SetNillableAudio(s *string) *SurveyResponseCreate {
+// SetArea sets the "area" field.
+func (src *SurveyResponseCreate) SetArea(s string) *SurveyResponseCreate {
+	src.mutation.SetArea(s)
+	return src
+}
+
+// SetNillableArea sets the "area" field if the given value is not nil.
+func (src *SurveyResponseCreate) SetNillableArea(s *string) *SurveyResponseCreate {
 	if s != nil {
-		src.SetAudio(*s)
+		src.SetArea(*s)
+	}
+	return src
+}
+
+// SetCity sets the "city" field.
+func (src *SurveyResponseCreate) SetCity(s string) *SurveyResponseCreate {
+	src.mutation.SetCity(s)
+	return src
+}
+
+// SetNillableCity sets the "city" field if the given value is not nil.
+func (src *SurveyResponseCreate) SetNillableCity(s *string) *SurveyResponseCreate {
+	if s != nil {
+		src.SetCity(*s)
+	}
+	return src
+}
+
+// SetDistrict sets the "district" field.
+func (src *SurveyResponseCreate) SetDistrict(s string) *SurveyResponseCreate {
+	src.mutation.SetDistrict(s)
+	return src
+}
+
+// SetNillableDistrict sets the "district" field if the given value is not nil.
+func (src *SurveyResponseCreate) SetNillableDistrict(s *string) *SurveyResponseCreate {
+	if s != nil {
+		src.SetDistrict(*s)
+	}
+	return src
+}
+
+// SetAddress sets the "address" field.
+func (src *SurveyResponseCreate) SetAddress(s string) *SurveyResponseCreate {
+	src.mutation.SetAddress(s)
+	return src
+}
+
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (src *SurveyResponseCreate) SetNillableAddress(s *string) *SurveyResponseCreate {
+	if s != nil {
+		src.SetAddress(*s)
 	}
 	return src
 }
@@ -366,6 +406,22 @@ func (src *SurveyResponseCreate) defaults() {
 		v := surveyresponse.DefaultAudio
 		src.mutation.SetAudio(v)
 	}
+	if _, ok := src.mutation.Area(); !ok {
+		v := surveyresponse.DefaultArea
+		src.mutation.SetArea(v)
+	}
+	if _, ok := src.mutation.City(); !ok {
+		v := surveyresponse.DefaultCity
+		src.mutation.SetCity(v)
+	}
+	if _, ok := src.mutation.District(); !ok {
+		v := surveyresponse.DefaultDistrict
+		src.mutation.SetDistrict(v)
+	}
+	if _, ok := src.mutation.Address(); !ok {
+		v := surveyresponse.DefaultAddress
+		src.mutation.SetAddress(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -447,7 +503,7 @@ func (src *SurveyResponseCreate) createSpec() (*SurveyResponse, *sqlgraph.Create
 		_node.ResearcherPhone = value
 	}
 	if value, ok := src.mutation.Pic(); ok {
-		_spec.SetField(surveyresponse.FieldPic, field.TypeString, value)
+		_spec.SetField(surveyresponse.FieldPic, field.TypeJSON, value)
 		_node.Pic = value
 	}
 	if value, ok := src.mutation.IP(); ok {
@@ -467,8 +523,24 @@ func (src *SurveyResponseCreate) createSpec() (*SurveyResponse, *sqlgraph.Create
 		_node.Device = value
 	}
 	if value, ok := src.mutation.Audio(); ok {
-		_spec.SetField(surveyresponse.FieldAudio, field.TypeString, value)
+		_spec.SetField(surveyresponse.FieldAudio, field.TypeJSON, value)
 		_node.Audio = value
+	}
+	if value, ok := src.mutation.Area(); ok {
+		_spec.SetField(surveyresponse.FieldArea, field.TypeString, value)
+		_node.Area = value
+	}
+	if value, ok := src.mutation.City(); ok {
+		_spec.SetField(surveyresponse.FieldCity, field.TypeString, value)
+		_node.City = value
+	}
+	if value, ok := src.mutation.District(); ok {
+		_spec.SetField(surveyresponse.FieldDistrict, field.TypeString, value)
+		_node.District = value
+	}
+	if value, ok := src.mutation.Address(); ok {
+		_spec.SetField(surveyresponse.FieldAddress, field.TypeString, value)
+		_node.Address = value
 	}
 	return _node, _spec
 }

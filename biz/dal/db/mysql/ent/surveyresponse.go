@@ -3,6 +3,7 @@
 package ent
 
 import (
+	"encoding/json"
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
 	"strings"
@@ -41,7 +42,7 @@ type SurveyResponse struct {
 	// 调研员联系电话
 	ResearcherPhone string `json:"researcher_phone,omitempty"`
 	// 合照照片
-	Pic string `json:"pic,omitempty"`
+	Pic []string `json:"pic,omitempty"`
 	// 用户IP地址
 	IP string `json:"ip,omitempty"`
 	// latitude
@@ -51,7 +52,15 @@ type SurveyResponse struct {
 	// 设备信息
 	Device string `json:"device,omitempty"`
 	// 音频
-	Audio        string `json:"audio,omitempty"`
+	Audio []string `json:"audio,omitempty"`
+	// area
+	Area string `json:"area,omitempty"`
+	// city
+	City string `json:"city,omitempty"`
+	// district
+	District string `json:"district,omitempty"`
+	// address
+	Address      string `json:"address,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -60,9 +69,11 @@ func (*SurveyResponse) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case surveyresponse.FieldPic, surveyresponse.FieldAudio:
+			values[i] = new([]byte)
 		case surveyresponse.FieldID, surveyresponse.FieldDelete, surveyresponse.FieldCreatedID, surveyresponse.FieldStatus, surveyresponse.FieldSurveyID:
 			values[i] = new(sql.NullInt64)
-		case surveyresponse.FieldSn, surveyresponse.FieldRespondent, surveyresponse.FieldRespondentPhone, surveyresponse.FieldResearcher, surveyresponse.FieldResearcherPhone, surveyresponse.FieldPic, surveyresponse.FieldIP, surveyresponse.FieldLatitude, surveyresponse.FieldLongitude, surveyresponse.FieldDevice, surveyresponse.FieldAudio:
+		case surveyresponse.FieldSn, surveyresponse.FieldRespondent, surveyresponse.FieldRespondentPhone, surveyresponse.FieldResearcher, surveyresponse.FieldResearcherPhone, surveyresponse.FieldIP, surveyresponse.FieldLatitude, surveyresponse.FieldLongitude, surveyresponse.FieldDevice, surveyresponse.FieldArea, surveyresponse.FieldCity, surveyresponse.FieldDistrict, surveyresponse.FieldAddress:
 			values[i] = new(sql.NullString)
 		case surveyresponse.FieldCreatedAt, surveyresponse.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -154,10 +165,12 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 				sr.ResearcherPhone = value.String
 			}
 		case surveyresponse.FieldPic:
-			if value, ok := values[i].(*sql.NullString); !ok {
+			if value, ok := values[i].(*[]byte); !ok {
 				return fmt.Errorf("unexpected type %T for field pic", values[i])
-			} else if value.Valid {
-				sr.Pic = value.String
+			} else if value != nil && len(*value) > 0 {
+				if err := json.Unmarshal(*value, &sr.Pic); err != nil {
+					return fmt.Errorf("unmarshal field pic: %w", err)
+				}
 			}
 		case surveyresponse.FieldIP:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -184,10 +197,36 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 				sr.Device = value.String
 			}
 		case surveyresponse.FieldAudio:
-			if value, ok := values[i].(*sql.NullString); !ok {
+			if value, ok := values[i].(*[]byte); !ok {
 				return fmt.Errorf("unexpected type %T for field audio", values[i])
+			} else if value != nil && len(*value) > 0 {
+				if err := json.Unmarshal(*value, &sr.Audio); err != nil {
+					return fmt.Errorf("unmarshal field audio: %w", err)
+				}
+			}
+		case surveyresponse.FieldArea:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field area", values[i])
 			} else if value.Valid {
-				sr.Audio = value.String
+				sr.Area = value.String
+			}
+		case surveyresponse.FieldCity:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field city", values[i])
+			} else if value.Valid {
+				sr.City = value.String
+			}
+		case surveyresponse.FieldDistrict:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field district", values[i])
+			} else if value.Valid {
+				sr.District = value.String
+			}
+		case surveyresponse.FieldAddress:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field address", values[i])
+			} else if value.Valid {
+				sr.Address = value.String
 			}
 		default:
 			sr.selectValues.Set(columns[i], values[i])
@@ -259,7 +298,7 @@ func (sr *SurveyResponse) String() string {
 	builder.WriteString(sr.ResearcherPhone)
 	builder.WriteString(", ")
 	builder.WriteString("pic=")
-	builder.WriteString(sr.Pic)
+	builder.WriteString(fmt.Sprintf("%v", sr.Pic))
 	builder.WriteString(", ")
 	builder.WriteString("ip=")
 	builder.WriteString(sr.IP)
@@ -274,7 +313,19 @@ func (sr *SurveyResponse) String() string {
 	builder.WriteString(sr.Device)
 	builder.WriteString(", ")
 	builder.WriteString("audio=")
-	builder.WriteString(sr.Audio)
+	builder.WriteString(fmt.Sprintf("%v", sr.Audio))
+	builder.WriteString(", ")
+	builder.WriteString("area=")
+	builder.WriteString(sr.Area)
+	builder.WriteString(", ")
+	builder.WriteString("city=")
+	builder.WriteString(sr.City)
+	builder.WriteString(", ")
+	builder.WriteString("district=")
+	builder.WriteString(sr.District)
+	builder.WriteString(", ")
+	builder.WriteString("address=")
+	builder.WriteString(sr.Address)
 	builder.WriteByte(')')
 	return builder.String()
 }

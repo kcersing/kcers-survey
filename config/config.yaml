@@ -4,7 +4,7 @@ Host: 0.0.0.0
 Port: 9039
 Timeout: 30000
 Domain: http://127.0.0.1/
-PicHost: http://127.0.0.1
+PicHost: https://survey.367281.com/
 
 Captcha:
   KeyLong: 5

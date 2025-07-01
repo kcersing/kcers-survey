@@ -47,6 +47,14 @@ const (
 	FieldDevice = "device"
 	// FieldAudio holds the string denoting the audio field in the database.
 	FieldAudio = "audio"
+	// FieldArea holds the string denoting the area field in the database.
+	FieldArea = "area"
+	// FieldCity holds the string denoting the city field in the database.
+	FieldCity = "city"
+	// FieldDistrict holds the string denoting the district field in the database.
+	FieldDistrict = "district"
+	// FieldAddress holds the string denoting the address field in the database.
+	FieldAddress = "address"
 	// Table holds the table name of the surveyresponse in the database.
 	Table = "survey_response"
 )
@@ -71,6 +79,10 @@ var Columns = []string{
 	FieldLongitude,
 	FieldDevice,
 	FieldAudio,
+	FieldArea,
+	FieldCity,
+	FieldDistrict,
+	FieldAddress,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -109,7 +121,7 @@ var (
 	// DefaultResearcherPhone holds the default value on creation for the "researcher_phone" field.
 	DefaultResearcherPhone string
 	// DefaultPic holds the default value on creation for the "pic" field.
-	DefaultPic string
+	DefaultPic []string
 	// DefaultIP holds the default value on creation for the "ip" field.
 	DefaultIP string
 	// DefaultLatitude holds the default value on creation for the "latitude" field.
@@ -119,7 +131,15 @@ var (
 	// DefaultDevice holds the default value on creation for the "device" field.
 	DefaultDevice string
 	// DefaultAudio holds the default value on creation for the "audio" field.
-	DefaultAudio string
+	DefaultAudio []string
+	// DefaultArea holds the default value on creation for the "area" field.
+	DefaultArea string
+	// DefaultCity holds the default value on creation for the "city" field.
+	DefaultCity string
+	// DefaultDistrict holds the default value on creation for the "district" field.
+	DefaultDistrict string
+	// DefaultAddress holds the default value on creation for the "address" field.
+	DefaultAddress string
 )
 
 // OrderOption defines the ordering options for the SurveyResponse queries.
@@ -185,11 +205,6 @@ func ByResearcherPhone(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldResearcherPhone, opts...).ToFunc()
 }
 
-// ByPic orders the results by the pic field.
-func ByPic(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPic, opts...).ToFunc()
-}
-
 // ByIP orders the results by the ip field.
 func ByIP(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIP, opts...).ToFunc()
@@ -210,7 +225,22 @@ func ByDevice(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDevice, opts...).ToFunc()
 }
 
-// ByAudio orders the results by the audio field.
-func ByAudio(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAudio, opts...).ToFunc()
+// ByArea orders the results by the area field.
+func ByArea(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldArea, opts...).ToFunc()
+}
+
+// ByCity orders the results by the city field.
+func ByCity(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCity, opts...).ToFunc()
+}
+
+// ByDistrict orders the results by the district field.
+func ByDistrict(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDistrict, opts...).ToFunc()
+}
+
+// ByAddress orders the results by the address field.
+func ByAddress(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAddress, opts...).ToFunc()
 }

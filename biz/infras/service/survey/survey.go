@@ -337,16 +337,46 @@ func (s Survey) CreateResponse(req *service.CreateOrUpdateResponseReq) (err erro
 	if req.Type == "location" {
 		sau.SetLatitude(req.Latitude)
 		sau.SetLongitude(req.Longitude)
-	} else if req.Type == "respondent" {
+	}
+	if req.Type == "respondent" {
 		sau.SetRespondent(req.Value[0])
-	} else if req.Type == "respondentPhone" {
+	}
+	if req.Type == "respondentPhone" {
 		sau.SetRespondentPhone(req.Value[0])
-	} else if req.Type == "researcher" {
+	}
+	if req.Type == "researcher" {
 		sau.SetResearcher(req.Value[0])
-	} else if req.Type == "researcherPhone" {
+	}
+	if req.Type == "researcherPhone" {
 		sau.SetResearcherPhone(req.Value[0])
-	} else {
+	}
 
+	if req.Type == "researcherPhone" {
+		sau.SetResearcherPhone(req.Value[0])
+	}
+
+	if req.Type == "audio" {
+		sau.AppendAudio(req.Value)
+	}
+
+	if req.Type == "image" {
+		sau.AppendPic(req.Value)
+	}
+
+	if req.Type == "area" {
+		sau.SetArea(req.Value[0])
+	}
+	if req.Type == "city" {
+		sau.SetCity(req.Value[0])
+	}
+	if req.Type == "city2" {
+		sau.SetDistrict(req.Value[0])
+	}
+	if req.Type == "address" {
+		sau.SetAddress(req.Value[0])
+	}
+
+	if req.QuestionId > 0 {
 		ra, _ := s.db.SurveyResponseAnswers.Query().
 			Where(
 				surveyresponseanswers2.SurveyID(req.SurveyId),
