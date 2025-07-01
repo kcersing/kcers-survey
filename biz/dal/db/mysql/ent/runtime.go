@@ -4,6 +4,7 @@ package ent
 
 import (
 	"kcers-survey/biz/dal/db/mysql/ent/api"
+	"kcers-survey/biz/dal/db/mysql/ent/area"
 	"kcers-survey/biz/dal/db/mysql/ent/dictionary"
 	"kcers-survey/biz/dal/db/mysql/ent/dictionarydetail"
 	"kcers-survey/biz/dal/db/mysql/ent/logs"
@@ -52,6 +53,35 @@ func init() {
 	apiDescMethod := apiFields[4].Descriptor()
 	// api.DefaultMethod holds the default value on creation for the method field.
 	api.DefaultMethod = apiDescMethod.Default.(string)
+	areaMixin := schema.Area{}.Mixin()
+	areaMixinFields0 := areaMixin[0].Fields()
+	_ = areaMixinFields0
+	areaMixinFields1 := areaMixin[1].Fields()
+	_ = areaMixinFields1
+	areaFields := schema.Area{}.Fields()
+	_ = areaFields
+	// areaDescCreatedAt is the schema descriptor for created_at field.
+	areaDescCreatedAt := areaMixinFields0[1].Descriptor()
+	// area.DefaultCreatedAt holds the default value on creation for the created_at field.
+	area.DefaultCreatedAt = areaDescCreatedAt.Default.(func() time.Time)
+	// areaDescUpdatedAt is the schema descriptor for updated_at field.
+	areaDescUpdatedAt := areaMixinFields0[2].Descriptor()
+	// area.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	area.DefaultUpdatedAt = areaDescUpdatedAt.Default.(func() time.Time)
+	// area.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	area.UpdateDefaultUpdatedAt = areaDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// areaDescDelete is the schema descriptor for delete field.
+	areaDescDelete := areaMixinFields0[3].Descriptor()
+	// area.DefaultDelete holds the default value on creation for the delete field.
+	area.DefaultDelete = areaDescDelete.Default.(int64)
+	// areaDescCreatedID is the schema descriptor for created_id field.
+	areaDescCreatedID := areaMixinFields0[4].Descriptor()
+	// area.DefaultCreatedID holds the default value on creation for the created_id field.
+	area.DefaultCreatedID = areaDescCreatedID.Default.(int64)
+	// areaDescStatus is the schema descriptor for status field.
+	areaDescStatus := areaMixinFields1[0].Descriptor()
+	// area.DefaultStatus holds the default value on creation for the status field.
+	area.DefaultStatus = areaDescStatus.Default.(int64)
 	dictionaryMixin := schema.Dictionary{}.Mixin()
 	dictionaryMixinFields0 := dictionaryMixin[0].Fields()
 	_ = dictionaryMixinFields0

@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/api"
+	"kcers-survey/biz/dal/db/mysql/ent/area"
 	"kcers-survey/biz/dal/db/mysql/ent/dictionary"
 	"kcers-survey/biz/dal/db/mysql/ent/dictionarydetail"
 	"kcers-survey/biz/dal/db/mysql/ent/logs"
@@ -86,6 +87,7 @@ func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
 			api.Table:                   api.ValidColumn,
+			area.Table:                  area.ValidColumn,
 			dictionary.Table:            dictionary.ValidColumn,
 			dictionarydetail.Table:      dictionarydetail.ValidColumn,
 			logs.Table:                  logs.ValidColumn,

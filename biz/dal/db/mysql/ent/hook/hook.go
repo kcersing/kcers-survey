@@ -20,6 +20,18 @@ func (f APIFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) 
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.APIMutation", m)
 }
 
+// The AreaFunc type is an adapter to allow the use of ordinary
+// function as Area mutator.
+type AreaFunc func(context.Context, *ent.AreaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f AreaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.AreaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.AreaMutation", m)
+}
+
 // The DictionaryFunc type is an adapter to allow the use of ordinary
 // function as Dictionary mutator.
 type DictionaryFunc func(context.Context, *ent.DictionaryMutation) (ent.Value, error)

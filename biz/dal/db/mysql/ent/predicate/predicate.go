@@ -9,6 +9,9 @@ import (
 // API is the predicate function for api builders.
 type API func(*sql.Selector)
 
+// Area is the predicate function for area builders.
+type Area func(*sql.Selector)
+
 // Dictionary is the predicate function for dictionary builders.
 type Dictionary func(*sql.Selector)
 

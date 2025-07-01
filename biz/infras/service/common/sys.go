@@ -9,7 +9,10 @@ import (
 	"kcers-survey/biz/dal/config"
 	db "kcers-survey/biz/dal/db/mysql"
 	"kcers-survey/biz/dal/db/mysql/ent"
+	"kcers-survey/biz/dal/db/mysql/ent/area"
 	"kcers-survey/biz/dal/db/mysql/ent/predicate"
+	"kcers-survey/idl_gen/model/base"
+	"strconv"
 
 	"kcers-survey/biz/infras/do"
 
@@ -22,6 +25,42 @@ type Sys struct {
 	salt  string
 	db    *ent.Client
 	cache *ristretto.Cache
+}
+
+func (s *Sys) Area(req *sys.SysListReq) (list []*base.Tree, total int64, err error) {
+	all, err := s.db.Area.
+		Query().
+		Where(area.ParentID(0)).
+		All(s.ctx)
+	if err != nil {
+		return nil, 0, err
+	}
+	for _, v := range all {
+		list = append(list, &base.Tree{
+			Title: v.Name,
+			Value: strconv.FormatInt(v.ID, 10),
+		})
+	}
+	total = int64(len(all))
+	return list, total, nil
+}
+
+func (s *Sys) City(req *sys.SysListReq) (list []*base.Tree, total int64, err error) {
+	all, err := s.db.Area.
+		Query().
+		Where(area.ParentID(req.ID)).
+		All(s.ctx)
+	if err != nil {
+		return nil, 0, err
+	}
+	for _, v := range all {
+		list = append(list, &base.Tree{
+			Title: v.Name,
+			Value: strconv.FormatInt(v.ID, 10),
+		})
+	}
+	total = int64(len(all))
+	return list, total, nil
 }
 
 func (s *Sys) RoleList(req *sys.SysListReq) (list []*sys.SysList, total int64, err error) {

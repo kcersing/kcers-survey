@@ -12,6 +12,7 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/migrate"
 
 	"kcers-survey/biz/dal/db/mysql/ent/api"
+	"kcers-survey/biz/dal/db/mysql/ent/area"
 	"kcers-survey/biz/dal/db/mysql/ent/dictionary"
 	"kcers-survey/biz/dal/db/mysql/ent/dictionarydetail"
 	"kcers-survey/biz/dal/db/mysql/ent/logs"
@@ -38,6 +39,8 @@ type Client struct {
 	Schema *migrate.Schema
 	// API is the client for interacting with the API builders.
 	API *APIClient
+	// Area is the client for interacting with the Area builders.
+	Area *AreaClient
 	// Dictionary is the client for interacting with the Dictionary builders.
 	Dictionary *DictionaryClient
 	// DictionaryDetail is the client for interacting with the DictionaryDetail builders.
@@ -74,6 +77,7 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.API = NewAPIClient(c.config)
+	c.Area = NewAreaClient(c.config)
 	c.Dictionary = NewDictionaryClient(c.config)
 	c.DictionaryDetail = NewDictionaryDetailClient(c.config)
 	c.Logs = NewLogsClient(c.config)
@@ -179,6 +183,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		ctx:                   ctx,
 		config:                cfg,
 		API:                   NewAPIClient(cfg),
+		Area:                  NewAreaClient(cfg),
 		Dictionary:            NewDictionaryClient(cfg),
 		DictionaryDetail:      NewDictionaryDetailClient(cfg),
 		Logs:                  NewLogsClient(cfg),
@@ -211,6 +216,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		ctx:                   ctx,
 		config:                cfg,
 		API:                   NewAPIClient(cfg),
+		Area:                  NewAreaClient(cfg),
 		Dictionary:            NewDictionaryClient(cfg),
 		DictionaryDetail:      NewDictionaryDetailClient(cfg),
 		Logs:                  NewLogsClient(cfg),
@@ -252,9 +258,9 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.API, c.Dictionary, c.DictionaryDetail, c.Logs, c.Menu, c.MenuParam, c.Role,
-		c.Survey, c.SurveyQuestion, c.SurveyResponse, c.SurveyResponseAnswers, c.Token,
-		c.User,
+		c.API, c.Area, c.Dictionary, c.DictionaryDetail, c.Logs, c.Menu, c.MenuParam,
+		c.Role, c.Survey, c.SurveyQuestion, c.SurveyResponse, c.SurveyResponseAnswers,
+		c.Token, c.User,
 	} {
 		n.Use(hooks...)
 	}
@@ -264,9 +270,9 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.API, c.Dictionary, c.DictionaryDetail, c.Logs, c.Menu, c.MenuParam, c.Role,
-		c.Survey, c.SurveyQuestion, c.SurveyResponse, c.SurveyResponseAnswers, c.Token,
-		c.User,
+		c.API, c.Area, c.Dictionary, c.DictionaryDetail, c.Logs, c.Menu, c.MenuParam,
+		c.Role, c.Survey, c.SurveyQuestion, c.SurveyResponse, c.SurveyResponseAnswers,
+		c.Token, c.User,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -277,6 +283,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
 	case *APIMutation:
 		return c.API.mutate(ctx, m)
+	case *AreaMutation:
+		return c.Area.mutate(ctx, m)
 	case *DictionaryMutation:
 		return c.Dictionary.mutate(ctx, m)
 	case *DictionaryDetailMutation:
@@ -436,6 +444,139 @@ func (c *APIClient) mutate(ctx context.Context, m *APIMutation) (Value, error) {
 		return (&APIDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown API mutation op: %q", m.Op())
+	}
+}
+
+// AreaClient is a client for the Area schema.
+type AreaClient struct {
+	config
+}
+
+// NewAreaClient returns a client for the Area from the given config.
+func NewAreaClient(c config) *AreaClient {
+	return &AreaClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `area.Hooks(f(g(h())))`.
+func (c *AreaClient) Use(hooks ...Hook) {
+	c.hooks.Area = append(c.hooks.Area, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `area.Intercept(f(g(h())))`.
+func (c *AreaClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Area = append(c.inters.Area, interceptors...)
+}
+
+// Create returns a builder for creating a Area entity.
+func (c *AreaClient) Create() *AreaCreate {
+	mutation := newAreaMutation(c.config, OpCreate)
+	return &AreaCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Area entities.
+func (c *AreaClient) CreateBulk(builders ...*AreaCreate) *AreaCreateBulk {
+	return &AreaCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *AreaClient) MapCreateBulk(slice any, setFunc func(*AreaCreate, int)) *AreaCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &AreaCreateBulk{err: fmt.Errorf("calling to AreaClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*AreaCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &AreaCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Area.
+func (c *AreaClient) Update() *AreaUpdate {
+	mutation := newAreaMutation(c.config, OpUpdate)
+	return &AreaUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *AreaClient) UpdateOne(a *Area) *AreaUpdateOne {
+	mutation := newAreaMutation(c.config, OpUpdateOne, withArea(a))
+	return &AreaUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *AreaClient) UpdateOneID(id int64) *AreaUpdateOne {
+	mutation := newAreaMutation(c.config, OpUpdateOne, withAreaID(id))
+	return &AreaUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Area.
+func (c *AreaClient) Delete() *AreaDelete {
+	mutation := newAreaMutation(c.config, OpDelete)
+	return &AreaDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *AreaClient) DeleteOne(a *Area) *AreaDeleteOne {
+	return c.DeleteOneID(a.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *AreaClient) DeleteOneID(id int64) *AreaDeleteOne {
+	builder := c.Delete().Where(area.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &AreaDeleteOne{builder}
+}
+
+// Query returns a query builder for Area.
+func (c *AreaClient) Query() *AreaQuery {
+	return &AreaQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeArea},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Area entity by its id.
+func (c *AreaClient) Get(ctx context.Context, id int64) (*Area, error) {
+	return c.Query().Where(area.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *AreaClient) GetX(ctx context.Context, id int64) *Area {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *AreaClient) Hooks() []Hook {
+	return c.hooks.Area
+}
+
+// Interceptors returns the client interceptors.
+func (c *AreaClient) Interceptors() []Interceptor {
+	return c.inters.Area
+}
+
+func (c *AreaClient) mutate(ctx context.Context, m *AreaMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&AreaCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&AreaUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&AreaUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&AreaDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Area mutation op: %q", m.Op())
 	}
 }
 
@@ -2262,11 +2403,11 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		API, Dictionary, DictionaryDetail, Logs, Menu, MenuParam, Role, Survey,
+		API, Area, Dictionary, DictionaryDetail, Logs, Menu, MenuParam, Role, Survey,
 		SurveyQuestion, SurveyResponse, SurveyResponseAnswers, Token, User []ent.Hook
 	}
 	inters struct {
-		API, Dictionary, DictionaryDetail, Logs, Menu, MenuParam, Role, Survey,
+		API, Area, Dictionary, DictionaryDetail, Logs, Menu, MenuParam, Role, Survey,
 		SurveyQuestion, SurveyResponse, SurveyResponseAnswers, Token,
 		User []ent.Interceptor
 	}

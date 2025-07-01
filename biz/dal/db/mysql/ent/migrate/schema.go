@@ -35,6 +35,33 @@ var (
 			},
 		},
 	}
+	// SysAreaColumns holds the columns for the "sys_area" table.
+	SysAreaColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Increment: true, Comment: "primary key"},
+		{Name: "created_at", Type: field.TypeTime, Nullable: true, Comment: "created time"},
+		{Name: "updated_at", Type: field.TypeTime, Nullable: true, Comment: "last update time"},
+		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
+		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
+		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
+		{Name: "parent_id", Type: field.TypeInt64, Nullable: true, Comment: "上级区域ID"},
+		{Name: "level", Type: field.TypeInt64, Nullable: true, Comment: "行政区域等级 1-省 2-市 3-区县 4-街道镇"},
+		{Name: "name", Type: field.TypeString, Nullable: true, Comment: "名称"},
+		{Name: "whole_name", Type: field.TypeString, Unique: true, Nullable: true, Comment: "完整名称"},
+		{Name: "lon", Type: field.TypeString, Nullable: true, Comment: "本区域经度"},
+		{Name: "lat", Type: field.TypeString, Nullable: true, Comment: "本区域维度"},
+		{Name: "city_code", Type: field.TypeString, Nullable: true, Comment: "电话区号"},
+		{Name: "zip_code", Type: field.TypeString, Nullable: true, Comment: "邮政编码"},
+		{Name: "area_code", Type: field.TypeString, Nullable: true, Comment: "行政区划代码"},
+		{Name: "pin_yin", Type: field.TypeString, Nullable: true, Comment: "名称全拼"},
+		{Name: "simple_py", Type: field.TypeString, Nullable: true, Comment: "首字母简拼"},
+		{Name: "per_pin_yin", Type: field.TypeString, Nullable: true, Comment: "区域名称拼音的第一个字母"},
+	}
+	// SysAreaTable holds the schema information for the "sys_area" table.
+	SysAreaTable = &schema.Table{
+		Name:       "sys_area",
+		Columns:    SysAreaColumns,
+		PrimaryKey: []*schema.Column{SysAreaColumns[0]},
+	}
 	// SysDictionariesColumns holds the columns for the "sys_dictionaries" table.
 	SysDictionariesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true, Comment: "primary key"},
@@ -433,6 +460,7 @@ var (
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		SysApisTable,
+		SysAreaTable,
 		SysDictionariesTable,
 		SysDictionaryDetailsTable,
 		SysLogsTable,
@@ -453,6 +481,9 @@ var (
 func init() {
 	SysApisTable.Annotation = &entsql.Annotation{
 		Table: "sys_apis",
+	}
+	SysAreaTable.Annotation = &entsql.Annotation{
+		Table: "sys_area",
 	}
 	SysDictionariesTable.Annotation = &entsql.Annotation{
 		Table: "sys_dictionaries",

@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/api"
+	"kcers-survey/biz/dal/db/mysql/ent/area"
 	"kcers-survey/biz/dal/db/mysql/ent/dictionary"
 	"kcers-survey/biz/dal/db/mysql/ent/dictionarydetail"
 	"kcers-survey/biz/dal/db/mysql/ent/logs"
@@ -38,6 +39,7 @@ const (
 
 	// Node types.
 	TypeAPI                   = "API"
+	TypeArea                  = "Area"
 	TypeDictionary            = "Dictionary"
 	TypeDictionaryDetail      = "DictionaryDetail"
 	TypeLogs                  = "Logs"
@@ -964,6 +966,1701 @@ func (m *APIMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *APIMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown API edge %s", name)
+}
+
+// AreaMutation represents an operation that mutates the Area nodes in the graph.
+type AreaMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int64
+	created_at    *time.Time
+	updated_at    *time.Time
+	delete        *int64
+	adddelete     *int64
+	created_id    *int64
+	addcreated_id *int64
+	status        *int64
+	addstatus     *int64
+	parent_id     *int64
+	addparent_id  *int64
+	level         *int64
+	addlevel      *int64
+	name          *string
+	whole_name    *string
+	lon           *string
+	lat           *string
+	city_code     *string
+	zip_code      *string
+	area_code     *string
+	pin_yin       *string
+	simple_py     *string
+	per_pin_yin   *string
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*Area, error)
+	predicates    []predicate.Area
+}
+
+var _ ent.Mutation = (*AreaMutation)(nil)
+
+// areaOption allows management of the mutation configuration using functional options.
+type areaOption func(*AreaMutation)
+
+// newAreaMutation creates new mutation for the Area entity.
+func newAreaMutation(c config, op Op, opts ...areaOption) *AreaMutation {
+	m := &AreaMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeArea,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withAreaID sets the ID field of the mutation.
+func withAreaID(id int64) areaOption {
+	return func(m *AreaMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Area
+		)
+		m.oldValue = func(ctx context.Context) (*Area, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Area.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withArea sets the old Area of the mutation.
+func withArea(node *Area) areaOption {
+	return func(m *AreaMutation) {
+		m.oldValue = func(context.Context) (*Area, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m AreaMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m AreaMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of Area entities.
+func (m *AreaMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *AreaMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *AreaMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().Area.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *AreaMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *AreaMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (m *AreaMutation) ClearCreatedAt() {
+	m.created_at = nil
+	m.clearedFields[area.FieldCreatedAt] = struct{}{}
+}
+
+// CreatedAtCleared returns if the "created_at" field was cleared in this mutation.
+func (m *AreaMutation) CreatedAtCleared() bool {
+	_, ok := m.clearedFields[area.FieldCreatedAt]
+	return ok
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *AreaMutation) ResetCreatedAt() {
+	m.created_at = nil
+	delete(m.clearedFields, area.FieldCreatedAt)
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *AreaMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *AreaMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ClearUpdatedAt clears the value of the "updated_at" field.
+func (m *AreaMutation) ClearUpdatedAt() {
+	m.updated_at = nil
+	m.clearedFields[area.FieldUpdatedAt] = struct{}{}
+}
+
+// UpdatedAtCleared returns if the "updated_at" field was cleared in this mutation.
+func (m *AreaMutation) UpdatedAtCleared() bool {
+	_, ok := m.clearedFields[area.FieldUpdatedAt]
+	return ok
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *AreaMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+	delete(m.clearedFields, area.FieldUpdatedAt)
+}
+
+// SetDelete sets the "delete" field.
+func (m *AreaMutation) SetDelete(i int64) {
+	m.delete = &i
+	m.adddelete = nil
+}
+
+// Delete returns the value of the "delete" field in the mutation.
+func (m *AreaMutation) Delete() (r int64, exists bool) {
+	v := m.delete
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDelete returns the old "delete" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldDelete(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDelete is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDelete requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDelete: %w", err)
+	}
+	return oldValue.Delete, nil
+}
+
+// AddDelete adds i to the "delete" field.
+func (m *AreaMutation) AddDelete(i int64) {
+	if m.adddelete != nil {
+		*m.adddelete += i
+	} else {
+		m.adddelete = &i
+	}
+}
+
+// AddedDelete returns the value that was added to the "delete" field in this mutation.
+func (m *AreaMutation) AddedDelete() (r int64, exists bool) {
+	v := m.adddelete
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDelete clears the value of the "delete" field.
+func (m *AreaMutation) ClearDelete() {
+	m.delete = nil
+	m.adddelete = nil
+	m.clearedFields[area.FieldDelete] = struct{}{}
+}
+
+// DeleteCleared returns if the "delete" field was cleared in this mutation.
+func (m *AreaMutation) DeleteCleared() bool {
+	_, ok := m.clearedFields[area.FieldDelete]
+	return ok
+}
+
+// ResetDelete resets all changes to the "delete" field.
+func (m *AreaMutation) ResetDelete() {
+	m.delete = nil
+	m.adddelete = nil
+	delete(m.clearedFields, area.FieldDelete)
+}
+
+// SetCreatedID sets the "created_id" field.
+func (m *AreaMutation) SetCreatedID(i int64) {
+	m.created_id = &i
+	m.addcreated_id = nil
+}
+
+// CreatedID returns the value of the "created_id" field in the mutation.
+func (m *AreaMutation) CreatedID() (r int64, exists bool) {
+	v := m.created_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedID returns the old "created_id" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldCreatedID(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedID: %w", err)
+	}
+	return oldValue.CreatedID, nil
+}
+
+// AddCreatedID adds i to the "created_id" field.
+func (m *AreaMutation) AddCreatedID(i int64) {
+	if m.addcreated_id != nil {
+		*m.addcreated_id += i
+	} else {
+		m.addcreated_id = &i
+	}
+}
+
+// AddedCreatedID returns the value that was added to the "created_id" field in this mutation.
+func (m *AreaMutation) AddedCreatedID() (r int64, exists bool) {
+	v := m.addcreated_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearCreatedID clears the value of the "created_id" field.
+func (m *AreaMutation) ClearCreatedID() {
+	m.created_id = nil
+	m.addcreated_id = nil
+	m.clearedFields[area.FieldCreatedID] = struct{}{}
+}
+
+// CreatedIDCleared returns if the "created_id" field was cleared in this mutation.
+func (m *AreaMutation) CreatedIDCleared() bool {
+	_, ok := m.clearedFields[area.FieldCreatedID]
+	return ok
+}
+
+// ResetCreatedID resets all changes to the "created_id" field.
+func (m *AreaMutation) ResetCreatedID() {
+	m.created_id = nil
+	m.addcreated_id = nil
+	delete(m.clearedFields, area.FieldCreatedID)
+}
+
+// SetStatus sets the "status" field.
+func (m *AreaMutation) SetStatus(i int64) {
+	m.status = &i
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *AreaMutation) Status() (r int64, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldStatus(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds i to the "status" field.
+func (m *AreaMutation) AddStatus(i int64) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *AreaMutation) AddedStatus() (r int64, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearStatus clears the value of the "status" field.
+func (m *AreaMutation) ClearStatus() {
+	m.status = nil
+	m.addstatus = nil
+	m.clearedFields[area.FieldStatus] = struct{}{}
+}
+
+// StatusCleared returns if the "status" field was cleared in this mutation.
+func (m *AreaMutation) StatusCleared() bool {
+	_, ok := m.clearedFields[area.FieldStatus]
+	return ok
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *AreaMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+	delete(m.clearedFields, area.FieldStatus)
+}
+
+// SetParentID sets the "parent_id" field.
+func (m *AreaMutation) SetParentID(i int64) {
+	m.parent_id = &i
+	m.addparent_id = nil
+}
+
+// ParentID returns the value of the "parent_id" field in the mutation.
+func (m *AreaMutation) ParentID() (r int64, exists bool) {
+	v := m.parent_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldParentID returns the old "parent_id" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldParentID(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldParentID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldParentID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldParentID: %w", err)
+	}
+	return oldValue.ParentID, nil
+}
+
+// AddParentID adds i to the "parent_id" field.
+func (m *AreaMutation) AddParentID(i int64) {
+	if m.addparent_id != nil {
+		*m.addparent_id += i
+	} else {
+		m.addparent_id = &i
+	}
+}
+
+// AddedParentID returns the value that was added to the "parent_id" field in this mutation.
+func (m *AreaMutation) AddedParentID() (r int64, exists bool) {
+	v := m.addparent_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearParentID clears the value of the "parent_id" field.
+func (m *AreaMutation) ClearParentID() {
+	m.parent_id = nil
+	m.addparent_id = nil
+	m.clearedFields[area.FieldParentID] = struct{}{}
+}
+
+// ParentIDCleared returns if the "parent_id" field was cleared in this mutation.
+func (m *AreaMutation) ParentIDCleared() bool {
+	_, ok := m.clearedFields[area.FieldParentID]
+	return ok
+}
+
+// ResetParentID resets all changes to the "parent_id" field.
+func (m *AreaMutation) ResetParentID() {
+	m.parent_id = nil
+	m.addparent_id = nil
+	delete(m.clearedFields, area.FieldParentID)
+}
+
+// SetLevel sets the "level" field.
+func (m *AreaMutation) SetLevel(i int64) {
+	m.level = &i
+	m.addlevel = nil
+}
+
+// Level returns the value of the "level" field in the mutation.
+func (m *AreaMutation) Level() (r int64, exists bool) {
+	v := m.level
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLevel returns the old "level" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldLevel(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLevel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLevel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLevel: %w", err)
+	}
+	return oldValue.Level, nil
+}
+
+// AddLevel adds i to the "level" field.
+func (m *AreaMutation) AddLevel(i int64) {
+	if m.addlevel != nil {
+		*m.addlevel += i
+	} else {
+		m.addlevel = &i
+	}
+}
+
+// AddedLevel returns the value that was added to the "level" field in this mutation.
+func (m *AreaMutation) AddedLevel() (r int64, exists bool) {
+	v := m.addlevel
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearLevel clears the value of the "level" field.
+func (m *AreaMutation) ClearLevel() {
+	m.level = nil
+	m.addlevel = nil
+	m.clearedFields[area.FieldLevel] = struct{}{}
+}
+
+// LevelCleared returns if the "level" field was cleared in this mutation.
+func (m *AreaMutation) LevelCleared() bool {
+	_, ok := m.clearedFields[area.FieldLevel]
+	return ok
+}
+
+// ResetLevel resets all changes to the "level" field.
+func (m *AreaMutation) ResetLevel() {
+	m.level = nil
+	m.addlevel = nil
+	delete(m.clearedFields, area.FieldLevel)
+}
+
+// SetName sets the "name" field.
+func (m *AreaMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *AreaMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ClearName clears the value of the "name" field.
+func (m *AreaMutation) ClearName() {
+	m.name = nil
+	m.clearedFields[area.FieldName] = struct{}{}
+}
+
+// NameCleared returns if the "name" field was cleared in this mutation.
+func (m *AreaMutation) NameCleared() bool {
+	_, ok := m.clearedFields[area.FieldName]
+	return ok
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *AreaMutation) ResetName() {
+	m.name = nil
+	delete(m.clearedFields, area.FieldName)
+}
+
+// SetWholeName sets the "whole_name" field.
+func (m *AreaMutation) SetWholeName(s string) {
+	m.whole_name = &s
+}
+
+// WholeName returns the value of the "whole_name" field in the mutation.
+func (m *AreaMutation) WholeName() (r string, exists bool) {
+	v := m.whole_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldWholeName returns the old "whole_name" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldWholeName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldWholeName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldWholeName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldWholeName: %w", err)
+	}
+	return oldValue.WholeName, nil
+}
+
+// ClearWholeName clears the value of the "whole_name" field.
+func (m *AreaMutation) ClearWholeName() {
+	m.whole_name = nil
+	m.clearedFields[area.FieldWholeName] = struct{}{}
+}
+
+// WholeNameCleared returns if the "whole_name" field was cleared in this mutation.
+func (m *AreaMutation) WholeNameCleared() bool {
+	_, ok := m.clearedFields[area.FieldWholeName]
+	return ok
+}
+
+// ResetWholeName resets all changes to the "whole_name" field.
+func (m *AreaMutation) ResetWholeName() {
+	m.whole_name = nil
+	delete(m.clearedFields, area.FieldWholeName)
+}
+
+// SetLon sets the "lon" field.
+func (m *AreaMutation) SetLon(s string) {
+	m.lon = &s
+}
+
+// Lon returns the value of the "lon" field in the mutation.
+func (m *AreaMutation) Lon() (r string, exists bool) {
+	v := m.lon
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLon returns the old "lon" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldLon(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLon is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLon requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLon: %w", err)
+	}
+	return oldValue.Lon, nil
+}
+
+// ClearLon clears the value of the "lon" field.
+func (m *AreaMutation) ClearLon() {
+	m.lon = nil
+	m.clearedFields[area.FieldLon] = struct{}{}
+}
+
+// LonCleared returns if the "lon" field was cleared in this mutation.
+func (m *AreaMutation) LonCleared() bool {
+	_, ok := m.clearedFields[area.FieldLon]
+	return ok
+}
+
+// ResetLon resets all changes to the "lon" field.
+func (m *AreaMutation) ResetLon() {
+	m.lon = nil
+	delete(m.clearedFields, area.FieldLon)
+}
+
+// SetLat sets the "lat" field.
+func (m *AreaMutation) SetLat(s string) {
+	m.lat = &s
+}
+
+// Lat returns the value of the "lat" field in the mutation.
+func (m *AreaMutation) Lat() (r string, exists bool) {
+	v := m.lat
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLat returns the old "lat" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldLat(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLat is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLat requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLat: %w", err)
+	}
+	return oldValue.Lat, nil
+}
+
+// ClearLat clears the value of the "lat" field.
+func (m *AreaMutation) ClearLat() {
+	m.lat = nil
+	m.clearedFields[area.FieldLat] = struct{}{}
+}
+
+// LatCleared returns if the "lat" field was cleared in this mutation.
+func (m *AreaMutation) LatCleared() bool {
+	_, ok := m.clearedFields[area.FieldLat]
+	return ok
+}
+
+// ResetLat resets all changes to the "lat" field.
+func (m *AreaMutation) ResetLat() {
+	m.lat = nil
+	delete(m.clearedFields, area.FieldLat)
+}
+
+// SetCityCode sets the "city_code" field.
+func (m *AreaMutation) SetCityCode(s string) {
+	m.city_code = &s
+}
+
+// CityCode returns the value of the "city_code" field in the mutation.
+func (m *AreaMutation) CityCode() (r string, exists bool) {
+	v := m.city_code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCityCode returns the old "city_code" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldCityCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCityCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCityCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCityCode: %w", err)
+	}
+	return oldValue.CityCode, nil
+}
+
+// ClearCityCode clears the value of the "city_code" field.
+func (m *AreaMutation) ClearCityCode() {
+	m.city_code = nil
+	m.clearedFields[area.FieldCityCode] = struct{}{}
+}
+
+// CityCodeCleared returns if the "city_code" field was cleared in this mutation.
+func (m *AreaMutation) CityCodeCleared() bool {
+	_, ok := m.clearedFields[area.FieldCityCode]
+	return ok
+}
+
+// ResetCityCode resets all changes to the "city_code" field.
+func (m *AreaMutation) ResetCityCode() {
+	m.city_code = nil
+	delete(m.clearedFields, area.FieldCityCode)
+}
+
+// SetZipCode sets the "zip_code" field.
+func (m *AreaMutation) SetZipCode(s string) {
+	m.zip_code = &s
+}
+
+// ZipCode returns the value of the "zip_code" field in the mutation.
+func (m *AreaMutation) ZipCode() (r string, exists bool) {
+	v := m.zip_code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldZipCode returns the old "zip_code" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldZipCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldZipCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldZipCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldZipCode: %w", err)
+	}
+	return oldValue.ZipCode, nil
+}
+
+// ClearZipCode clears the value of the "zip_code" field.
+func (m *AreaMutation) ClearZipCode() {
+	m.zip_code = nil
+	m.clearedFields[area.FieldZipCode] = struct{}{}
+}
+
+// ZipCodeCleared returns if the "zip_code" field was cleared in this mutation.
+func (m *AreaMutation) ZipCodeCleared() bool {
+	_, ok := m.clearedFields[area.FieldZipCode]
+	return ok
+}
+
+// ResetZipCode resets all changes to the "zip_code" field.
+func (m *AreaMutation) ResetZipCode() {
+	m.zip_code = nil
+	delete(m.clearedFields, area.FieldZipCode)
+}
+
+// SetAreaCode sets the "area_code" field.
+func (m *AreaMutation) SetAreaCode(s string) {
+	m.area_code = &s
+}
+
+// AreaCode returns the value of the "area_code" field in the mutation.
+func (m *AreaMutation) AreaCode() (r string, exists bool) {
+	v := m.area_code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAreaCode returns the old "area_code" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldAreaCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAreaCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAreaCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAreaCode: %w", err)
+	}
+	return oldValue.AreaCode, nil
+}
+
+// ClearAreaCode clears the value of the "area_code" field.
+func (m *AreaMutation) ClearAreaCode() {
+	m.area_code = nil
+	m.clearedFields[area.FieldAreaCode] = struct{}{}
+}
+
+// AreaCodeCleared returns if the "area_code" field was cleared in this mutation.
+func (m *AreaMutation) AreaCodeCleared() bool {
+	_, ok := m.clearedFields[area.FieldAreaCode]
+	return ok
+}
+
+// ResetAreaCode resets all changes to the "area_code" field.
+func (m *AreaMutation) ResetAreaCode() {
+	m.area_code = nil
+	delete(m.clearedFields, area.FieldAreaCode)
+}
+
+// SetPinYin sets the "pin_yin" field.
+func (m *AreaMutation) SetPinYin(s string) {
+	m.pin_yin = &s
+}
+
+// PinYin returns the value of the "pin_yin" field in the mutation.
+func (m *AreaMutation) PinYin() (r string, exists bool) {
+	v := m.pin_yin
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPinYin returns the old "pin_yin" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldPinYin(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPinYin is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPinYin requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPinYin: %w", err)
+	}
+	return oldValue.PinYin, nil
+}
+
+// ClearPinYin clears the value of the "pin_yin" field.
+func (m *AreaMutation) ClearPinYin() {
+	m.pin_yin = nil
+	m.clearedFields[area.FieldPinYin] = struct{}{}
+}
+
+// PinYinCleared returns if the "pin_yin" field was cleared in this mutation.
+func (m *AreaMutation) PinYinCleared() bool {
+	_, ok := m.clearedFields[area.FieldPinYin]
+	return ok
+}
+
+// ResetPinYin resets all changes to the "pin_yin" field.
+func (m *AreaMutation) ResetPinYin() {
+	m.pin_yin = nil
+	delete(m.clearedFields, area.FieldPinYin)
+}
+
+// SetSimplePy sets the "simple_py" field.
+func (m *AreaMutation) SetSimplePy(s string) {
+	m.simple_py = &s
+}
+
+// SimplePy returns the value of the "simple_py" field in the mutation.
+func (m *AreaMutation) SimplePy() (r string, exists bool) {
+	v := m.simple_py
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSimplePy returns the old "simple_py" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldSimplePy(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSimplePy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSimplePy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSimplePy: %w", err)
+	}
+	return oldValue.SimplePy, nil
+}
+
+// ClearSimplePy clears the value of the "simple_py" field.
+func (m *AreaMutation) ClearSimplePy() {
+	m.simple_py = nil
+	m.clearedFields[area.FieldSimplePy] = struct{}{}
+}
+
+// SimplePyCleared returns if the "simple_py" field was cleared in this mutation.
+func (m *AreaMutation) SimplePyCleared() bool {
+	_, ok := m.clearedFields[area.FieldSimplePy]
+	return ok
+}
+
+// ResetSimplePy resets all changes to the "simple_py" field.
+func (m *AreaMutation) ResetSimplePy() {
+	m.simple_py = nil
+	delete(m.clearedFields, area.FieldSimplePy)
+}
+
+// SetPerPinYin sets the "per_pin_yin" field.
+func (m *AreaMutation) SetPerPinYin(s string) {
+	m.per_pin_yin = &s
+}
+
+// PerPinYin returns the value of the "per_pin_yin" field in the mutation.
+func (m *AreaMutation) PerPinYin() (r string, exists bool) {
+	v := m.per_pin_yin
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPerPinYin returns the old "per_pin_yin" field's value of the Area entity.
+// If the Area object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AreaMutation) OldPerPinYin(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPerPinYin is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPerPinYin requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPerPinYin: %w", err)
+	}
+	return oldValue.PerPinYin, nil
+}
+
+// ClearPerPinYin clears the value of the "per_pin_yin" field.
+func (m *AreaMutation) ClearPerPinYin() {
+	m.per_pin_yin = nil
+	m.clearedFields[area.FieldPerPinYin] = struct{}{}
+}
+
+// PerPinYinCleared returns if the "per_pin_yin" field was cleared in this mutation.
+func (m *AreaMutation) PerPinYinCleared() bool {
+	_, ok := m.clearedFields[area.FieldPerPinYin]
+	return ok
+}
+
+// ResetPerPinYin resets all changes to the "per_pin_yin" field.
+func (m *AreaMutation) ResetPerPinYin() {
+	m.per_pin_yin = nil
+	delete(m.clearedFields, area.FieldPerPinYin)
+}
+
+// Where appends a list predicates to the AreaMutation builder.
+func (m *AreaMutation) Where(ps ...predicate.Area) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the AreaMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *AreaMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.Area, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *AreaMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *AreaMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (Area).
+func (m *AreaMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *AreaMutation) Fields() []string {
+	fields := make([]string, 0, 17)
+	if m.created_at != nil {
+		fields = append(fields, area.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, area.FieldUpdatedAt)
+	}
+	if m.delete != nil {
+		fields = append(fields, area.FieldDelete)
+	}
+	if m.created_id != nil {
+		fields = append(fields, area.FieldCreatedID)
+	}
+	if m.status != nil {
+		fields = append(fields, area.FieldStatus)
+	}
+	if m.parent_id != nil {
+		fields = append(fields, area.FieldParentID)
+	}
+	if m.level != nil {
+		fields = append(fields, area.FieldLevel)
+	}
+	if m.name != nil {
+		fields = append(fields, area.FieldName)
+	}
+	if m.whole_name != nil {
+		fields = append(fields, area.FieldWholeName)
+	}
+	if m.lon != nil {
+		fields = append(fields, area.FieldLon)
+	}
+	if m.lat != nil {
+		fields = append(fields, area.FieldLat)
+	}
+	if m.city_code != nil {
+		fields = append(fields, area.FieldCityCode)
+	}
+	if m.zip_code != nil {
+		fields = append(fields, area.FieldZipCode)
+	}
+	if m.area_code != nil {
+		fields = append(fields, area.FieldAreaCode)
+	}
+	if m.pin_yin != nil {
+		fields = append(fields, area.FieldPinYin)
+	}
+	if m.simple_py != nil {
+		fields = append(fields, area.FieldSimplePy)
+	}
+	if m.per_pin_yin != nil {
+		fields = append(fields, area.FieldPerPinYin)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *AreaMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case area.FieldCreatedAt:
+		return m.CreatedAt()
+	case area.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case area.FieldDelete:
+		return m.Delete()
+	case area.FieldCreatedID:
+		return m.CreatedID()
+	case area.FieldStatus:
+		return m.Status()
+	case area.FieldParentID:
+		return m.ParentID()
+	case area.FieldLevel:
+		return m.Level()
+	case area.FieldName:
+		return m.Name()
+	case area.FieldWholeName:
+		return m.WholeName()
+	case area.FieldLon:
+		return m.Lon()
+	case area.FieldLat:
+		return m.Lat()
+	case area.FieldCityCode:
+		return m.CityCode()
+	case area.FieldZipCode:
+		return m.ZipCode()
+	case area.FieldAreaCode:
+		return m.AreaCode()
+	case area.FieldPinYin:
+		return m.PinYin()
+	case area.FieldSimplePy:
+		return m.SimplePy()
+	case area.FieldPerPinYin:
+		return m.PerPinYin()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *AreaMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case area.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case area.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case area.FieldDelete:
+		return m.OldDelete(ctx)
+	case area.FieldCreatedID:
+		return m.OldCreatedID(ctx)
+	case area.FieldStatus:
+		return m.OldStatus(ctx)
+	case area.FieldParentID:
+		return m.OldParentID(ctx)
+	case area.FieldLevel:
+		return m.OldLevel(ctx)
+	case area.FieldName:
+		return m.OldName(ctx)
+	case area.FieldWholeName:
+		return m.OldWholeName(ctx)
+	case area.FieldLon:
+		return m.OldLon(ctx)
+	case area.FieldLat:
+		return m.OldLat(ctx)
+	case area.FieldCityCode:
+		return m.OldCityCode(ctx)
+	case area.FieldZipCode:
+		return m.OldZipCode(ctx)
+	case area.FieldAreaCode:
+		return m.OldAreaCode(ctx)
+	case area.FieldPinYin:
+		return m.OldPinYin(ctx)
+	case area.FieldSimplePy:
+		return m.OldSimplePy(ctx)
+	case area.FieldPerPinYin:
+		return m.OldPerPinYin(ctx)
+	}
+	return nil, fmt.Errorf("unknown Area field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *AreaMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case area.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case area.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case area.FieldDelete:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDelete(v)
+		return nil
+	case area.FieldCreatedID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedID(v)
+		return nil
+	case area.FieldStatus:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	case area.FieldParentID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetParentID(v)
+		return nil
+	case area.FieldLevel:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLevel(v)
+		return nil
+	case area.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case area.FieldWholeName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetWholeName(v)
+		return nil
+	case area.FieldLon:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLon(v)
+		return nil
+	case area.FieldLat:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLat(v)
+		return nil
+	case area.FieldCityCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCityCode(v)
+		return nil
+	case area.FieldZipCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetZipCode(v)
+		return nil
+	case area.FieldAreaCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAreaCode(v)
+		return nil
+	case area.FieldPinYin:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPinYin(v)
+		return nil
+	case area.FieldSimplePy:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSimplePy(v)
+		return nil
+	case area.FieldPerPinYin:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPerPinYin(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Area field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *AreaMutation) AddedFields() []string {
+	var fields []string
+	if m.adddelete != nil {
+		fields = append(fields, area.FieldDelete)
+	}
+	if m.addcreated_id != nil {
+		fields = append(fields, area.FieldCreatedID)
+	}
+	if m.addstatus != nil {
+		fields = append(fields, area.FieldStatus)
+	}
+	if m.addparent_id != nil {
+		fields = append(fields, area.FieldParentID)
+	}
+	if m.addlevel != nil {
+		fields = append(fields, area.FieldLevel)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *AreaMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case area.FieldDelete:
+		return m.AddedDelete()
+	case area.FieldCreatedID:
+		return m.AddedCreatedID()
+	case area.FieldStatus:
+		return m.AddedStatus()
+	case area.FieldParentID:
+		return m.AddedParentID()
+	case area.FieldLevel:
+		return m.AddedLevel()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *AreaMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case area.FieldDelete:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDelete(v)
+		return nil
+	case area.FieldCreatedID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedID(v)
+		return nil
+	case area.FieldStatus:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
+	case area.FieldParentID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddParentID(v)
+		return nil
+	case area.FieldLevel:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddLevel(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Area numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *AreaMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(area.FieldCreatedAt) {
+		fields = append(fields, area.FieldCreatedAt)
+	}
+	if m.FieldCleared(area.FieldUpdatedAt) {
+		fields = append(fields, area.FieldUpdatedAt)
+	}
+	if m.FieldCleared(area.FieldDelete) {
+		fields = append(fields, area.FieldDelete)
+	}
+	if m.FieldCleared(area.FieldCreatedID) {
+		fields = append(fields, area.FieldCreatedID)
+	}
+	if m.FieldCleared(area.FieldStatus) {
+		fields = append(fields, area.FieldStatus)
+	}
+	if m.FieldCleared(area.FieldParentID) {
+		fields = append(fields, area.FieldParentID)
+	}
+	if m.FieldCleared(area.FieldLevel) {
+		fields = append(fields, area.FieldLevel)
+	}
+	if m.FieldCleared(area.FieldName) {
+		fields = append(fields, area.FieldName)
+	}
+	if m.FieldCleared(area.FieldWholeName) {
+		fields = append(fields, area.FieldWholeName)
+	}
+	if m.FieldCleared(area.FieldLon) {
+		fields = append(fields, area.FieldLon)
+	}
+	if m.FieldCleared(area.FieldLat) {
+		fields = append(fields, area.FieldLat)
+	}
+	if m.FieldCleared(area.FieldCityCode) {
+		fields = append(fields, area.FieldCityCode)
+	}
+	if m.FieldCleared(area.FieldZipCode) {
+		fields = append(fields, area.FieldZipCode)
+	}
+	if m.FieldCleared(area.FieldAreaCode) {
+		fields = append(fields, area.FieldAreaCode)
+	}
+	if m.FieldCleared(area.FieldPinYin) {
+		fields = append(fields, area.FieldPinYin)
+	}
+	if m.FieldCleared(area.FieldSimplePy) {
+		fields = append(fields, area.FieldSimplePy)
+	}
+	if m.FieldCleared(area.FieldPerPinYin) {
+		fields = append(fields, area.FieldPerPinYin)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *AreaMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *AreaMutation) ClearField(name string) error {
+	switch name {
+	case area.FieldCreatedAt:
+		m.ClearCreatedAt()
+		return nil
+	case area.FieldUpdatedAt:
+		m.ClearUpdatedAt()
+		return nil
+	case area.FieldDelete:
+		m.ClearDelete()
+		return nil
+	case area.FieldCreatedID:
+		m.ClearCreatedID()
+		return nil
+	case area.FieldStatus:
+		m.ClearStatus()
+		return nil
+	case area.FieldParentID:
+		m.ClearParentID()
+		return nil
+	case area.FieldLevel:
+		m.ClearLevel()
+		return nil
+	case area.FieldName:
+		m.ClearName()
+		return nil
+	case area.FieldWholeName:
+		m.ClearWholeName()
+		return nil
+	case area.FieldLon:
+		m.ClearLon()
+		return nil
+	case area.FieldLat:
+		m.ClearLat()
+		return nil
+	case area.FieldCityCode:
+		m.ClearCityCode()
+		return nil
+	case area.FieldZipCode:
+		m.ClearZipCode()
+		return nil
+	case area.FieldAreaCode:
+		m.ClearAreaCode()
+		return nil
+	case area.FieldPinYin:
+		m.ClearPinYin()
+		return nil
+	case area.FieldSimplePy:
+		m.ClearSimplePy()
+		return nil
+	case area.FieldPerPinYin:
+		m.ClearPerPinYin()
+		return nil
+	}
+	return fmt.Errorf("unknown Area nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *AreaMutation) ResetField(name string) error {
+	switch name {
+	case area.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case area.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case area.FieldDelete:
+		m.ResetDelete()
+		return nil
+	case area.FieldCreatedID:
+		m.ResetCreatedID()
+		return nil
+	case area.FieldStatus:
+		m.ResetStatus()
+		return nil
+	case area.FieldParentID:
+		m.ResetParentID()
+		return nil
+	case area.FieldLevel:
+		m.ResetLevel()
+		return nil
+	case area.FieldName:
+		m.ResetName()
+		return nil
+	case area.FieldWholeName:
+		m.ResetWholeName()
+		return nil
+	case area.FieldLon:
+		m.ResetLon()
+		return nil
+	case area.FieldLat:
+		m.ResetLat()
+		return nil
+	case area.FieldCityCode:
+		m.ResetCityCode()
+		return nil
+	case area.FieldZipCode:
+		m.ResetZipCode()
+		return nil
+	case area.FieldAreaCode:
+		m.ResetAreaCode()
+		return nil
+	case area.FieldPinYin:
+		m.ResetPinYin()
+		return nil
+	case area.FieldSimplePy:
+		m.ResetSimplePy()
+		return nil
+	case area.FieldPerPinYin:
+		m.ResetPerPinYin()
+		return nil
+	}
+	return fmt.Errorf("unknown Area field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *AreaMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *AreaMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *AreaMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *AreaMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *AreaMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *AreaMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *AreaMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown Area unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *AreaMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown Area edge %s", name)
 }
 
 // DictionaryMutation represents an operation that mutates the Dictionary nodes in the graph.
