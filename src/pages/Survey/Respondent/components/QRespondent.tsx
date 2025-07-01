@@ -57,14 +57,6 @@ const QRespondent = (props) => {
       value:e,
       sn:generateRandom,
     })}} label="联系电话"   rules={[{ required: true, message: '必填项' }]} name={'researcherPhone'} />
-  <ProFormText  width="md"  onChange={(e)=>{
-    addRespondent({
-      surveyId:surveyId,
-      questionId:0,
-      type:'ditu',
-      value:e,
-      sn:generateRandom,
-    })}} label="地图插件预留" name={'ditu'} />
   </StepsForm.StepForm>
 );
 };

@@ -96,3 +96,16 @@ export async function removeRule(options?: { [key: string]: any }) {
   });
 }
 
+
+export type AreaItemType = {
+  name: string;
+  id: string;
+};
+
+export async function queryProvince(): Promise<{ data: AreaItemType[] }> {
+  return request('/service/sys/area');
+}
+
+export async function queryCity(area: string): Promise<{ data: AreaItemType[] }> {
+  return request(`/service/sys/city?id=${area}`);
+}
