@@ -109,3 +109,37 @@ export async function queryProvince(): Promise<{ data: AreaItemType[] }> {
 export async function queryCity(area: string): Promise<{ data: AreaItemType[] }> {
   return request(`/service/sys/city?id=${area}`);
 }
+
+
+
+
+
+type PubUploadOptions = {
+  file: File; // 假设需要上传文件
+  // 可以添加其他可选参数
+  [key: string]: any;
+};
+
+export async function pubUpload(options?: PubUploadOptions) {
+  const formData = new FormData();
+  if (options?.file) {
+    formData.append('files', options.file);
+  }
+  // 添加其他参数
+  if (options) {
+    Object.keys(options).forEach(key => {
+      if (key !== 'file') {
+        formData.append(key, options[key]);
+      }
+    });
+  }
+
+  return request<Record<string, any>>('/service/pub/upload/', {
+    method: 'POST',
+    data: formData,
+    // headers: {
+    //   // 若需要认证，添加认证信息
+    //   Authorization: 'Bearer ' + sessionStorage.getItem('token') || '',
+    // },
+  });
+}

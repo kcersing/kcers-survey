@@ -28,7 +28,7 @@ const QRate = (props) => {
       for (const jumpRule of question.jumpRules) {
         if (jumpRule.operators === 'equals' && String(e) === jumpRule.answer) {
           // setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
-          setCurrent(parseInt(jumpRule.nextQuestionId)-1);
+          setCurrent(parseInt(jumpRule.nextQuestionId));
         }
       }
     }

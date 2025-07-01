@@ -13,6 +13,7 @@ import './st.css';
 import Address from '@/pages/survey/respondent/components/Address';
 import QRespondent from '@/pages/survey/respondent/components/QRespondent';
 import QuestuinSun from '@/pages/survey/respondent/components/QuestuinSun';
+import SFUpload from "@/pages/survey/respondent/components/SFUpload";
 
 const Respondent = () => {
   const formRef = useRef<ProFormInstance>();
@@ -295,15 +296,16 @@ const Respondent = () => {
           }}
         >
 
-          <Address
-            surveyId={surveyId}
-            questions={questions}
-            generateRandom={generateRandom}
-            addRespondent={addRespondent}
-            setCurrentNum={setCurrentNum}
-            setCurrent={setCurrent}
-          />
-
+          <>
+            <Address
+              surveyId={surveyId}
+              questions={questions}
+              generateRandom={generateRandom}
+              addRespondent={addRespondent}
+              setCurrentNum={setCurrentNum}
+              setCurrent={setCurrent}
+            />
+          </>
 
           {questions.map((question) => (
             <>
@@ -327,6 +329,16 @@ const Respondent = () => {
           ))}
           {respondent()}
           {renderThankYou}
+
+
+          <SFUpload
+            surveyId={surveyId}
+            questions={questions}
+            generateRandom={generateRandom}
+            addRespondent={addRespondent}
+            setCurrentNum={setCurrentNum}
+            setCurrent={setCurrent}
+          />
         </StepsForm>
       </ProCard>
     </div>

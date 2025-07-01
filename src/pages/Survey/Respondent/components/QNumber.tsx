@@ -26,7 +26,7 @@ const QNumber = (props) => {
         if (jumpRule.operators === 'equals' && String(e) === jumpRule.answer) {
           console.log(jumpRule.nextQuestionId)
           // setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
-          setCurrent(parseInt(jumpRule.nextQuestionId)-1);
+          setCurrent(parseInt(jumpRule.nextQuestionId));
 
         }
       }

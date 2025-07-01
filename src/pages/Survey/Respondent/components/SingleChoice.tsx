@@ -33,7 +33,7 @@ if (!question ){return null}
       for (const jumpRule of question.jumpRules) {
         if (jumpRule.operators === 'equals' && String(e.target.value) === jumpRule.answer) {
           // setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
-          setCurrent(parseInt(jumpRule.nextQuestionId)-1);
+          setCurrent(parseInt(jumpRule.nextQuestionId));
         }
 
       }
@@ -59,6 +59,7 @@ if (!question ){return null}
     <Radio.Group
       onChange={onChange}
       style={style}
+
         options={question.options.map(option => ({
         value:option.content,
         label: option.inputs!==2? option.content:

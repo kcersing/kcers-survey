@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import type { RadioChangeEvent } from 'antd';
-import { Input, Form,Checkbox } from 'antd';
+import { Input, Form,Checkbox ,message} from 'antd';
 import QJumpRules from '@/pages/survey/respondent/components/QJumpRules';
 
 const style: React.CSSProperties = {
@@ -14,10 +14,22 @@ const style: React.CSSProperties = {
 const MultipleChoice = (props) => {
   const { surveyId, question, generateRandom, addRespondent, setCurrentNum,setCurrent } = props;
   const [value, setValue] = useState(0);
+  const [disabled, setDisabled] = useState(false);
   if (!question ){return null}
   const onChange = (e: RadioChangeEvent) => {
 
+
+if (question.id===9 ||question.id===114) {
+    if(e.length > 3) {
+    message.error("最多选择三个选项");
+    // setDisabled(true);
+    }
+  }
+    // else {
+    //   setDisabled(false);
+    // }
     setValue(e);
+
     addRespondent({
       surveyId:surveyId,
       type:question.type,
@@ -25,11 +37,13 @@ const MultipleChoice = (props) => {
       value:e,
       sn:generateRandom,
     })
+
+
     if(question.jumpRules){
       for (const jumpRule of question.jumpRules) {
         if (jumpRule.operators === 'equals' &&  e.includes(jumpRule.answer)) {
           // setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
-          setCurrent(parseInt(jumpRule.nextQuestionId)-1);
+          setCurrent(parseInt(jumpRule.nextQuestionId));
         }
 
       }
@@ -56,8 +70,10 @@ const MultipleChoice = (props) => {
 
         style={style}
         options={question.options.map(option => ({
+          disabled:disabled,
           value:option.content,
           label: option.inputs!==2? option.content:
+
             <>
               {option.content}...
               {value!==0 && value &&  value.length > 0   && value.includes(option.content )  && (

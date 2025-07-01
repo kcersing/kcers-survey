@@ -4,53 +4,58 @@ import type { RadioChangeEvent } from 'antd';
 import {ProFormDependency, ProFormSelect, ProFormText,StepsForm,ProForm} from "@ant-design/pro-components";
 import { queryCity, queryProvince } from '@/services/ant-design-pro/api';
 
+import { Input } from 'antd';
 
+const { TextArea } = Input;
 
 const Address = (props) => {
   const { surveyId, question, generateRandom, addRespondent, setCurrentNum,setCurrent } = props;
   const [value, setValue] = useState(0);
 
   const onChange = (e: RadioChangeEvent) => {
-    // setValue(e);
+    setValue(e);
     addRespondent({
       surveyId:surveyId,
       type:"area",
-      value:e.value,
+      value:[e.value.toString()],
       sn:generateRandom,
     })
   };
-  const onChange1 = (e: RadioChangeEvent) => {
+  const onChange1 = (e) => {
 
     console.log(e)
     // setValue(e);
     addRespondent({
       surveyId:surveyId,
       type:"city",
-      value:e.value,
+      value:[e.toString()],
       sn:generateRandom,
     })
   };
   const onChange2 = (e: RadioChangeEvent) => {
-    // setValue(e);
+    console.log(e)
     addRespondent({
       surveyId:surveyId,
       type:"city2",
-      value:e.value,
+      value:[e.toString()],
       sn:generateRandom,
     })
   };
-  const onChange3 = (e: RadioChangeEvent) => {
-    // setValue(e);
+
+  const onChange3 = (e) => {
+    console.log(e)
     addRespondent({
       surveyId:surveyId,
       type:"address",
-      value:e,
+      value:[e.target.value.toString()],
       sn:generateRandom,
     })
+
   };
+
+
   return (
     <StepsForm.StepForm
-      onChange={onChange1}
       name={"StepsForm"}
       key={"StepsForm"}
       // onBlur={e => {   console.log(e.target.value)}}
@@ -87,11 +92,11 @@ const Address = (props) => {
 
             return (
               <ProFormSelect
-                onChange={onChange1}
                 params={{
                   key: province?.value,
                 }}
                 name="city"
+                onChange={onChange1}
                 width="sm"
                 rules={[
                   {
@@ -142,7 +147,7 @@ const Address = (props) => {
                 if (!province?.value) {
                   return [];
                 }
-                console.log(province)
+
                 return queryCity(province.value || '').then(({ data }) => {
                   return data.map((item) => {
                     return {
@@ -156,17 +161,14 @@ const Address = (props) => {
           );
         }}
       </ProFormDependency>
-        <ProFormText
-          onChange={onChange3}
-          width="md"
+
+
+        <TextArea
+          style={{ width: '60%' }}
+
           name="address"
           label="街道地址"
-          rules={[
-            {
-              required: true,
-              message: '请输入您的街道地址!',
-            },
-          ]}
+          onChange={onChange3}
         />
 
     </StepsForm.StepForm>

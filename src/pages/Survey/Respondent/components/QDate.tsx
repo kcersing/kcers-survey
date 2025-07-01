@@ -29,7 +29,7 @@ const QDate = (props) => {
       for (const jumpRule of question.jumpRules) {
         if (jumpRule.operators === 'equals' && String(formattedDate) === jumpRule.answer) {
           // setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
-          setCurrent(parseInt(jumpRule.nextQuestionId)-1);
+          setCurrent(parseInt(jumpRule.nextQuestionId));
         }
       }
     }
@@ -40,7 +40,8 @@ const QDate = (props) => {
     <Form.Item  name={['question', "'"+question.id+"'"]}   required={question.required===1} >
       <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
        <DatePicker
-      width="md" label={question.content}
+           width="SM"
+       label={question.content}
       name={['question', question.id]}
       placeholder="请选择日期"
       defaultValue={dayjs('1965-01-01', 'YYYY-MM-DD')}
