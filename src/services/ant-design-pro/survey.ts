@@ -175,3 +175,15 @@ export async function createResponse(options?: { [key: string]: any }) {
     },
   });
 }
+export async function getNext(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/service/survey/response/getNext', {
+    method: 'POST',
+    data: {
+      method: 'post',
+      ...(options || {}),
+    },
+  });
+}
+
+
+

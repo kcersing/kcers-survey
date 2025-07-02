@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { useNavigate, useParams } from '@@/exports';
-
-import { createRespondent, getSurvey, listQuestion } from '@/services/ant-design-pro/survey';
+import { useLocation } from 'react-router-dom';
+import { createRespondent, getSurvey, listQuestion,getNext } from '@/services/ant-design-pro/survey';
 
 import type { ProFormInstance } from '@ant-design/pro-components';
 import { ProCard, StepsForm } from '@ant-design/pro-components';
-import { Button, message } from 'antd';
+import { Button, message,Typography } from 'antd';
 
+const { Paragraph, Text } = Typography;
 import './st.css';
 
 import Address from '@/pages/survey/respondent/components/Address';
@@ -26,6 +27,16 @@ const Respondent = () => {
 
   const navigate = useNavigate();
   const formMapRef = useRef<React.MutableRefObject<ProFormInstance<any> | undefined>[]>([]);
+
+
+  const location = useLocation();
+  const urlParams = new URLSearchParams(location.search);
+  // 获取单个参数
+  const sn = urlParams.get('sn');
+  console.log(sn)
+
+
+
 
   // 新增经纬度状态
   const [latitude, setLatitude] = useState<number | null>(null);
@@ -70,6 +81,15 @@ const Respondent = () => {
   useEffect(() => {
     console.log(currentNum);
   }, [currentNum]);
+
+
+  useEffect(() => {
+    getNext({sn:sn}).then((res)=>{
+      console.log(res)
+      setGenerateRandom(sn)
+      setCurrent(res.data.number+1)
+    })
+  }, [sn]);
 
   // 加载问卷和问题数据
   const loadSurveyAndQuestions = async () => {
@@ -255,7 +275,8 @@ const Respondent = () => {
       <ProCard boxShadow layout="center">
         <h3>{survey.title ? survey.title : null}</h3>
       </ProCard>
-      <ProCard style={{ marginBlockStart: 16 }} boxShadow>
+
+      <ProCard  style={{width:'100%', marginBlockStart: 16 }} boxShadow>
         <StepsForm
           // loading={loading}
           formRef={formRef}
@@ -347,6 +368,11 @@ const Respondent = () => {
           {renderThankYou()}
         </StepsForm>
 
+
+      </ProCard>
+      <ProCard  layout="center" style={{width:'100%', marginBlockStart: 16 }} boxShadow>
+
+        <Paragraph copyable={{ text: `https://survey.367281.com/survey/${surveyId}/respondent?sn=${generateRandom}` }}>当前问卷编号：{generateRandom}</Paragraph>
       </ProCard>
     </div>
   );
