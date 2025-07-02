@@ -18,6 +18,7 @@ import (
 	"kcers-survey/idl_gen/model/base"
 	"kcers-survey/idl_gen/model/service"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -452,14 +453,50 @@ func (s Survey) GetNext(req *service.GetNextReq) (number int64, err error) {
 	if err != nil {
 		return 0, err
 	}
-
-	s.db.SurveyResponseAnswers.Query().
+	all, err := s.db.SurveyQuestion.Query().
+		Where(surveyquestion2.SurveyID(first.SurveyID)).
+		IDs(s.ctx)
+	if err != nil {
+		return 0, err
+	}
+	answers, err := s.db.SurveyResponseAnswers.Query().
 		Where(surveyresponseanswers2.SurveyResponseID(first.ID)).
 		Order(ent.Desc(surveyresponseanswers2.FieldID)).
 		First(s.ctx)
+	if err != nil {
+		return 0, err
+	}
+	question, err := s.db.SurveyQuestion.Query().
+		Where(surveyquestion2.IDEQ(answers.SurveyQuestionID)).
+		First(s.ctx)
+	if err != nil {
+		return 0, err
+	}
+	if question.Level == 2 {
 
-	hlog.Info(first)
-	return
+		for i, v := range all {
+			if v == question.ID {
+				return int64(i), err
+			}
+
+		}
+
+	} else {
+		split := strings.Split(question.Tree, " ")
+		trimmed := strings.TrimPrefix(split[1], "tr_")
+		id, err := strconv.ParseInt(trimmed, 10, 64)
+		if err != nil {
+			return 0, err
+		}
+		for i, v := range all {
+			if v == id {
+				return int64(i), err
+			}
+
+		}
+	}
+
+	return 0, nil
 }
 
 func (s Survey) ListResponse(req *service.ResponseListReq) (resp []*service.Response, total int, err error) {
