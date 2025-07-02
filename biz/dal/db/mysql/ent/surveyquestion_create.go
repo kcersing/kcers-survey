@@ -215,6 +215,48 @@ func (sqc *SurveyQuestionCreate) SetNillableRequired(i *int64) *SurveyQuestionCr
 	return sqc
 }
 
+// SetRemark sets the "remark" field.
+func (sqc *SurveyQuestionCreate) SetRemark(s string) *SurveyQuestionCreate {
+	sqc.mutation.SetRemark(s)
+	return sqc
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (sqc *SurveyQuestionCreate) SetNillableRemark(s *string) *SurveyQuestionCreate {
+	if s != nil {
+		sqc.SetRemark(*s)
+	}
+	return sqc
+}
+
+// SetLevel sets the "level" field.
+func (sqc *SurveyQuestionCreate) SetLevel(i int64) *SurveyQuestionCreate {
+	sqc.mutation.SetLevel(i)
+	return sqc
+}
+
+// SetNillableLevel sets the "level" field if the given value is not nil.
+func (sqc *SurveyQuestionCreate) SetNillableLevel(i *int64) *SurveyQuestionCreate {
+	if i != nil {
+		sqc.SetLevel(*i)
+	}
+	return sqc
+}
+
+// SetTree sets the "tree" field.
+func (sqc *SurveyQuestionCreate) SetTree(s string) *SurveyQuestionCreate {
+	sqc.mutation.SetTree(s)
+	return sqc
+}
+
+// SetNillableTree sets the "tree" field if the given value is not nil.
+func (sqc *SurveyQuestionCreate) SetNillableTree(s *string) *SurveyQuestionCreate {
+	if s != nil {
+		sqc.SetTree(*s)
+	}
+	return sqc
+}
+
 // SetID sets the "id" field.
 func (sqc *SurveyQuestionCreate) SetID(i int64) *SurveyQuestionCreate {
 	sqc.mutation.SetID(i)
@@ -317,6 +359,18 @@ func (sqc *SurveyQuestionCreate) defaults() {
 		v := surveyquestion.DefaultRequired
 		sqc.mutation.SetRequired(v)
 	}
+	if _, ok := sqc.mutation.Remark(); !ok {
+		v := surveyquestion.DefaultRemark
+		sqc.mutation.SetRemark(v)
+	}
+	if _, ok := sqc.mutation.Level(); !ok {
+		v := surveyquestion.DefaultLevel
+		sqc.mutation.SetLevel(v)
+	}
+	if _, ok := sqc.mutation.Tree(); !ok {
+		v := surveyquestion.DefaultTree
+		sqc.mutation.SetTree(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -408,6 +462,18 @@ func (sqc *SurveyQuestionCreate) createSpec() (*SurveyQuestion, *sqlgraph.Create
 	if value, ok := sqc.mutation.Required(); ok {
 		_spec.SetField(surveyquestion.FieldRequired, field.TypeInt64, value)
 		_node.Required = value
+	}
+	if value, ok := sqc.mutation.Remark(); ok {
+		_spec.SetField(surveyquestion.FieldRemark, field.TypeString, value)
+		_node.Remark = value
+	}
+	if value, ok := sqc.mutation.Level(); ok {
+		_spec.SetField(surveyquestion.FieldLevel, field.TypeInt64, value)
+		_node.Level = value
+	}
+	if value, ok := sqc.mutation.Tree(); ok {
+		_spec.SetField(surveyquestion.FieldTree, field.TypeString, value)
+		_node.Tree = value
 	}
 	if nodes := sqc.mutation.SurveyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

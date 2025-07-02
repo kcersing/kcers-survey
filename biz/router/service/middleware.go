@@ -4,6 +4,7 @@ package service
 
 import (
 	"github.com/cloudwego/hertz/pkg/app"
+	"kcers-survey/biz/mw"
 )
 
 func rootMw() []app.HandlerFunc {
@@ -13,7 +14,9 @@ func rootMw() []app.HandlerFunc {
 
 func _serviceMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		mw.LogMw(),
+	}
 }
 
 func _surveyMw() []app.HandlerFunc {
@@ -107,6 +110,11 @@ func _responseMw() []app.HandlerFunc {
 }
 
 func _treequestionMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getnextMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }

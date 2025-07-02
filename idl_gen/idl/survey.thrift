@@ -27,8 +27,13 @@ service SurveyService {
 	base.NilResponse DeleteResponse(1: base.IDReq req)  (api.post = "/service/survey/response/delete")
 
 
-}
+	base.NilResponse GetNext(1: GetNextReq req)  (api.post = "/service/survey/response/getNext")
 
+
+}
+struct GetNextReq{
+  1:optional string sn="" (api.raw = "sn")
+}
 struct CreateOrUpdateSurveyReq {
   1:optional string title="" (api.raw = "title")
   2:optional string pic="" (api.raw = "pic")
@@ -93,6 +98,13 @@ struct Question  {
       11:optional string serial="" (api.raw = "serial")
       12:optional i64 valueNumber=0 (api.raw = "valueNumber")
       13:optional i64 show=0 (api.raw = "show")
+      14:optional string remark="" (api.raw = "remark")
+
+         15:optional string answerCreatedAt="" (api.raw = "answerCreatedAt")
+         16:optional list<string> answer="" (api.raw = "answer")
+         17:optional string answerText="" (api.raw = "answerText")
+         18:optional i64 responseId=0 (api.raw = "responseId")
+
 }
 struct JumpRules {
       2:optional string answer="" (api.raw = "answer")// 触发条件的回答
@@ -116,15 +128,37 @@ struct CreateOrUpdateResponseReq {
   8:optional string longitude="" (api.raw = "longitude")
 }
 
-
 struct Response  {
-    1:optional i64 Id=0 (api.raw = "Id")
 
+    3:optional i64 id=0 (api.raw = "id")
+    4:optional i64 surveyId=0 (api.raw = "surveyId")
+    5:optional string sn="" (api.raw = "sn")
+    6:optional string latitude="" (api.raw = "latitude")
+    7:optional string longitude="" (api.raw = "longitude")
+    8:optional list<Question> children={} (api.raw = "childrens")
+    9:optional string respondent="" (api.raw = "respondent")
+    10:optional string respondentPhone="" (api.raw = "respondentPhone")
+    11:optional string researcher="" (api.raw = "researcher")
+    12:optional string researcherPhone="" (api.raw = "researcherPhone")
+    13:optional list<string> pic="" (api.raw = "researcherPhone")
+    14:optional list<string> audio="" (api.raw = "audio")
+
+    15:optional string ip="" (api.raw = "ip")
+    16:optional string device="" (api.raw = "device")
+    17:optional string area="" (api.raw = "area")
+    18:optional string city="" (api.raw = "city")
+    19:optional string district="" (api.raw = "district")
+    20:optional string address="" (api.raw = "address")
+    21:optional string village="" (api.raw = "village")
 }
 
 struct ResponseListReq {
     1: optional i64 page=1 (api.raw = "page")
     2: optional i64 pageSize=100 (api.raw = "pageSize")
+
+
+
+
 }
 
 

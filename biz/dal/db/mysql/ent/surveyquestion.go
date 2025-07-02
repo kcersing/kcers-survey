@@ -51,6 +51,12 @@ type SurveyQuestion struct {
 	JumpRules []*service.JumpRules `json:"jump_rules,omitempty"`
 	// 是否必填 1必填 2选填
 	Required int64 `json:"required,omitempty"`
+	// remark
+	Remark string `json:"remark,omitempty"`
+	// 层级
+	Level int64 `json:"level,omitempty"`
+	// 树
+	Tree string `json:"tree,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SurveyQuestionQuery when eager-loading is set.
 	Edges        SurveyQuestionEdges `json:"edges"`
@@ -84,9 +90,9 @@ func (*SurveyQuestion) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case surveyquestion.FieldOptions, surveyquestion.FieldJumpRules:
 			values[i] = new([]byte)
-		case surveyquestion.FieldID, surveyquestion.FieldDelete, surveyquestion.FieldCreatedID, surveyquestion.FieldStatus, surveyquestion.FieldSurveyID, surveyquestion.FieldParentID, surveyquestion.FieldShow, surveyquestion.FieldSort, surveyquestion.FieldRequired:
+		case surveyquestion.FieldID, surveyquestion.FieldDelete, surveyquestion.FieldCreatedID, surveyquestion.FieldStatus, surveyquestion.FieldSurveyID, surveyquestion.FieldParentID, surveyquestion.FieldShow, surveyquestion.FieldSort, surveyquestion.FieldRequired, surveyquestion.FieldLevel:
 			values[i] = new(sql.NullInt64)
-		case surveyquestion.FieldSerial, surveyquestion.FieldContent, surveyquestion.FieldType:
+		case surveyquestion.FieldSerial, surveyquestion.FieldContent, surveyquestion.FieldType, surveyquestion.FieldRemark, surveyquestion.FieldTree:
 			values[i] = new(sql.NullString)
 		case surveyquestion.FieldCreatedAt, surveyquestion.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -205,6 +211,24 @@ func (sq *SurveyQuestion) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sq.Required = value.Int64
 			}
+		case surveyquestion.FieldRemark:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field remark", values[i])
+			} else if value.Valid {
+				sq.Remark = value.String
+			}
+		case surveyquestion.FieldLevel:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field level", values[i])
+			} else if value.Valid {
+				sq.Level = value.Int64
+			}
+		case surveyquestion.FieldTree:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field tree", values[i])
+			} else if value.Valid {
+				sq.Tree = value.String
+			}
 		default:
 			sq.selectValues.Set(columns[i], values[i])
 		}
@@ -290,6 +314,15 @@ func (sq *SurveyQuestion) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("required=")
 	builder.WriteString(fmt.Sprintf("%v", sq.Required))
+	builder.WriteString(", ")
+	builder.WriteString("remark=")
+	builder.WriteString(sq.Remark)
+	builder.WriteString(", ")
+	builder.WriteString("level=")
+	builder.WriteString(fmt.Sprintf("%v", sq.Level))
+	builder.WriteString(", ")
+	builder.WriteString("tree=")
+	builder.WriteString(sq.Tree)
 	builder.WriteByte(')')
 	return builder.String()
 }

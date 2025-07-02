@@ -34,6 +34,7 @@ func (SurveyResponse) Fields() []ent.Field {
 		field.String("area").Optional().Default("").Comment("area"),
 		field.String("city").Optional().Default("").Comment("city"),
 		field.String("district").Optional().Default("").Comment("district"),
+		field.String("village").Optional().Default("").Comment("village"),
 		field.String("address").Optional().Default("").Comment("address"),
 	}
 }

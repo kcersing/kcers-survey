@@ -426,6 +426,26 @@ func (sru *SurveyResponseUpdate) ClearDistrict() *SurveyResponseUpdate {
 	return sru
 }
 
+// SetVillage sets the "village" field.
+func (sru *SurveyResponseUpdate) SetVillage(s string) *SurveyResponseUpdate {
+	sru.mutation.SetVillage(s)
+	return sru
+}
+
+// SetNillableVillage sets the "village" field if the given value is not nil.
+func (sru *SurveyResponseUpdate) SetNillableVillage(s *string) *SurveyResponseUpdate {
+	if s != nil {
+		sru.SetVillage(*s)
+	}
+	return sru
+}
+
+// ClearVillage clears the value of the "village" field.
+func (sru *SurveyResponseUpdate) ClearVillage() *SurveyResponseUpdate {
+	sru.mutation.ClearVillage()
+	return sru
+}
+
 // SetAddress sets the "address" field.
 func (sru *SurveyResponseUpdate) SetAddress(s string) *SurveyResponseUpdate {
 	sru.mutation.SetAddress(s)
@@ -640,6 +660,12 @@ func (sru *SurveyResponseUpdate) sqlSave(ctx context.Context) (n int, err error)
 	}
 	if sru.mutation.DistrictCleared() {
 		_spec.ClearField(surveyresponse.FieldDistrict, field.TypeString)
+	}
+	if value, ok := sru.mutation.Village(); ok {
+		_spec.SetField(surveyresponse.FieldVillage, field.TypeString, value)
+	}
+	if sru.mutation.VillageCleared() {
+		_spec.ClearField(surveyresponse.FieldVillage, field.TypeString)
 	}
 	if value, ok := sru.mutation.Address(); ok {
 		_spec.SetField(surveyresponse.FieldAddress, field.TypeString, value)
@@ -1065,6 +1091,26 @@ func (sruo *SurveyResponseUpdateOne) ClearDistrict() *SurveyResponseUpdateOne {
 	return sruo
 }
 
+// SetVillage sets the "village" field.
+func (sruo *SurveyResponseUpdateOne) SetVillage(s string) *SurveyResponseUpdateOne {
+	sruo.mutation.SetVillage(s)
+	return sruo
+}
+
+// SetNillableVillage sets the "village" field if the given value is not nil.
+func (sruo *SurveyResponseUpdateOne) SetNillableVillage(s *string) *SurveyResponseUpdateOne {
+	if s != nil {
+		sruo.SetVillage(*s)
+	}
+	return sruo
+}
+
+// ClearVillage clears the value of the "village" field.
+func (sruo *SurveyResponseUpdateOne) ClearVillage() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearVillage()
+	return sruo
+}
+
 // SetAddress sets the "address" field.
 func (sruo *SurveyResponseUpdateOne) SetAddress(s string) *SurveyResponseUpdateOne {
 	sruo.mutation.SetAddress(s)
@@ -1309,6 +1355,12 @@ func (sruo *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	}
 	if sruo.mutation.DistrictCleared() {
 		_spec.ClearField(surveyresponse.FieldDistrict, field.TypeString)
+	}
+	if value, ok := sruo.mutation.Village(); ok {
+		_spec.SetField(surveyresponse.FieldVillage, field.TypeString, value)
+	}
+	if sruo.mutation.VillageCleared() {
+		_spec.ClearField(surveyresponse.FieldVillage, field.TypeString)
 	}
 	if value, ok := sruo.mutation.Address(); ok {
 		_spec.SetField(surveyresponse.FieldAddress, field.TypeString, value)

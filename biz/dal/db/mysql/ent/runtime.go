@@ -380,6 +380,18 @@ func init() {
 	surveyquestionDescRequired := surveyquestionFields[9].Descriptor()
 	// surveyquestion.DefaultRequired holds the default value on creation for the required field.
 	surveyquestion.DefaultRequired = surveyquestionDescRequired.Default.(int64)
+	// surveyquestionDescRemark is the schema descriptor for remark field.
+	surveyquestionDescRemark := surveyquestionFields[10].Descriptor()
+	// surveyquestion.DefaultRemark holds the default value on creation for the remark field.
+	surveyquestion.DefaultRemark = surveyquestionDescRemark.Default.(string)
+	// surveyquestionDescLevel is the schema descriptor for level field.
+	surveyquestionDescLevel := surveyquestionFields[11].Descriptor()
+	// surveyquestion.DefaultLevel holds the default value on creation for the level field.
+	surveyquestion.DefaultLevel = surveyquestionDescLevel.Default.(int64)
+	// surveyquestionDescTree is the schema descriptor for tree field.
+	surveyquestionDescTree := surveyquestionFields[12].Descriptor()
+	// surveyquestion.DefaultTree holds the default value on creation for the tree field.
+	surveyquestion.DefaultTree = surveyquestionDescTree.Default.(string)
 	surveyresponseMixin := schema.SurveyResponse{}.Mixin()
 	surveyresponseMixinFields0 := surveyresponseMixin[0].Fields()
 	_ = surveyresponseMixinFields0
@@ -469,8 +481,12 @@ func init() {
 	surveyresponseDescDistrict := surveyresponseFields[14].Descriptor()
 	// surveyresponse.DefaultDistrict holds the default value on creation for the district field.
 	surveyresponse.DefaultDistrict = surveyresponseDescDistrict.Default.(string)
+	// surveyresponseDescVillage is the schema descriptor for village field.
+	surveyresponseDescVillage := surveyresponseFields[15].Descriptor()
+	// surveyresponse.DefaultVillage holds the default value on creation for the village field.
+	surveyresponse.DefaultVillage = surveyresponseDescVillage.Default.(string)
 	// surveyresponseDescAddress is the schema descriptor for address field.
-	surveyresponseDescAddress := surveyresponseFields[15].Descriptor()
+	surveyresponseDescAddress := surveyresponseFields[16].Descriptor()
 	// surveyresponse.DefaultAddress holds the default value on creation for the address field.
 	surveyresponse.DefaultAddress = surveyresponseDescAddress.Default.(string)
 	surveyresponseanswersMixin := schema.SurveyResponseAnswers{}.Mixin()

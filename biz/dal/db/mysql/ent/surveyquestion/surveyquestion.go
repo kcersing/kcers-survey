@@ -45,6 +45,12 @@ const (
 	FieldJumpRules = "jump_rules"
 	// FieldRequired holds the string denoting the required field in the database.
 	FieldRequired = "required"
+	// FieldRemark holds the string denoting the remark field in the database.
+	FieldRemark = "remark"
+	// FieldLevel holds the string denoting the level field in the database.
+	FieldLevel = "level"
+	// FieldTree holds the string denoting the tree field in the database.
+	FieldTree = "tree"
 	// EdgeSurvey holds the string denoting the survey edge name in mutations.
 	EdgeSurvey = "survey"
 	// Table holds the table name of the surveyquestion in the database.
@@ -76,6 +82,9 @@ var Columns = []string{
 	FieldSort,
 	FieldJumpRules,
 	FieldRequired,
+	FieldRemark,
+	FieldLevel,
+	FieldTree,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -119,6 +128,12 @@ var (
 	DefaultJumpRules []*service.JumpRules
 	// DefaultRequired holds the default value on creation for the "required" field.
 	DefaultRequired int64
+	// DefaultRemark holds the default value on creation for the "remark" field.
+	DefaultRemark string
+	// DefaultLevel holds the default value on creation for the "level" field.
+	DefaultLevel int64
+	// DefaultTree holds the default value on creation for the "tree" field.
+	DefaultTree string
 )
 
 // OrderOption defines the ordering options for the SurveyQuestion queries.
@@ -192,6 +207,21 @@ func BySort(opts ...sql.OrderTermOption) OrderOption {
 // ByRequired orders the results by the required field.
 func ByRequired(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRequired, opts...).ToFunc()
+}
+
+// ByRemark orders the results by the remark field.
+func ByRemark(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRemark, opts...).ToFunc()
+}
+
+// ByLevel orders the results by the level field.
+func ByLevel(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLevel, opts...).ToFunc()
+}
+
+// ByTree orders the results by the tree field.
+func ByTree(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTree, opts...).ToFunc()
 }
 
 // BySurveyField orders the results by survey field.

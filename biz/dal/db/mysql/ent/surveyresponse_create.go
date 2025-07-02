@@ -283,6 +283,20 @@ func (src *SurveyResponseCreate) SetNillableDistrict(s *string) *SurveyResponseC
 	return src
 }
 
+// SetVillage sets the "village" field.
+func (src *SurveyResponseCreate) SetVillage(s string) *SurveyResponseCreate {
+	src.mutation.SetVillage(s)
+	return src
+}
+
+// SetNillableVillage sets the "village" field if the given value is not nil.
+func (src *SurveyResponseCreate) SetNillableVillage(s *string) *SurveyResponseCreate {
+	if s != nil {
+		src.SetVillage(*s)
+	}
+	return src
+}
+
 // SetAddress sets the "address" field.
 func (src *SurveyResponseCreate) SetAddress(s string) *SurveyResponseCreate {
 	src.mutation.SetAddress(s)
@@ -418,6 +432,10 @@ func (src *SurveyResponseCreate) defaults() {
 		v := surveyresponse.DefaultDistrict
 		src.mutation.SetDistrict(v)
 	}
+	if _, ok := src.mutation.Village(); !ok {
+		v := surveyresponse.DefaultVillage
+		src.mutation.SetVillage(v)
+	}
 	if _, ok := src.mutation.Address(); !ok {
 		v := surveyresponse.DefaultAddress
 		src.mutation.SetAddress(v)
@@ -537,6 +555,10 @@ func (src *SurveyResponseCreate) createSpec() (*SurveyResponse, *sqlgraph.Create
 	if value, ok := src.mutation.District(); ok {
 		_spec.SetField(surveyresponse.FieldDistrict, field.TypeString, value)
 		_node.District = value
+	}
+	if value, ok := src.mutation.Village(); ok {
+		_spec.SetField(surveyresponse.FieldVillage, field.TypeString, value)
+		_node.Village = value
 	}
 	if value, ok := src.mutation.Address(); ok {
 		_spec.SetField(surveyresponse.FieldAddress, field.TypeString, value)

@@ -349,6 +349,73 @@ func (squ *SurveyQuestionUpdate) ClearRequired() *SurveyQuestionUpdate {
 	return squ
 }
 
+// SetRemark sets the "remark" field.
+func (squ *SurveyQuestionUpdate) SetRemark(s string) *SurveyQuestionUpdate {
+	squ.mutation.SetRemark(s)
+	return squ
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (squ *SurveyQuestionUpdate) SetNillableRemark(s *string) *SurveyQuestionUpdate {
+	if s != nil {
+		squ.SetRemark(*s)
+	}
+	return squ
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (squ *SurveyQuestionUpdate) ClearRemark() *SurveyQuestionUpdate {
+	squ.mutation.ClearRemark()
+	return squ
+}
+
+// SetLevel sets the "level" field.
+func (squ *SurveyQuestionUpdate) SetLevel(i int64) *SurveyQuestionUpdate {
+	squ.mutation.ResetLevel()
+	squ.mutation.SetLevel(i)
+	return squ
+}
+
+// SetNillableLevel sets the "level" field if the given value is not nil.
+func (squ *SurveyQuestionUpdate) SetNillableLevel(i *int64) *SurveyQuestionUpdate {
+	if i != nil {
+		squ.SetLevel(*i)
+	}
+	return squ
+}
+
+// AddLevel adds i to the "level" field.
+func (squ *SurveyQuestionUpdate) AddLevel(i int64) *SurveyQuestionUpdate {
+	squ.mutation.AddLevel(i)
+	return squ
+}
+
+// ClearLevel clears the value of the "level" field.
+func (squ *SurveyQuestionUpdate) ClearLevel() *SurveyQuestionUpdate {
+	squ.mutation.ClearLevel()
+	return squ
+}
+
+// SetTree sets the "tree" field.
+func (squ *SurveyQuestionUpdate) SetTree(s string) *SurveyQuestionUpdate {
+	squ.mutation.SetTree(s)
+	return squ
+}
+
+// SetNillableTree sets the "tree" field if the given value is not nil.
+func (squ *SurveyQuestionUpdate) SetNillableTree(s *string) *SurveyQuestionUpdate {
+	if s != nil {
+		squ.SetTree(*s)
+	}
+	return squ
+}
+
+// ClearTree clears the value of the "tree" field.
+func (squ *SurveyQuestionUpdate) ClearTree() *SurveyQuestionUpdate {
+	squ.mutation.ClearTree()
+	return squ
+}
+
 // SetSurvey sets the "survey" edge to the Survey entity.
 func (squ *SurveyQuestionUpdate) SetSurvey(s *Survey) *SurveyQuestionUpdate {
 	return squ.SetSurveyID(s.ID)
@@ -527,6 +594,27 @@ func (squ *SurveyQuestionUpdate) sqlSave(ctx context.Context) (n int, err error)
 	}
 	if squ.mutation.RequiredCleared() {
 		_spec.ClearField(surveyquestion.FieldRequired, field.TypeInt64)
+	}
+	if value, ok := squ.mutation.Remark(); ok {
+		_spec.SetField(surveyquestion.FieldRemark, field.TypeString, value)
+	}
+	if squ.mutation.RemarkCleared() {
+		_spec.ClearField(surveyquestion.FieldRemark, field.TypeString)
+	}
+	if value, ok := squ.mutation.Level(); ok {
+		_spec.SetField(surveyquestion.FieldLevel, field.TypeInt64, value)
+	}
+	if value, ok := squ.mutation.AddedLevel(); ok {
+		_spec.AddField(surveyquestion.FieldLevel, field.TypeInt64, value)
+	}
+	if squ.mutation.LevelCleared() {
+		_spec.ClearField(surveyquestion.FieldLevel, field.TypeInt64)
+	}
+	if value, ok := squ.mutation.Tree(); ok {
+		_spec.SetField(surveyquestion.FieldTree, field.TypeString, value)
+	}
+	if squ.mutation.TreeCleared() {
+		_spec.ClearField(surveyquestion.FieldTree, field.TypeString)
 	}
 	if squ.mutation.SurveyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -896,6 +984,73 @@ func (squo *SurveyQuestionUpdateOne) ClearRequired() *SurveyQuestionUpdateOne {
 	return squo
 }
 
+// SetRemark sets the "remark" field.
+func (squo *SurveyQuestionUpdateOne) SetRemark(s string) *SurveyQuestionUpdateOne {
+	squo.mutation.SetRemark(s)
+	return squo
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (squo *SurveyQuestionUpdateOne) SetNillableRemark(s *string) *SurveyQuestionUpdateOne {
+	if s != nil {
+		squo.SetRemark(*s)
+	}
+	return squo
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (squo *SurveyQuestionUpdateOne) ClearRemark() *SurveyQuestionUpdateOne {
+	squo.mutation.ClearRemark()
+	return squo
+}
+
+// SetLevel sets the "level" field.
+func (squo *SurveyQuestionUpdateOne) SetLevel(i int64) *SurveyQuestionUpdateOne {
+	squo.mutation.ResetLevel()
+	squo.mutation.SetLevel(i)
+	return squo
+}
+
+// SetNillableLevel sets the "level" field if the given value is not nil.
+func (squo *SurveyQuestionUpdateOne) SetNillableLevel(i *int64) *SurveyQuestionUpdateOne {
+	if i != nil {
+		squo.SetLevel(*i)
+	}
+	return squo
+}
+
+// AddLevel adds i to the "level" field.
+func (squo *SurveyQuestionUpdateOne) AddLevel(i int64) *SurveyQuestionUpdateOne {
+	squo.mutation.AddLevel(i)
+	return squo
+}
+
+// ClearLevel clears the value of the "level" field.
+func (squo *SurveyQuestionUpdateOne) ClearLevel() *SurveyQuestionUpdateOne {
+	squo.mutation.ClearLevel()
+	return squo
+}
+
+// SetTree sets the "tree" field.
+func (squo *SurveyQuestionUpdateOne) SetTree(s string) *SurveyQuestionUpdateOne {
+	squo.mutation.SetTree(s)
+	return squo
+}
+
+// SetNillableTree sets the "tree" field if the given value is not nil.
+func (squo *SurveyQuestionUpdateOne) SetNillableTree(s *string) *SurveyQuestionUpdateOne {
+	if s != nil {
+		squo.SetTree(*s)
+	}
+	return squo
+}
+
+// ClearTree clears the value of the "tree" field.
+func (squo *SurveyQuestionUpdateOne) ClearTree() *SurveyQuestionUpdateOne {
+	squo.mutation.ClearTree()
+	return squo
+}
+
 // SetSurvey sets the "survey" edge to the Survey entity.
 func (squo *SurveyQuestionUpdateOne) SetSurvey(s *Survey) *SurveyQuestionUpdateOne {
 	return squo.SetSurveyID(s.ID)
@@ -1104,6 +1259,27 @@ func (squo *SurveyQuestionUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	}
 	if squo.mutation.RequiredCleared() {
 		_spec.ClearField(surveyquestion.FieldRequired, field.TypeInt64)
+	}
+	if value, ok := squo.mutation.Remark(); ok {
+		_spec.SetField(surveyquestion.FieldRemark, field.TypeString, value)
+	}
+	if squo.mutation.RemarkCleared() {
+		_spec.ClearField(surveyquestion.FieldRemark, field.TypeString)
+	}
+	if value, ok := squo.mutation.Level(); ok {
+		_spec.SetField(surveyquestion.FieldLevel, field.TypeInt64, value)
+	}
+	if value, ok := squo.mutation.AddedLevel(); ok {
+		_spec.AddField(surveyquestion.FieldLevel, field.TypeInt64, value)
+	}
+	if squo.mutation.LevelCleared() {
+		_spec.ClearField(surveyquestion.FieldLevel, field.TypeInt64)
+	}
+	if value, ok := squo.mutation.Tree(); ok {
+		_spec.SetField(surveyquestion.FieldTree, field.TypeString, value)
+	}
+	if squo.mutation.TreeCleared() {
+		_spec.ClearField(surveyquestion.FieldTree, field.TypeString)
 	}
 	if squo.mutation.SurveyCleared() {
 		edge := &sqlgraph.EdgeSpec{

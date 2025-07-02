@@ -259,6 +259,9 @@ var (
 		{Name: "sort", Type: field.TypeInt64, Nullable: true, Comment: "sort", Default: 0},
 		{Name: "jump_rules", Type: field.TypeJSON, Nullable: true, Comment: "跳题规则"},
 		{Name: "required", Type: field.TypeInt64, Nullable: true, Comment: "是否必填 1必填 2选填", Default: 1},
+		{Name: "remark", Type: field.TypeString, Nullable: true, Comment: "remark", Default: ""},
+		{Name: "level", Type: field.TypeInt64, Nullable: true, Comment: "层级", Default: 0},
+		{Name: "tree", Type: field.TypeString, Nullable: true, Comment: "树", Default: ""},
 		{Name: "survey_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_id", Default: 0},
 	}
 	// SurveyQuestionTable holds the schema information for the "survey_question" table.
@@ -269,7 +272,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "survey_question_survey_question",
-				Columns:    []*schema.Column{SurveyQuestionColumns[15]},
+				Columns:    []*schema.Column{SurveyQuestionColumns[18]},
 				RefColumns: []*schema.Column{SurveyColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -298,6 +301,7 @@ var (
 		{Name: "area", Type: field.TypeString, Nullable: true, Comment: "area", Default: ""},
 		{Name: "city", Type: field.TypeString, Nullable: true, Comment: "city", Default: ""},
 		{Name: "district", Type: field.TypeString, Nullable: true, Comment: "district", Default: ""},
+		{Name: "village", Type: field.TypeString, Nullable: true, Comment: "village", Default: ""},
 		{Name: "address", Type: field.TypeString, Nullable: true, Comment: "address", Default: ""},
 	}
 	// SurveyResponseTable holds the schema information for the "survey_response" table.

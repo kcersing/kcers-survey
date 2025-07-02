@@ -30,6 +30,10 @@ func (SurveyQuestion) Fields() []ent.Field {
 		field.Int64("sort").Optional().Default(0).Comment("sort"),
 		field.JSON("jump_rules", []*service.JumpRules{}).Optional().Default([]*service.JumpRules{}).Comment("跳题规则"),
 		field.Int64("required").Optional().Default(1).Comment("是否必填 1必填 2选填"),
+		field.String("remark").Optional().Default("").Comment("remark"),
+
+		field.Int64("level").Default(0).Optional().Comment("层级"),
+		field.String("tree").Default("").Optional().Comment("树"),
 	}
 }
 

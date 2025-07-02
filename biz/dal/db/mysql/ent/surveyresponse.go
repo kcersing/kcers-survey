@@ -59,6 +59,8 @@ type SurveyResponse struct {
 	City string `json:"city,omitempty"`
 	// district
 	District string `json:"district,omitempty"`
+	// village
+	Village string `json:"village,omitempty"`
 	// address
 	Address      string `json:"address,omitempty"`
 	selectValues sql.SelectValues
@@ -73,7 +75,7 @@ func (*SurveyResponse) scanValues(columns []string) ([]any, error) {
 			values[i] = new([]byte)
 		case surveyresponse.FieldID, surveyresponse.FieldDelete, surveyresponse.FieldCreatedID, surveyresponse.FieldStatus, surveyresponse.FieldSurveyID:
 			values[i] = new(sql.NullInt64)
-		case surveyresponse.FieldSn, surveyresponse.FieldRespondent, surveyresponse.FieldRespondentPhone, surveyresponse.FieldResearcher, surveyresponse.FieldResearcherPhone, surveyresponse.FieldIP, surveyresponse.FieldLatitude, surveyresponse.FieldLongitude, surveyresponse.FieldDevice, surveyresponse.FieldArea, surveyresponse.FieldCity, surveyresponse.FieldDistrict, surveyresponse.FieldAddress:
+		case surveyresponse.FieldSn, surveyresponse.FieldRespondent, surveyresponse.FieldRespondentPhone, surveyresponse.FieldResearcher, surveyresponse.FieldResearcherPhone, surveyresponse.FieldIP, surveyresponse.FieldLatitude, surveyresponse.FieldLongitude, surveyresponse.FieldDevice, surveyresponse.FieldArea, surveyresponse.FieldCity, surveyresponse.FieldDistrict, surveyresponse.FieldVillage, surveyresponse.FieldAddress:
 			values[i] = new(sql.NullString)
 		case surveyresponse.FieldCreatedAt, surveyresponse.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -222,6 +224,12 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sr.District = value.String
 			}
+		case surveyresponse.FieldVillage:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field village", values[i])
+			} else if value.Valid {
+				sr.Village = value.String
+			}
 		case surveyresponse.FieldAddress:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field address", values[i])
@@ -323,6 +331,9 @@ func (sr *SurveyResponse) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("district=")
 	builder.WriteString(sr.District)
+	builder.WriteString(", ")
+	builder.WriteString("village=")
+	builder.WriteString(sr.Village)
 	builder.WriteString(", ")
 	builder.WriteString("address=")
 	builder.WriteString(sr.Address)

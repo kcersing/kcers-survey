@@ -3,6 +3,7 @@ package survey
 import (
 	"context"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/dgraph-io/ristretto"
 	db "kcers-survey/biz/dal/db/mysql"
 	"kcers-survey/biz/dal/db/mysql/ent"
@@ -115,6 +116,7 @@ func (s Survey) entToQuestionAll(all []*ent.SurveyQuestion, parentID int64) []*s
 				ParentId:  v.ParentID,
 				Serial:    v.Serial,
 				Show:      v.Show,
+				Remark:    v.Remark,
 			}
 
 			sq.Children = s.entToQuestionAll(all, v.ID)
@@ -328,6 +330,8 @@ func (s Survey) CreateResponse(req *service.CreateOrUpdateResponseReq) (err erro
 		sa, err = s.db.SurveyResponse.Create().
 			SetSurveyID(req.SurveyId).
 			SetSn(req.Sn).
+			SetIP(s.c.ClientIP()).
+			SetDevice(string(s.c.Request.Header.UserAgent())).
 			Save(s.ctx)
 		if err != nil {
 			return err
@@ -362,15 +366,17 @@ func (s Survey) CreateResponse(req *service.CreateOrUpdateResponseReq) (err erro
 	if req.Type == "image" {
 		sau.AppendPic(req.Value)
 	}
-
 	if req.Type == "area" {
 		sau.SetArea(req.Value[0])
 	}
 	if req.Type == "city" {
 		sau.SetCity(req.Value[0])
 	}
-	if req.Type == "city2" {
+	if req.Type == "district" {
 		sau.SetDistrict(req.Value[0])
+	}
+	if req.Type == "village" {
+		sau.SetVillage(req.Value[0])
 	}
 	if req.Type == "address" {
 		sau.SetAddress(req.Value[0])
@@ -423,8 +429,37 @@ func (s Survey) UpdateResponse(req *service.CreateOrUpdateResponseReq) (err erro
 }
 
 func (s Survey) GetResponse(id int64) (resp *service.Response, err error) {
-	//TODO implement me
-	panic("implement me")
+	first, err := s.db.SurveyResponse.
+		Query().
+		Where(surveyresponse2.IDEQ(id)).
+		First(s.ctx)
+	if err != nil {
+		return nil, err
+	}
+	hlog.Info(first)
+	return
+}
+
+func (s Survey) GetNext(req *service.GetNextReq) (number int64, err error) {
+
+	if req.Sn == "" {
+		return 0, nil
+	}
+	first, err := s.db.SurveyResponse.
+		Query().
+		Where(surveyresponse2.Sn(req.Sn)).
+		First(s.ctx)
+	if err != nil {
+		return 0, err
+	}
+
+	s.db.SurveyResponseAnswers.Query().
+		Where(surveyresponseanswers2.SurveyResponseID(first.ID)).
+		Order(ent.Desc(surveyresponseanswers2.FieldID)).
+		First(s.ctx)
+
+	hlog.Info(first)
+	return
 }
 
 func (s Survey) ListResponse(req *service.ResponseListReq) (resp []*service.Response, total int, err error) {

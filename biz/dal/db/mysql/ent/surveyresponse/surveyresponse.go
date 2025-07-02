@@ -53,6 +53,8 @@ const (
 	FieldCity = "city"
 	// FieldDistrict holds the string denoting the district field in the database.
 	FieldDistrict = "district"
+	// FieldVillage holds the string denoting the village field in the database.
+	FieldVillage = "village"
 	// FieldAddress holds the string denoting the address field in the database.
 	FieldAddress = "address"
 	// Table holds the table name of the surveyresponse in the database.
@@ -82,6 +84,7 @@ var Columns = []string{
 	FieldArea,
 	FieldCity,
 	FieldDistrict,
+	FieldVillage,
 	FieldAddress,
 }
 
@@ -138,6 +141,8 @@ var (
 	DefaultCity string
 	// DefaultDistrict holds the default value on creation for the "district" field.
 	DefaultDistrict string
+	// DefaultVillage holds the default value on creation for the "village" field.
+	DefaultVillage string
 	// DefaultAddress holds the default value on creation for the "address" field.
 	DefaultAddress string
 )
@@ -238,6 +243,11 @@ func ByCity(opts ...sql.OrderTermOption) OrderOption {
 // ByDistrict orders the results by the district field.
 func ByDistrict(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDistrict, opts...).ToFunc()
+}
+
+// ByVillage orders the results by the village field.
+func ByVillage(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldVillage, opts...).ToFunc()
 }
 
 // ByAddress orders the results by the address field.

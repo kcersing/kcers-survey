@@ -144,6 +144,11 @@ func District(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldEQ(FieldDistrict, v))
 }
 
+// Village applies equality check predicate on the "village" field. It's identical to VillageEQ.
+func Village(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldVillage, v))
+}
+
 // Address applies equality check predicate on the "address" field. It's identical to AddressEQ.
 func Address(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldEQ(FieldAddress, v))
@@ -1367,6 +1372,81 @@ func DistrictEqualFold(v string) predicate.SurveyResponse {
 // DistrictContainsFold applies the ContainsFold predicate on the "district" field.
 func DistrictContainsFold(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldContainsFold(FieldDistrict, v))
+}
+
+// VillageEQ applies the EQ predicate on the "village" field.
+func VillageEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldVillage, v))
+}
+
+// VillageNEQ applies the NEQ predicate on the "village" field.
+func VillageNEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldVillage, v))
+}
+
+// VillageIn applies the In predicate on the "village" field.
+func VillageIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldVillage, vs...))
+}
+
+// VillageNotIn applies the NotIn predicate on the "village" field.
+func VillageNotIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldVillage, vs...))
+}
+
+// VillageGT applies the GT predicate on the "village" field.
+func VillageGT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldVillage, v))
+}
+
+// VillageGTE applies the GTE predicate on the "village" field.
+func VillageGTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldVillage, v))
+}
+
+// VillageLT applies the LT predicate on the "village" field.
+func VillageLT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldVillage, v))
+}
+
+// VillageLTE applies the LTE predicate on the "village" field.
+func VillageLTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldVillage, v))
+}
+
+// VillageContains applies the Contains predicate on the "village" field.
+func VillageContains(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContains(FieldVillage, v))
+}
+
+// VillageHasPrefix applies the HasPrefix predicate on the "village" field.
+func VillageHasPrefix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldVillage, v))
+}
+
+// VillageHasSuffix applies the HasSuffix predicate on the "village" field.
+func VillageHasSuffix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldVillage, v))
+}
+
+// VillageIsNil applies the IsNil predicate on the "village" field.
+func VillageIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldVillage))
+}
+
+// VillageNotNil applies the NotNil predicate on the "village" field.
+func VillageNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldVillage))
+}
+
+// VillageEqualFold applies the EqualFold predicate on the "village" field.
+func VillageEqualFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEqualFold(FieldVillage, v))
+}
+
+// VillageContainsFold applies the ContainsFold predicate on the "village" field.
+func VillageContainsFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContainsFold(FieldVillage, v))
 }
 
 // AddressEQ applies the EQ predicate on the "address" field.

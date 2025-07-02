@@ -4,11 +4,10 @@ package service
 
 import (
 	"context"
+	"github.com/cloudwego/hertz/pkg/app"
 	surveyService "kcers-survey/biz/infras/service/survey"
 	"kcers-survey/biz/pkg/errno"
 	"kcers-survey/biz/pkg/utils"
-
-	"github.com/cloudwego/hertz/pkg/app"
 	base "kcers-survey/idl_gen/model/base"
 	service "kcers-survey/idl_gen/model/service"
 )
@@ -327,5 +326,28 @@ func TreeQuestion(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	utils.SendResponse(c, errno.Success, list, 0, "")
+	return
+}
+
+// GetNext .
+// @router /service/survey/response/getNext [POST]
+func GetNext(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req service.GetNextReq
+	err = c.BindAndValidate(&req)
+
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	num, err := surveyService.NewSurvey(ctx, c).GetNext(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success,
+		map[string]interface{}{
+			"number": num,
+		}, 0, "")
 	return
 }
