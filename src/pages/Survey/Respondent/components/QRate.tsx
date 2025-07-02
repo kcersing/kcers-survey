@@ -15,7 +15,6 @@ const QRate = (props) => {
   const onChange = (e: RadioChangeEvent) => {
 
     console.log(e)
-    setValue(e.target.value);
 
     addRespondent({
       surveyId:surveyId,
@@ -37,7 +36,7 @@ const QRate = (props) => {
 
 
   return (
-    <Form.Item name={['question', "'"+question.id+"'"]}   required={question.required===1} >
+    <Form.Item name={['question', "'"+question.id+"'"]}  required={question.required===1} >
       <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
     <ProFormRate
       name={['question', question.id]}

@@ -25,7 +25,7 @@ const QuestionRenderer = memo(({
       <ProForm.Item
         name={`question${question.id}`}
         label={question.content}
-        rules={question.required ? [{ required: true, message: '此字段为必填项' }] : []}
+        rules={question.required===1 ? [{ required: true, message: '此字段为必填项' }] : []}
         initialValue={answers[question.id]?.[`question${question.id}`]}
       >
         {renderQuestionControl(question, depth, {

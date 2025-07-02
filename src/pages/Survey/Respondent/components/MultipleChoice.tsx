@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import type { RadioChangeEvent } from 'antd';
 import { Input, Form,Checkbox ,message} from 'antd';
 import QJumpRules from '@/pages/survey/respondent/components/QJumpRules';
-
+import { ProFormCheckbox }from "@ant-design/pro-components";
 const style: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
@@ -45,10 +45,8 @@ if (question.id===9 ||question.id===114) {
           // setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
           setCurrent(parseInt(jumpRule.nextQuestionId));
         }
-
       }
     }
-
   };
 
   const onChange1 = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -63,11 +61,11 @@ if (question.id===9 ||question.id===114) {
   };
 
   return (
-    <Form.Item name={['question', "'"+question.id+"'"]}   required={question.required===1} >
+    <Form.Item name={['question', "'"+question.id+"'"]}  required={question.required===1} >
       <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
-      <Checkbox.Group
+      <ProFormCheckbox.Group
         onChange={onChange}
-
+        layout="vertical"
         style={style}
         options={question.options.map(option => ({
           disabled:disabled,
@@ -99,6 +97,7 @@ if (question.id===9 ||question.id===114) {
         value={value}
       />
     </Form.Item>
+
   );
 };
 

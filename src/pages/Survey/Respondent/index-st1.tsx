@@ -118,12 +118,12 @@ const Respondent = () => {
     // if (formRef.current) {
     try {
       // 验证当前问题
-      // formRef.current.validateFields();
-      // if (formRef.current) {
-      //   const values = await formRef.current.validateFields();
-      //   console.log(values)
-      //   addRespondent(values)
-      // }
+      formRef.current.validateFields();
+      if (formRef.current) {
+        const values = await formRef.current.validateFields();
+        console.log(values)
+        // addRespondent(values)
+      }
 
       // console.log(currentNum)
       //         console.log(current)
@@ -241,8 +241,8 @@ const Respondent = () => {
         <ProCard className="thank-you-card" bordered={false}>
           <p className="thank-you-icon" />
           <h2 level={3}>感谢您参与调查！</h2>
-          <Text>您的反馈对我们非常重要，我们将根据您的意见改进服务。</Text>
-          <Button type="primary" onClick={() => navigate('/')} className="finish-button">
+          <p>您的反馈对我们非常重要,感谢您的参与。</p>
+          <Button type="primary" onClick={() => navigate(`/survey/${surveyId}/respondent`)} className="finish-button">
             完成
           </Button>
         </ProCard>
@@ -264,6 +264,11 @@ const Respondent = () => {
             direction: 'vertical',
             size: 'small',
             current: 1,
+          }}
+          formProps={{
+            validateMessages: {
+              required: '此项为必填项',
+            },
           }}
           current={current}
           onFinish={(values) => {
@@ -328,7 +333,7 @@ const Respondent = () => {
             </>
           ))}
           {respondent()}
-          {renderThankYou}
+
 
 
           <SFUpload
@@ -339,7 +344,9 @@ const Respondent = () => {
             setCurrentNum={setCurrentNum}
             setCurrent={setCurrent}
           />
+          {renderThankYou()}
         </StepsForm>
+
       </ProCard>
     </div>
   );

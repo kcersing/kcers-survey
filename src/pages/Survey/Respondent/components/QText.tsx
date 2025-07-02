@@ -46,8 +46,8 @@ const QText = (props) => {
       <ProFormTextArea
         width="md"
         name={['question', question.id]}
-        placeholder="请输入..."
         onChange={onChange}
+        placeholder={question.remark}
         rules={[{required: question.required === 1, message: '必填项'}]}
       />
       <QJumpRules

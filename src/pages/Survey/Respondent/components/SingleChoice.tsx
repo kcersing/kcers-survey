@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 import type { RadioChangeEvent } from 'antd';
 import { Input, Form,Radio } from 'antd';
 import QJumpRules from "@/pages/survey/respondent/components/QJumpRules";
+import {ProFormRadio} from "@ant-design/pro-components";
+
+
 
 const style: React.CSSProperties = {
   display: 'flex',
@@ -54,11 +57,14 @@ if (!question ){return null}
 
   return (
     <>
-  <Form.Item name={['question', "'"+question.id+"'"]} required >
+
     <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
-    <Radio.Group
+    <ProFormRadio.Group
       onChange={onChange}
       style={style}
+      layout="vertical"
+      required
+      rules={[{ required: true, message: '这是必填项' }]}
 
         options={question.options.map(option => ({
         value:option.content,
@@ -80,7 +86,7 @@ if (!question ){return null}
 
 
 
-</Form.Item>
+
 
 
 

@@ -17,7 +17,7 @@ const QDate = (props) => {
 
     const formattedDate = date?.format('YYYY-MM-DD') || '';
     console.log(formattedDate);
-    setValue(e.target.value);
+    setValue(formattedDate);
     addRespondent({
       surveyId:surveyId,
       questionId:question.id,

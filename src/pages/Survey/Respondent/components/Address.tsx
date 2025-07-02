@@ -4,7 +4,7 @@ import type { RadioChangeEvent } from 'antd';
 import {ProFormDependency, ProFormSelect, ProFormText,StepsForm,ProForm} from "@ant-design/pro-components";
 import { queryCity, queryProvince } from '@/services/ant-design-pro/api';
 
-import { Input } from 'antd';
+import { Input ,Form} from 'antd';
 
 const { TextArea } = Input;
 
@@ -21,7 +21,7 @@ const Address = (props) => {
       sn:generateRandom,
     })
   };
-  const onChange1 = (e) => {
+  const onChangeCity = (e) => {
 
     console.log(e)
     // setValue(e);
@@ -32,17 +32,17 @@ const Address = (props) => {
       sn:generateRandom,
     })
   };
-  const onChange2 = (e: RadioChangeEvent) => {
+  const onChangeDistrict = (e: RadioChangeEvent) => {
     console.log(e)
     addRespondent({
       surveyId:surveyId,
-      type:"city2",
+      type:"district",
       value:[e.toString()],
       sn:generateRandom,
     })
   };
 
-  const onChange3 = (e) => {
+  const onChangeAddress = (e) => {
     console.log(e)
     addRespondent({
       surveyId:surveyId,
@@ -51,6 +51,16 @@ const Address = (props) => {
       sn:generateRandom,
     })
 
+  };
+
+  const onChangeVillage = (e: RadioChangeEvent) => {
+    console.log(e)
+    addRespondent({
+      surveyId:surveyId,
+      type:"village",
+      value:[e.toString()],
+      sn:generateRandom,
+    })
   };
 
 
@@ -63,6 +73,7 @@ const Address = (props) => {
         <h3> 请输入您的所在的地址信息</h3>
 
         <ProFormSelect
+          label={'省'}
           rules={[
             {
               required: true,
@@ -92,16 +103,17 @@ const Address = (props) => {
 
             return (
               <ProFormSelect
+                label={'市（州）'}
                 params={{
                   key: province?.value,
                 }}
                 name="city"
-                onChange={onChange1}
+                onChange={onChangeCity}
                 width="sm"
                 rules={[
                   {
                     required: true,
-                    message: '请输入您的所在城市!',
+                    message: '请输入您的所在市（州）',
                   },
                 ]}
                 disabled={!province}
@@ -124,31 +136,32 @@ const Address = (props) => {
             );
           }}
         </ProFormDependency>
-      <ProFormDependency name={['province']}>
-        {({ province }) => {
-
+      {/* 区县选择框 */}
+      <ProFormDependency name={['city']}>
+        {({ city }) => {
           return (
             <ProFormSelect
-              onChange={onChange2}
+              onChange={onChangeDistrict}
+              label={'县（区、旗）'}
               params={{
-                key: province?.value,
+                city: city,
               }}
-              name="city2"
+              name="district"
               width="sm"
               rules={[
                 {
                   required: true,
-                  message: '请输入您的所在区域!',
+                  message: '请输入您的所在县（区、旗）',
                 },
               ]}
-              disabled={!province}
+              disabled={!city}
               // className={styles.item}
               request={async () => {
-                if (!province?.value) {
+                if ( !city) {
                   return [];
                 }
 
-                return queryCity(province.value || '').then(({ data }) => {
+                return queryCity(city || '').then(({ data }) => {
                   return data.map((item) => {
                     return {
                       label: item.title,
@@ -161,16 +174,51 @@ const Address = (props) => {
           );
         }}
       </ProFormDependency>
+      <ProFormDependency name={['district',]}>
+        {({ district }) => {
 
+          return (
+            <ProFormSelect
+              label={'乡（镇）'}
+              onChange={onChangeVillage}
+              params={{
+                key: district,
+              }}
+              name="village"
+              width="sm"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入您的所在乡（镇）',
+                },
+              ]}
+              disabled={!district}
+              // className={styles.item}
+              request={async () => {
+                if (!district) {
+                  return [];
+                }
 
+                return queryCity(district || '').then(({ data }) => {
+                  return data.map((item) => {
+                    return {
+                      label: item.title,
+                      value: item.value,
+                    };
+                  });
+                });
+              }}
+            />
+          );
+        }}
+      </ProFormDependency>
+      <Form.Item label={'村'}  required >
         <TextArea
           style={{ width: '60%' }}
-
           name="address"
-          label="街道地址"
-          onChange={onChange3}
+          onChange={onChangeAddress}
         />
-
+      </Form.Item>
     </StepsForm.StepForm>
       );
 };

@@ -1,7 +1,8 @@
 import { PageContainer } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
-import { Card, theme } from 'antd';
+import { Card, message, theme } from 'antd';
 import React from 'react';
+import { history } from '@@/core/history';
 
 /**
  * 每个单独的卡片，为了复用样式抽成了组件
@@ -15,6 +16,7 @@ const InfoCard: React.FC<{
   href: string;
 }> = ({ title, href, index, desc }) => {
   const { useToken } = theme;
+
 
   const { token } = useToken();
 
@@ -86,18 +88,29 @@ const InfoCard: React.FC<{
 const Welcome: React.FC = () => {
   const { token } = theme.useToken();
   const { initialState } = useModel('@@initialState');
+
+
+
+  const urlParams = new URL(window.location.href).searchParams;
+  const usertoken= sessionStorage.getItem('token')
+  console.log(usertoken)
+  if (!usertoken){
+    history.push(urlParams.get('redirect') || '/user/login');
+  }
+
+
   return (
     <PageContainer>
       <Card
         style={{
           borderRadius: 8,
         }}
-        bodyStyle={{
-          backgroundImage:
-            initialState?.settings?.navTheme === 'realDark'
-              ? 'background-image: linear-gradient(75deg, #1A1B1F 0%, #191C1F 100%)'
-              : 'background-image: linear-gradient(75deg, #FBFDFF 0%, #F5F7FF 100%)',
-        }}
+        // bodyStyle={{
+        //   backgroundImage:
+        //     initialState?.settings?.navTheme === 'realDark'
+        //       ? 'background-image: linear-gradient(75deg, #1A1B1F 0%, #191C1F 100%)'
+        //       : 'background-image: linear-gradient(75deg, #FBFDFF 0%, #F5F7FF 100%)',
+        // }}
       >
         <div
           style={{
