@@ -59,7 +59,7 @@ export default [
       { path: '/survey/list', component: '@/pages/survey/list', name: '问卷列表' },
       { path: '/survey/:id/design', component: '@/pages/survey/designer', name: '设计页面' , hideInMenu: true, },
       { path: '/survey/:id/preview', component: '@/pages/survey/preview', name: '预览' ,hideInMenu: true, },
-      // { path: '/survey/:id/respondent', component: '@/pages/survey/respondent', name: '统计分析' ,hideInMenu: true, },
+      { path: '/survey/:id/response-list', component: '@/pages/survey/responselist/index', name: '已答问卷列表'  },
     ],
   },
   { path: '/survey/:id/respondent', component: '@/pages/survey/respondent/index-st1', name: '答题',layout: false,  },

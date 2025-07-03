@@ -161,5 +161,28 @@ declare namespace API {
     serial?: string;
     content?: string;
   };
+  type Response = {
+    id?: number;
+    sn?: string;
+    respondent?: string;
+    respondentPhone?: string;
+    researcher?: string;
+    researcherPhone?: string;
 
+
+    area?: string;
+    city?: string;
+    district?: string;
+    address?: string;
+    village?: string;
+
+    pic?: string;
+    ip?: string;
+
+    createdAt?: string;
+    latitude?: string;
+    longitude?: string;
+    answerCount?: number;
+
+  };
 }

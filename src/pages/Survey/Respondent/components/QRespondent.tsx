@@ -27,34 +27,37 @@ const QRespondent = (props) => {
       surveyId:surveyId,
       questionId:0,
       type:'respondent',
-      value:e,
+      value:[e.target.value],
       sn:generateRandom,
     })
   }}
   label="访谈人姓名" rules={[{ required: true, message: '必填项' }]} name={'respondent'} />
   <ProFormText width="md"  onChange={(e)=>{
+
     addRespondent({
       surveyId:surveyId,
       questionId:0,
       type:'respondentPhone',
-      value:e,
+      value:[e.target.value],
       sn:generateRandom,
     })}}
   label="联系电话" rules={[{ required: true, message: '必填项' }]} name={'respondentPhone'} />
   <ProFormText width="md"  onChange={(e)=>{
+
     addRespondent({
       surveyId:surveyId,
       questionId:0,
       type:'researcher',
-      value:e,
+      value:[e.target.value],
       sn:generateRandom,
     }) }} label="调研员姓名" rules={[{ required: true, message: '必填项' }]} name={'researcher'} />
   <ProFormText width="md"  onChange={(e)=>{
+
     addRespondent({
       surveyId:surveyId,
       questionId:0,
       type:'researcherPhone',
-      value:e,
+      value:[e.target.value],
       sn:generateRandom,
     })}} label="联系电话"   rules={[{ required: true, message: '必填项' }]} name={'researcherPhone'} />
   </StepsForm.StepForm>

@@ -84,11 +84,28 @@ const Respondent = () => {
 
 
   useEffect(() => {
-    getNext({sn:sn}).then((res)=>{
-      console.log(res)
-      setGenerateRandom(sn)
-      setCurrent(res.data.number+1)
-    })
+    if(sn){
+      getNext({sn:sn}).then((res)=>{
+        console.log(res)
+if (res.data){
+        console.log(res.data)
+        if((surveyId===1) && (res.data.number>62) ){
+          setCurrent(62)
+        }else {
+          setCurrent(res.data.number+1)
+        }
+        if((surveyId===2) && (res.data.number> 35) ){
+          setCurrent(35)
+        }else {
+          setCurrent(res.data.number+1)
+        }
+        if(!res.data.number){
+          setCurrent(0)
+        }
+}
+      })
+    }
+
   }, [sn]);
 
   // 加载问卷和问题数据

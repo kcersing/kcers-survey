@@ -18,34 +18,6 @@ const SFUpload = (props) => {
     >
 
       <Form.Item>
-        <ProFormUploadButton
-          name="上传录音"
-          label="上传录音"
-          listType="picture-card"
-          width='sm'
-          style={{
-            width: '80%',
-          }}
-          max={1}
-          action={(file)=>{
-            pubUpload({file}).then((res)=>{
-              console.log(res)
-              if (res.code === 0) {
-                message.success(`上传成功`);
-                addRespondent({
-                  surveyId:surveyId,
-                  type:"audio",
-                  value:[res.data.url],
-                  sn:generateRandom,
-                })
-              }
-            })
-          }}
-          // 限制上传文件类型为音频文件
-          accept="audio/*"
-          pastable={true}
-          maxSize={100 * 1024}
-        />
 
         <ProFormUploadButton
           name="上传合照"

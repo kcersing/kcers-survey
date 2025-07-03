@@ -187,3 +187,25 @@ export async function getNext(options?: { [key: string]: any }) {
 
 
 
+export async function listResponse(
+  params: {
+    // query
+    /** 当前的页码 */
+    current?: number;
+    surveyId?: number;
+    /** 页面的容量 */
+    pageSize?: number;
+    keywords?: string;
+  },
+  options?: { [key: string]: any },
+) {
+
+  return request<Record<string, any>>("/service/survey/response/list", {
+    method: 'POST',
+    params: {
+      page: params.current,
+      ...params,
+    },
+    ...(options || {}),
+  });
+}

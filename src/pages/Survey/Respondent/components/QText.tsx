@@ -26,7 +26,7 @@ const QText = (props) => {
       surveyId:surveyId,
       type:question.type,
       questionId:question.id,
-      value:[e.toString()],
+      value:[e.target.value.toString()],
       sn:generateRandom,
     })
     if (question.jumpRules) {
