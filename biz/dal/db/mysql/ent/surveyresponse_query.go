@@ -4,9 +4,12 @@ package ent
 
 import (
 	"context"
+	"database/sql/driver"
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/predicate"
+	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"math"
 
 	"entgo.io/ent"
@@ -18,11 +21,13 @@ import (
 // SurveyResponseQuery is the builder for querying SurveyResponse entities.
 type SurveyResponseQuery struct {
 	config
-	ctx        *QueryContext
-	order      []surveyresponse.OrderOption
-	inters     []Interceptor
-	predicates []predicate.SurveyResponse
-	modifiers  []func(*sql.Selector)
+	ctx         *QueryContext
+	order       []surveyresponse.OrderOption
+	inters      []Interceptor
+	predicates  []predicate.SurveyResponse
+	withSurvey  *SurveyQuery
+	withAnswers *SurveyResponseAnswersQuery
+	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -57,6 +62,50 @@ func (srq *SurveyResponseQuery) Unique(unique bool) *SurveyResponseQuery {
 func (srq *SurveyResponseQuery) Order(o ...surveyresponse.OrderOption) *SurveyResponseQuery {
 	srq.order = append(srq.order, o...)
 	return srq
+}
+
+// QuerySurvey chains the current query on the "survey" edge.
+func (srq *SurveyResponseQuery) QuerySurvey() *SurveyQuery {
+	query := (&SurveyClient{config: srq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := srq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := srq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(surveyresponse.Table, surveyresponse.FieldID, selector),
+			sqlgraph.To(survey.Table, survey.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, surveyresponse.SurveyTable, surveyresponse.SurveyColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(srq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryAnswers chains the current query on the "answers" edge.
+func (srq *SurveyResponseQuery) QueryAnswers() *SurveyResponseAnswersQuery {
+	query := (&SurveyResponseAnswersClient{config: srq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := srq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := srq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(surveyresponse.Table, surveyresponse.FieldID, selector),
+			sqlgraph.To(surveyresponseanswers.Table, surveyresponseanswers.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, surveyresponse.AnswersTable, surveyresponse.AnswersColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(srq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first SurveyResponse entity from the query.
@@ -246,16 +295,40 @@ func (srq *SurveyResponseQuery) Clone() *SurveyResponseQuery {
 		return nil
 	}
 	return &SurveyResponseQuery{
-		config:     srq.config,
-		ctx:        srq.ctx.Clone(),
-		order:      append([]surveyresponse.OrderOption{}, srq.order...),
-		inters:     append([]Interceptor{}, srq.inters...),
-		predicates: append([]predicate.SurveyResponse{}, srq.predicates...),
+		config:      srq.config,
+		ctx:         srq.ctx.Clone(),
+		order:       append([]surveyresponse.OrderOption{}, srq.order...),
+		inters:      append([]Interceptor{}, srq.inters...),
+		predicates:  append([]predicate.SurveyResponse{}, srq.predicates...),
+		withSurvey:  srq.withSurvey.Clone(),
+		withAnswers: srq.withAnswers.Clone(),
 		// clone intermediate query.
 		sql:       srq.sql.Clone(),
 		path:      srq.path,
 		modifiers: append([]func(*sql.Selector){}, srq.modifiers...),
 	}
+}
+
+// WithSurvey tells the query-builder to eager-load the nodes that are connected to
+// the "survey" edge. The optional arguments are used to configure the query builder of the edge.
+func (srq *SurveyResponseQuery) WithSurvey(opts ...func(*SurveyQuery)) *SurveyResponseQuery {
+	query := (&SurveyClient{config: srq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	srq.withSurvey = query
+	return srq
+}
+
+// WithAnswers tells the query-builder to eager-load the nodes that are connected to
+// the "answers" edge. The optional arguments are used to configure the query builder of the edge.
+func (srq *SurveyResponseQuery) WithAnswers(opts ...func(*SurveyResponseAnswersQuery)) *SurveyResponseQuery {
+	query := (&SurveyResponseAnswersClient{config: srq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	srq.withAnswers = query
+	return srq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -334,8 +407,12 @@ func (srq *SurveyResponseQuery) prepareQuery(ctx context.Context) error {
 
 func (srq *SurveyResponseQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*SurveyResponse, error) {
 	var (
-		nodes = []*SurveyResponse{}
-		_spec = srq.querySpec()
+		nodes       = []*SurveyResponse{}
+		_spec       = srq.querySpec()
+		loadedTypes = [2]bool{
+			srq.withSurvey != nil,
+			srq.withAnswers != nil,
+		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*SurveyResponse).scanValues(nil, columns)
@@ -343,6 +420,7 @@ func (srq *SurveyResponseQuery) sqlAll(ctx context.Context, hooks ...queryHook) 
 	_spec.Assign = func(columns []string, values []any) error {
 		node := &SurveyResponse{config: srq.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	if len(srq.modifiers) > 0 {
@@ -357,7 +435,80 @@ func (srq *SurveyResponseQuery) sqlAll(ctx context.Context, hooks ...queryHook) 
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := srq.withSurvey; query != nil {
+		if err := srq.loadSurvey(ctx, query, nodes, nil,
+			func(n *SurveyResponse, e *Survey) { n.Edges.Survey = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := srq.withAnswers; query != nil {
+		if err := srq.loadAnswers(ctx, query, nodes,
+			func(n *SurveyResponse) { n.Edges.Answers = []*SurveyResponseAnswers{} },
+			func(n *SurveyResponse, e *SurveyResponseAnswers) { n.Edges.Answers = append(n.Edges.Answers, e) }); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
+}
+
+func (srq *SurveyResponseQuery) loadSurvey(ctx context.Context, query *SurveyQuery, nodes []*SurveyResponse, init func(*SurveyResponse), assign func(*SurveyResponse, *Survey)) error {
+	ids := make([]int64, 0, len(nodes))
+	nodeids := make(map[int64][]*SurveyResponse)
+	for i := range nodes {
+		fk := nodes[i].SurveyID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(survey.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "survey_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (srq *SurveyResponseQuery) loadAnswers(ctx context.Context, query *SurveyResponseAnswersQuery, nodes []*SurveyResponse, init func(*SurveyResponse), assign func(*SurveyResponse, *SurveyResponseAnswers)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int64]*SurveyResponse)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(surveyresponseanswers.FieldSurveyResponseID)
+	}
+	query.Where(predicate.SurveyResponseAnswers(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(surveyresponse.AnswersColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.SurveyResponseID
+		node, ok := nodeids[fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "survey_response_id" returned %v for node %v`, fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
 }
 
 func (srq *SurveyResponseQuery) sqlCount(ctx context.Context) (int, error) {
@@ -387,6 +538,9 @@ func (srq *SurveyResponseQuery) querySpec() *sqlgraph.QuerySpec {
 			if fields[i] != surveyresponse.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
+		}
+		if srq.withSurvey != nil {
+			_spec.Node.AddColumnOnce(surveyresponse.FieldSurveyID)
 		}
 	}
 	if ps := srq.predicates; len(ps) > 0 {

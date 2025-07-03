@@ -7,7 +7,9 @@ import (
 	"errors"
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/predicate"
+	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -125,7 +127,6 @@ func (sru *SurveyResponseUpdate) ClearStatus() *SurveyResponseUpdate {
 
 // SetSurveyID sets the "survey_id" field.
 func (sru *SurveyResponseUpdate) SetSurveyID(i int64) *SurveyResponseUpdate {
-	sru.mutation.ResetSurveyID()
 	sru.mutation.SetSurveyID(i)
 	return sru
 }
@@ -135,12 +136,6 @@ func (sru *SurveyResponseUpdate) SetNillableSurveyID(i *int64) *SurveyResponseUp
 	if i != nil {
 		sru.SetSurveyID(*i)
 	}
-	return sru
-}
-
-// AddSurveyID adds i to the "survey_id" field.
-func (sru *SurveyResponseUpdate) AddSurveyID(i int64) *SurveyResponseUpdate {
-	sru.mutation.AddSurveyID(i)
 	return sru
 }
 
@@ -466,9 +461,83 @@ func (sru *SurveyResponseUpdate) ClearAddress() *SurveyResponseUpdate {
 	return sru
 }
 
+// SetAnswersCount sets the "answers_count" field.
+func (sru *SurveyResponseUpdate) SetAnswersCount(i int64) *SurveyResponseUpdate {
+	sru.mutation.ResetAnswersCount()
+	sru.mutation.SetAnswersCount(i)
+	return sru
+}
+
+// SetNillableAnswersCount sets the "answers_count" field if the given value is not nil.
+func (sru *SurveyResponseUpdate) SetNillableAnswersCount(i *int64) *SurveyResponseUpdate {
+	if i != nil {
+		sru.SetAnswersCount(*i)
+	}
+	return sru
+}
+
+// AddAnswersCount adds i to the "answers_count" field.
+func (sru *SurveyResponseUpdate) AddAnswersCount(i int64) *SurveyResponseUpdate {
+	sru.mutation.AddAnswersCount(i)
+	return sru
+}
+
+// ClearAnswersCount clears the value of the "answers_count" field.
+func (sru *SurveyResponseUpdate) ClearAnswersCount() *SurveyResponseUpdate {
+	sru.mutation.ClearAnswersCount()
+	return sru
+}
+
+// SetSurvey sets the "survey" edge to the Survey entity.
+func (sru *SurveyResponseUpdate) SetSurvey(s *Survey) *SurveyResponseUpdate {
+	return sru.SetSurveyID(s.ID)
+}
+
+// AddAnswerIDs adds the "answers" edge to the SurveyResponseAnswers entity by IDs.
+func (sru *SurveyResponseUpdate) AddAnswerIDs(ids ...int64) *SurveyResponseUpdate {
+	sru.mutation.AddAnswerIDs(ids...)
+	return sru
+}
+
+// AddAnswers adds the "answers" edges to the SurveyResponseAnswers entity.
+func (sru *SurveyResponseUpdate) AddAnswers(s ...*SurveyResponseAnswers) *SurveyResponseUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sru.AddAnswerIDs(ids...)
+}
+
 // Mutation returns the SurveyResponseMutation object of the builder.
 func (sru *SurveyResponseUpdate) Mutation() *SurveyResponseMutation {
 	return sru.mutation
+}
+
+// ClearSurvey clears the "survey" edge to the Survey entity.
+func (sru *SurveyResponseUpdate) ClearSurvey() *SurveyResponseUpdate {
+	sru.mutation.ClearSurvey()
+	return sru
+}
+
+// ClearAnswers clears all "answers" edges to the SurveyResponseAnswers entity.
+func (sru *SurveyResponseUpdate) ClearAnswers() *SurveyResponseUpdate {
+	sru.mutation.ClearAnswers()
+	return sru
+}
+
+// RemoveAnswerIDs removes the "answers" edge to SurveyResponseAnswers entities by IDs.
+func (sru *SurveyResponseUpdate) RemoveAnswerIDs(ids ...int64) *SurveyResponseUpdate {
+	sru.mutation.RemoveAnswerIDs(ids...)
+	return sru
+}
+
+// RemoveAnswers removes "answers" edges to SurveyResponseAnswers entities.
+func (sru *SurveyResponseUpdate) RemoveAnswers(s ...*SurveyResponseAnswers) *SurveyResponseUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sru.RemoveAnswerIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -557,15 +626,6 @@ func (sru *SurveyResponseUpdate) sqlSave(ctx context.Context) (n int, err error)
 	}
 	if sru.mutation.StatusCleared() {
 		_spec.ClearField(surveyresponse.FieldStatus, field.TypeInt64)
-	}
-	if value, ok := sru.mutation.SurveyID(); ok {
-		_spec.SetField(surveyresponse.FieldSurveyID, field.TypeInt64, value)
-	}
-	if value, ok := sru.mutation.AddedSurveyID(); ok {
-		_spec.AddField(surveyresponse.FieldSurveyID, field.TypeInt64, value)
-	}
-	if sru.mutation.SurveyIDCleared() {
-		_spec.ClearField(surveyresponse.FieldSurveyID, field.TypeInt64)
 	}
 	if value, ok := sru.mutation.Sn(); ok {
 		_spec.SetField(surveyresponse.FieldSn, field.TypeString, value)
@@ -672,6 +732,89 @@ func (sru *SurveyResponseUpdate) sqlSave(ctx context.Context) (n int, err error)
 	}
 	if sru.mutation.AddressCleared() {
 		_spec.ClearField(surveyresponse.FieldAddress, field.TypeString)
+	}
+	if value, ok := sru.mutation.AnswersCount(); ok {
+		_spec.SetField(surveyresponse.FieldAnswersCount, field.TypeInt64, value)
+	}
+	if value, ok := sru.mutation.AddedAnswersCount(); ok {
+		_spec.AddField(surveyresponse.FieldAnswersCount, field.TypeInt64, value)
+	}
+	if sru.mutation.AnswersCountCleared() {
+		_spec.ClearField(surveyresponse.FieldAnswersCount, field.TypeInt64)
+	}
+	if sru.mutation.SurveyCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponse.SurveyTable,
+			Columns: []string{surveyresponse.SurveyColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sru.mutation.SurveyIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponse.SurveyTable,
+			Columns: []string{surveyresponse.SurveyColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if sru.mutation.AnswersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyresponse.AnswersTable,
+			Columns: []string{surveyresponse.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sru.mutation.RemovedAnswersIDs(); len(nodes) > 0 && !sru.mutation.AnswersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyresponse.AnswersTable,
+			Columns: []string{surveyresponse.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sru.mutation.AnswersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyresponse.AnswersTable,
+			Columns: []string{surveyresponse.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_spec.AddModifiers(sru.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, sru.driver, _spec); err != nil {
@@ -790,7 +933,6 @@ func (sruo *SurveyResponseUpdateOne) ClearStatus() *SurveyResponseUpdateOne {
 
 // SetSurveyID sets the "survey_id" field.
 func (sruo *SurveyResponseUpdateOne) SetSurveyID(i int64) *SurveyResponseUpdateOne {
-	sruo.mutation.ResetSurveyID()
 	sruo.mutation.SetSurveyID(i)
 	return sruo
 }
@@ -800,12 +942,6 @@ func (sruo *SurveyResponseUpdateOne) SetNillableSurveyID(i *int64) *SurveyRespon
 	if i != nil {
 		sruo.SetSurveyID(*i)
 	}
-	return sruo
-}
-
-// AddSurveyID adds i to the "survey_id" field.
-func (sruo *SurveyResponseUpdateOne) AddSurveyID(i int64) *SurveyResponseUpdateOne {
-	sruo.mutation.AddSurveyID(i)
 	return sruo
 }
 
@@ -1131,9 +1267,83 @@ func (sruo *SurveyResponseUpdateOne) ClearAddress() *SurveyResponseUpdateOne {
 	return sruo
 }
 
+// SetAnswersCount sets the "answers_count" field.
+func (sruo *SurveyResponseUpdateOne) SetAnswersCount(i int64) *SurveyResponseUpdateOne {
+	sruo.mutation.ResetAnswersCount()
+	sruo.mutation.SetAnswersCount(i)
+	return sruo
+}
+
+// SetNillableAnswersCount sets the "answers_count" field if the given value is not nil.
+func (sruo *SurveyResponseUpdateOne) SetNillableAnswersCount(i *int64) *SurveyResponseUpdateOne {
+	if i != nil {
+		sruo.SetAnswersCount(*i)
+	}
+	return sruo
+}
+
+// AddAnswersCount adds i to the "answers_count" field.
+func (sruo *SurveyResponseUpdateOne) AddAnswersCount(i int64) *SurveyResponseUpdateOne {
+	sruo.mutation.AddAnswersCount(i)
+	return sruo
+}
+
+// ClearAnswersCount clears the value of the "answers_count" field.
+func (sruo *SurveyResponseUpdateOne) ClearAnswersCount() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearAnswersCount()
+	return sruo
+}
+
+// SetSurvey sets the "survey" edge to the Survey entity.
+func (sruo *SurveyResponseUpdateOne) SetSurvey(s *Survey) *SurveyResponseUpdateOne {
+	return sruo.SetSurveyID(s.ID)
+}
+
+// AddAnswerIDs adds the "answers" edge to the SurveyResponseAnswers entity by IDs.
+func (sruo *SurveyResponseUpdateOne) AddAnswerIDs(ids ...int64) *SurveyResponseUpdateOne {
+	sruo.mutation.AddAnswerIDs(ids...)
+	return sruo
+}
+
+// AddAnswers adds the "answers" edges to the SurveyResponseAnswers entity.
+func (sruo *SurveyResponseUpdateOne) AddAnswers(s ...*SurveyResponseAnswers) *SurveyResponseUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sruo.AddAnswerIDs(ids...)
+}
+
 // Mutation returns the SurveyResponseMutation object of the builder.
 func (sruo *SurveyResponseUpdateOne) Mutation() *SurveyResponseMutation {
 	return sruo.mutation
+}
+
+// ClearSurvey clears the "survey" edge to the Survey entity.
+func (sruo *SurveyResponseUpdateOne) ClearSurvey() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearSurvey()
+	return sruo
+}
+
+// ClearAnswers clears all "answers" edges to the SurveyResponseAnswers entity.
+func (sruo *SurveyResponseUpdateOne) ClearAnswers() *SurveyResponseUpdateOne {
+	sruo.mutation.ClearAnswers()
+	return sruo
+}
+
+// RemoveAnswerIDs removes the "answers" edge to SurveyResponseAnswers entities by IDs.
+func (sruo *SurveyResponseUpdateOne) RemoveAnswerIDs(ids ...int64) *SurveyResponseUpdateOne {
+	sruo.mutation.RemoveAnswerIDs(ids...)
+	return sruo
+}
+
+// RemoveAnswers removes "answers" edges to SurveyResponseAnswers entities.
+func (sruo *SurveyResponseUpdateOne) RemoveAnswers(s ...*SurveyResponseAnswers) *SurveyResponseUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sruo.RemoveAnswerIDs(ids...)
 }
 
 // Where appends a list predicates to the SurveyResponseUpdate builder.
@@ -1253,15 +1463,6 @@ func (sruo *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	if sruo.mutation.StatusCleared() {
 		_spec.ClearField(surveyresponse.FieldStatus, field.TypeInt64)
 	}
-	if value, ok := sruo.mutation.SurveyID(); ok {
-		_spec.SetField(surveyresponse.FieldSurveyID, field.TypeInt64, value)
-	}
-	if value, ok := sruo.mutation.AddedSurveyID(); ok {
-		_spec.AddField(surveyresponse.FieldSurveyID, field.TypeInt64, value)
-	}
-	if sruo.mutation.SurveyIDCleared() {
-		_spec.ClearField(surveyresponse.FieldSurveyID, field.TypeInt64)
-	}
 	if value, ok := sruo.mutation.Sn(); ok {
 		_spec.SetField(surveyresponse.FieldSn, field.TypeString, value)
 	}
@@ -1367,6 +1568,89 @@ func (sruo *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 	}
 	if sruo.mutation.AddressCleared() {
 		_spec.ClearField(surveyresponse.FieldAddress, field.TypeString)
+	}
+	if value, ok := sruo.mutation.AnswersCount(); ok {
+		_spec.SetField(surveyresponse.FieldAnswersCount, field.TypeInt64, value)
+	}
+	if value, ok := sruo.mutation.AddedAnswersCount(); ok {
+		_spec.AddField(surveyresponse.FieldAnswersCount, field.TypeInt64, value)
+	}
+	if sruo.mutation.AnswersCountCleared() {
+		_spec.ClearField(surveyresponse.FieldAnswersCount, field.TypeInt64)
+	}
+	if sruo.mutation.SurveyCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponse.SurveyTable,
+			Columns: []string{surveyresponse.SurveyColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sruo.mutation.SurveyIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponse.SurveyTable,
+			Columns: []string{surveyresponse.SurveyColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if sruo.mutation.AnswersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyresponse.AnswersTable,
+			Columns: []string{surveyresponse.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sruo.mutation.RemovedAnswersIDs(); len(nodes) > 0 && !sruo.mutation.AnswersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyresponse.AnswersTable,
+			Columns: []string{surveyresponse.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sruo.mutation.AnswersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyresponse.AnswersTable,
+			Columns: []string{surveyresponse.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_spec.AddModifiers(sruo.modifiers...)
 	_node = &SurveyResponse{config: sruo.config}

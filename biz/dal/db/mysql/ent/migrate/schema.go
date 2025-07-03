@@ -286,7 +286,6 @@ var (
 		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
-		{Name: "survey_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_id", Default: 0},
 		{Name: "sn", Type: field.TypeString, Nullable: true, Comment: "sn", Default: ""},
 		{Name: "respondent", Type: field.TypeString, Nullable: true, Comment: "受访人", Default: ""},
 		{Name: "respondent_phone", Type: field.TypeString, Nullable: true, Comment: "受访人联系电话", Default: ""},
@@ -303,12 +302,22 @@ var (
 		{Name: "district", Type: field.TypeString, Nullable: true, Comment: "district", Default: ""},
 		{Name: "village", Type: field.TypeString, Nullable: true, Comment: "village", Default: ""},
 		{Name: "address", Type: field.TypeString, Nullable: true, Comment: "address", Default: ""},
+		{Name: "answers_count", Type: field.TypeInt64, Nullable: true, Comment: "answers count", Default: 0},
+		{Name: "survey_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_id", Default: 0},
 	}
 	// SurveyResponseTable holds the schema information for the "survey_response" table.
 	SurveyResponseTable = &schema.Table{
 		Name:       "survey_response",
 		Columns:    SurveyResponseColumns,
 		PrimaryKey: []*schema.Column{SurveyResponseColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "survey_response_survey_response",
+				Columns:    []*schema.Column{SurveyResponseColumns[23]},
+				RefColumns: []*schema.Column{SurveyColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// SurveyResponseAnswersColumns holds the columns for the "survey_response_answers" table.
 	SurveyResponseAnswersColumns = []*schema.Column{
@@ -319,16 +328,30 @@ var (
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
 		{Name: "survey_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_id", Default: 0},
-		{Name: "survey_response_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_response_id", Default: 0},
-		{Name: "survey_question_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_question_id", Default: 0},
 		{Name: "answer_text", Type: field.TypeString, Nullable: true, Comment: "回答文本"},
 		{Name: "answer", Type: field.TypeJSON, Nullable: true, Comment: "answer"},
+		{Name: "survey_question_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_question_id", Default: 0},
+		{Name: "survey_response_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_response_id", Default: 0},
 	}
 	// SurveyResponseAnswersTable holds the schema information for the "survey_response_answers" table.
 	SurveyResponseAnswersTable = &schema.Table{
 		Name:       "survey_response_answers",
 		Columns:    SurveyResponseAnswersColumns,
 		PrimaryKey: []*schema.Column{SurveyResponseAnswersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "survey_response_answers_survey_question_answers",
+				Columns:    []*schema.Column{SurveyResponseAnswersColumns[9]},
+				RefColumns: []*schema.Column{SurveyQuestionColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "survey_response_answers_survey_response_answers",
+				Columns:    []*schema.Column{SurveyResponseAnswersColumns[10]},
+				RefColumns: []*schema.Column{SurveyResponseColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// SysTokensColumns holds the columns for the "sys_tokens" table.
 	SysTokensColumns = []*schema.Column{
@@ -521,9 +544,12 @@ func init() {
 	SurveyQuestionTable.Annotation = &entsql.Annotation{
 		Table: "survey_question",
 	}
+	SurveyResponseTable.ForeignKeys[0].RefTable = SurveyTable
 	SurveyResponseTable.Annotation = &entsql.Annotation{
 		Table: "survey_response",
 	}
+	SurveyResponseAnswersTable.ForeignKeys[0].RefTable = SurveyQuestionTable
+	SurveyResponseAnswersTable.ForeignKeys[1].RefTable = SurveyResponseTable
 	SurveyResponseAnswersTable.Annotation = &entsql.Annotation{
 		Table: "survey_response_answers",
 	}

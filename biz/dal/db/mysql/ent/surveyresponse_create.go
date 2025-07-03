@@ -5,7 +5,9 @@ package ent
 import (
 	"context"
 	"fmt"
+	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -311,10 +313,44 @@ func (src *SurveyResponseCreate) SetNillableAddress(s *string) *SurveyResponseCr
 	return src
 }
 
+// SetAnswersCount sets the "answers_count" field.
+func (src *SurveyResponseCreate) SetAnswersCount(i int64) *SurveyResponseCreate {
+	src.mutation.SetAnswersCount(i)
+	return src
+}
+
+// SetNillableAnswersCount sets the "answers_count" field if the given value is not nil.
+func (src *SurveyResponseCreate) SetNillableAnswersCount(i *int64) *SurveyResponseCreate {
+	if i != nil {
+		src.SetAnswersCount(*i)
+	}
+	return src
+}
+
 // SetID sets the "id" field.
 func (src *SurveyResponseCreate) SetID(i int64) *SurveyResponseCreate {
 	src.mutation.SetID(i)
 	return src
+}
+
+// SetSurvey sets the "survey" edge to the Survey entity.
+func (src *SurveyResponseCreate) SetSurvey(s *Survey) *SurveyResponseCreate {
+	return src.SetSurveyID(s.ID)
+}
+
+// AddAnswerIDs adds the "answers" edge to the SurveyResponseAnswers entity by IDs.
+func (src *SurveyResponseCreate) AddAnswerIDs(ids ...int64) *SurveyResponseCreate {
+	src.mutation.AddAnswerIDs(ids...)
+	return src
+}
+
+// AddAnswers adds the "answers" edges to the SurveyResponseAnswers entity.
+func (src *SurveyResponseCreate) AddAnswers(s ...*SurveyResponseAnswers) *SurveyResponseCreate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return src.AddAnswerIDs(ids...)
 }
 
 // Mutation returns the SurveyResponseMutation object of the builder.
@@ -440,6 +476,10 @@ func (src *SurveyResponseCreate) defaults() {
 		v := surveyresponse.DefaultAddress
 		src.mutation.SetAddress(v)
 	}
+	if _, ok := src.mutation.AnswersCount(); !ok {
+		v := surveyresponse.DefaultAnswersCount
+		src.mutation.SetAnswersCount(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -495,10 +535,6 @@ func (src *SurveyResponseCreate) createSpec() (*SurveyResponse, *sqlgraph.Create
 	if value, ok := src.mutation.Status(); ok {
 		_spec.SetField(surveyresponse.FieldStatus, field.TypeInt64, value)
 		_node.Status = value
-	}
-	if value, ok := src.mutation.SurveyID(); ok {
-		_spec.SetField(surveyresponse.FieldSurveyID, field.TypeInt64, value)
-		_node.SurveyID = value
 	}
 	if value, ok := src.mutation.Sn(); ok {
 		_spec.SetField(surveyresponse.FieldSn, field.TypeString, value)
@@ -563,6 +599,43 @@ func (src *SurveyResponseCreate) createSpec() (*SurveyResponse, *sqlgraph.Create
 	if value, ok := src.mutation.Address(); ok {
 		_spec.SetField(surveyresponse.FieldAddress, field.TypeString, value)
 		_node.Address = value
+	}
+	if value, ok := src.mutation.AnswersCount(); ok {
+		_spec.SetField(surveyresponse.FieldAnswersCount, field.TypeInt64, value)
+		_node.AnswersCount = value
+	}
+	if nodes := src.mutation.SurveyIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponse.SurveyTable,
+			Columns: []string{surveyresponse.SurveyColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.SurveyID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := src.mutation.AnswersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyresponse.AnswersTable,
+			Columns: []string{surveyresponse.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

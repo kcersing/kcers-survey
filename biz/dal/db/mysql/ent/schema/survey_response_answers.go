@@ -35,7 +35,7 @@ func (SurveyResponseAnswers) Mixin() []ent.Mixin {
 func (SurveyResponseAnswers) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("response", SurveyResponse.Type).Ref("answers").Field("survey_response_id").Unique(),
-		edge.From("question", SurveyResponse.Type).Ref("answers").Field("survey_question_id").Unique(),
+		edge.From("question", SurveyQuestion.Type).Ref("answers").Field("survey_question_id").Unique(),
 	}
 
 }

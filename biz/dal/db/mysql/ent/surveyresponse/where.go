@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // ID filters vertices based on their ID field.
@@ -152,6 +153,11 @@ func Village(v string) predicate.SurveyResponse {
 // Address applies equality check predicate on the "address" field. It's identical to AddressEQ.
 func Address(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldEQ(FieldAddress, v))
+}
+
+// AnswersCount applies equality check predicate on the "answers_count" field. It's identical to AnswersCountEQ.
+func AnswersCount(v int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldAnswersCount, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -422,26 +428,6 @@ func SurveyIDIn(vs ...int64) predicate.SurveyResponse {
 // SurveyIDNotIn applies the NotIn predicate on the "survey_id" field.
 func SurveyIDNotIn(vs ...int64) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldNotIn(FieldSurveyID, vs...))
-}
-
-// SurveyIDGT applies the GT predicate on the "survey_id" field.
-func SurveyIDGT(v int64) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGT(FieldSurveyID, v))
-}
-
-// SurveyIDGTE applies the GTE predicate on the "survey_id" field.
-func SurveyIDGTE(v int64) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGTE(FieldSurveyID, v))
-}
-
-// SurveyIDLT applies the LT predicate on the "survey_id" field.
-func SurveyIDLT(v int64) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLT(FieldSurveyID, v))
-}
-
-// SurveyIDLTE applies the LTE predicate on the "survey_id" field.
-func SurveyIDLTE(v int64) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLTE(FieldSurveyID, v))
 }
 
 // SurveyIDIsNil applies the IsNil predicate on the "survey_id" field.
@@ -1522,6 +1508,102 @@ func AddressEqualFold(v string) predicate.SurveyResponse {
 // AddressContainsFold applies the ContainsFold predicate on the "address" field.
 func AddressContainsFold(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldContainsFold(FieldAddress, v))
+}
+
+// AnswersCountEQ applies the EQ predicate on the "answers_count" field.
+func AnswersCountEQ(v int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldAnswersCount, v))
+}
+
+// AnswersCountNEQ applies the NEQ predicate on the "answers_count" field.
+func AnswersCountNEQ(v int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldAnswersCount, v))
+}
+
+// AnswersCountIn applies the In predicate on the "answers_count" field.
+func AnswersCountIn(vs ...int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldAnswersCount, vs...))
+}
+
+// AnswersCountNotIn applies the NotIn predicate on the "answers_count" field.
+func AnswersCountNotIn(vs ...int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldAnswersCount, vs...))
+}
+
+// AnswersCountGT applies the GT predicate on the "answers_count" field.
+func AnswersCountGT(v int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldAnswersCount, v))
+}
+
+// AnswersCountGTE applies the GTE predicate on the "answers_count" field.
+func AnswersCountGTE(v int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldAnswersCount, v))
+}
+
+// AnswersCountLT applies the LT predicate on the "answers_count" field.
+func AnswersCountLT(v int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldAnswersCount, v))
+}
+
+// AnswersCountLTE applies the LTE predicate on the "answers_count" field.
+func AnswersCountLTE(v int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldAnswersCount, v))
+}
+
+// AnswersCountIsNil applies the IsNil predicate on the "answers_count" field.
+func AnswersCountIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldAnswersCount))
+}
+
+// AnswersCountNotNil applies the NotNil predicate on the "answers_count" field.
+func AnswersCountNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldAnswersCount))
+}
+
+// HasSurvey applies the HasEdge predicate on the "survey" edge.
+func HasSurvey() predicate.SurveyResponse {
+	return predicate.SurveyResponse(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, SurveyTable, SurveyColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasSurveyWith applies the HasEdge predicate on the "survey" edge with a given conditions (other predicates).
+func HasSurveyWith(preds ...predicate.Survey) predicate.SurveyResponse {
+	return predicate.SurveyResponse(func(s *sql.Selector) {
+		step := newSurveyStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasAnswers applies the HasEdge predicate on the "answers" edge.
+func HasAnswers() predicate.SurveyResponse {
+	return predicate.SurveyResponse(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, AnswersTable, AnswersColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasAnswersWith applies the HasEdge predicate on the "answers" edge with a given conditions (other predicates).
+func HasAnswersWith(preds ...predicate.SurveyResponseAnswers) predicate.SurveyResponse {
+	return predicate.SurveyResponse(func(s *sql.Selector) {
+		step := newAnswersStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

@@ -5,6 +5,7 @@ package ent
 import (
 	"encoding/json"
 	"fmt"
+	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
 	"strings"
 	"time"
@@ -62,8 +63,44 @@ type SurveyResponse struct {
 	// village
 	Village string `json:"village,omitempty"`
 	// address
-	Address      string `json:"address,omitempty"`
+	Address string `json:"address,omitempty"`
+	// answers count
+	AnswersCount int64 `json:"answers_count,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the SurveyResponseQuery when eager-loading is set.
+	Edges        SurveyResponseEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// SurveyResponseEdges holds the relations/edges for other nodes in the graph.
+type SurveyResponseEdges struct {
+	// Survey holds the value of the survey edge.
+	Survey *Survey `json:"survey,omitempty"`
+	// Answers holds the value of the answers edge.
+	Answers []*SurveyResponseAnswers `json:"answers,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [2]bool
+}
+
+// SurveyOrErr returns the Survey value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e SurveyResponseEdges) SurveyOrErr() (*Survey, error) {
+	if e.Survey != nil {
+		return e.Survey, nil
+	} else if e.loadedTypes[0] {
+		return nil, &NotFoundError{label: survey.Label}
+	}
+	return nil, &NotLoadedError{edge: "survey"}
+}
+
+// AnswersOrErr returns the Answers value or an error if the edge
+// was not loaded in eager-loading.
+func (e SurveyResponseEdges) AnswersOrErr() ([]*SurveyResponseAnswers, error) {
+	if e.loadedTypes[1] {
+		return e.Answers, nil
+	}
+	return nil, &NotLoadedError{edge: "answers"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -73,7 +110,7 @@ func (*SurveyResponse) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case surveyresponse.FieldPic, surveyresponse.FieldAudio:
 			values[i] = new([]byte)
-		case surveyresponse.FieldID, surveyresponse.FieldDelete, surveyresponse.FieldCreatedID, surveyresponse.FieldStatus, surveyresponse.FieldSurveyID:
+		case surveyresponse.FieldID, surveyresponse.FieldDelete, surveyresponse.FieldCreatedID, surveyresponse.FieldStatus, surveyresponse.FieldSurveyID, surveyresponse.FieldAnswersCount:
 			values[i] = new(sql.NullInt64)
 		case surveyresponse.FieldSn, surveyresponse.FieldRespondent, surveyresponse.FieldRespondentPhone, surveyresponse.FieldResearcher, surveyresponse.FieldResearcherPhone, surveyresponse.FieldIP, surveyresponse.FieldLatitude, surveyresponse.FieldLongitude, surveyresponse.FieldDevice, surveyresponse.FieldArea, surveyresponse.FieldCity, surveyresponse.FieldDistrict, surveyresponse.FieldVillage, surveyresponse.FieldAddress:
 			values[i] = new(sql.NullString)
@@ -236,6 +273,12 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sr.Address = value.String
 			}
+		case surveyresponse.FieldAnswersCount:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field answers_count", values[i])
+			} else if value.Valid {
+				sr.AnswersCount = value.Int64
+			}
 		default:
 			sr.selectValues.Set(columns[i], values[i])
 		}
@@ -247,6 +290,16 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (sr *SurveyResponse) Value(name string) (ent.Value, error) {
 	return sr.selectValues.Get(name)
+}
+
+// QuerySurvey queries the "survey" edge of the SurveyResponse entity.
+func (sr *SurveyResponse) QuerySurvey() *SurveyQuery {
+	return NewSurveyResponseClient(sr.config).QuerySurvey(sr)
+}
+
+// QueryAnswers queries the "answers" edge of the SurveyResponse entity.
+func (sr *SurveyResponse) QueryAnswers() *SurveyResponseAnswersQuery {
+	return NewSurveyResponseClient(sr.config).QueryAnswers(sr)
 }
 
 // Update returns a builder for updating this SurveyResponse.
@@ -337,6 +390,9 @@ func (sr *SurveyResponse) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("address=")
 	builder.WriteString(sr.Address)
+	builder.WriteString(", ")
+	builder.WriteString("answers_count=")
+	builder.WriteString(fmt.Sprintf("%v", sr.AnswersCount))
 	builder.WriteByte(')')
 	return builder.String()
 }

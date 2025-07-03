@@ -54,7 +54,10 @@ struct Survey {
      8:optional i64 questionCount=0 (api.raw = "questionCount")
      9:optional i64 responseCount=0 (api.raw = "responseCount")
      10:optional string pic="" (api.raw = "pic")
-     11:optional string createdAt="" (api.raw = "createdAt")
+
+
+      255:  optional string createdAt="" (api.raw = "createdAt")
+      256:  optional string updatedAt="" (api.raw = "updatedAt")
 
 }
 struct SurveyListReq {
@@ -105,6 +108,9 @@ struct Question  {
          17:optional string answerText="" (api.raw = "answerText")
          18:optional i64 responseId=0 (api.raw = "responseId")
 
+
+    255:  optional string createdAt="" (api.raw = "createdAt")
+    256:  optional string updatedAt="" (api.raw = "updatedAt")
 }
 struct JumpRules {
       2:optional string answer="" (api.raw = "answer")// 触发条件的回答
@@ -150,6 +156,10 @@ struct Response  {
     20:optional string address="" (api.raw = "address")
     21:optional string village="" (api.raw = "village")
     22:optional i64 answerCount=0 (api.raw = "answerCount")
+
+
+     255:  optional string createdAt="" (api.raw = "createdAt")
+     256:  optional string updatedAt="" (api.raw = "updatedAt")
 }
 
 struct ResponseListReq {

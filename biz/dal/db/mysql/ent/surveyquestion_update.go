@@ -9,6 +9,7 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/predicate"
 	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"kcers-survey/idl_gen/model/service"
 	"time"
 
@@ -421,6 +422,21 @@ func (squ *SurveyQuestionUpdate) SetSurvey(s *Survey) *SurveyQuestionUpdate {
 	return squ.SetSurveyID(s.ID)
 }
 
+// AddAnswerIDs adds the "answers" edge to the SurveyResponseAnswers entity by IDs.
+func (squ *SurveyQuestionUpdate) AddAnswerIDs(ids ...int64) *SurveyQuestionUpdate {
+	squ.mutation.AddAnswerIDs(ids...)
+	return squ
+}
+
+// AddAnswers adds the "answers" edges to the SurveyResponseAnswers entity.
+func (squ *SurveyQuestionUpdate) AddAnswers(s ...*SurveyResponseAnswers) *SurveyQuestionUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return squ.AddAnswerIDs(ids...)
+}
+
 // Mutation returns the SurveyQuestionMutation object of the builder.
 func (squ *SurveyQuestionUpdate) Mutation() *SurveyQuestionMutation {
 	return squ.mutation
@@ -430,6 +446,27 @@ func (squ *SurveyQuestionUpdate) Mutation() *SurveyQuestionMutation {
 func (squ *SurveyQuestionUpdate) ClearSurvey() *SurveyQuestionUpdate {
 	squ.mutation.ClearSurvey()
 	return squ
+}
+
+// ClearAnswers clears all "answers" edges to the SurveyResponseAnswers entity.
+func (squ *SurveyQuestionUpdate) ClearAnswers() *SurveyQuestionUpdate {
+	squ.mutation.ClearAnswers()
+	return squ
+}
+
+// RemoveAnswerIDs removes the "answers" edge to SurveyResponseAnswers entities by IDs.
+func (squ *SurveyQuestionUpdate) RemoveAnswerIDs(ids ...int64) *SurveyQuestionUpdate {
+	squ.mutation.RemoveAnswerIDs(ids...)
+	return squ
+}
+
+// RemoveAnswers removes "answers" edges to SurveyResponseAnswers entities.
+func (squ *SurveyQuestionUpdate) RemoveAnswers(s ...*SurveyResponseAnswers) *SurveyQuestionUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return squ.RemoveAnswerIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -638,6 +675,51 @@ func (squ *SurveyQuestionUpdate) sqlSave(ctx context.Context) (n int, err error)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if squ.mutation.AnswersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyquestion.AnswersTable,
+			Columns: []string{surveyquestion.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := squ.mutation.RemovedAnswersIDs(); len(nodes) > 0 && !squ.mutation.AnswersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyquestion.AnswersTable,
+			Columns: []string{surveyquestion.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := squ.mutation.AnswersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyquestion.AnswersTable,
+			Columns: []string{surveyquestion.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
 			},
 		}
 		for _, k := range nodes {
@@ -1056,6 +1138,21 @@ func (squo *SurveyQuestionUpdateOne) SetSurvey(s *Survey) *SurveyQuestionUpdateO
 	return squo.SetSurveyID(s.ID)
 }
 
+// AddAnswerIDs adds the "answers" edge to the SurveyResponseAnswers entity by IDs.
+func (squo *SurveyQuestionUpdateOne) AddAnswerIDs(ids ...int64) *SurveyQuestionUpdateOne {
+	squo.mutation.AddAnswerIDs(ids...)
+	return squo
+}
+
+// AddAnswers adds the "answers" edges to the SurveyResponseAnswers entity.
+func (squo *SurveyQuestionUpdateOne) AddAnswers(s ...*SurveyResponseAnswers) *SurveyQuestionUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return squo.AddAnswerIDs(ids...)
+}
+
 // Mutation returns the SurveyQuestionMutation object of the builder.
 func (squo *SurveyQuestionUpdateOne) Mutation() *SurveyQuestionMutation {
 	return squo.mutation
@@ -1065,6 +1162,27 @@ func (squo *SurveyQuestionUpdateOne) Mutation() *SurveyQuestionMutation {
 func (squo *SurveyQuestionUpdateOne) ClearSurvey() *SurveyQuestionUpdateOne {
 	squo.mutation.ClearSurvey()
 	return squo
+}
+
+// ClearAnswers clears all "answers" edges to the SurveyResponseAnswers entity.
+func (squo *SurveyQuestionUpdateOne) ClearAnswers() *SurveyQuestionUpdateOne {
+	squo.mutation.ClearAnswers()
+	return squo
+}
+
+// RemoveAnswerIDs removes the "answers" edge to SurveyResponseAnswers entities by IDs.
+func (squo *SurveyQuestionUpdateOne) RemoveAnswerIDs(ids ...int64) *SurveyQuestionUpdateOne {
+	squo.mutation.RemoveAnswerIDs(ids...)
+	return squo
+}
+
+// RemoveAnswers removes "answers" edges to SurveyResponseAnswers entities.
+func (squo *SurveyQuestionUpdateOne) RemoveAnswers(s ...*SurveyResponseAnswers) *SurveyQuestionUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return squo.RemoveAnswerIDs(ids...)
 }
 
 // Where appends a list predicates to the SurveyQuestionUpdate builder.
@@ -1303,6 +1421,51 @@ func (squo *SurveyQuestionUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if squo.mutation.AnswersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyquestion.AnswersTable,
+			Columns: []string{surveyquestion.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := squo.mutation.RemovedAnswersIDs(); len(nodes) > 0 && !squo.mutation.AnswersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyquestion.AnswersTable,
+			Columns: []string{surveyquestion.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := squo.mutation.AnswersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyquestion.AnswersTable,
+			Columns: []string{surveyquestion.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
 			},
 		}
 		for _, k := range nodes {

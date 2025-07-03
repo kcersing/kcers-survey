@@ -36,6 +36,8 @@ const (
 	FieldEndAt = "end_at"
 	// EdgeQuestion holds the string denoting the question edge name in mutations.
 	EdgeQuestion = "question"
+	// EdgeResponse holds the string denoting the response edge name in mutations.
+	EdgeResponse = "response"
 	// Table holds the table name of the survey in the database.
 	Table = "survey"
 	// QuestionTable is the table that holds the question relation/edge.
@@ -45,6 +47,13 @@ const (
 	QuestionInverseTable = "survey_question"
 	// QuestionColumn is the table column denoting the question relation/edge.
 	QuestionColumn = "survey_id"
+	// ResponseTable is the table that holds the response relation/edge.
+	ResponseTable = "survey_response"
+	// ResponseInverseTable is the table name for the SurveyResponse entity.
+	// It exists in this package in order to avoid circular dependency with the "surveyresponse" package.
+	ResponseInverseTable = "survey_response"
+	// ResponseColumn is the table column denoting the response relation/edge.
+	ResponseColumn = "survey_id"
 )
 
 // Columns holds all SQL columns for survey fields.
@@ -164,10 +173,31 @@ func ByQuestion(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newQuestionStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByResponseCount orders the results by response count.
+func ByResponseCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newResponseStep(), opts...)
+	}
+}
+
+// ByResponse orders the results by response terms.
+func ByResponse(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newResponseStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newQuestionStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(QuestionInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, QuestionTable, QuestionColumn),
+	)
+}
+func newResponseStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ResponseInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, ResponseTable, ResponseColumn),
 	)
 }

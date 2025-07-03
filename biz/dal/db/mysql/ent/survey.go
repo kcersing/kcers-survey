@@ -48,9 +48,11 @@ type Survey struct {
 type SurveyEdges struct {
 	// Question holds the value of the question edge.
 	Question []*SurveyQuestion `json:"question,omitempty"`
+	// Response holds the value of the response edge.
+	Response []*SurveyResponse `json:"response,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [2]bool
 }
 
 // QuestionOrErr returns the Question value or an error if the edge
@@ -60,6 +62,15 @@ func (e SurveyEdges) QuestionOrErr() ([]*SurveyQuestion, error) {
 		return e.Question, nil
 	}
 	return nil, &NotLoadedError{edge: "question"}
+}
+
+// ResponseOrErr returns the Response value or an error if the edge
+// was not loaded in eager-loading.
+func (e SurveyEdges) ResponseOrErr() ([]*SurveyResponse, error) {
+	if e.loadedTypes[1] {
+		return e.Response, nil
+	}
+	return nil, &NotLoadedError{edge: "response"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -170,6 +181,11 @@ func (s *Survey) Value(name string) (ent.Value, error) {
 // QueryQuestion queries the "question" edge of the Survey entity.
 func (s *Survey) QueryQuestion() *SurveyQuestionQuery {
 	return NewSurveyClient(s.config).QueryQuestion(s)
+}
+
+// QueryResponse queries the "response" edge of the Survey entity.
+func (s *Survey) QueryResponse() *SurveyResponseQuery {
+	return NewSurveyClient(s.config).QueryResponse(s)
 }
 
 // Update returns a builder for updating this Survey.

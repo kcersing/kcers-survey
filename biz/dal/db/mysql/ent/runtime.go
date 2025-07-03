@@ -489,6 +489,10 @@ func init() {
 	surveyresponseDescAddress := surveyresponseFields[16].Descriptor()
 	// surveyresponse.DefaultAddress holds the default value on creation for the address field.
 	surveyresponse.DefaultAddress = surveyresponseDescAddress.Default.(string)
+	// surveyresponseDescAnswersCount is the schema descriptor for answers_count field.
+	surveyresponseDescAnswersCount := surveyresponseFields[17].Descriptor()
+	// surveyresponse.DefaultAnswersCount holds the default value on creation for the answers_count field.
+	surveyresponse.DefaultAnswersCount = surveyresponseDescAnswersCount.Default.(int64)
 	surveyresponseanswersMixin := schema.SurveyResponseAnswers{}.Mixin()
 	surveyresponseanswersMixinFields0 := surveyresponseanswersMixin[0].Fields()
 	_ = surveyresponseanswersMixinFields0

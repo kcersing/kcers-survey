@@ -5,6 +5,8 @@ package ent
 import (
 	"encoding/json"
 	"fmt"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"strings"
 	"time"
@@ -38,8 +40,44 @@ type SurveyResponseAnswers struct {
 	// 回答文本
 	AnswerText string `json:"answer_text,omitempty"`
 	// answer
-	Answer       []string `json:"answer,omitempty"`
+	Answer []string `json:"answer,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the SurveyResponseAnswersQuery when eager-loading is set.
+	Edges        SurveyResponseAnswersEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// SurveyResponseAnswersEdges holds the relations/edges for other nodes in the graph.
+type SurveyResponseAnswersEdges struct {
+	// Response holds the value of the response edge.
+	Response *SurveyResponse `json:"response,omitempty"`
+	// Question holds the value of the question edge.
+	Question *SurveyQuestion `json:"question,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [2]bool
+}
+
+// ResponseOrErr returns the Response value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e SurveyResponseAnswersEdges) ResponseOrErr() (*SurveyResponse, error) {
+	if e.Response != nil {
+		return e.Response, nil
+	} else if e.loadedTypes[0] {
+		return nil, &NotFoundError{label: surveyresponse.Label}
+	}
+	return nil, &NotLoadedError{edge: "response"}
+}
+
+// QuestionOrErr returns the Question value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e SurveyResponseAnswersEdges) QuestionOrErr() (*SurveyQuestion, error) {
+	if e.Question != nil {
+		return e.Question, nil
+	} else if e.loadedTypes[1] {
+		return nil, &NotFoundError{label: surveyquestion.Label}
+	}
+	return nil, &NotLoadedError{edge: "question"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -149,6 +187,16 @@ func (sra *SurveyResponseAnswers) assignValues(columns []string, values []any) e
 // This includes values selected through modifiers, order, etc.
 func (sra *SurveyResponseAnswers) Value(name string) (ent.Value, error) {
 	return sra.selectValues.Get(name)
+}
+
+// QueryResponse queries the "response" edge of the SurveyResponseAnswers entity.
+func (sra *SurveyResponseAnswers) QueryResponse() *SurveyResponseQuery {
+	return NewSurveyResponseAnswersClient(sra.config).QueryResponse(sra)
+}
+
+// QueryQuestion queries the "question" edge of the SurveyResponseAnswers entity.
+func (sra *SurveyResponseAnswers) QueryQuestion() *SurveyQuestionQuery {
+	return NewSurveyResponseAnswersClient(sra.config).QueryQuestion(sra)
 }
 
 // Update returns a builder for updating this SurveyResponseAnswers.

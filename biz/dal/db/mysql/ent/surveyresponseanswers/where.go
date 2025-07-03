@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // ID filters vertices based on their ID field.
@@ -419,26 +420,6 @@ func SurveyResponseIDNotIn(vs ...int64) predicate.SurveyResponseAnswers {
 	return predicate.SurveyResponseAnswers(sql.FieldNotIn(FieldSurveyResponseID, vs...))
 }
 
-// SurveyResponseIDGT applies the GT predicate on the "survey_response_id" field.
-func SurveyResponseIDGT(v int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldGT(FieldSurveyResponseID, v))
-}
-
-// SurveyResponseIDGTE applies the GTE predicate on the "survey_response_id" field.
-func SurveyResponseIDGTE(v int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldGTE(FieldSurveyResponseID, v))
-}
-
-// SurveyResponseIDLT applies the LT predicate on the "survey_response_id" field.
-func SurveyResponseIDLT(v int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldLT(FieldSurveyResponseID, v))
-}
-
-// SurveyResponseIDLTE applies the LTE predicate on the "survey_response_id" field.
-func SurveyResponseIDLTE(v int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldLTE(FieldSurveyResponseID, v))
-}
-
 // SurveyResponseIDIsNil applies the IsNil predicate on the "survey_response_id" field.
 func SurveyResponseIDIsNil() predicate.SurveyResponseAnswers {
 	return predicate.SurveyResponseAnswers(sql.FieldIsNull(FieldSurveyResponseID))
@@ -467,26 +448,6 @@ func SurveyQuestionIDIn(vs ...int64) predicate.SurveyResponseAnswers {
 // SurveyQuestionIDNotIn applies the NotIn predicate on the "survey_question_id" field.
 func SurveyQuestionIDNotIn(vs ...int64) predicate.SurveyResponseAnswers {
 	return predicate.SurveyResponseAnswers(sql.FieldNotIn(FieldSurveyQuestionID, vs...))
-}
-
-// SurveyQuestionIDGT applies the GT predicate on the "survey_question_id" field.
-func SurveyQuestionIDGT(v int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldGT(FieldSurveyQuestionID, v))
-}
-
-// SurveyQuestionIDGTE applies the GTE predicate on the "survey_question_id" field.
-func SurveyQuestionIDGTE(v int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldGTE(FieldSurveyQuestionID, v))
-}
-
-// SurveyQuestionIDLT applies the LT predicate on the "survey_question_id" field.
-func SurveyQuestionIDLT(v int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldLT(FieldSurveyQuestionID, v))
-}
-
-// SurveyQuestionIDLTE applies the LTE predicate on the "survey_question_id" field.
-func SurveyQuestionIDLTE(v int64) predicate.SurveyResponseAnswers {
-	return predicate.SurveyResponseAnswers(sql.FieldLTE(FieldSurveyQuestionID, v))
 }
 
 // SurveyQuestionIDIsNil applies the IsNil predicate on the "survey_question_id" field.
@@ -582,6 +543,52 @@ func AnswerIsNil() predicate.SurveyResponseAnswers {
 // AnswerNotNil applies the NotNil predicate on the "answer" field.
 func AnswerNotNil() predicate.SurveyResponseAnswers {
 	return predicate.SurveyResponseAnswers(sql.FieldNotNull(FieldAnswer))
+}
+
+// HasResponse applies the HasEdge predicate on the "response" edge.
+func HasResponse() predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ResponseTable, ResponseColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasResponseWith applies the HasEdge predicate on the "response" edge with a given conditions (other predicates).
+func HasResponseWith(preds ...predicate.SurveyResponse) predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(func(s *sql.Selector) {
+		step := newResponseStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasQuestion applies the HasEdge predicate on the "question" edge.
+func HasQuestion() predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, QuestionTable, QuestionColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasQuestionWith applies the HasEdge predicate on the "question" edge with a given conditions (other predicates).
+func HasQuestionWith(preds ...predicate.SurveyQuestion) predicate.SurveyResponseAnswers {
+	return predicate.SurveyResponseAnswers(func(s *sql.Selector) {
+		step := newQuestionStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

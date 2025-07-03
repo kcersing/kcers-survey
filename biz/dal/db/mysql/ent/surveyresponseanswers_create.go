@@ -5,6 +5,8 @@ package ent
 import (
 	"context"
 	"fmt"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"time"
 
@@ -157,6 +159,44 @@ func (srac *SurveyResponseAnswersCreate) SetID(i int64) *SurveyResponseAnswersCr
 	return srac
 }
 
+// SetResponseID sets the "response" edge to the SurveyResponse entity by ID.
+func (srac *SurveyResponseAnswersCreate) SetResponseID(id int64) *SurveyResponseAnswersCreate {
+	srac.mutation.SetResponseID(id)
+	return srac
+}
+
+// SetNillableResponseID sets the "response" edge to the SurveyResponse entity by ID if the given value is not nil.
+func (srac *SurveyResponseAnswersCreate) SetNillableResponseID(id *int64) *SurveyResponseAnswersCreate {
+	if id != nil {
+		srac = srac.SetResponseID(*id)
+	}
+	return srac
+}
+
+// SetResponse sets the "response" edge to the SurveyResponse entity.
+func (srac *SurveyResponseAnswersCreate) SetResponse(s *SurveyResponse) *SurveyResponseAnswersCreate {
+	return srac.SetResponseID(s.ID)
+}
+
+// SetQuestionID sets the "question" edge to the SurveyQuestion entity by ID.
+func (srac *SurveyResponseAnswersCreate) SetQuestionID(id int64) *SurveyResponseAnswersCreate {
+	srac.mutation.SetQuestionID(id)
+	return srac
+}
+
+// SetNillableQuestionID sets the "question" edge to the SurveyQuestion entity by ID if the given value is not nil.
+func (srac *SurveyResponseAnswersCreate) SetNillableQuestionID(id *int64) *SurveyResponseAnswersCreate {
+	if id != nil {
+		srac = srac.SetQuestionID(*id)
+	}
+	return srac
+}
+
+// SetQuestion sets the "question" edge to the SurveyQuestion entity.
+func (srac *SurveyResponseAnswersCreate) SetQuestion(s *SurveyQuestion) *SurveyResponseAnswersCreate {
+	return srac.SetQuestionID(s.ID)
+}
+
 // Mutation returns the SurveyResponseAnswersMutation object of the builder.
 func (srac *SurveyResponseAnswersCreate) Mutation() *SurveyResponseAnswersMutation {
 	return srac.mutation
@@ -284,14 +324,6 @@ func (srac *SurveyResponseAnswersCreate) createSpec() (*SurveyResponseAnswers, *
 		_spec.SetField(surveyresponseanswers.FieldSurveyID, field.TypeInt64, value)
 		_node.SurveyID = value
 	}
-	if value, ok := srac.mutation.SurveyResponseID(); ok {
-		_spec.SetField(surveyresponseanswers.FieldSurveyResponseID, field.TypeInt64, value)
-		_node.SurveyResponseID = value
-	}
-	if value, ok := srac.mutation.SurveyQuestionID(); ok {
-		_spec.SetField(surveyresponseanswers.FieldSurveyQuestionID, field.TypeInt64, value)
-		_node.SurveyQuestionID = value
-	}
 	if value, ok := srac.mutation.AnswerText(); ok {
 		_spec.SetField(surveyresponseanswers.FieldAnswerText, field.TypeString, value)
 		_node.AnswerText = value
@@ -299,6 +331,40 @@ func (srac *SurveyResponseAnswersCreate) createSpec() (*SurveyResponseAnswers, *
 	if value, ok := srac.mutation.Answer(); ok {
 		_spec.SetField(surveyresponseanswers.FieldAnswer, field.TypeJSON, value)
 		_node.Answer = value
+	}
+	if nodes := srac.mutation.ResponseIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponseanswers.ResponseTable,
+			Columns: []string{surveyresponseanswers.ResponseColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponse.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.SurveyResponseID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := srac.mutation.QuestionIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponseanswers.QuestionTable,
+			Columns: []string{surveyresponseanswers.QuestionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.SurveyQuestionID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

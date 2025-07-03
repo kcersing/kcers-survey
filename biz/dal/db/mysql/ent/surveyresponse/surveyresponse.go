@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -57,8 +58,28 @@ const (
 	FieldVillage = "village"
 	// FieldAddress holds the string denoting the address field in the database.
 	FieldAddress = "address"
+	// FieldAnswersCount holds the string denoting the answers_count field in the database.
+	FieldAnswersCount = "answers_count"
+	// EdgeSurvey holds the string denoting the survey edge name in mutations.
+	EdgeSurvey = "survey"
+	// EdgeAnswers holds the string denoting the answers edge name in mutations.
+	EdgeAnswers = "answers"
 	// Table holds the table name of the surveyresponse in the database.
 	Table = "survey_response"
+	// SurveyTable is the table that holds the survey relation/edge.
+	SurveyTable = "survey_response"
+	// SurveyInverseTable is the table name for the Survey entity.
+	// It exists in this package in order to avoid circular dependency with the "survey" package.
+	SurveyInverseTable = "survey"
+	// SurveyColumn is the table column denoting the survey relation/edge.
+	SurveyColumn = "survey_id"
+	// AnswersTable is the table that holds the answers relation/edge.
+	AnswersTable = "survey_response_answers"
+	// AnswersInverseTable is the table name for the SurveyResponseAnswers entity.
+	// It exists in this package in order to avoid circular dependency with the "surveyresponseanswers" package.
+	AnswersInverseTable = "survey_response_answers"
+	// AnswersColumn is the table column denoting the answers relation/edge.
+	AnswersColumn = "survey_response_id"
 )
 
 // Columns holds all SQL columns for surveyresponse fields.
@@ -86,6 +107,7 @@ var Columns = []string{
 	FieldDistrict,
 	FieldVillage,
 	FieldAddress,
+	FieldAnswersCount,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -145,6 +167,8 @@ var (
 	DefaultVillage string
 	// DefaultAddress holds the default value on creation for the "address" field.
 	DefaultAddress string
+	// DefaultAnswersCount holds the default value on creation for the "answers_count" field.
+	DefaultAnswersCount int64
 )
 
 // OrderOption defines the ordering options for the SurveyResponse queries.
@@ -253,4 +277,44 @@ func ByVillage(opts ...sql.OrderTermOption) OrderOption {
 // ByAddress orders the results by the address field.
 func ByAddress(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAddress, opts...).ToFunc()
+}
+
+// ByAnswersCountField orders the results by the answers_count field.
+func ByAnswersCountField(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAnswersCount, opts...).ToFunc()
+}
+
+// BySurveyField orders the results by survey field.
+func BySurveyField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newSurveyStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByAnswersCount orders the results by answers count.
+func ByAnswersCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newAnswersStep(), opts...)
+	}
+}
+
+// ByAnswers orders the results by answers terms.
+func ByAnswers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newAnswersStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newSurveyStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(SurveyInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, SurveyTable, SurveyColumn),
+	)
+}
+func newAnswersStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(AnswersInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, AnswersTable, AnswersColumn),
+	)
 }

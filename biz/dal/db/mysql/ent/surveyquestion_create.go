@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"kcers-survey/idl_gen/model/service"
 	"time"
 
@@ -268,6 +269,21 @@ func (sqc *SurveyQuestionCreate) SetSurvey(s *Survey) *SurveyQuestionCreate {
 	return sqc.SetSurveyID(s.ID)
 }
 
+// AddAnswerIDs adds the "answers" edge to the SurveyResponseAnswers entity by IDs.
+func (sqc *SurveyQuestionCreate) AddAnswerIDs(ids ...int64) *SurveyQuestionCreate {
+	sqc.mutation.AddAnswerIDs(ids...)
+	return sqc
+}
+
+// AddAnswers adds the "answers" edges to the SurveyResponseAnswers entity.
+func (sqc *SurveyQuestionCreate) AddAnswers(s ...*SurveyResponseAnswers) *SurveyQuestionCreate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sqc.AddAnswerIDs(ids...)
+}
+
 // Mutation returns the SurveyQuestionMutation object of the builder.
 func (sqc *SurveyQuestionCreate) Mutation() *SurveyQuestionMutation {
 	return sqc.mutation
@@ -490,6 +506,22 @@ func (sqc *SurveyQuestionCreate) createSpec() (*SurveyQuestion, *sqlgraph.Create
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.SurveyID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := sqc.mutation.AnswersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyquestion.AnswersTable,
+			Columns: []string{surveyquestion.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

@@ -7,6 +7,8 @@ import (
 	"errors"
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/predicate"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"time"
 
@@ -152,7 +154,6 @@ func (srau *SurveyResponseAnswersUpdate) ClearSurveyID() *SurveyResponseAnswersU
 
 // SetSurveyResponseID sets the "survey_response_id" field.
 func (srau *SurveyResponseAnswersUpdate) SetSurveyResponseID(i int64) *SurveyResponseAnswersUpdate {
-	srau.mutation.ResetSurveyResponseID()
 	srau.mutation.SetSurveyResponseID(i)
 	return srau
 }
@@ -165,12 +166,6 @@ func (srau *SurveyResponseAnswersUpdate) SetNillableSurveyResponseID(i *int64) *
 	return srau
 }
 
-// AddSurveyResponseID adds i to the "survey_response_id" field.
-func (srau *SurveyResponseAnswersUpdate) AddSurveyResponseID(i int64) *SurveyResponseAnswersUpdate {
-	srau.mutation.AddSurveyResponseID(i)
-	return srau
-}
-
 // ClearSurveyResponseID clears the value of the "survey_response_id" field.
 func (srau *SurveyResponseAnswersUpdate) ClearSurveyResponseID() *SurveyResponseAnswersUpdate {
 	srau.mutation.ClearSurveyResponseID()
@@ -179,7 +174,6 @@ func (srau *SurveyResponseAnswersUpdate) ClearSurveyResponseID() *SurveyResponse
 
 // SetSurveyQuestionID sets the "survey_question_id" field.
 func (srau *SurveyResponseAnswersUpdate) SetSurveyQuestionID(i int64) *SurveyResponseAnswersUpdate {
-	srau.mutation.ResetSurveyQuestionID()
 	srau.mutation.SetSurveyQuestionID(i)
 	return srau
 }
@@ -189,12 +183,6 @@ func (srau *SurveyResponseAnswersUpdate) SetNillableSurveyQuestionID(i *int64) *
 	if i != nil {
 		srau.SetSurveyQuestionID(*i)
 	}
-	return srau
-}
-
-// AddSurveyQuestionID adds i to the "survey_question_id" field.
-func (srau *SurveyResponseAnswersUpdate) AddSurveyQuestionID(i int64) *SurveyResponseAnswersUpdate {
-	srau.mutation.AddSurveyQuestionID(i)
 	return srau
 }
 
@@ -242,9 +230,59 @@ func (srau *SurveyResponseAnswersUpdate) ClearAnswer() *SurveyResponseAnswersUpd
 	return srau
 }
 
+// SetResponseID sets the "response" edge to the SurveyResponse entity by ID.
+func (srau *SurveyResponseAnswersUpdate) SetResponseID(id int64) *SurveyResponseAnswersUpdate {
+	srau.mutation.SetResponseID(id)
+	return srau
+}
+
+// SetNillableResponseID sets the "response" edge to the SurveyResponse entity by ID if the given value is not nil.
+func (srau *SurveyResponseAnswersUpdate) SetNillableResponseID(id *int64) *SurveyResponseAnswersUpdate {
+	if id != nil {
+		srau = srau.SetResponseID(*id)
+	}
+	return srau
+}
+
+// SetResponse sets the "response" edge to the SurveyResponse entity.
+func (srau *SurveyResponseAnswersUpdate) SetResponse(s *SurveyResponse) *SurveyResponseAnswersUpdate {
+	return srau.SetResponseID(s.ID)
+}
+
+// SetQuestionID sets the "question" edge to the SurveyQuestion entity by ID.
+func (srau *SurveyResponseAnswersUpdate) SetQuestionID(id int64) *SurveyResponseAnswersUpdate {
+	srau.mutation.SetQuestionID(id)
+	return srau
+}
+
+// SetNillableQuestionID sets the "question" edge to the SurveyQuestion entity by ID if the given value is not nil.
+func (srau *SurveyResponseAnswersUpdate) SetNillableQuestionID(id *int64) *SurveyResponseAnswersUpdate {
+	if id != nil {
+		srau = srau.SetQuestionID(*id)
+	}
+	return srau
+}
+
+// SetQuestion sets the "question" edge to the SurveyQuestion entity.
+func (srau *SurveyResponseAnswersUpdate) SetQuestion(s *SurveyQuestion) *SurveyResponseAnswersUpdate {
+	return srau.SetQuestionID(s.ID)
+}
+
 // Mutation returns the SurveyResponseAnswersMutation object of the builder.
 func (srau *SurveyResponseAnswersUpdate) Mutation() *SurveyResponseAnswersMutation {
 	return srau.mutation
+}
+
+// ClearResponse clears the "response" edge to the SurveyResponse entity.
+func (srau *SurveyResponseAnswersUpdate) ClearResponse() *SurveyResponseAnswersUpdate {
+	srau.mutation.ClearResponse()
+	return srau
+}
+
+// ClearQuestion clears the "question" edge to the SurveyQuestion entity.
+func (srau *SurveyResponseAnswersUpdate) ClearQuestion() *SurveyResponseAnswersUpdate {
+	srau.mutation.ClearQuestion()
+	return srau
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -343,24 +381,6 @@ func (srau *SurveyResponseAnswersUpdate) sqlSave(ctx context.Context) (n int, er
 	if srau.mutation.SurveyIDCleared() {
 		_spec.ClearField(surveyresponseanswers.FieldSurveyID, field.TypeInt64)
 	}
-	if value, ok := srau.mutation.SurveyResponseID(); ok {
-		_spec.SetField(surveyresponseanswers.FieldSurveyResponseID, field.TypeInt64, value)
-	}
-	if value, ok := srau.mutation.AddedSurveyResponseID(); ok {
-		_spec.AddField(surveyresponseanswers.FieldSurveyResponseID, field.TypeInt64, value)
-	}
-	if srau.mutation.SurveyResponseIDCleared() {
-		_spec.ClearField(surveyresponseanswers.FieldSurveyResponseID, field.TypeInt64)
-	}
-	if value, ok := srau.mutation.SurveyQuestionID(); ok {
-		_spec.SetField(surveyresponseanswers.FieldSurveyQuestionID, field.TypeInt64, value)
-	}
-	if value, ok := srau.mutation.AddedSurveyQuestionID(); ok {
-		_spec.AddField(surveyresponseanswers.FieldSurveyQuestionID, field.TypeInt64, value)
-	}
-	if srau.mutation.SurveyQuestionIDCleared() {
-		_spec.ClearField(surveyresponseanswers.FieldSurveyQuestionID, field.TypeInt64)
-	}
 	if value, ok := srau.mutation.AnswerText(); ok {
 		_spec.SetField(surveyresponseanswers.FieldAnswerText, field.TypeString, value)
 	}
@@ -377,6 +397,64 @@ func (srau *SurveyResponseAnswersUpdate) sqlSave(ctx context.Context) (n int, er
 	}
 	if srau.mutation.AnswerCleared() {
 		_spec.ClearField(surveyresponseanswers.FieldAnswer, field.TypeJSON)
+	}
+	if srau.mutation.ResponseCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponseanswers.ResponseTable,
+			Columns: []string{surveyresponseanswers.ResponseColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponse.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := srau.mutation.ResponseIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponseanswers.ResponseTable,
+			Columns: []string{surveyresponseanswers.ResponseColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponse.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if srau.mutation.QuestionCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponseanswers.QuestionTable,
+			Columns: []string{surveyresponseanswers.QuestionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := srau.mutation.QuestionIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponseanswers.QuestionTable,
+			Columns: []string{surveyresponseanswers.QuestionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_spec.AddModifiers(srau.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, srau.driver, _spec); err != nil {
@@ -522,7 +600,6 @@ func (srauo *SurveyResponseAnswersUpdateOne) ClearSurveyID() *SurveyResponseAnsw
 
 // SetSurveyResponseID sets the "survey_response_id" field.
 func (srauo *SurveyResponseAnswersUpdateOne) SetSurveyResponseID(i int64) *SurveyResponseAnswersUpdateOne {
-	srauo.mutation.ResetSurveyResponseID()
 	srauo.mutation.SetSurveyResponseID(i)
 	return srauo
 }
@@ -535,12 +612,6 @@ func (srauo *SurveyResponseAnswersUpdateOne) SetNillableSurveyResponseID(i *int6
 	return srauo
 }
 
-// AddSurveyResponseID adds i to the "survey_response_id" field.
-func (srauo *SurveyResponseAnswersUpdateOne) AddSurveyResponseID(i int64) *SurveyResponseAnswersUpdateOne {
-	srauo.mutation.AddSurveyResponseID(i)
-	return srauo
-}
-
 // ClearSurveyResponseID clears the value of the "survey_response_id" field.
 func (srauo *SurveyResponseAnswersUpdateOne) ClearSurveyResponseID() *SurveyResponseAnswersUpdateOne {
 	srauo.mutation.ClearSurveyResponseID()
@@ -549,7 +620,6 @@ func (srauo *SurveyResponseAnswersUpdateOne) ClearSurveyResponseID() *SurveyResp
 
 // SetSurveyQuestionID sets the "survey_question_id" field.
 func (srauo *SurveyResponseAnswersUpdateOne) SetSurveyQuestionID(i int64) *SurveyResponseAnswersUpdateOne {
-	srauo.mutation.ResetSurveyQuestionID()
 	srauo.mutation.SetSurveyQuestionID(i)
 	return srauo
 }
@@ -559,12 +629,6 @@ func (srauo *SurveyResponseAnswersUpdateOne) SetNillableSurveyQuestionID(i *int6
 	if i != nil {
 		srauo.SetSurveyQuestionID(*i)
 	}
-	return srauo
-}
-
-// AddSurveyQuestionID adds i to the "survey_question_id" field.
-func (srauo *SurveyResponseAnswersUpdateOne) AddSurveyQuestionID(i int64) *SurveyResponseAnswersUpdateOne {
-	srauo.mutation.AddSurveyQuestionID(i)
 	return srauo
 }
 
@@ -612,9 +676,59 @@ func (srauo *SurveyResponseAnswersUpdateOne) ClearAnswer() *SurveyResponseAnswer
 	return srauo
 }
 
+// SetResponseID sets the "response" edge to the SurveyResponse entity by ID.
+func (srauo *SurveyResponseAnswersUpdateOne) SetResponseID(id int64) *SurveyResponseAnswersUpdateOne {
+	srauo.mutation.SetResponseID(id)
+	return srauo
+}
+
+// SetNillableResponseID sets the "response" edge to the SurveyResponse entity by ID if the given value is not nil.
+func (srauo *SurveyResponseAnswersUpdateOne) SetNillableResponseID(id *int64) *SurveyResponseAnswersUpdateOne {
+	if id != nil {
+		srauo = srauo.SetResponseID(*id)
+	}
+	return srauo
+}
+
+// SetResponse sets the "response" edge to the SurveyResponse entity.
+func (srauo *SurveyResponseAnswersUpdateOne) SetResponse(s *SurveyResponse) *SurveyResponseAnswersUpdateOne {
+	return srauo.SetResponseID(s.ID)
+}
+
+// SetQuestionID sets the "question" edge to the SurveyQuestion entity by ID.
+func (srauo *SurveyResponseAnswersUpdateOne) SetQuestionID(id int64) *SurveyResponseAnswersUpdateOne {
+	srauo.mutation.SetQuestionID(id)
+	return srauo
+}
+
+// SetNillableQuestionID sets the "question" edge to the SurveyQuestion entity by ID if the given value is not nil.
+func (srauo *SurveyResponseAnswersUpdateOne) SetNillableQuestionID(id *int64) *SurveyResponseAnswersUpdateOne {
+	if id != nil {
+		srauo = srauo.SetQuestionID(*id)
+	}
+	return srauo
+}
+
+// SetQuestion sets the "question" edge to the SurveyQuestion entity.
+func (srauo *SurveyResponseAnswersUpdateOne) SetQuestion(s *SurveyQuestion) *SurveyResponseAnswersUpdateOne {
+	return srauo.SetQuestionID(s.ID)
+}
+
 // Mutation returns the SurveyResponseAnswersMutation object of the builder.
 func (srauo *SurveyResponseAnswersUpdateOne) Mutation() *SurveyResponseAnswersMutation {
 	return srauo.mutation
+}
+
+// ClearResponse clears the "response" edge to the SurveyResponse entity.
+func (srauo *SurveyResponseAnswersUpdateOne) ClearResponse() *SurveyResponseAnswersUpdateOne {
+	srauo.mutation.ClearResponse()
+	return srauo
+}
+
+// ClearQuestion clears the "question" edge to the SurveyQuestion entity.
+func (srauo *SurveyResponseAnswersUpdateOne) ClearQuestion() *SurveyResponseAnswersUpdateOne {
+	srauo.mutation.ClearQuestion()
+	return srauo
 }
 
 // Where appends a list predicates to the SurveyResponseAnswersUpdate builder.
@@ -743,24 +857,6 @@ func (srauo *SurveyResponseAnswersUpdateOne) sqlSave(ctx context.Context) (_node
 	if srauo.mutation.SurveyIDCleared() {
 		_spec.ClearField(surveyresponseanswers.FieldSurveyID, field.TypeInt64)
 	}
-	if value, ok := srauo.mutation.SurveyResponseID(); ok {
-		_spec.SetField(surveyresponseanswers.FieldSurveyResponseID, field.TypeInt64, value)
-	}
-	if value, ok := srauo.mutation.AddedSurveyResponseID(); ok {
-		_spec.AddField(surveyresponseanswers.FieldSurveyResponseID, field.TypeInt64, value)
-	}
-	if srauo.mutation.SurveyResponseIDCleared() {
-		_spec.ClearField(surveyresponseanswers.FieldSurveyResponseID, field.TypeInt64)
-	}
-	if value, ok := srauo.mutation.SurveyQuestionID(); ok {
-		_spec.SetField(surveyresponseanswers.FieldSurveyQuestionID, field.TypeInt64, value)
-	}
-	if value, ok := srauo.mutation.AddedSurveyQuestionID(); ok {
-		_spec.AddField(surveyresponseanswers.FieldSurveyQuestionID, field.TypeInt64, value)
-	}
-	if srauo.mutation.SurveyQuestionIDCleared() {
-		_spec.ClearField(surveyresponseanswers.FieldSurveyQuestionID, field.TypeInt64)
-	}
 	if value, ok := srauo.mutation.AnswerText(); ok {
 		_spec.SetField(surveyresponseanswers.FieldAnswerText, field.TypeString, value)
 	}
@@ -777,6 +873,64 @@ func (srauo *SurveyResponseAnswersUpdateOne) sqlSave(ctx context.Context) (_node
 	}
 	if srauo.mutation.AnswerCleared() {
 		_spec.ClearField(surveyresponseanswers.FieldAnswer, field.TypeJSON)
+	}
+	if srauo.mutation.ResponseCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponseanswers.ResponseTable,
+			Columns: []string{surveyresponseanswers.ResponseColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponse.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := srauo.mutation.ResponseIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponseanswers.ResponseTable,
+			Columns: []string{surveyresponseanswers.ResponseColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponse.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if srauo.mutation.QuestionCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponseanswers.QuestionTable,
+			Columns: []string{surveyresponseanswers.QuestionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := srauo.mutation.QuestionIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponseanswers.QuestionTable,
+			Columns: []string{surveyresponseanswers.QuestionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_spec.AddModifiers(srauo.modifiers...)
 	_node = &SurveyResponseAnswers{config: srauo.config}
