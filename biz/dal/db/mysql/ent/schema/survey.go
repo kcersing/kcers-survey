@@ -5,8 +5,8 @@ import (
 	"entgo.io/ent/dialect/entsql"
 	_ "entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema"
-	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/edge"
+	"entgo.io/ent/schema/field"
 	"kcers-survey/biz/dal/db/mysql/ent/schema/mixins"
 )
 
@@ -34,6 +34,7 @@ func (Survey) Mixin() []ent.Mixin {
 func (Survey) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("question", SurveyQuestion.Type),
+		edge.To("response", SurveyResponse.Type),
 	}
 }
 
