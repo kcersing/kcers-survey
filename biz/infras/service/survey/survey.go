@@ -454,7 +454,7 @@ func (s Survey) GetNext(req *service.GetNextReq) (number int64, err error) {
 		return 0, err
 	}
 	all, err := s.db.SurveyQuestion.Query().
-		Where(surveyquestion2.SurveyID(first.SurveyID)).
+		Where(surveyquestion2.SurveyID(first.SurveyID), surveyquestion2.Level(2)).
 		IDs(s.ctx)
 	if err != nil {
 		return 0, err
@@ -472,19 +472,24 @@ func (s Survey) GetNext(req *service.GetNextReq) (number int64, err error) {
 	if err != nil {
 		return 0, err
 	}
-	if question.Level == 2 {
+	hlog.Info(question)
 
+	hlog.Info(all)
+
+	if question.Level == 2 {
 		for i, v := range all {
 			if v == question.ID {
 				return int64(i), err
 			}
-
 		}
-
 	} else {
 		split := strings.Split(question.Tree, " ")
+		hlog.Info(split)
 		trimmed := strings.TrimPrefix(split[1], "tr_")
+		hlog.Info(trimmed)
 		id, err := strconv.ParseInt(trimmed, 10, 64)
+		hlog.Info(id)
+		hlog.Info(all)
 		if err != nil {
 			return 0, err
 		}
