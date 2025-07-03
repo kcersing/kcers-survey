@@ -505,8 +505,83 @@ func (s Survey) GetNext(req *service.GetNextReq) (number int64, err error) {
 }
 
 func (s Survey) ListResponse(req *service.ResponseListReq) (resp []*service.Response, total int, err error) {
-	//TODO implement me
-	panic("implement me")
+	var predicates []predicate.SurveyResponse
+
+	if req.Respondent != "" {
+		predicates = append(predicates, surveyresponse2.Respondent(req.Respondent))
+	}
+	if req.RespondentPhone != "" {
+		predicates = append(predicates, surveyresponse2.RespondentPhone(req.RespondentPhone))
+	}
+	if req.Researcher != "" {
+		predicates = append(predicates, surveyresponse2.Researcher(req.Researcher))
+	}
+	if req.ResearcherPhone != "" {
+		predicates = append(predicates, surveyresponse2.ResearcherPhone(req.ResearcherPhone))
+	}
+	if req.Sn != "" {
+		predicates = append(predicates, surveyresponse2.Sn(req.Sn))
+	}
+	if req.SurveyId > 0 {
+		predicates = append(predicates, surveyresponse2.SurveyID(req.SurveyId))
+	}
+
+	predicates = append(predicates)
+
+	predicates = append(predicates, surveyresponse2.Delete(0))
+	all, err := s.db.SurveyResponse.
+		Query().
+		Where(predicates...).Order(ent.Desc(surveyresponse2.FieldID)).
+		Offset(int(req.Page-1) * int(req.PageSize)).
+		Limit(int(req.PageSize)).
+		All(s.ctx)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	for _, v := range all {
+		qCount, _ := s.db.SurveyQuestion.Query().
+			Where(surveyquestion2.SurveyID(v.SurveyID), surveyquestion2.DeleteEQ(0)).
+			Count(s.ctx)
+		resp = append(resp, s.entToResponse(v, qCount))
+	}
+
+	total, err = s.db.SurveyResponse.Query().Where(predicates...).Count(s.ctx)
+	if err != nil {
+		return nil, 0, err
+	}
+	return resp, total, nil
+
+}
+
+func (s Survey) entToResponse(v *ent.SurveyResponse, qCount int) *service.Response {
+
+	aCount, _ := s.db.SurveyResponseAnswers.Query().
+		Where(surveyresponseanswers2.SurveyResponseID(v.ID)).
+		Count(s.ctx)
+
+	return &service.Response{
+		ID:              v.ID,
+		SurveyId:        v.SurveyID,
+		Sn:              v.Sn,
+		Latitude:        v.Latitude,
+		Longitude:       v.Longitude,
+		Respondent:      v.Respondent,
+		RespondentPhone: v.RespondentPhone,
+		Researcher:      v.Researcher,
+		ResearcherPhone: v.ResearcherPhone,
+		Pic:             v.Pic,
+		//Audio:           nil,
+		IP:          v.IP,
+		Device:      v.Device,
+		Area:        "",
+		City:        "",
+		District:    "",
+		Address:     "",
+		Village:     "",
+		AnswerCount: int64(aCount / qCount),
+	}
+
 }
 
 func (s Survey) DeleteResponse(id int64) (err error) {

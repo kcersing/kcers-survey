@@ -48,6 +48,8 @@ func (SurveyQuestion) Edges() []ent.Edge {
 	return []ent.Edge{
 
 		edge.From("survey", Survey.Type).Ref("question").Field("survey_id").Unique(),
+
+		edge.To("answers", SurveyResponseAnswers.Type),
 	}
 }
 

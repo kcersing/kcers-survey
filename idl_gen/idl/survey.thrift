@@ -129,13 +129,12 @@ struct CreateOrUpdateResponseReq {
 }
 
 struct Response  {
-
     3:optional i64 id=0 (api.raw = "id")
     4:optional i64 surveyId=0 (api.raw = "surveyId")
     5:optional string sn="" (api.raw = "sn")
     6:optional string latitude="" (api.raw = "latitude")
     7:optional string longitude="" (api.raw = "longitude")
-    8:optional list<Question> children={} (api.raw = "childrens")
+    8:optional list<Question> questions={} (api.raw = "questions")
     9:optional string respondent="" (api.raw = "respondent")
     10:optional string respondentPhone="" (api.raw = "respondentPhone")
     11:optional string researcher="" (api.raw = "researcher")
@@ -150,14 +149,18 @@ struct Response  {
     19:optional string district="" (api.raw = "district")
     20:optional string address="" (api.raw = "address")
     21:optional string village="" (api.raw = "village")
+    22:optional i64 answerCount=0 (api.raw = "answerCount")
 }
 
 struct ResponseListReq {
     1: optional i64 page=1 (api.raw = "page")
     2: optional i64 pageSize=100 (api.raw = "pageSize")
-
-
-
+    3:optional string sn="" (api.raw = "sn")
+    4: optional i64 surveyId=0 (api.raw = "surveyId")
+    9:optional string respondent="" (api.raw = "respondent")
+    10:optional string respondentPhone="" (api.raw = "respondentPhone")
+    11:optional string researcher="" (api.raw = "researcher")
+    12:optional string researcherPhone="" (api.raw = "researcherPhone")
 
 }
 
