@@ -156,8 +156,7 @@ const TableList: React.FC = () => {
         <a target="_blank" key="config" onClick={() => {history.push(`/survey/${record.id}/respondent`)}}>答题</a>,
         <a key="config" onClick={() => { history.push(`/survey/${record.id}/response-list`)}}>问卷列表</a>,
         <a key="config" onClick={() => { history.push(`/survey/${record.id}/preview`)}}>预览</a>,
-        <a key="config" onClick={() => { history.push(`#`)}}>统计</a>,
-        // <a key="config" onClick={() => { history.push(`/survey/${record.id}/statistics`)}}>统计</a>,
+        <a key="config" onClick={() => { history.push(`/survey/${record.id}/statistics`)}}>统计</a>,
         <a key="remove" onClick={() => { remove(record).then()}}>删除</a>,
 
       ],

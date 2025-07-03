@@ -59,12 +59,30 @@ export default [
       { path: '/survey/list', component: '@/pages/survey/list', name: '问卷列表' },
       { path: '/survey/:id/design', component: '@/pages/survey/designer', name: '设计页面' , hideInMenu: true, },
       { path: '/survey/:id/preview', component: '@/pages/survey/preview', name: '预览' ,hideInMenu: true, },
-      { path: '/survey/:id/response-list', component: '@/pages/survey/responselist/index', name: '已答问卷列表'  },
+      { path: '/survey/:id/response-list', component: '@/pages/survey/responselist/index', layout: false, },
+      { path: '/survey/:id/statistics', component: '@/pages/survey/statistics', layout: false, },
     ],
   },
-  { path: '/survey/:id/respondent', component: '@/pages/survey/respondent/index-st1', name: '答题',layout: false,  },
+  { path: '/survey/:id/respondent', component: '@/pages/survey/respondent/index-st1', name: '填写问卷',layout: false,  },
+
+  {
+    path: '/account',
+    name: '个人页',
+    routes: [
+      {
+        name: '个人中心',
+        path: '/account/center',
+        component:  '@/pages/account/center',
+      },
+      {
+        name: '个人设置',
+        path: 'account/settings',
+        component:  '@/pages/account/settings',
+      },
 
 
+    ],
+  },
   // {
   //   path: '/Survey',
   //   name: '问卷管理',

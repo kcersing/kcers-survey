@@ -66,10 +66,12 @@ const columns: ProColumns<API.Response>[] = [
     title: '操作',
     dataIndex: 'option',
     valueType: 'option',
-    // render: (_, record) => [
-    //
-    //
-    // ],
+    render: (_, record) => [
+      <a key="config" onClick={() => { history.push(`#`)} }>详情</a>,
+      // <a key="config" onClick={() => { history.push(`/survey/${record.id}/statistics`)}}>统计</a>,
+      <a key="remove" onClick={() => { history.push(`#`)} }>设置状态</a>,
+
+    ],
   },
 ];
 
