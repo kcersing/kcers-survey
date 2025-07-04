@@ -22,7 +22,7 @@ func (Logs) Fields() []ent.Field {
 		field.Text("req_content").Optional().Comment("content of request log | 日志请求内容"),
 		field.Text("resp_content").Optional().Comment("content of response log | 日志返回内容"),
 		field.String("ip").Optional().Comment("ip of log | 日志IP"),
-		field.String("user_agent").Optional().Comment("user_agent of log | 日志用户客户端"),
+		field.Text("user_agent").Optional().Comment("user_agent of log | 日志用户客户端"),
 		field.String("operatorsr").Optional().Comment("operator of log | 日志操作者"),
 		field.Int64("time").Optional().Comment("time of log(millisecond) | 日志时间(毫秒)"),
 		field.Int64("identity").Optional().Comment("1会员2员工 | 身份"),

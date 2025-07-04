@@ -58,13 +58,13 @@ Wechat:
   certificate_key_path: ./config/cert/wechat/wechatpay_platform.pem
 
 Minio:
-  EndPoint : 101.126.9.226:9000
-  AccessKeyID : Yj123987
-  SecretAccessKey : Yj987123
-  UseSSL : false
-  VideoBucketName : videobucket
-  ImgBucketName : imagebucket
-  Url : http://101.126.9.226:9000
+  EndPoint: 101.126.9.226:9000
+  AccessKeyID: Yj123987
+  SecretAccessKey: Yj987123
+  UseSSL: false
+  VideoBucketName: videobucket
+  ImgBucketName: imagebucket
+  Url: http://101.126.9.226:9000
 
 Alipay: # 以下配置文件为新沙箱环境配置
   appid:

@@ -4,6 +4,7 @@ package pub
 
 import (
 	"github.com/cloudwego/hertz/pkg/app"
+	"kcers-survey/biz/mw"
 )
 
 func rootMw() []app.HandlerFunc {
@@ -13,7 +14,9 @@ func rootMw() []app.HandlerFunc {
 
 func _serviceMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		mw.LogMw(),
+	}
 }
 
 func _pubMw() []app.HandlerFunc {

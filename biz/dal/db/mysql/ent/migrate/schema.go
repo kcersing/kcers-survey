@@ -128,7 +128,7 @@ var (
 		{Name: "req_content", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "content of request log | 日志请求内容"},
 		{Name: "resp_content", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "content of response log | 日志返回内容"},
 		{Name: "ip", Type: field.TypeString, Nullable: true, Comment: "ip of log | 日志IP"},
-		{Name: "user_agent", Type: field.TypeString, Nullable: true, Comment: "user_agent of log | 日志用户客户端"},
+		{Name: "user_agent", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "user_agent of log | 日志用户客户端"},
 		{Name: "operatorsr", Type: field.TypeString, Nullable: true, Comment: "operator of log | 日志操作者"},
 		{Name: "time", Type: field.TypeInt64, Nullable: true, Comment: "time of log(millisecond) | 日志时间(毫秒)"},
 		{Name: "identity", Type: field.TypeInt64, Nullable: true, Comment: "1会员2员工 | 身份"},
