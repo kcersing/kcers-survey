@@ -33,9 +33,6 @@ const Respondent = () => {
   const urlParams = new URLSearchParams(location.search);
   // 获取单个参数
   const sn = urlParams.get('sn');
-  console.log(sn)
-
-
 
 
   // 新增经纬度状态
@@ -85,6 +82,8 @@ const Respondent = () => {
 
   useEffect(() => {
     if(sn){
+      console.log(sn)
+      setGenerateRandom(sn)
       getNext({sn:sn}).then((res)=>{
         console.log(res)
 if (res.data){
@@ -102,8 +101,10 @@ if (res.data){
         if(!res.data.number){
           setCurrent(0)
         }
-}
+    }
       })
+    }else {
+      setGenerateRandom(generateRandomString(18));
     }
 
   }, [sn]);
@@ -118,7 +119,7 @@ if (res.data){
       ]);
       setSurvey(surveyData.data);
       setQuestions(questionsData.data);
-      setGenerateRandom(generateRandomString(18));
+
       setLoading(true);
     } catch (error: any) {
       console.error('加载问卷数据失败', error);
