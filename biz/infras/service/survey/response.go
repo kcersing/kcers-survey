@@ -3,6 +3,7 @@ package survey
 import (
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"kcers-survey/biz/dal/db/mysql/ent"
+	area2 "kcers-survey/biz/dal/db/mysql/ent/area"
 	"kcers-survey/biz/dal/db/mysql/ent/predicate"
 	surveyquestion2 "kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
 	surveyresponse2 "kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
@@ -77,28 +78,27 @@ func (s Survey) GetNext(req *service.GetNextReq) (number int64, err error) {
 }
 
 func (s Survey) CreateResponse(req *service.CreateOrUpdateResponseReq) (err error) {
-	sa, _ := s.db.SurveyResponse.Query().
-		Where(
-			surveyresponse2.SurveyID(req.SurveyId),
-			surveyresponse2.Sn(req.Sn),
-		).
-		First(s.ctx)
+	hlog.Info(req)
+	sa, _ := s.db.SurveyResponse.Query().Where(surveyresponse2.SurveyID(req.SurveyId), surveyresponse2.Sn(req.Sn)).First(s.ctx)
 	if sa == nil {
 		sa, err = s.db.SurveyResponse.Create().
 			SetSurveyID(req.SurveyId).
 			SetSn(req.Sn).
-			SetIP(s.c.ClientIP()).
-			SetDevice(string(s.c.Request.Header.UserAgent())).
+			//SetIP(s.c.ClientIP()).
+			//SetDevice(string(s.c.Request.Header.UserAgent())).
 			Save(s.ctx)
 		if err != nil {
 			return err
 		}
 	}
+
 	sau := sa.Update()
+
 	if req.Type == "location" {
 		sau.SetLatitude(req.Latitude)
 		sau.SetLongitude(req.Longitude)
 	}
+
 	if req.Type == "respondent" {
 		sau.SetRespondent(req.Value[0])
 	}
@@ -124,7 +124,9 @@ func (s Survey) CreateResponse(req *service.CreateOrUpdateResponseReq) (err erro
 		sau.AppendPic(req.Value)
 	}
 	if req.Type == "area" {
+		hlog.Info(req.Value)
 		sau.SetArea(req.Value[0])
+
 	}
 	if req.Type == "city" {
 		sau.SetCity(req.Value[0])
@@ -138,8 +140,10 @@ func (s Survey) CreateResponse(req *service.CreateOrUpdateResponseReq) (err erro
 	if req.Type == "address" {
 		sau.SetAddress(req.Value[0])
 	}
+	sa, _ = sau.Save(s.ctx)
 
 	if req.QuestionId > 0 {
+
 		ra, _ := s.db.SurveyResponseAnswers.Query().
 			Where(
 				surveyresponseanswers2.SurveyID(req.SurveyId),
@@ -147,6 +151,7 @@ func (s Survey) CreateResponse(req *service.CreateOrUpdateResponseReq) (err erro
 				surveyresponseanswers2.SurveyQuestionID(req.QuestionId),
 			).
 			First(s.ctx)
+
 		if ra == nil {
 			ra, err = s.db.SurveyResponseAnswers.Create().
 				SetSurveyID(req.SurveyId).
@@ -157,26 +162,19 @@ func (s Survey) CreateResponse(req *service.CreateOrUpdateResponseReq) (err erro
 				return err
 			}
 		}
+
 		rau := ra.Update()
-
 		if req.Type == "input" {
-
 			rau.SetAnswerText(req.Value[0])
-
 		} else {
 			rau.SetAnswer(req.Value)
 		}
-
 		_, err = rau.Save(s.ctx)
 		if err != nil {
 			return err
 		}
 	}
 
-	_, err = sau.Save(s.ctx)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -250,7 +248,7 @@ func (s Survey) ListResponse(req *service.ResponseListReq) (resp []*service.Resp
 
 func (s Survey) entToResponse(v *ent.SurveyResponse, qCount int) *service.Response {
 
-	return &service.Response{
+	r := &service.Response{
 		ID:              v.ID,
 		SurveyId:        v.SurveyID,
 		Sn:              v.Sn,
@@ -260,19 +258,62 @@ func (s Survey) entToResponse(v *ent.SurveyResponse, qCount int) *service.Respon
 		RespondentPhone: v.RespondentPhone,
 		Researcher:      v.Researcher,
 		ResearcherPhone: v.ResearcherPhone,
-		CreatedAt:       v.CreatedAt.Format(time.DateTime),
+		CreatedAt:       v.CreatedAt.Add(8 * time.Hour).Format(time.DateTime),
 		Pic:             v.Pic,
 		//Audio:           nil,
 		IP:          v.IP,
 		Device:      v.Device,
-		Area:        "",
-		City:        "",
-		District:    "",
-		Address:     "",
-		Village:     "",
+		Address:     v.Address,
 		AnswerCount: v.AnswersCount,
 	}
+	if v.Area != "" {
 
+		id, err := strconv.ParseInt(v.Area, 10, 64)
+		if err != nil {
+			return nil
+		}
+		first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
+		if err != nil {
+			return nil
+		}
+		r.Area = first.Name
+
+	}
+	if v.City != "" {
+		id, err := strconv.ParseInt(v.Area, 10, 64)
+		if err != nil {
+			return nil
+		}
+		first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
+		if err != nil {
+			return nil
+		}
+		r.City = first.Name
+	}
+	if v.District != "" {
+		id, err := strconv.ParseInt(v.Area, 10, 64)
+		if err != nil {
+			return nil
+		}
+		first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
+		if err != nil {
+			return nil
+		}
+		r.District = first.Name
+	}
+	if v.Village != "" {
+		id, err := strconv.ParseInt(v.Area, 10, 64)
+		if err != nil {
+			return nil
+		}
+		first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
+		if err != nil {
+			return nil
+		}
+		r.Village = first.Name
+	}
+
+	return r
 }
 
 func (s Survey) DeleteResponse(id int64) (err error) {

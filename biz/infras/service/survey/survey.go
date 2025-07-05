@@ -87,7 +87,7 @@ func (s Survey) entToSurvey(v *ent.Survey) *service.Survey {
 		Desc:      v.Desc,
 		StartAt:   v.StartAt.Format(time.DateTime),
 		EndAt:     v.EndAt.Format(time.DateTime),
-		CreatedAt: v.CreatedAt.Format(time.DateTime),
+		CreatedAt: v.CreatedAt.Add(8 * time.Hour).Format(time.DateTime),
 	}
 }
 
