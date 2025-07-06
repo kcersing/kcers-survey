@@ -185,6 +185,27 @@ export async function getNext(options?: { [key: string]: any }) {
   });
 }
 
+export async function getResponse(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/service/survey/response/info', {
+    method: 'POST',
+    data: {
+      method: 'post',
+      ...(options || {}),
+    },
+  });
+}
+export async function getResponseAnswers(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/service/survey/response/answers', {
+    method: 'POST',
+    data: {
+      method: 'post',
+      ...(options || {}),
+    },
+  });
+}
+
+
+
 
 
 export async function listResponse(

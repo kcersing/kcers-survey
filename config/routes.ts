@@ -61,9 +61,11 @@ export default [
       { path: '/survey/:id/preview', component: '@/pages/survey/preview', name: '预览' ,hideInMenu: true, },
       { path: '/survey/:id/response-list', component: '@/pages/survey/responselist/index', layout: false, },
       { path: '/survey/:id/statistics', component: '@/pages/survey/statistics', layout: false, },
+
     ],
   },
   { path: '/survey/:id/respondent', component: '@/pages/survey/respondent/index-st1', name: '填写问卷',layout: false,  },
+  { path: '/survey/:id/response/:sn', component: '@/pages/survey/details',name: '详情', layout: false, },
 
   {
     path: '/account',

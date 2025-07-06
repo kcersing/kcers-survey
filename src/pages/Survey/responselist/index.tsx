@@ -67,7 +67,7 @@ const columns: ProColumns<API.Response>[] = [
     dataIndex: 'option',
     valueType: 'option',
     render: (_, record) => [
-      <a key="config" onClick={() => { history.push(`#`)} }>详情</a>,
+      <a key="config" onClick={() => { history.push(`/survey/${record.surveyId}/response/${record.sn}`)} }>详情</a>,
       // <a key="config" onClick={() => { history.push(`/survey/${record.id}/statistics`)}}>统计</a>,
       <a key="remove" onClick={() => { history.push(`#`)} }>设置状态</a>,
 
@@ -80,7 +80,7 @@ export default () => {
 
   const { id } = useParams();
   const surveyId = id ? parseInt(id) : 1;
-console.log(surveyId)
+  console.log(surveyId)
 
   const actionRef = useRef<ActionType>();
   return (

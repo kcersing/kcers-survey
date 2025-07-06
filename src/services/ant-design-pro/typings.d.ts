@@ -163,6 +163,7 @@ declare namespace API {
   };
   type Response = {
     id?: number;
+    surveyId?: number;
     sn?: string;
     respondent?: string;
     respondentPhone?: string;
@@ -176,13 +177,34 @@ declare namespace API {
     address?: string;
     village?: string;
 
-    pic?: string;
+    pic?: string[];
     ip?: string;
 
     createdAt?: string;
     latitude?: string;
     longitude?: string;
     answerCount?: number;
-
   };
+  type ResponseAnswers  = {
+    id?: number;
+    surveyId?: number;
+    surveyResponseId?: number;
+    surveyQuestionId?: number;
+    answer?: string[];
+    answerText?: string;
+    createdAt?: string;
+    content?: string;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 }

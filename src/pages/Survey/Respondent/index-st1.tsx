@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { useNavigate, useParams } from '@@/exports';
+import {history, useNavigate, useParams} from '@@/exports';
 import { useLocation } from 'react-router-dom';
 import { createRespondent, getSurvey, listQuestion,getNext } from '@/services/ant-design-pro/survey';
 
@@ -280,9 +280,16 @@ if (res.data){
           <p className="thank-you-icon" />
           <h2 level={3}>感谢您参与调查！</h2>
           <p>您的反馈对我们非常重要,感谢您的参与。</p>
+
           <Button type="primary" onClick={() => navigate(`/survey/${surveyId}/respondent`)} className="finish-button">
             完成
           </Button>
+
+          <Button style={{left:10}} type="primary" onClick={() => navigate(`/survey/${surveyId}/response/${generateRandom}`)} className="finish-button">
+            点击查看问卷详情
+          </Button>
+
+
         </ProCard>
       </StepsForm.StepForm>
     );

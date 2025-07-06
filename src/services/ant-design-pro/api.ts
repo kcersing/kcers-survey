@@ -110,10 +110,6 @@ export async function queryCity(area: string): Promise<{ data: AreaItemType[] }>
   return request(`/service/sys/city?id=${area}`);
 }
 
-
-
-
-
 type PubUploadOptions = {
   file: File; // 假设需要上传文件
   // 可以添加其他可选参数
