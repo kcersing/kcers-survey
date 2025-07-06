@@ -15,7 +15,6 @@ func run() {
 	tickerSecond_30 := time.NewTicker(30 * time.Second)
 	tickerHour_6 := time.NewTicker(6 * time.Hour)
 
-	xiufu2()
 	go func() {
 		//首次进入调用
 		setResponseAnswersCount()

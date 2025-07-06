@@ -23,17 +23,9 @@ func LogMw() app.HandlerFunc {
 		log.UserAgent = string(c.Request.Header.UserAgent())
 		log.IP = c.ClientIP()
 
-		reqBodyStr := string(c.Request.Body())
-		if len(reqBodyStr) > 200 {
-			reqBodyStr = reqBodyStr[:200]
-		}
-		log.ReqContent = reqBodyStr
+		log.ReqContent = string(c.Request.Body())
 
-		respBodyStr := string(c.Request.Body())
-		if len(respBodyStr) > 200 {
-			respBodyStr = respBodyStr[:200]
-		}
-
+		log.RespContent = string(c.Request.Body())
 		if c.Response.Header.StatusCode() == 200 {
 			log.Success = true
 		}
