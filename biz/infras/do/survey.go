@@ -23,7 +23,8 @@ type Survey interface {
 
 	CreateResponse(req *service.CreateOrUpdateResponseReq) (err error)
 	UpdateResponse(req *service.CreateOrUpdateResponseReq) (err error)
-	GetResponse(id int64) (resp *service.Response, err error)
+	GetResponse(req *service.ResponseAnswersReq) (resp *service.Response, err error)
+	GetResponseAnswers(req *service.ResponseAnswersReq) (resp []*service.ResponseAnswers, err error)
 	ListResponse(req *service.ResponseListReq) (resp []*service.Response, total int, err error)
 	DeleteResponse(id int64) (err error)
 

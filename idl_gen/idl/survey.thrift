@@ -22,12 +22,18 @@ service SurveyService {
 
 	base.NilResponse CreateResponse(1: CreateOrUpdateResponseReq req) (api.post = "/service/survey/response/create")
 	base.NilResponse UpdateResponse(1: CreateOrUpdateResponseReq req) (api.post = "/service/survey/response/update")
-	base.NilResponse GetResponse(1: base.IDReq req)  (api.post = "/service/survey/response/info")
+	base.NilResponse GetResponse(1: ResponseAnswersReq req)  (api.post = "/service/survey/response/info")
+    base.NilResponse GetResponseAnswers(1: ResponseAnswersReq req)  (api.post = "/service/survey/response/answers")
+
+
 	base.NilResponse ListResponse(1: ResponseListReq req) (api.post = "/service/survey/response/list")
 	base.NilResponse DeleteResponse(1: base.IDReq req)  (api.post = "/service/survey/response/delete")
 
 
 	base.NilResponse GetNext(1: GetNextReq req)  (api.post = "/service/survey/response/getNext")
+
+
+
 
 
 }
@@ -173,7 +179,22 @@ struct ResponseListReq {
     12:optional string researcherPhone="" (api.raw = "researcherPhone")
 
 }
+  struct ResponseAnswersReq   {
+      1: optional i64 id=0 (api.raw = "id")
+      3:optional string sn="" (api.raw = "sn")
+  }
+  struct ResponseAnswers   {
 
+      1: optional i64 id=0 (api.raw = "id")
+      2: optional i64 surveyId=0 (api.raw = "surveyId")
+      3: optional i64 surveyResponseId=0 (api.raw = "surveyResponseId")
+      4: optional i64 surveyQuestionId=0 (api.raw = "surveyQuestionId")
+       5: optional  list<string> answer={} (api.raw = "answer")
+      6:optional string answerText="" (api.raw = "answerText")
+      7:optional string createdAt="" (api.raw = "createdAt")
+     8:optional string content="" (api.raw = "content")
+
+  }
 
 
 

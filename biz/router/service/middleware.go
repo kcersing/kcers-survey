@@ -118,3 +118,8 @@ func _getnextMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _getresponseanswersMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

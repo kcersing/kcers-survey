@@ -187,6 +187,7 @@ func CreateResponse(ctx context.Context, c *app.RequestContext) {
 		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
+
 	utils.SendResponse(c, errno.Success, nil, 0, "")
 	return
 }
@@ -208,26 +209,6 @@ func UpdateResponse(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	utils.SendResponse(c, errno.Success, nil, 0, "")
-	return
-}
-
-// GetResponse .
-// @router /service/survey/response/info [POST]
-func GetResponse(ctx context.Context, c *app.RequestContext) {
-	var err error
-	var req base.IDReq
-	err = c.BindAndValidate(&req)
-	if err != nil {
-		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
-		return
-	}
-
-	info, err := surveyService.NewSurvey(ctx, c).GetResponse(req.ID)
-	if err != nil {
-		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
-		return
-	}
-	utils.SendResponse(c, errno.Success, info, 0, "")
 	return
 }
 
@@ -349,5 +330,44 @@ func GetNext(ctx context.Context, c *app.RequestContext) {
 		map[string]interface{}{
 			"number": num,
 		}, 0, "")
+	return
+}
+
+// GetResponse .
+// @router /service/survey/response/info [POST]
+func GetResponse(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req service.ResponseAnswersReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+
+	info, err := surveyService.NewSurvey(ctx, c).GetResponse(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, info, 0, "")
+	return
+}
+
+// GetResponseAnswers .
+// @router /service/survey/response/answers [POST]
+func GetResponseAnswers(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req service.ResponseAnswersReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	list, err := surveyService.NewSurvey(ctx, c).GetResponseAnswers(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, list, 0, "")
 	return
 }

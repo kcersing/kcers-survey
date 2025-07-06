@@ -7178,6 +7178,810 @@ func (p *ResponseListReq) String() string {
 
 }
 
+type ResponseAnswersReq struct {
+	ID int64  `thrift:"id,1,optional" form:"id" json:"id" query:"id"`
+	Sn string `thrift:"sn,3,optional" form:"sn" json:"sn" query:"sn"`
+}
+
+func NewResponseAnswersReq() *ResponseAnswersReq {
+	return &ResponseAnswersReq{
+
+		ID: 0,
+		Sn: "",
+	}
+}
+
+func (p *ResponseAnswersReq) InitDefault() {
+	p.ID = 0
+	p.Sn = ""
+}
+
+var ResponseAnswersReq_ID_DEFAULT int64 = 0
+
+func (p *ResponseAnswersReq) GetID() (v int64) {
+	if !p.IsSetID() {
+		return ResponseAnswersReq_ID_DEFAULT
+	}
+	return p.ID
+}
+
+var ResponseAnswersReq_Sn_DEFAULT string = ""
+
+func (p *ResponseAnswersReq) GetSn() (v string) {
+	if !p.IsSetSn() {
+		return ResponseAnswersReq_Sn_DEFAULT
+	}
+	return p.Sn
+}
+
+var fieldIDToName_ResponseAnswersReq = map[int16]string{
+	1: "id",
+	3: "sn",
+}
+
+func (p *ResponseAnswersReq) IsSetID() bool {
+	return p.ID != ResponseAnswersReq_ID_DEFAULT
+}
+
+func (p *ResponseAnswersReq) IsSetSn() bool {
+	return p.Sn != ResponseAnswersReq_Sn_DEFAULT
+}
+
+func (p *ResponseAnswersReq) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ResponseAnswersReq[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *ResponseAnswersReq) ReadField1(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.ID = _field
+	return nil
+}
+func (p *ResponseAnswersReq) ReadField3(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Sn = _field
+	return nil
+}
+
+func (p *ResponseAnswersReq) Write(oprot thrift.TProtocol) (err error) {
+
+	var fieldId int16
+	if err = oprot.WriteStructBegin("ResponseAnswersReq"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *ResponseAnswersReq) writeField1(oprot thrift.TProtocol) (err error) {
+	if p.IsSetID() {
+		if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.ID); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *ResponseAnswersReq) writeField3(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSn() {
+		if err = oprot.WriteFieldBegin("sn", thrift.STRING, 3); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Sn); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *ResponseAnswersReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ResponseAnswersReq(%+v)", *p)
+
+}
+
+type ResponseAnswers struct {
+	ID               int64    `thrift:"id,1,optional" form:"id" json:"id" query:"id"`
+	SurveyId         int64    `thrift:"surveyId,2,optional" form:"surveyId" json:"surveyId" query:"surveyId"`
+	SurveyResponseId int64    `thrift:"surveyResponseId,3,optional" form:"surveyResponseId" json:"surveyResponseId" query:"surveyResponseId"`
+	SurveyQuestionId int64    `thrift:"surveyQuestionId,4,optional" form:"surveyQuestionId" json:"surveyQuestionId" query:"surveyQuestionId"`
+	Answer           []string `thrift:"answer,5,optional" form:"answer" json:"answer" query:"answer"`
+	AnswerText       string   `thrift:"answerText,6,optional" form:"answerText" json:"answerText" query:"answerText"`
+	CreatedAt        string   `thrift:"createdAt,7,optional" form:"createdAt" json:"createdAt" query:"createdAt"`
+	Content          string   `thrift:"content,8,optional" form:"content" json:"content" query:"content"`
+}
+
+func NewResponseAnswers() *ResponseAnswers {
+	return &ResponseAnswers{
+
+		ID:               0,
+		SurveyId:         0,
+		SurveyResponseId: 0,
+		SurveyQuestionId: 0,
+		Answer:           []string{},
+		AnswerText:       "",
+		CreatedAt:        "",
+		Content:          "",
+	}
+}
+
+func (p *ResponseAnswers) InitDefault() {
+	p.ID = 0
+	p.SurveyId = 0
+	p.SurveyResponseId = 0
+	p.SurveyQuestionId = 0
+	p.Answer = []string{}
+	p.AnswerText = ""
+	p.CreatedAt = ""
+	p.Content = ""
+}
+
+var ResponseAnswers_ID_DEFAULT int64 = 0
+
+func (p *ResponseAnswers) GetID() (v int64) {
+	if !p.IsSetID() {
+		return ResponseAnswers_ID_DEFAULT
+	}
+	return p.ID
+}
+
+var ResponseAnswers_SurveyId_DEFAULT int64 = 0
+
+func (p *ResponseAnswers) GetSurveyId() (v int64) {
+	if !p.IsSetSurveyId() {
+		return ResponseAnswers_SurveyId_DEFAULT
+	}
+	return p.SurveyId
+}
+
+var ResponseAnswers_SurveyResponseId_DEFAULT int64 = 0
+
+func (p *ResponseAnswers) GetSurveyResponseId() (v int64) {
+	if !p.IsSetSurveyResponseId() {
+		return ResponseAnswers_SurveyResponseId_DEFAULT
+	}
+	return p.SurveyResponseId
+}
+
+var ResponseAnswers_SurveyQuestionId_DEFAULT int64 = 0
+
+func (p *ResponseAnswers) GetSurveyQuestionId() (v int64) {
+	if !p.IsSetSurveyQuestionId() {
+		return ResponseAnswers_SurveyQuestionId_DEFAULT
+	}
+	return p.SurveyQuestionId
+}
+
+var ResponseAnswers_Answer_DEFAULT []string = []string{}
+
+func (p *ResponseAnswers) GetAnswer() (v []string) {
+	if !p.IsSetAnswer() {
+		return ResponseAnswers_Answer_DEFAULT
+	}
+	return p.Answer
+}
+
+var ResponseAnswers_AnswerText_DEFAULT string = ""
+
+func (p *ResponseAnswers) GetAnswerText() (v string) {
+	if !p.IsSetAnswerText() {
+		return ResponseAnswers_AnswerText_DEFAULT
+	}
+	return p.AnswerText
+}
+
+var ResponseAnswers_CreatedAt_DEFAULT string = ""
+
+func (p *ResponseAnswers) GetCreatedAt() (v string) {
+	if !p.IsSetCreatedAt() {
+		return ResponseAnswers_CreatedAt_DEFAULT
+	}
+	return p.CreatedAt
+}
+
+var ResponseAnswers_Content_DEFAULT string = ""
+
+func (p *ResponseAnswers) GetContent() (v string) {
+	if !p.IsSetContent() {
+		return ResponseAnswers_Content_DEFAULT
+	}
+	return p.Content
+}
+
+var fieldIDToName_ResponseAnswers = map[int16]string{
+	1: "id",
+	2: "surveyId",
+	3: "surveyResponseId",
+	4: "surveyQuestionId",
+	5: "answer",
+	6: "answerText",
+	7: "createdAt",
+	8: "content",
+}
+
+func (p *ResponseAnswers) IsSetID() bool {
+	return p.ID != ResponseAnswers_ID_DEFAULT
+}
+
+func (p *ResponseAnswers) IsSetSurveyId() bool {
+	return p.SurveyId != ResponseAnswers_SurveyId_DEFAULT
+}
+
+func (p *ResponseAnswers) IsSetSurveyResponseId() bool {
+	return p.SurveyResponseId != ResponseAnswers_SurveyResponseId_DEFAULT
+}
+
+func (p *ResponseAnswers) IsSetSurveyQuestionId() bool {
+	return p.SurveyQuestionId != ResponseAnswers_SurveyQuestionId_DEFAULT
+}
+
+func (p *ResponseAnswers) IsSetAnswer() bool {
+	return p.Answer != nil
+}
+
+func (p *ResponseAnswers) IsSetAnswerText() bool {
+	return p.AnswerText != ResponseAnswers_AnswerText_DEFAULT
+}
+
+func (p *ResponseAnswers) IsSetCreatedAt() bool {
+	return p.CreatedAt != ResponseAnswers_CreatedAt_DEFAULT
+}
+
+func (p *ResponseAnswers) IsSetContent() bool {
+	return p.Content != ResponseAnswers_Content_DEFAULT
+}
+
+func (p *ResponseAnswers) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 4:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 5:
+			if fieldTypeId == thrift.LIST {
+				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 6:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField6(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 7:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 8:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ResponseAnswers[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *ResponseAnswers) ReadField1(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.ID = _field
+	return nil
+}
+func (p *ResponseAnswers) ReadField2(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.SurveyId = _field
+	return nil
+}
+func (p *ResponseAnswers) ReadField3(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.SurveyResponseId = _field
+	return nil
+}
+func (p *ResponseAnswers) ReadField4(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.SurveyQuestionId = _field
+	return nil
+}
+func (p *ResponseAnswers) ReadField5(iprot thrift.TProtocol) error {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	_field := make([]string, 0, size)
+	for i := 0; i < size; i++ {
+
+		var _elem string
+		if v, err := iprot.ReadString(); err != nil {
+			return err
+		} else {
+			_elem = v
+		}
+
+		_field = append(_field, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
+		return err
+	}
+	p.Answer = _field
+	return nil
+}
+func (p *ResponseAnswers) ReadField6(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.AnswerText = _field
+	return nil
+}
+func (p *ResponseAnswers) ReadField7(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.CreatedAt = _field
+	return nil
+}
+func (p *ResponseAnswers) ReadField8(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Content = _field
+	return nil
+}
+
+func (p *ResponseAnswers) Write(oprot thrift.TProtocol) (err error) {
+
+	var fieldId int16
+	if err = oprot.WriteStructBegin("ResponseAnswers"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
+			goto WriteFieldError
+		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
+			goto WriteFieldError
+		}
+		if err = p.writeField7(oprot); err != nil {
+			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *ResponseAnswers) writeField1(oprot thrift.TProtocol) (err error) {
+	if p.IsSetID() {
+		if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.ID); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *ResponseAnswers) writeField2(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSurveyId() {
+		if err = oprot.WriteFieldBegin("surveyId", thrift.I64, 2); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.SurveyId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *ResponseAnswers) writeField3(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSurveyResponseId() {
+		if err = oprot.WriteFieldBegin("surveyResponseId", thrift.I64, 3); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.SurveyResponseId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *ResponseAnswers) writeField4(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSurveyQuestionId() {
+		if err = oprot.WriteFieldBegin("surveyQuestionId", thrift.I64, 4); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.SurveyQuestionId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *ResponseAnswers) writeField5(oprot thrift.TProtocol) (err error) {
+	if p.IsSetAnswer() {
+		if err = oprot.WriteFieldBegin("answer", thrift.LIST, 5); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteListBegin(thrift.STRING, len(p.Answer)); err != nil {
+			return err
+		}
+		for _, v := range p.Answer {
+			if err := oprot.WriteString(v); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteListEnd(); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
+func (p *ResponseAnswers) writeField6(oprot thrift.TProtocol) (err error) {
+	if p.IsSetAnswerText() {
+		if err = oprot.WriteFieldBegin("answerText", thrift.STRING, 6); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.AnswerText); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
+}
+
+func (p *ResponseAnswers) writeField7(oprot thrift.TProtocol) (err error) {
+	if p.IsSetCreatedAt() {
+		if err = oprot.WriteFieldBegin("createdAt", thrift.STRING, 7); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.CreatedAt); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
+}
+
+func (p *ResponseAnswers) writeField8(oprot thrift.TProtocol) (err error) {
+	if p.IsSetContent() {
+		if err = oprot.WriteFieldBegin("content", thrift.STRING, 8); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Content); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
+
+func (p *ResponseAnswers) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ResponseAnswers(%+v)", *p)
+
+}
+
 type SurveyService interface {
 	CreateSurvey(ctx context.Context, req *CreateOrUpdateSurveyReq) (r *base.NilResponse, err error)
 
@@ -7205,7 +8009,9 @@ type SurveyService interface {
 
 	UpdateResponse(ctx context.Context, req *CreateOrUpdateResponseReq) (r *base.NilResponse, err error)
 
-	GetResponse(ctx context.Context, req *base.IDReq) (r *base.NilResponse, err error)
+	GetResponse(ctx context.Context, req *ResponseAnswersReq) (r *base.NilResponse, err error)
+
+	GetResponseAnswers(ctx context.Context, req *ResponseAnswersReq) (r *base.NilResponse, err error)
 
 	ListResponse(ctx context.Context, req *ResponseListReq) (r *base.NilResponse, err error)
 
@@ -7357,11 +8163,20 @@ func (p *SurveyServiceClient) UpdateResponse(ctx context.Context, req *CreateOrU
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *SurveyServiceClient) GetResponse(ctx context.Context, req *base.IDReq) (r *base.NilResponse, err error) {
+func (p *SurveyServiceClient) GetResponse(ctx context.Context, req *ResponseAnswersReq) (r *base.NilResponse, err error) {
 	var _args SurveyServiceGetResponseArgs
 	_args.Req = req
 	var _result SurveyServiceGetResponseResult
 	if err = p.Client_().Call(ctx, "GetResponse", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+func (p *SurveyServiceClient) GetResponseAnswers(ctx context.Context, req *ResponseAnswersReq) (r *base.NilResponse, err error) {
+	var _args SurveyServiceGetResponseAnswersArgs
+	_args.Req = req
+	var _result SurveyServiceGetResponseAnswersResult
+	if err = p.Client_().Call(ctx, "GetResponseAnswers", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -7428,6 +8243,7 @@ func NewSurveyServiceProcessor(handler SurveyService) *SurveyServiceProcessor {
 	self.AddToProcessorMap("CreateResponse", &surveyServiceProcessorCreateResponse{handler: handler})
 	self.AddToProcessorMap("UpdateResponse", &surveyServiceProcessorUpdateResponse{handler: handler})
 	self.AddToProcessorMap("GetResponse", &surveyServiceProcessorGetResponse{handler: handler})
+	self.AddToProcessorMap("GetResponseAnswers", &surveyServiceProcessorGetResponseAnswers{handler: handler})
 	self.AddToProcessorMap("ListResponse", &surveyServiceProcessorListResponse{handler: handler})
 	self.AddToProcessorMap("DeleteResponse", &surveyServiceProcessorDeleteResponse{handler: handler})
 	self.AddToProcessorMap("GetNext", &surveyServiceProcessorGetNext{handler: handler})
@@ -8106,6 +8922,54 @@ func (p *surveyServiceProcessorGetResponse) Process(ctx context.Context, seqId i
 		result.Success = retval
 	}
 	if err2 = oprot.WriteMessageBegin("GetResponse", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type surveyServiceProcessorGetResponseAnswers struct {
+	handler SurveyService
+}
+
+func (p *surveyServiceProcessorGetResponseAnswers) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := SurveyServiceGetResponseAnswersArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("GetResponseAnswers", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := SurveyServiceGetResponseAnswersResult{}
+	var retval *base.NilResponse
+	if retval, err2 = p.handler.GetResponseAnswers(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetResponseAnswers: "+err2.Error())
+		oprot.WriteMessageBegin("GetResponseAnswers", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("GetResponseAnswers", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -12116,7 +12980,7 @@ func (p *SurveyServiceUpdateResponseResult) String() string {
 }
 
 type SurveyServiceGetResponseArgs struct {
-	Req *base.IDReq `thrift:"req,1"`
+	Req *ResponseAnswersReq `thrift:"req,1"`
 }
 
 func NewSurveyServiceGetResponseArgs() *SurveyServiceGetResponseArgs {
@@ -12126,9 +12990,9 @@ func NewSurveyServiceGetResponseArgs() *SurveyServiceGetResponseArgs {
 func (p *SurveyServiceGetResponseArgs) InitDefault() {
 }
 
-var SurveyServiceGetResponseArgs_Req_DEFAULT *base.IDReq
+var SurveyServiceGetResponseArgs_Req_DEFAULT *ResponseAnswersReq
 
-func (p *SurveyServiceGetResponseArgs) GetReq() (v *base.IDReq) {
+func (p *SurveyServiceGetResponseArgs) GetReq() (v *ResponseAnswersReq) {
 	if !p.IsSetReq() {
 		return SurveyServiceGetResponseArgs_Req_DEFAULT
 	}
@@ -12200,7 +13064,7 @@ ReadStructEndError:
 }
 
 func (p *SurveyServiceGetResponseArgs) ReadField1(iprot thrift.TProtocol) error {
-	_field := base.NewIDReq()
+	_field := NewResponseAnswersReq()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -12408,6 +13272,302 @@ func (p *SurveyServiceGetResponseResult) String() string {
 		return "<nil>"
 	}
 	return fmt.Sprintf("SurveyServiceGetResponseResult(%+v)", *p)
+
+}
+
+type SurveyServiceGetResponseAnswersArgs struct {
+	Req *ResponseAnswersReq `thrift:"req,1"`
+}
+
+func NewSurveyServiceGetResponseAnswersArgs() *SurveyServiceGetResponseAnswersArgs {
+	return &SurveyServiceGetResponseAnswersArgs{}
+}
+
+func (p *SurveyServiceGetResponseAnswersArgs) InitDefault() {
+}
+
+var SurveyServiceGetResponseAnswersArgs_Req_DEFAULT *ResponseAnswersReq
+
+func (p *SurveyServiceGetResponseAnswersArgs) GetReq() (v *ResponseAnswersReq) {
+	if !p.IsSetReq() {
+		return SurveyServiceGetResponseAnswersArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+var fieldIDToName_SurveyServiceGetResponseAnswersArgs = map[int16]string{
+	1: "req",
+}
+
+func (p *SurveyServiceGetResponseAnswersArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *SurveyServiceGetResponseAnswersArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SurveyServiceGetResponseAnswersArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *SurveyServiceGetResponseAnswersArgs) ReadField1(iprot thrift.TProtocol) error {
+	_field := NewResponseAnswersReq()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Req = _field
+	return nil
+}
+
+func (p *SurveyServiceGetResponseAnswersArgs) Write(oprot thrift.TProtocol) (err error) {
+
+	var fieldId int16
+	if err = oprot.WriteStructBegin("GetResponseAnswers_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *SurveyServiceGetResponseAnswersArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Req.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *SurveyServiceGetResponseAnswersArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("SurveyServiceGetResponseAnswersArgs(%+v)", *p)
+
+}
+
+type SurveyServiceGetResponseAnswersResult struct {
+	Success *base.NilResponse `thrift:"success,0,optional"`
+}
+
+func NewSurveyServiceGetResponseAnswersResult() *SurveyServiceGetResponseAnswersResult {
+	return &SurveyServiceGetResponseAnswersResult{}
+}
+
+func (p *SurveyServiceGetResponseAnswersResult) InitDefault() {
+}
+
+var SurveyServiceGetResponseAnswersResult_Success_DEFAULT *base.NilResponse
+
+func (p *SurveyServiceGetResponseAnswersResult) GetSuccess() (v *base.NilResponse) {
+	if !p.IsSetSuccess() {
+		return SurveyServiceGetResponseAnswersResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+var fieldIDToName_SurveyServiceGetResponseAnswersResult = map[int16]string{
+	0: "success",
+}
+
+func (p *SurveyServiceGetResponseAnswersResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *SurveyServiceGetResponseAnswersResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SurveyServiceGetResponseAnswersResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *SurveyServiceGetResponseAnswersResult) ReadField0(iprot thrift.TProtocol) error {
+	_field := base.NewNilResponse()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Success = _field
+	return nil
+}
+
+func (p *SurveyServiceGetResponseAnswersResult) Write(oprot thrift.TProtocol) (err error) {
+
+	var fieldId int16
+	if err = oprot.WriteStructBegin("GetResponseAnswers_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *SurveyServiceGetResponseAnswersResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *SurveyServiceGetResponseAnswersResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("SurveyServiceGetResponseAnswersResult(%+v)", *p)
 
 }
 

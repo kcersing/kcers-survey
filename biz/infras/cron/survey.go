@@ -14,7 +14,7 @@ import (
 )
 
 func setResponseAnswersCount() {
-	return
+
 	var scAll []struct {
 		Count            int64 `json:"count"`
 		SurveyResponseID int64 `json:"survey_response_id"`

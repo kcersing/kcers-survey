@@ -78,7 +78,7 @@ func (s Survey) GetNext(req *service.GetNextReq) (number int64, err error) {
 }
 
 func (s Survey) CreateResponse(req *service.CreateOrUpdateResponseReq) (err error) {
-	hlog.Info(req)
+
 	sa, _ := s.db.SurveyResponse.Query().Where(surveyresponse2.SurveyID(req.SurveyId), surveyresponse2.Sn(req.Sn)).First(s.ctx)
 	if sa == nil {
 		sa, err = s.db.SurveyResponse.Create().
@@ -183,15 +183,58 @@ func (s Survey) UpdateResponse(req *service.CreateOrUpdateResponseReq) (err erro
 	panic("implement me")
 }
 
-func (s Survey) GetResponse(id int64) (resp *service.Response, err error) {
+func (s Survey) GetResponse(req *service.ResponseAnswersReq) (resp *service.Response, err error) {
+	var predicates []predicate.SurveyResponse
+
+	if req.ID > 0 {
+		predicates = append(predicates, surveyresponse2.IDEQ(req.ID))
+	}
+	if req.Sn != "" {
+		predicates = append(predicates, surveyresponse2.Sn(req.Sn))
+	}
+	predicates = append(predicates, surveyresponse2.Delete(0))
 	first, err := s.db.SurveyResponse.
 		Query().
-		Where(surveyresponse2.IDEQ(id)).
+		Where(predicates...).
 		First(s.ctx)
 	if err != nil {
 		return nil, err
 	}
-	hlog.Info(first)
+	resp = s.entToResponse(first)
+
+	return
+}
+
+func (s Survey) GetResponseAnswers(req *service.ResponseAnswersReq) (resp []*service.ResponseAnswers, err error) {
+
+	var predicates []predicate.SurveyResponseAnswers
+
+	if req.ID > 0 {
+		predicates = append(predicates, surveyresponseanswers2.SurveyResponseID(req.ID))
+	}
+	if req.Sn != "" {
+		predicates = append(predicates, surveyresponseanswers2.HasResponseWith(surveyresponse2.Sn(req.Sn)))
+	}
+	predicates = append(predicates, surveyresponseanswers2.Delete(0))
+	all, err := s.db.SurveyResponseAnswers.
+		Query().
+		Where(predicates...).
+		All(s.ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	questions, err := s.db.SurveyQuestion.Query().
+		Where(surveyquestion2.SurveyID(all[0].SurveyID), surveyquestion2.Delete(0)).
+		All(s.ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, v := range all {
+		resp = append(resp, s.entToResponseAnswers(v, questions))
+	}
+
 	return
 }
 
@@ -232,10 +275,7 @@ func (s Survey) ListResponse(req *service.ResponseListReq) (resp []*service.Resp
 	}
 
 	for _, v := range all {
-		qCount, _ := s.db.SurveyQuestion.Query().
-			Where(surveyquestion2.SurveyID(v.SurveyID), surveyquestion2.DeleteEQ(0)).
-			Count(s.ctx)
-		resp = append(resp, s.entToResponse(v, qCount))
+		resp = append(resp, s.entToResponse(v))
 	}
 
 	total, err = s.db.SurveyResponse.Query().Where(predicates...).Count(s.ctx)
@@ -246,7 +286,7 @@ func (s Survey) ListResponse(req *service.ResponseListReq) (resp []*service.Resp
 
 }
 
-func (s Survey) entToResponse(v *ent.SurveyResponse, qCount int) *service.Response {
+func (s Survey) entToResponse(v *ent.SurveyResponse) *service.Response {
 
 	r := &service.Response{
 		ID:              v.ID,
@@ -260,57 +300,74 @@ func (s Survey) entToResponse(v *ent.SurveyResponse, qCount int) *service.Respon
 		ResearcherPhone: v.ResearcherPhone,
 		CreatedAt:       v.CreatedAt.Add(8 * time.Hour).Format(time.DateTime),
 		Pic:             v.Pic,
-		//Audio:           nil,
+
 		IP:          v.IP,
 		Device:      v.Device,
 		Address:     v.Address,
 		AnswerCount: v.AnswersCount,
 	}
-	if v.Area != "" {
 
+	if v.Area != "" {
 		id, err := strconv.ParseInt(v.Area, 10, 64)
-		if err != nil {
-			return nil
+		if err == nil {
+			first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
+			if err == nil {
+				r.Area = first.Name
+			}
 		}
-		first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
-		if err != nil {
-			return nil
-		}
-		r.Area = first.Name
 
 	}
 	if v.City != "" {
 		id, err := strconv.ParseInt(v.Area, 10, 64)
-		if err != nil {
-			return nil
+		if err == nil {
+			first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
+			if err == nil {
+				r.City = first.Name
+			}
 		}
-		first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
-		if err != nil {
-			return nil
-		}
-		r.City = first.Name
 	}
 	if v.District != "" {
 		id, err := strconv.ParseInt(v.Area, 10, 64)
-		if err != nil {
-			return nil
+		if err == nil {
+			first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
+			if err == nil {
+				r.District = first.Name
+			}
+
 		}
-		first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
-		if err != nil {
-			return nil
-		}
-		r.District = first.Name
+
 	}
 	if v.Village != "" {
 		id, err := strconv.ParseInt(v.Area, 10, 64)
-		if err != nil {
-			return nil
+		if err == nil {
+			first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
+			if err == nil {
+				r.Village = first.Name
+			}
 		}
-		first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
-		if err != nil {
-			return nil
+
+	}
+
+	return r
+}
+
+func (s Survey) entToResponseAnswers(v *ent.SurveyResponseAnswers, question []*ent.SurveyQuestion) *service.ResponseAnswers {
+
+	var content string
+	for _, q := range question {
+		if q.ID == v.SurveyQuestionID {
+			content = q.Content
 		}
-		r.Village = first.Name
+	}
+	r := &service.ResponseAnswers{
+		ID:               v.ID,
+		SurveyId:         v.SurveyID,
+		SurveyResponseId: v.SurveyResponseID,
+		SurveyQuestionId: v.SurveyQuestionID,
+		Answer:           v.Answer,
+		AnswerText:       v.AnswerText,
+		CreatedAt:        v.CreatedAt.Add(8 * time.Hour).Format(time.DateTime),
+		Content:          content,
 	}
 
 	return r
