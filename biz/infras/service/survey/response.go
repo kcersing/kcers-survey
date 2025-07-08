@@ -84,7 +84,7 @@ func (s Survey) CreateResponse(req *service.CreateOrUpdateResponseReq) (err erro
 		sa, err = s.db.SurveyResponse.Create().
 			SetSurveyID(req.SurveyId).
 			SetSn(req.Sn).
-			//SetIP(s.c.ClientIP()).
+			SetIP(s.c.ClientIP()).
 			//SetDevice(string(s.c.Request.Header.UserAgent())).
 			Save(s.ctx)
 		if err != nil {
