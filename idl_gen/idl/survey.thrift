@@ -177,6 +177,7 @@ struct ResponseListReq {
     10:optional string respondentPhone="" (api.raw = "respondentPhone")
     11:optional string researcher="" (api.raw = "researcher")
     12:optional string researcherPhone="" (api.raw = "researcherPhone")
+    13:optional string sorter="" (api.raw = "sorter")
 
 }
   struct ResponseAnswersReq   {

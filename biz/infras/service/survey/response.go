@@ -241,9 +241,22 @@ func (s Survey) GetResponseAnswers(req *service.ResponseAnswersReq) (resp []*ser
 func (s Survey) ListResponse(req *service.ResponseListReq) (resp []*service.Response, total int, err error) {
 	var predicates []predicate.SurveyResponse
 
+	var order []surveyresponse2.OrderOption
+	order = append(order, ent.Desc(surveyresponse2.FieldAnswersCount))
 	if req.Respondent != "" {
+
 		predicates = append(predicates, surveyresponse2.Respondent(req.Respondent))
+
 	}
+
+	if req.Sorter != "" {
+		if req.Respondent == "ascend" {
+
+		} else if req.Respondent == "descend" {
+
+		}
+	}
+
 	if req.RespondentPhone != "" {
 		predicates = append(predicates, surveyresponse2.RespondentPhone(req.RespondentPhone))
 	}
@@ -259,6 +272,7 @@ func (s Survey) ListResponse(req *service.ResponseListReq) (resp []*service.Resp
 	if req.SurveyId > 0 {
 		predicates = append(predicates, surveyresponse2.SurveyID(req.SurveyId))
 	}
+
 	predicates = append(predicates, surveyresponse2.SnNEQ(""))
 	predicates = append(predicates, surveyresponse2.AnswersCountNEQ(0))
 	predicates = append(predicates, surveyresponse2.Delete(0))
@@ -266,7 +280,7 @@ func (s Survey) ListResponse(req *service.ResponseListReq) (resp []*service.Resp
 	all, err := s.db.SurveyResponse.
 		Query().
 		Where(predicates...).
-		Order(ent.Desc(surveyresponse2.FieldAnswersCount)).
+		Order(order...).
 		Offset(int(req.Page-1) * int(req.PageSize)).
 		Limit(int(req.PageSize)).
 		All(s.ctx)
