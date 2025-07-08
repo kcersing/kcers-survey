@@ -23,7 +23,7 @@ const DemoPie = memo(
   },
 );
 
-const DemoMemo = () => {
+export const DemoMemo = () => {
   const [count, setCount] = useState(0);
   const [data, setData] = useState([
     {
@@ -75,5 +75,3 @@ const DemoMemo = () => {
     </div>
   );
 };
-
-createRoot(document.getElementById('container')).render(<DemoMemo />);

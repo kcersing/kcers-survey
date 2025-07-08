@@ -1,8 +1,7 @@
 import { Column } from '@ant-design/plots';
 import React from 'react';
-import { createRoot } from 'react-dom';
 
-const DemoCustomColor = () => {
+export const DemoCustomColor = () => {
   const config = {
     data: [
       {
@@ -49,5 +48,3 @@ const DemoCustomColor = () => {
   };
   return <Column {...config} />;
 };
-
-createRoot(document.getElementById('container')).render(<DemoCustomColor />);

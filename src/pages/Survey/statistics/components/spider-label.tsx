@@ -1,6 +1,6 @@
 import { Pie } from '@ant-design/plots';
 import React from 'react';
-import { createRoot } from 'react-dom';
+
 
 const data = [
   { type: '分类一', value: 27 },
@@ -10,7 +10,7 @@ const data = [
   { type: '分类五', value: 10 },
   { type: '其他', value: 5 },
 ];
-const DemoPie = () => {
+export const DemoPie = () => {
   const config = {
     data,
     angleField: 'value',
@@ -31,4 +31,3 @@ const DemoPie = () => {
   return <Pie {...config} />;
 };
 
-createRoot(document.getElementById('container')).render(<DemoPie />);

@@ -25,6 +25,7 @@ const columns: ProColumns<API.Response>[] = [
     dataIndex: 'sn',
     valueType: 'textarea',
     ellipsis: true,
+    order:1,
   },
   {
     title:'受访人',
@@ -40,9 +41,11 @@ const columns: ProColumns<API.Response>[] = [
   },
   {
     title:'调研员',
+    sorter: true,
     dataIndex: 'researcher',
     ellipsis: true,
     tip: '受访人',
+    order:2,
   },
   {
     title:'调研员',
@@ -50,16 +53,21 @@ const columns: ProColumns<API.Response>[] = [
     ellipsis: true,
     tip: '受访人',
   },
+
   {
     title: '填写问卷时间',
-    sorter: true,
     dataIndex: 'createdAt',
-
+    ellipsis: true,
+    sorter: true,
   },
+
+
+
   {
     title:'完成度',
     dataIndex: 'answerCount',
     ellipsis: true,
+    order:3,
     tip: '如100题，填写了80道题，完成度为80',
   },
   {
@@ -88,19 +96,18 @@ export default () => {
       columns={columns}
       actionRef={actionRef}
       cardBordered
-      // request={listResponse}
       request={async (params, sort, filter) => {
 
+       if(sort && sort.createdAt ==="ascend"){
+         params.sorter = "createdAt-ascend";
+       }
+        console.log(params,sort, filter);
         params.surveyId = surveyId;
-        console.log(params)
-        console.log(sort, filter);
+
         return  listResponse({...params})
-        // await waitTime(2000);
 
       }}
-      // editable={{
-      //   type: 'multiple',
-      // }}
+
       // columnsState={{
       //   persistenceKey: 'pro-table-singe-demos',
       //   persistenceType: 'localStorage',
@@ -117,7 +124,7 @@ export default () => {
       }}
       options={{
         setting: {
-          listsHeight: 400,
+          listsHeight: 600,
         },
       }}
       // form={{

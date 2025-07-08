@@ -1,8 +1,8 @@
 import { Rose } from '@ant-design/plots';
 import React from 'react';
-import { createRoot } from 'react-dom';
 
-const DemoRose = () => {
+
+export const DemoRose = () => {
   const config = {
     data: [
       { year: '2001', population: 41.8 },
@@ -60,5 +60,3 @@ const DemoRose = () => {
   };
   return <Rose {...config} />;
 };
-
-createRoot(document.getElementById('container')).render(<DemoRose />);

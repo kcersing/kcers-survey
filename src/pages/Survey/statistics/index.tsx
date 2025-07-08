@@ -5,6 +5,12 @@ import { Card, Descriptions, Menu } from 'antd';
 import { useState,useEffect  } from 'react';
 import {getSurvey, listQuestion, treeQuestion} from '@/services/ant-design-pro/survey';
 import {useParams} from "react-router";
+import { DemoCustomColor } from '@/pages/survey/statistics/components/custom-color';
+import { DemoRose } from '@/pages/survey/statistics/components/donut-rose';
+import { DemoMemo } from '@/pages/survey/statistics/components/memo';
+import { Demobase } from '@/pages/survey/statistics/components/space-layer';
+import { DemoPie } from '@/pages/survey/statistics/components/spider-label';
+import { DemoDendrogram } from '@/pages/survey/statistics/components/vertical-tidy-tree';
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -95,6 +101,9 @@ export default () => {
 
 
   return (
+    <Card>
+
+
     <ProTable<TableListItem>
       columns={columns}
       rowKey="key"
@@ -141,6 +150,18 @@ export default () => {
               2658
             </Descriptions.Item>
           </Descriptions>
+
+
+          <DemoCustomColor />
+          <DemoRose />
+          <DemoMemo />
+          <Demobase />
+          <DemoPie />
+          <DemoDendrogram />
+
+
+
+
         </Card>
       )}
       params={{
@@ -156,5 +177,6 @@ export default () => {
       dateFormatter="string"
       headerTitle="自定义表格主体"
     />
+    </Card>
   );
 };

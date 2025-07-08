@@ -1,8 +1,8 @@
 import { Base } from '@ant-design/plots';
 import React from 'react';
-import { createRoot } from 'react-dom';
 
-const Demobase = () => {
+
+export const Demobase = () => {
   const config = {
     type: 'spaceLayer',
     data: {
@@ -33,4 +33,3 @@ const Demobase = () => {
   return <Base {...config} />;
 };
 
-createRoot(document.getElementById('container')).render(<Demobase />);
