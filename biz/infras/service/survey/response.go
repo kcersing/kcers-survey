@@ -1,8 +1,6 @@
 package survey
 
 import (
-	"context"
-	"entgo.io/ent/dialect/sql"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"kcers-survey/biz/dal/db/mysql/ent"
 	area2 "kcers-survey/biz/dal/db/mysql/ent/area"
@@ -401,27 +399,33 @@ func (s Survey) DeleteResponse(id int64) (err error) {
 	return nil
 }
 
-func (s Survey) GetQuestionStatisticsBasic(id int64) (resp []*service.StatisticsBasic, err error) {
-	var scAll []struct {
-		Count            int64 `json:"count"`
-		SurveyResponseID int64 `json:"survey_response_id"`
-	}
-	s.db.SurveyResponseAnswers.Query().Where(
-		surveyresponseanswers2.SurveyQuestionID(id),
-
-		//	`answer_text`
-		//  `answer`
-
-	).
-		Modify(func(s *sql.Selector) {
-			s.Select(
-				sql.As(sql.Count("*"), "count"),
-				surveyresponseanswers2.FieldAnswer,
-			).
-				GroupBy(surveyresponseanswers2.FieldAnswer)
-
-		}).
-		Scan(context.Background(), &scAll)
-
+func (s Survey) GetQuestionStatisticsBasic(id int64) (resp *service.StatisticsBasic, err error) {
+	//var scAll []struct {
+	//	Count            int64    `json:"count"`
+	//	SurveyResponseID int64    `json:"survey_response_id"`
+	//	Answer           []string `json:"answer"`
+	//}
+	//
+	//s.db.SurveyResponseAnswers.Query().Where(
+	//	surveyresponseanswers2.SurveyQuestionID(id),
+	//	surveyresponseanswers2.Delete(0),
+	//).
+	//	Modify(func(s *sql.Selector) {
+	//		s.Select(
+	//			sql.As(sql.Count("*"), "count"),
+	//			surveyresponseanswers2.FieldAnswer,
+	//			surveyresponseanswers2.FieldSurveyQuestionID,
+	//		).
+	//			GroupBy(
+	//
+	//				surveyresponseanswers2.FieldSurveyQuestionID,
+	//				surveyresponseanswers2.FieldAnswer,
+	//			)
+	//	}).
+	//	Scan(context.Background(), &scAll)
+	//s.db.SurveyResponseAnswers.Query().Where(
+	//	surveyresponseanswers2.SurveyQuestionID(id),
+	//	surveyresponseanswers2.Delete(0),
+	//).Count(s.ctx)
 	return nil, err
 }

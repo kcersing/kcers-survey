@@ -36,9 +36,17 @@ service SurveyService {
 }
 
 struct StatisticsBasic{
+    1:optional i64 questionId=0 (api.raw = "questionId")
+    2:optional i64 count=0 (api.raw = "count")
+    3:optional list<Basic> data=0 (api.raw = "data")
+}
+struct Basic{
   1:optional string type="" (api.raw = "type")
   2:optional i64 value=0 (api.raw = "value")
 }
+
+
+
 
 struct GetNextReq{
   1:optional string sn="" (api.raw = "sn")
