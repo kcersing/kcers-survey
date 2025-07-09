@@ -1,6 +1,8 @@
 package survey
 
 import (
+	"context"
+	"entgo.io/ent/dialect/sql"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"kcers-survey/biz/dal/db/mysql/ent"
 	area2 "kcers-survey/biz/dal/db/mysql/ent/area"
@@ -332,7 +334,7 @@ func (s Survey) entToResponse(v *ent.SurveyResponse) *service.Response {
 
 	}
 	if v.City != "" {
-		id, err := strconv.ParseInt(v.Area, 10, 64)
+		id, err := strconv.ParseInt(v.City, 10, 64)
 		if err == nil {
 			first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
 			if err == nil {
@@ -341,7 +343,7 @@ func (s Survey) entToResponse(v *ent.SurveyResponse) *service.Response {
 		}
 	}
 	if v.District != "" {
-		id, err := strconv.ParseInt(v.Area, 10, 64)
+		id, err := strconv.ParseInt(v.District, 10, 64)
 		if err == nil {
 			first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
 			if err == nil {
@@ -352,7 +354,7 @@ func (s Survey) entToResponse(v *ent.SurveyResponse) *service.Response {
 
 	}
 	if v.Village != "" {
-		id, err := strconv.ParseInt(v.Area, 10, 64)
+		id, err := strconv.ParseInt(v.Village, 10, 64)
 		if err == nil {
 			first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
 			if err == nil {
@@ -397,4 +399,29 @@ func (s Survey) DeleteResponse(id int64) (err error) {
 		return err
 	}
 	return nil
+}
+
+func (s Survey) GetQuestionStatisticsBasic(id int64) (resp []*service.StatisticsBasic, err error) {
+	var scAll []struct {
+		Count            int64 `json:"count"`
+		SurveyResponseID int64 `json:"survey_response_id"`
+	}
+	s.db.SurveyResponseAnswers.Query().Where(
+		surveyresponseanswers2.SurveyQuestionID(id),
+
+		//	`answer_text`
+		//  `answer`
+
+	).
+		Modify(func(s *sql.Selector) {
+			s.Select(
+				sql.As(sql.Count("*"), "count"),
+				surveyresponseanswers2.FieldAnswer,
+			).
+				GroupBy(surveyresponseanswers2.FieldAnswer)
+
+		}).
+		Scan(context.Background(), &scAll)
+
+	return nil, err
 }

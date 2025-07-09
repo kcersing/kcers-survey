@@ -123,3 +123,8 @@ func _getresponseanswersMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _getquestionstatisticsbasicMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

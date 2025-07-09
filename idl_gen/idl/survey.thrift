@@ -29,14 +29,17 @@ service SurveyService {
 	base.NilResponse ListResponse(1: ResponseListReq req) (api.post = "/service/survey/response/list")
 	base.NilResponse DeleteResponse(1: base.IDReq req)  (api.post = "/service/survey/response/delete")
 
-
 	base.NilResponse GetNext(1: GetNextReq req)  (api.post = "/service/survey/response/getNext")
 
-
-
-
+    base.NilResponse GetQuestionStatisticsBasic(1: base.IDReq req)  (api.post = "/service/survey/question/basic")
 
 }
+
+struct StatisticsBasic{
+  1:optional string type="" (api.raw = "type")
+  2:optional i64 value=0 (api.raw = "value")
+}
+
 struct GetNextReq{
   1:optional string sn="" (api.raw = "sn")
 }

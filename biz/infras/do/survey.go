@@ -29,6 +29,8 @@ type Survey interface {
 	DeleteResponse(id int64) (err error)
 
 	GetNext(req *service.GetNextReq) (number int64, err error)
+
+	GetQuestionStatisticsBasic(id int64) (resp []*service.StatisticsBasic, err error)
 }
 
 //{

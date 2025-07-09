@@ -371,3 +371,19 @@ func GetResponseAnswers(ctx context.Context, c *app.RequestContext) {
 	utils.SendResponse(c, errno.Success, list, 0, "")
 	return
 }
+
+// GetQuestionStatisticsBasic .
+// @router /service/survey/question/basic [POST]
+func GetQuestionStatisticsBasic(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req base.IDReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(base.NilResponse)
+
+	c.JSON(consts.StatusOK, resp)
+}
