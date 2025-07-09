@@ -4,41 +4,17 @@ import React from 'react';
 export const DemoCustomColor = () => {
   const config = {
     data: [
-      {
-        type: '家具家电',
-        sales: 38,
-      },
-      {
-        type: '粮油副食',
-        sales: 52,
-      },
-      {
-        type: '生鲜水果',
-        sales: 61,
-      },
-      {
-        type: '美容洗护',
-        sales: 145,
-      },
-      {
-        type: '母婴用品',
-        sales: 48,
-      },
-      {
-        type: '进口食品',
-        sales: 38,
-      },
-      {
-        type: '食品饮料',
-        sales: 8,
-      },
-      {
-        type: '家庭清洁',
-        sales: 28,
-      },
+
+      { type: '分类一', value: 27 },
+      { type: '分类二', value: 25 },
+      { type: '分类三', value: 18 },
+      { type: '分类四', value: 15 },
+      { type: '分类五', value: 10 },
+      { type: '其他', value: 5 },
+
     ],
     xField: 'type',
-    yField: 'sales',
+    yField: 'value',
     colorField: 'type',
     scale: {
       color: {

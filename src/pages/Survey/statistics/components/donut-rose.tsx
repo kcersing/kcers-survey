@@ -5,22 +5,18 @@ import React from 'react';
 export const DemoRose = () => {
   const config = {
     data: [
-      { year: '2001', population: 41.8 },
-      { year: '2002', population: 38 },
-      { year: '2003', population: 33.7 },
-      { year: '2004', population: 30.7 },
-      { year: '2005', population: 25.8 },
-      { year: '2006', population: 31.7 },
-      { year: '2007', population: 33 },
-      { year: '2008', population: 46 },
-      { year: '2009', population: 38.3 },
-      { year: '2010', population: 28 },
-      { year: '2011', population: 42.5 },
-      { year: '2012', population: 30.3 },
+
+      { type: '分类一', value: 27 },
+      { type: '分类二', value: 25 },
+      { type: '分类三', value: 18 },
+      { type: '分类四', value: 15 },
+      { type: '分类五', value: 10 },
+      { type: '其他', value: 5 },
+
     ],
-    xField: 'year',
-    yField: 'population',
-    colorField: 'year',
+    xField: 'type',
+    yField: 'value',
+    colorField: 'type',
     innerRadius: 0.2,
     state: {
       active: {
@@ -52,7 +48,7 @@ export const DemoRose = () => {
       stroke: '#fff',
     },
     label: {
-      text: 'year',
+      text: 'type',
       fontSize: 16,
       fontWeight: 800,
       position: 'inside',

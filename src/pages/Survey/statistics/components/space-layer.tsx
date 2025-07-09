@@ -7,12 +7,18 @@ export const Demobase = () => {
     type: 'spaceLayer',
     data: {
       type: 'fetch',
-      value: 'https://render.alipay.com/p/yuyan/180020010001215413/antd-charts/base-space-layer.json',
+      value: [
+        { type: '分类一', value: 27 },
+        { type: '分类二', value: 25 },
+        { type: '分类三', value: 18 },
+        { type: '分类四', value: 15 },
+        { type: '分类五', value: 10 },
+        { type: '其他', value: 5 },],
     },
     children: [
       {
         type: 'interval',
-        encode: { x: 'letter', y: 'frequency', color: 'letter' },
+        encode: { x: 'type', y: 'value', color: 'type' },
         transform: [{ type: 'sortX', reverse: true, by: 'y' }],
         scale: { color: { palette: 'cool', offset: (t) => t * 0.8 + 0.1 } },
       },
@@ -22,7 +28,7 @@ export const Demobase = () => {
         y: 50,
         width: 300,
         height: 300,
-        encode: { y: 'frequency', color: 'letter' },
+        encode: { y: 'value', color: 'type' },
         transform: [{ type: 'stackY' }],
         scale: { color: { palette: 'cool', offset: (t) => t * 0.8 + 0.1 } },
         coordinate: { type: 'theta' },
