@@ -418,12 +418,13 @@ func (s Survey) GetQuestionStatisticsBasic(id int64) (resp *service.StatisticsBa
 			return nil, err
 		}
 		for _, v := range scAll {
+			if len(v.Answer) > 0 {
+				bas = append(bas, &service.Basic{
+					Type:  v.Answer[0],
+					Value: v.Count,
+				})
+			}
 
-			bas = append(bas, &service.Basic{
-				Type:  v.Answer[0],
-				Value: v.Count,
-			},
-			)
 		}
 		resp.Count = int64(count)
 	}
@@ -431,15 +432,61 @@ func (s Survey) GetQuestionStatisticsBasic(id int64) (resp *service.StatisticsBa
 	return nil, err
 }
 
-type ScAll []struct {
+type ScAll struct {
 	Count            int64    `json:"count"`
 	SurveyResponseID int64    `json:"survey_response_id"`
 	Answer           []string `json:"answer"`
 }
 
-func (s Survey) answerCount(id int64) (scAll ScAll, count int, err error) {
+func (s Survey) answerCount1(id int64) (scAll []*ScAll, count int, err error) {
+	all, err := s.db.SurveyResponseAnswers.Query().Where(
+		surveyresponseanswers2.SurveyQuestionID(id),
+		surveyresponseanswers2.Delete(0),
+	).All(s.ctx)
+	if err != nil {
+		return nil, 0, err
+	}
+	//auestion, err := s.db.SurveyQuestion.Query().Where(surveyquestion2.IDEQ(id)).First(s.ctx)
+	//if err != nil {
+	//	return nil, 0, err
+	//}
+	//for _, v := range all {
+	//	if len(v.Answer) > 0 {
+	//		for _, an := range v.Answer {
+	//			//for _, o := range auestion.Options {
+	//			//	if an == o.Content {
+	//			//
+	//			//	}
+	//			//}
+	//
+	//		}
+	//	}
+	//}
 
-	err := s.db.SurveyResponseAnswers.Query().Where(
+	var a []map[string]string
+	for _, v := range all {
+		if len(v.Answer) > 0 {
+			for _, an := range v.Answer {
+
+				a = append(a, map[string]string{
+					an: an,
+				})
+
+				//scAll = append(scAll, &ScAll{
+				//	Count:            1,
+				//	SurveyResponseID: id,
+				//	Answer:           []str                                     ing{an},
+				//})
+
+			}
+		}
+	}
+	return
+}
+
+func (s Survey) answerCount(id int64) (scAll []*ScAll, count int, err error) {
+
+	err = s.db.SurveyResponseAnswers.Query().Where(
 		surveyresponseanswers2.SurveyQuestionID(id),
 		surveyresponseanswers2.Delete(0),
 	).
@@ -466,5 +513,6 @@ func (s Survey) answerCount(id int64) (scAll ScAll, count int, err error) {
 	if err != nil {
 		return nil, 0, err
 	}
+
 	return scAll, count, nil
 }
