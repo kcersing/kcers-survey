@@ -11,6 +11,7 @@ import { DemoMemo } from '@/pages/survey/statistics/components/memo';
 import { Demobase } from '@/pages/survey/statistics/components/space-layer';
 import { DemoPie } from '@/pages/survey/statistics/components/spider-label';
 import { DemoDendrogram } from '@/pages/survey/statistics/components/vertical-tidy-tree';
+import {Maps} from "@/pages/survey/statistics/components/map";
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -152,6 +153,7 @@ export default () => {
           </Descriptions>
 
 
+          <Maps />
           <DemoCustomColor />
           <DemoRose />
           <DemoMemo />
