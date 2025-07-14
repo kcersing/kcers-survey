@@ -4,7 +4,8 @@ import { createRoot } from 'react-dom';
 
 const { treeToGraphData } = G6;
 
-export const DemoDendrogram = () => {
+export const DemoDendrogram = (props: { data: any }) => {
+  const { data } = props;
   const [data, setData] = useState(undefined);
 
   useEffect(() => {

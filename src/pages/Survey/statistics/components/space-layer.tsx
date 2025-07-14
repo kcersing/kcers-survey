@@ -2,18 +2,13 @@ import { Base } from '@ant-design/plots';
 import React from 'react';
 
 
-export const Demobase = () => {
+export const Demobase = (props: { data: any }) => {
+  const { data } = props;
   const config = {
     type: 'spaceLayer',
     data: {
       type: 'fetch',
-      value: [
-        { type: '分类一', value: 27 },
-        { type: '分类二', value: 25 },
-        { type: '分类三', value: 18 },
-        { type: '分类四', value: 15 },
-        { type: '分类五', value: 10 },
-        { type: '其他', value: 5 },],
+      value: data,
     },
     children: [
       {

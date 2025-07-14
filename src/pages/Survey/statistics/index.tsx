@@ -1,60 +1,41 @@
-import { MailOutlined } from '@ant-design/icons';
+
 import type { ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { Card, Descriptions, Menu } from 'antd';
+import { Card, Descriptions, Menu, Modal,Button } from 'antd';
 import { useState,useEffect  } from 'react';
-import {getSurvey, listQuestion, treeQuestion} from '@/services/ant-design-pro/survey';
+import {getSurvey, treeQuestion,getResponseAnswers,heatmap,questionBasicData} from '@/services/ant-design-pro/survey';
 import {useParams} from "react-router";
 import { DemoCustomColor } from '@/pages/survey/statistics/components/custom-color';
 import { DemoRose } from '@/pages/survey/statistics/components/donut-rose';
-import { DemoMemo } from '@/pages/survey/statistics/components/memo';
 import { Demobase } from '@/pages/survey/statistics/components/space-layer';
 import { DemoPie } from '@/pages/survey/statistics/components/spider-label';
-import { DemoDendrogram } from '@/pages/survey/statistics/components/vertical-tidy-tree';
-import {Maps} from "@/pages/survey/statistics/components/map";
+import {HeatMap} from "@/pages/survey/statistics/components/heatmap";
 
-const waitTime = (time: number = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
-
-export type TableListItem = {
-  key: number;
-  name: string;
-  createdAt: number;
-  progress: number;
-};
-const tableListDataSource: TableListItem[] = [];
-
-for (let i = 0; i < 2; i += 1) {
-  tableListDataSource.push({
-    key: i,
-    name: `TradeCode ${i}`,
-    createdAt: Date.now() - Math.floor(Math.random() * 2000),
-    progress: Math.ceil(Math.random() * 100) + 1,
-  });
-}
-
-const columns: ProColumns<TableListItem>[] = [
+const columns: ProColumns[] = [
   {
-    title: '序号',
-    dataIndex: 'index',
-    valueType: 'index',
+    title: '问题',
+    dataIndex: 'content',
     width: 80,
   },
   {
-    title: '更新时间',
+    title: '回答',
+    dataIndex: 'answer',
+    width: 80,
+  },
+  {
+    title: '补充',
+    dataIndex: 'answerText',
+    width: 80,
+  },
+
+  // 回答内容:{item.answer.map(v=>{ return (<a>{v}；</a>)} )}
+
+
+  {
+    title: '创建时间',
     key: 'since2',
     dataIndex: 'createdAt',
     valueType: 'date',
-  },
-  {
-    title: '执行进度',
-    dataIndex: 'progress',
-    valueType: 'progress',
   },
 ];
 
@@ -101,11 +82,20 @@ export default () => {
   };
 
 
+  const [openheatmap, setOpenheatmap] = useState<boolean>(false);
+  const showLoading = () => {
+
+
+    setOpenheatmap(true);
+
+  };
+
+
+
   return (
+    <>
     <Card>
-
-
-    <ProTable<TableListItem>
+    <ProTable<API.ResponseAnswers>
       columns={columns}
       rowKey="key"
       pagination={{
@@ -152,17 +142,9 @@ export default () => {
             </Descriptions.Item>
           </Descriptions>
 
-
-          <Maps />
-          <DemoCustomColor />
-          <DemoRose />
-          <DemoMemo />
-          <Demobase />
-          <DemoPie />
-          <DemoDendrogram />
-
-
-
+          <a type="primary" onClick={showLoading}>
+            地图
+          </a>
 
         </Card>
       )}
@@ -170,15 +152,47 @@ export default () => {
         key,
       }}
       request={async () => {
-        await waitTime(200);
+
+        console.log(key)
+
+        const  ans = await getResponseAnswers({id:parseInt(key)} );
         return {
           success: true,
-          data: tableListDataSource,
+          data: ans.data,
         };
       }}
       dateFormatter="string"
       headerTitle="自定义表格主体"
     />
+
     </Card>
+
+  <Modal
+    title={<p>地图</p>}
+    centered
+    width={{
+      xs: '90%',
+      sm: '80%',
+      md: '70%',
+      lg: '70%',
+      xl: '70%',
+      xxl: '80%',
+    }}
+    footer={<></>}
+    open={openheatmap}
+    onCancel={() => setOpenheatmap(false)}
+  >
+    <HeatMap data={"1"}/>
+  </Modal>
+
+  {/*<DemoCustomColor data={} />*/}
+  {/*<DemoRose data={}/>*/}
+  {/*<Demobase data={}/>*/}
+  {/*<DemoPie data={}/>*/}
+
+ </>
+
+
+
   );
 };

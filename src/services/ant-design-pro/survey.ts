@@ -207,7 +207,6 @@ export async function getResponseAnswers(options?: { [key: string]: any }) {
 
 
 
-
 export async function listResponse(
   params: {
     // query
@@ -230,3 +229,25 @@ export async function listResponse(
     ...(options || {}),
   });
 }
+
+
+export async function heatmap(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/service/survey/response/heatmap', {
+    method: 'POST',
+    data: {
+      method: 'post',
+      ...(options || {}),
+    },
+  });
+}
+
+export async function questionBasicData(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/service/survey/question/basic', {
+    method: 'POST',
+    data: {
+      method: 'post',
+      ...(options || {}),
+    },
+  });
+}
+

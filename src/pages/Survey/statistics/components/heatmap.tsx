@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
-export const Maps = () => {
+export const HeatMap = (props: { data: any }) => {
+  const { data } = props;
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -13,7 +14,7 @@ export const Maps = () => {
           // 使用 const 替代 var
           const map = new T.Map(mapRef.current);
           map.centerAndZoom(new T.LngLat(116.404, 39.915), 10);
-          
+
 
           // 检查 T.HeatmapOverlay 是否可用
           if (typeof T.HeatmapOverlay === 'function') {
@@ -25,11 +26,6 @@ export const Maps = () => {
             // 修正方法名拼写错误
             map.addOverlay(heatmap);
             // 使用 const 替代 var
-            const data = [
-              { lng: 116.404, lat: 39.915, count: 50 },
-              { lng: 116.418, lat: 39.921, count: 40 },
-              // 添加更多数据...
-            ];
             heatmap.setDataSet({ data, max: 100 });
             heatmap.show();
           } else {
