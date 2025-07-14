@@ -12,6 +12,8 @@ type Survey interface {
 	ListSurvey(req *service.SurveyListReq) (resp []*service.Survey, total int, err error)
 	DeleteSurvey(id int64) (err error)
 
+	GetSurveyResponseHeatmap(id int64) (req []*service.Heatmap, err error)
+
 	TreeQuestion(req *service.QuestionListReq) (resp []*base.Tree, err error)
 
 	CreateQuestion(req *service.CreateOrUpdateQuestionReq) (err error)

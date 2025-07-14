@@ -128,3 +128,18 @@ func _getquestionstatisticsbasicMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _getquestionmapMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getsurveyheatmapMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getsurveyresponseheatmapMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

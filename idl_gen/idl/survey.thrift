@@ -33,6 +33,14 @@ service SurveyService {
 
     base.NilResponse GetQuestionStatisticsBasic(1: base.IDReq req)  (api.post = "/service/survey/question/basic")
 
+    base.NilResponse GetSurveyResponseHeatmap(1: base.IDReq req)  (api.post = "/service/survey/response/heatmap")
+
+}
+
+struct Heatmap{
+    1:optional string lng="" (api.raw = "lng")
+    2:optional string lat="" (api.raw = "lat")
+    3:optional i64 count=0 (api.raw = "count")
 }
 
 struct StatisticsBasic{

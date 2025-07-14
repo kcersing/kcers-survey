@@ -390,3 +390,22 @@ func GetQuestionStatisticsBasic(ctx context.Context, c *app.RequestContext) {
 	utils.SendResponse(c, errno.Success, list, 0, "")
 	return
 }
+
+// GetSurveyResponseHeatmap .
+// @router /service/survey/response/heatmap [POST]
+func GetSurveyResponseHeatmap(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req base.IDReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	list, err := surveyService.NewSurvey(ctx, c).GetSurveyResponseHeatmap(req.ID)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, list, 0, "")
+	return
+}
