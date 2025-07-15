@@ -33,4 +33,6 @@ type Survey interface {
 	GetNext(req *service.GetNextReq) (number int64, err error)
 
 	GetQuestionStatisticsBasic(id int64) (resp *service.StatisticsBasic, err error)
+
+	GetQuestionAnswersList(req *service.GetQuestionAnswersListReq) (resp []*service.ResponseAnswers, total int, err error)
 }

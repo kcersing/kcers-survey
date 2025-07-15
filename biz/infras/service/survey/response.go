@@ -238,6 +238,38 @@ func (s Survey) GetResponseAnswers(req *service.ResponseAnswersReq) (resp []*ser
 	return
 }
 
+func (s Survey) GetQuestionAnswersList(req *service.GetQuestionAnswersListReq) (resp []*service.ResponseAnswers, total int, err error) {
+	var predicates []predicate.SurveyResponseAnswers
+
+	if req.ID > 0 {
+		predicates = append(predicates, surveyresponseanswers2.SurveyQuestionID(req.ID))
+	}
+	predicates = append(predicates, surveyresponseanswers2.Delete(0))
+	all, err := s.db.SurveyResponseAnswers.
+		Query().
+		Where(predicates...).
+		Offset(int(req.Page-1) * int(req.PageSize)).
+		Limit(int(req.PageSize)).
+		All(s.ctx)
+	if err != nil {
+		return nil, 0, err
+	}
+	total, err = s.db.SurveyResponseAnswers.Query().Where(predicates...).Count(s.ctx)
+	questions, err := s.db.SurveyQuestion.Query().
+		Where(
+			surveyquestion2.IDEQ(req.ID),
+			surveyquestion2.Delete(0)).
+		All(s.ctx)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	for _, v := range all {
+		resp = append(resp, s.entToResponseAnswers(v, questions))
+	}
+
+	return resp, total, nil
+}
 func (s Survey) ListResponse(req *service.ResponseListReq) (resp []*service.Response, total int, err error) {
 	var predicates []predicate.SurveyResponse
 

@@ -24,7 +24,7 @@ service SurveyService {
 	base.NilResponse UpdateResponse(1: CreateOrUpdateResponseReq req) (api.post = "/service/survey/response/update")
 	base.NilResponse GetResponse(1: ResponseAnswersReq req)  (api.post = "/service/survey/response/info")
     base.NilResponse GetResponseAnswers(1: ResponseAnswersReq req)  (api.post = "/service/survey/response/answers")
-
+    base.NilResponse GetQuestionAnswersList(1: GetQuestionAnswersListReq req)  (api.post = "/service/survey/question/answers")
 
 	base.NilResponse ListResponse(1: ResponseListReq req) (api.post = "/service/survey/response/list")
 	base.NilResponse DeleteResponse(1: base.IDReq req)  (api.post = "/service/survey/response/delete")
@@ -90,12 +90,19 @@ struct SurveyListReq {
     2: optional i64 pageSize=100 (api.raw = "pageSize")
     3: optional string title="" (api.raw = "title")
 }
+
+
+struct GetQuestionAnswersListReq {
+    1: optional i64 page=1 (api.raw = "page")
+    2: optional i64 pageSize=100 (api.raw = "pageSize")
+    3: optional i64 id=0 (api.raw = "id")
+}
+
 struct QuestionListReq {
     1: optional i64 page=1 (api.raw = "page")
     2: optional i64 pageSize=100 (api.raw = "pageSize")
     3: optional i64 surveyId=0 (api.raw = "surveyId")
     4: optional string content="" (api.raw = "content")
-
 }
 
 struct CreateOrUpdateQuestionReq {

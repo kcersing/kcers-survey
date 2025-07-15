@@ -143,3 +143,8 @@ func _getsurveyresponseheatmapMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _getquestionanswerslistMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
