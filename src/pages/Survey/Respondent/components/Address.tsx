@@ -148,12 +148,6 @@ const Address = (props) => {
               }}
               name="district"
               width="sm"
-              rules={[
-                {
-                  required: true,
-                  message: '请输入您的所在县（区、旗）',
-                },
-              ]}
               disabled={!city}
               // className={styles.item}
               request={async () => {
@@ -186,12 +180,6 @@ const Address = (props) => {
               }}
               name="village"
               width="sm"
-              rules={[
-                {
-                  required: true,
-                  message: '请输入您的所在乡（镇）',
-                },
-              ]}
               disabled={!district}
               // className={styles.item}
               request={async () => {
@@ -212,7 +200,7 @@ const Address = (props) => {
           );
         }}
       </ProFormDependency>
-      <Form.Item label={'村'}  required >
+      <Form.Item label={'村'} >
         <TextArea
           style={{ width: '60%' }}
           name="address"
