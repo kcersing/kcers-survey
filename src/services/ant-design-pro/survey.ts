@@ -252,7 +252,7 @@ export async function getQuestionAnswersList(
   });
 }
 
-export async function heatmap(options?: { [key: string]: any }) {
+export async function getHeatmap(options?: { [key: string]: any }) {
   return request<Record<string, any>>('/service/survey/response/heatmap', {
     method: 'POST',
     data: {

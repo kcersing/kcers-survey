@@ -3,7 +3,7 @@ import type { ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Card, Descriptions, Menu, Modal,Button } from 'antd';
 import React, { useState,useEffect  } from 'react';
-import {getSurvey, treeQuestion,getQuestionAnswersList,heatmap,questionBasicData} from '@/services/ant-design-pro/survey';
+import {getSurvey, treeQuestion,getQuestionAnswersList,getHeatmap,questionBasicData} from '@/services/ant-design-pro/survey';
 import {useParams} from "react-router";
 import { DemoCustomColor } from '@/pages/survey/statistics/components/custom-color';
 import { DemoRose } from '@/pages/survey/statistics/components/donut-rose';
@@ -46,8 +46,6 @@ export default () => {
     getSurveyInfo()
   }, []);
 
-  console.log(survey)
-
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
@@ -75,11 +73,16 @@ export default () => {
 
 
   const [openheatmap, setOpenheatmap] = useState<boolean>(false);
+  const [openheatmapdata, setOpenheatmapdata] = useState<boolean>(false);
   const showLoading = () => {
 
+    const getOpenheatmap = async () => {
+      const openheatmapData = await getHeatmap({id: surveyId})
+      setOpenheatmapdata(openheatmapData.data);
+    }
+    getOpenheatmap()
 
     setOpenheatmap(true);
-
   };
 
 
@@ -174,7 +177,7 @@ export default () => {
     open={openheatmap}
     onCancel={() => setOpenheatmap(false)}
   >
-    <HeatMap data={"1"}/>
+    <HeatMap data={openheatmapdata}/>
   </Modal>
 
   {/*<DemoCustomColor data={} />*/}
