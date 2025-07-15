@@ -229,7 +229,28 @@ export async function listResponse(
     ...(options || {}),
   });
 }
+export async function getQuestionAnswersList(
+  params: {
+    // query
+    /** 当前的页码 */
+    current?: number;
+    surveyId?: number;
+    /** 页面的容量 */
+    pageSize?: number;
+    keywords?: string;
+  },
+  options?: { [key: string]: any },
+) {
 
+  return request<Record<string, any>>("/service/survey/question/answers", {
+    method: 'POST',
+    params: {
+      page: params.current,
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
 
 export async function heatmap(options?: { [key: string]: any }) {
   return request<Record<string, any>>('/service/survey/response/heatmap', {

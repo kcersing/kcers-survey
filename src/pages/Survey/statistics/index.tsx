@@ -2,8 +2,8 @@
 import type { ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Card, Descriptions, Menu, Modal,Button } from 'antd';
-import { useState,useEffect  } from 'react';
-import {getSurvey, treeQuestion,getResponseAnswers,heatmap,questionBasicData} from '@/services/ant-design-pro/survey';
+import React, { useState,useEffect  } from 'react';
+import {getSurvey, treeQuestion,getQuestionAnswersList,heatmap,questionBasicData} from '@/services/ant-design-pro/survey';
 import {useParams} from "react-router";
 import { DemoCustomColor } from '@/pages/survey/statistics/components/custom-color';
 import { DemoRose } from '@/pages/survey/statistics/components/donut-rose';
@@ -12,20 +12,12 @@ import { DemoPie } from '@/pages/survey/statistics/components/spider-label';
 import {HeatMap} from "@/pages/survey/statistics/components/heatmap";
 
 const columns: ProColumns[] = [
+
   {
-    title: '问题',
-    dataIndex: 'content',
-    width: 80,
-  },
-  {
+
     title: '回答',
     dataIndex: 'answer',
-    width: 80,
-  },
-  {
-    title: '补充',
-    dataIndex: 'answerText',
-    width: 80,
+    render: (_, record) =>(record.answer?record.answer.map(v=>( <>{v}  {record.answerText?("："+record.answerText):""};</> ) ):""),
   },
 
   // 回答内容:{item.answer.map(v=>{ return (<a>{v}；</a>)} )}
@@ -155,7 +147,7 @@ export default () => {
 
         console.log(key)
 
-        const  ans = await getResponseAnswers({id:parseInt(key)} );
+        const  ans = await getQuestionAnswersList({id:parseInt(key)} );
         return {
           success: true,
           data: ans.data,
