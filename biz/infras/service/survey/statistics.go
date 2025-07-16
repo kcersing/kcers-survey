@@ -135,6 +135,8 @@ func (s Survey) GetSurveyResponseHeatmap(id int64) (resp []*service.Heatmap, err
 
 	err = s.db.SurveyResponse.Query().Where(
 		surveyresponse2.SurveyID(id),
+		surveyresponse2.RespondentNEQ(""),
+		surveyresponse2.ResearcherNEQ(""),
 		surveyresponse2.LatitudeNEQ(""),
 		surveyresponse2.Delete(0),
 	).
