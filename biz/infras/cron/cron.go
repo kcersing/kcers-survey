@@ -24,11 +24,11 @@ func run() {
 	for {
 		select {
 		case <-tickerSecond_5.C:
-
+			setResponseAnswersCount()
 		case <-tickerSecond_30.C:
 
 		case <-tickerMinute_30.C:
-			setResponseAnswersCount()
+
 		case <-tickerHour_6.C:
 
 		}
