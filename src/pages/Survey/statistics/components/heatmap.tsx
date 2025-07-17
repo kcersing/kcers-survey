@@ -1,10 +1,15 @@
 import React, { useEffect, useRef } from 'react';
-
+function isSupportCanvas() {
+  var elem = document.createElement('canvas');
+  return !!(elem.getContext && elem.getContext('2d'));
+}
 export const HeatMap = (props: { data: any }) => {
   const { data } = props;
   const mapRef = useRef<HTMLDivElement>(null);
 
-
+  if (!isSupportCanvas()) {
+    alert('热力图目前只支持有canvas支持的浏览器,您所使用的浏览器不能使用热力图功能~');
+  }
   const loadHeat = () => new Promise((resolve) => {
     const script = document.createElement('script');
     script.type = 'text/javascript';
@@ -26,41 +31,34 @@ export const HeatMap = (props: { data: any }) => {
 
 
   useEffect(() => {
-
-console.log(1)
-
     loadHeat().then(() => {
-      console.log(2)
       loadHeatmap().then(() => {
-        console.log(3)
+
         if (mapRef.current) {
           try {
             const T = window.T
             const map = new T.Map(mapRef.current);
-            map.centerAndZoom(new T.LngLat(116.404, 39.915), 10);
+            map.centerAndZoom(new T.LngLat(116.404, 39.915), 4);
 
               const heatmap = new T.HeatmapOverlay({
-                radius: 40,
-                max: 100
+                radius: 30
               });
 
               map.addOverLay(heatmap);
-              heatmap.setDataSet({ data, max: 100 });
+              heatmap.setDataSet({ data, max: 500 });
               heatmap.show();
+
+              const heatmapCanvas = mapRef.current?.querySelector('canvas');
+              if (heatmapCanvas) {
+                heatmapCanvas.style.pointerEvents = 'none';
+              }
 
           } catch (error) {
             console.error('地图初始化出错:', error);
           }
         }
-
-
       });
-
-
     });
-
-
-
   }, [data]);
 
   return (
