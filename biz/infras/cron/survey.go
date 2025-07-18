@@ -4,8 +4,13 @@ import (
 	"context"
 	"entgo.io/ent/dialect/sql"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/cloudwego/hertz/pkg/common/json"
 	db "kcers-survey/biz/dal/db/mysql"
+	"kcers-survey/biz/dal/db/mysql/ent"
+	"kcers-survey/biz/dal/db/mysql/ent/logs"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
+	surveyService "kcers-survey/biz/infras/service/survey"
+	"kcers-survey/idl_gen/model/service"
 )
 
 func setResponseAnswersCount() {
@@ -51,42 +56,43 @@ type Req struct {
 	Longitude  string   `json:"longitude,omitempty"`
 }
 
-//func xiufu2() {
-//	hlog.Info("==================================")
-//	all, err := db.DB.Logs.Query().
-//		Where(
-//			//func(s *sql.Selector) {
-//			//	s.Where(sql.Like(logs.FieldReqContent, "%"+"kdd9srslw5"+"%"))
-//			//},
-//			logs.API("/service/survey/response/create")).
-//		Order(ent.Asc(logs.FieldID)).
-//		All(context.Background())
-//	if err != nil {
-//		return
-//	}
-//	for _, v := range all {
-//		hlog.Info(v)
-//		var rwq Req
-//		err := json.Unmarshal([]byte(v.ReqContent), &rwq)
-//		if err != nil {
-//			continue
-//		}
-//
-//		err = surveyService.NewSurvey(context.Background(), nil).CreateResponse(&service.CreateOrUpdateResponseReq{
-//			SurveyId:   rwq.SurveyId,
-//			Type:       rwq.Type,
-//			QuestionId: rwq.QuestionId,
-//			Value:      rwq.Value,
-//			Sn:         rwq.Sn,
-//			Latitude:   rwq.Latitude,
-//			Longitude:  rwq.Longitude,
-//		})
-//		if err != nil {
-//			return
-//		}
-//	}
-//	hlog.Info("完成")
-//}
+func xiufu2() {
+	return
+	hlog.Info("==================================")
+	all, err := db.DB.Logs.Query().
+		Where(
+			func(s *sql.Selector) {
+				s.Where(sql.Like(logs.FieldReqContent, "%"+"dvlsc3ctxti"+"%"))
+			},
+			logs.API("/service/survey/response/create")).
+		Order(ent.Asc(logs.FieldID)).
+		All(context.Background())
+	if err != nil {
+		return
+	}
+	for i, v := range all {
+		hlog.Info(i)
+		var rwq Req
+		err := json.Unmarshal([]byte(v.ReqContent), &rwq)
+		if err != nil {
+			continue
+		}
+
+		err = surveyService.NewSurvey(context.Background(), nil).CreateResponse(&service.CreateOrUpdateResponseReq{
+			SurveyId:   rwq.SurveyId,
+			Type:       rwq.Type,
+			QuestionId: rwq.QuestionId,
+			Value:      rwq.Value,
+			Sn:         rwq.Sn,
+			Latitude:   rwq.Latitude,
+			Longitude:  rwq.Longitude,
+		})
+		if err != nil {
+			return
+		}
+	}
+	hlog.Info("完成")
+}
 
 //func xiufu() {
 //

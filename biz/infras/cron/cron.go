@@ -19,6 +19,8 @@ func run() {
 
 	go func() {
 		//首次进入调用
+
+		xiufu2()
 		setResponseAnswersCount()
 	}()
 	for {
