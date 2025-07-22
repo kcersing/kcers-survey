@@ -2,10 +2,10 @@ import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { Button, Dropdown, Input, Space, Tag } from 'antd';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import request from 'umi-request';
 import { history } from '@@/core/history';
-import { listSurvey ,listResponse} from '@/services/ant-design-pro/survey';
+import { listResponse,listResponseExport} from '@/services/ant-design-pro/survey';
 import { useParams } from '@@/exports';
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
@@ -84,10 +84,11 @@ const columns: ProColumns<API.Response>[] = [
 ];
 
 export default () => {
-
-
   const { id } = useParams();
   const surveyId = id ? parseInt(id) : 1;
+
+  const [paramsData, setParamsData] = useState<[]>([]);
+
   console.log(surveyId)
 
   const actionRef = useRef<ActionType>();
@@ -103,7 +104,7 @@ export default () => {
        }
         console.log(params,sort, filter);
         params.surveyId = surveyId;
-
+        setParamsData(params)
         return  listResponse({...params})
 
       }}
@@ -149,6 +150,12 @@ export default () => {
         <Button
           key="button"
           onClick={() => {
+            listResponseExport({paramsData}).then((res) => {
+              console.log(res);
+              const link = document.createElement('a');
+              link.href = res.data.url;
+              link.click();
+            })
             actionRef.current?.reload();
           }}
           type="primary"
