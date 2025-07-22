@@ -46,6 +46,7 @@ func Register(r *server.Hertz) {
 				_response.POST("/heatmap", append(_getsurveyresponseheatmapMw(), service.GetSurveyResponseHeatmap)...)
 				_response.POST("/info", append(_getresponseMw(), service.GetResponse)...)
 				_response.POST("/list", append(_listresponseMw(), service.ListResponse)...)
+				_response.POST("/list-export", append(_listresponseexportMw(), service.ListResponseExport)...)
 				_response.POST("/update", append(_updateresponseMw(), service.UpdateResponse)...)
 			}
 		}

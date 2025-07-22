@@ -23,10 +23,16 @@ service SurveyService {
 	base.NilResponse CreateResponse(1: CreateOrUpdateResponseReq req) (api.post = "/service/survey/response/create")
 	base.NilResponse UpdateResponse(1: CreateOrUpdateResponseReq req) (api.post = "/service/survey/response/update")
 	base.NilResponse GetResponse(1: ResponseAnswersReq req)  (api.post = "/service/survey/response/info")
+
+
     base.NilResponse GetResponseAnswers(1: ResponseAnswersReq req)  (api.post = "/service/survey/response/answers")
     base.NilResponse GetQuestionAnswersList(1: GetQuestionAnswersListReq req)  (api.post = "/service/survey/question/answers")
 
 	base.NilResponse ListResponse(1: ResponseListReq req) (api.post = "/service/survey/response/list")
+
+	base.NilResponse ListResponseExport(1: ResponseListReq req) (api.post = "/service/survey/response/list-export")
+
+
 	base.NilResponse DeleteResponse(1: base.IDReq req)  (api.post = "/service/survey/response/delete")
 
 	base.NilResponse GetNext(1: GetNextReq req)  (api.post = "/service/survey/response/getNext")

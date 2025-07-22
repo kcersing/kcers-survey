@@ -428,3 +428,24 @@ func GetQuestionAnswersList(ctx context.Context, c *app.RequestContext) {
 	utils.SendResponse(c, errno.Success, list, int64(total), "")
 	return
 }
+
+// ListResponseExport .
+// @router /service/survey/response/list-export [POST]
+func ListResponseExport(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req service.ResponseListReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+
+	export, err := surveyService.NewSurvey(ctx, c).ListResponseExport(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, map[string]string{
+		"url": export,
+	}, 0, "")
+}
