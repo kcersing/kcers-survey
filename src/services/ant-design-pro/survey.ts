@@ -240,7 +240,6 @@ export async function listResponseExport(
   return request<Record<string, any>>("/service/survey/response/list-export", {
     method: 'POST',
     params: {
-      page: params.current,
       ...params,
     },
     ...(options || {}),
