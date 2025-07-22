@@ -29,39 +29,45 @@ export const HeatMap = (props: { data: any }) => {
     document.body.appendChild(script);
   });
 
-
+let mapT = false;
   useEffect(() => {
     loadHeat().then(() => {
       loadHeatmap().then(() => {
-
-        if (mapRef.current) {
-          try {
-            const T = window.T
-            const map = new T.Map(mapRef.current);
-            map.centerAndZoom(new T.LngLat(116.404, 39.915), 4);
-
-              const heatmap = new T.HeatmapOverlay({
-                radius: 30
-              });
-
-              map.addOverLay(heatmap);
-              heatmap.setDataSet({ data, max: 500 });
-              heatmap.show();
-
-              const heatmapCanvas = mapRef.current?.querySelector('canvas');
-              if (heatmapCanvas) {
-                heatmapCanvas.style.pointerEvents = 'none';
-              }
-
-          } catch (error) {
-            console.error('地图初始化出错:', error);
-          }
-        }
+        mapT =true
+        console.log('地图初始化');
       });
     });
-  }, [data]);
+  }, []);
+
+  useEffect(() => {
+    if(mapT){
+    if (mapRef.current) {
+      try {
+        const T = window.T
+        const map = new T.Map(mapRef.current);
+        map.centerAndZoom(new T.LngLat(116.404, 39.915), 4);
+
+        const heatmap = new T.HeatmapOverlay({
+          radius: 30
+        });
+
+        map.addOverLay(heatmap);
+        heatmap.setDataSet({ data, max: 800 });
+        heatmap.show();
+
+        const heatmapCanvas = mapRef.current?.querySelector('canvas');
+        if (heatmapCanvas) {
+          heatmapCanvas.style.pointerEvents = 'none';
+        }
+
+      } catch (error) {
+        console.error('地图初始化出错:', error);
+      }
+    }}
+  }, [data,mapT]);
+
 
   return (
-    <div ref={mapRef} style={{ width: '100%', height: '600px' }}></div>
+    <div ref={mapRef} style={{ width: '100%', height: '900px' }}></div>
   );
 };
