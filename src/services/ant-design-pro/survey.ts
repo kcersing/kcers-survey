@@ -229,6 +229,24 @@ export async function listResponse(
     ...(options || {}),
   });
 }
+export async function listResponseExport(
+  params: {
+    surveyId?: number;
+    keywords?: string;
+  },
+  options?: { [key: string]: any },
+) {
+
+  return request<Record<string, any>>("/service/survey/response/list-export", {
+    method: 'POST',
+    params: {
+      page: params.current,
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
 export async function getQuestionAnswersList(
   params: {
     // query
