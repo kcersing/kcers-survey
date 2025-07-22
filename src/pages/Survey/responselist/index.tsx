@@ -150,7 +150,8 @@ export default () => {
         <Button
           key="button"
           onClick={() => {
-            listResponseExport({paramsData}).then((res) => {
+            paramsData.pageSize=99999
+            listResponseExport({...paramsData}).then((res) => {
               console.log(res);
               const link = document.createElement('a');
               link.href = res.data.url;
