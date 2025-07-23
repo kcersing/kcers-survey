@@ -15,6 +15,7 @@ type SurveyStatistics struct {
 	RespondentCount int64 `thrift:"respondentCount,3,optional" form:"respondentCount" json:"respondentCount" query:"respondentCount"`
 	ResearcherCount int64 `thrift:"researcherCount,4,optional" form:"researcherCount" json:"researcherCount" query:"researcherCount"`
 	VillageCount    int64 `thrift:"villageCount,5,optional" form:"villageCount" json:"villageCount" query:"villageCount"`
+	AnswersAverage  int64 `thrift:"answersAverage,6,optional" form:"answersAverage" json:"answersAverage" query:"answersAverage"`
 }
 
 func NewSurveyStatistics() *SurveyStatistics {
@@ -25,6 +26,7 @@ func NewSurveyStatistics() *SurveyStatistics {
 		RespondentCount: 0,
 		ResearcherCount: 0,
 		VillageCount:    0,
+		AnswersAverage:  0,
 	}
 }
 
@@ -34,6 +36,7 @@ func (p *SurveyStatistics) InitDefault() {
 	p.RespondentCount = 0
 	p.ResearcherCount = 0
 	p.VillageCount = 0
+	p.AnswersAverage = 0
 }
 
 var SurveyStatistics_Count_DEFAULT int64 = 0
@@ -81,12 +84,22 @@ func (p *SurveyStatistics) GetVillageCount() (v int64) {
 	return p.VillageCount
 }
 
+var SurveyStatistics_AnswersAverage_DEFAULT int64 = 0
+
+func (p *SurveyStatistics) GetAnswersAverage() (v int64) {
+	if !p.IsSetAnswersAverage() {
+		return SurveyStatistics_AnswersAverage_DEFAULT
+	}
+	return p.AnswersAverage
+}
+
 var fieldIDToName_SurveyStatistics = map[int16]string{
 	1: "count",
 	2: "answersCount",
 	3: "respondentCount",
 	4: "researcherCount",
 	5: "villageCount",
+	6: "answersAverage",
 }
 
 func (p *SurveyStatistics) IsSetCount() bool {
@@ -107,6 +120,10 @@ func (p *SurveyStatistics) IsSetResearcherCount() bool {
 
 func (p *SurveyStatistics) IsSetVillageCount() bool {
 	return p.VillageCount != SurveyStatistics_VillageCount_DEFAULT
+}
+
+func (p *SurveyStatistics) IsSetAnswersAverage() bool {
+	return p.AnswersAverage != SurveyStatistics_AnswersAverage_DEFAULT
 }
 
 func (p *SurveyStatistics) Read(iprot thrift.TProtocol) (err error) {
@@ -163,6 +180,14 @@ func (p *SurveyStatistics) Read(iprot thrift.TProtocol) (err error) {
 		case 5:
 			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 6:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField6(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -252,6 +277,17 @@ func (p *SurveyStatistics) ReadField5(iprot thrift.TProtocol) error {
 	p.VillageCount = _field
 	return nil
 }
+func (p *SurveyStatistics) ReadField6(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.AnswersAverage = _field
+	return nil
+}
 
 func (p *SurveyStatistics) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -277,6 +313,10 @@ func (p *SurveyStatistics) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField5(oprot); err != nil {
 			fieldId = 5
+			goto WriteFieldError
+		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
 			goto WriteFieldError
 		}
 	}
@@ -390,6 +430,25 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
+func (p *SurveyStatistics) writeField6(oprot thrift.TProtocol) (err error) {
+	if p.IsSetAnswersAverage() {
+		if err = oprot.WriteFieldBegin("answersAverage", thrift.I64, 6); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.AnswersAverage); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
 }
 
 func (p *SurveyStatistics) String() string {

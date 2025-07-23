@@ -4,6 +4,7 @@ import (
 	"context"
 	"entgo.io/ent/dialect/sql"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"kcers-survey/biz/dal/db/mysql/ent/predicate"
 	surveyquestion2 "kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
 	surveyresponse2 "kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
 	surveyresponseanswers2 "kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
@@ -159,58 +160,46 @@ func (s Survey) GetSurveyResponseHeatmap(id int64) (resp []*service.Heatmap, err
 	return resp, nil
 }
 func (s Survey) GetSurveyStatistics(id int64) (resp *service.SurveyStatistics, err error) {
-	count, err := s.db.SurveyResponse.Query().Where(
-		surveyresponse2.SurveyIDEQ(id),
-		surveyresponse2.Delete(0),
-		surveyresponse2.RespondentNEQ(""),
-	).Count(s.ctx)
+	resp = &service.SurveyStatistics{
+		Count:           0,
+		RespondentCount: 0,
+		ResearcherCount: 0,
+		VillageCount:    0,
+		AnswersCount:    0,
+		AnswersAverage:  0,
+	}
+
+	var predicates []predicate.SurveyResponse
+	predicates = append(predicates, surveyresponse2.SurveyIDEQ(id))
+	predicates = append(predicates, surveyresponse2.Delete(0))
+	predicates = append(predicates, surveyresponse2.RespondentNEQ(""))
+	count, err := s.db.SurveyResponse.Query().Where(predicates...).Count(s.ctx)
 	if err != nil {
 		hlog.Error(err)
-		resp.Count = 0
 	}
 	resp.Count = int64(count)
-
-	respondents, err := s.db.SurveyResponse.Query().Where(
-		surveyresponse2.SurveyIDEQ(id),
-		surveyresponse2.Delete(0),
-		surveyresponse2.RespondentNEQ(""),
-	).GroupBy(surveyresponse2.FieldRespondent).Strings(s.ctx)
+	respondents, err := s.db.SurveyResponse.Query().Where(predicates...).GroupBy(surveyresponse2.FieldRespondent).Strings(s.ctx)
 	if err != nil {
 		hlog.Error(err)
-		resp.RespondentCount = 0
 	}
 	resp.RespondentCount = int64(len(respondents))
-	researchers, err := s.db.SurveyResponse.Query().Where(
-		surveyresponse2.SurveyIDEQ(id),
-		surveyresponse2.Delete(0),
-		surveyresponse2.RespondentNEQ(""),
-	).GroupBy(surveyresponse2.FieldResearcher).Strings(s.ctx)
+	researchers, err := s.db.SurveyResponse.Query().Where(predicates...).GroupBy(surveyresponse2.FieldResearcher).Strings(s.ctx)
 	if err != nil {
 		hlog.Error(err)
-		resp.ResearcherCount = 0
 	}
 	resp.ResearcherCount = int64(len(researchers))
-	villages, err := s.db.SurveyResponse.Query().Where(
-		surveyresponse2.SurveyIDEQ(id),
-		surveyresponse2.Delete(0),
-		surveyresponse2.RespondentNEQ(""),
-	).GroupBy(surveyresponse2.FieldVillage).Strings(s.ctx)
+	villages, err := s.db.SurveyResponse.Query().Where(predicates...).GroupBy(surveyresponse2.FieldVillage).Strings(s.ctx)
 	if err != nil {
 		hlog.Error(err)
-		resp.VillageCount = 0
 	}
 	resp.VillageCount = int64(len(villages))
 
-	answers, err := s.db.SurveyResponse.Query().Where(
-		surveyresponse2.SurveyIDEQ(id),
-		surveyresponse2.Delete(0),
-		surveyresponse2.RespondentNEQ(""),
-	).QueryAnswers().Count(s.ctx)
+	answers, err := s.db.SurveyResponse.Query().Where(predicates...).QueryAnswers().Count(s.ctx)
 	if err != nil {
 		hlog.Error(err)
-		resp.AnswersCount = 0
 	}
 	resp.AnswersCount = int64(answers)
 
+	resp.AnswersAverage = int64(float64(answers) / float64(count))
 	return resp, nil
 }

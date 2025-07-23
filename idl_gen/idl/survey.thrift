@@ -49,6 +49,7 @@ struct SurveyStatistics{
  3:optional i64 respondentCount=0 (api.raw = "respondentCount")
  4:optional i64 researcherCount=0 (api.raw = "researcherCount")
  5:optional i64 villageCount=0 (api.raw = "villageCount")
+ 6:optional i64 answersAverage=0(api.raw = "answersAverage")
 }
 struct Heatmap{
     1:optional string lng="" (api.raw = "lng")
