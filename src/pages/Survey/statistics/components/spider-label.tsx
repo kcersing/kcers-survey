@@ -3,7 +3,11 @@ import React from 'react';
 
 
 export const DemoPie = (props: { data: any }) => {
+  console.log("DemoPie")
   const { data } = props;
+  if (!data){
+    return null;
+  }
   const config = {
     data,
     angleField: 'value',

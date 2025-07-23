@@ -288,4 +288,12 @@ export async function questionBasicData(options?: { [key: string]: any }) {
     },
   });
 }
-
+export async function getSurveyStatistics(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/service/survey/statistics', {
+    method: 'POST',
+    data: {
+      method: 'post',
+      ...(options || {}),
+    },
+  });
+}

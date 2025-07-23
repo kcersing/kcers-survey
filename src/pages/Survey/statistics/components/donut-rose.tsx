@@ -3,7 +3,11 @@ import React from 'react';
 
 
 export const DemoRose = (props: { data: any }) => {
+  console.log("DemoRose")
   const { data } = props;
+  if (!data){
+    return null;
+  }
   const config = {
     data: data,
     xField: 'type',
