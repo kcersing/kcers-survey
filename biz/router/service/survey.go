@@ -25,6 +25,7 @@ func Register(r *server.Hertz) {
 			_survey.POST("/delete", append(_deletesurveyMw(), service.DeleteSurvey)...)
 			_survey.POST("/info", append(_getsurveyMw(), service.GetSurvey)...)
 			_survey.POST("/list", append(_listsurveyMw(), service.ListSurvey)...)
+			_survey.POST("/statistics", append(_getsurveystatisticsMw(), service.GetSurveyStatistics)...)
 			_survey.POST("/update", append(_updatesurveyMw(), service.UpdateSurvey)...)
 			{
 				_question := _survey.Group("/question", _questionMw()...)

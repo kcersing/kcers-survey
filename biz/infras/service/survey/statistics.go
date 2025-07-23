@@ -158,3 +158,59 @@ func (s Survey) GetSurveyResponseHeatmap(id int64) (resp []*service.Heatmap, err
 	}
 	return resp, nil
 }
+func (s Survey) GetSurveyStatistics(id int64) (resp *service.SurveyStatistics, err error) {
+	count, err := s.db.SurveyResponse.Query().Where(
+		surveyresponse2.SurveyIDEQ(id),
+		surveyresponse2.Delete(0),
+		surveyresponse2.RespondentNEQ(""),
+	).Count(s.ctx)
+	if err != nil {
+		hlog.Error(err)
+		resp.Count = 0
+	}
+	resp.Count = int64(count)
+
+	respondents, err := s.db.SurveyResponse.Query().Where(
+		surveyresponse2.SurveyIDEQ(id),
+		surveyresponse2.Delete(0),
+		surveyresponse2.RespondentNEQ(""),
+	).GroupBy(surveyresponse2.FieldRespondent).Strings(s.ctx)
+	if err != nil {
+		hlog.Error(err)
+		resp.RespondentCount = 0
+	}
+	resp.RespondentCount = int64(len(respondents))
+	researchers, err := s.db.SurveyResponse.Query().Where(
+		surveyresponse2.SurveyIDEQ(id),
+		surveyresponse2.Delete(0),
+		surveyresponse2.RespondentNEQ(""),
+	).GroupBy(surveyresponse2.FieldResearcher).Strings(s.ctx)
+	if err != nil {
+		hlog.Error(err)
+		resp.ResearcherCount = 0
+	}
+	resp.ResearcherCount = int64(len(researchers))
+	villages, err := s.db.SurveyResponse.Query().Where(
+		surveyresponse2.SurveyIDEQ(id),
+		surveyresponse2.Delete(0),
+		surveyresponse2.RespondentNEQ(""),
+	).GroupBy(surveyresponse2.FieldVillage).Strings(s.ctx)
+	if err != nil {
+		hlog.Error(err)
+		resp.VillageCount = 0
+	}
+	resp.VillageCount = int64(len(villages))
+
+	answers, err := s.db.SurveyResponse.Query().Where(
+		surveyresponse2.SurveyIDEQ(id),
+		surveyresponse2.Delete(0),
+		surveyresponse2.RespondentNEQ(""),
+	).QueryAnswers().Count(s.ctx)
+	if err != nil {
+		hlog.Error(err)
+		resp.AnswersCount = 0
+	}
+	resp.AnswersCount = int64(answers)
+
+	return resp, nil
+}

@@ -449,3 +449,18 @@ func ListResponseExport(ctx context.Context, c *app.RequestContext) {
 		"url": export,
 	}, 0, "")
 }
+
+// GetSurveyStatistics .
+// @router /service/survey/statistics [POST]
+func GetSurveyStatistics(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req base.IDReq
+	err = c.BindAndValidate(&req)
+	resp, err := surveyService.NewSurvey(ctx, c).GetSurveyStatistics(req.ID)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, resp, 0, "")
+	return
+}

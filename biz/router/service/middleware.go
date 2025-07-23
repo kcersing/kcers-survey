@@ -153,3 +153,8 @@ func _listresponseexportMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _getsurveystatisticsMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

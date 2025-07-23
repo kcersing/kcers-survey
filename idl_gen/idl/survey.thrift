@@ -41,8 +41,15 @@ service SurveyService {
 
     base.NilResponse GetSurveyResponseHeatmap(1: base.IDReq req)  (api.post = "/service/survey/response/heatmap")
 
+    base.NilResponse GetSurveyStatistics(1: base.IDReq req)  (api.post = "/service/survey/statistics")
 }
-
+struct SurveyStatistics{
+ 1:optional i64 count=0 (api.raw = "count")
+ 2:optional i64 answersCount=0 (api.raw = "answersCount")
+ 3:optional i64 respondentCount=0 (api.raw = "respondentCount")
+ 4:optional i64 researcherCount=0 (api.raw = "researcherCount")
+ 5:optional i64 villageCount=0 (api.raw = "villageCount")
+}
 struct Heatmap{
     1:optional string lng="" (api.raw = "lng")
     2:optional string lat="" (api.raw = "lat")
