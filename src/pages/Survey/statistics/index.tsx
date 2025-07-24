@@ -13,20 +13,33 @@ import {HeatMap} from "@/pages/survey/statistics/components/heatmap";
 
 const columns: ProColumns[] = [
 
-  {
-    title: '回答',
-    dataIndex: 'answer',
-    render: (_, record) =>(record.answer?record.answer.map(v=>( <>{v}  {record.answerText?("："+record.answerText):""};</> ) ):""),
-  },
+
+{
+  title: '回答',
+      dataIndex: 'type',
+
+},
+{
+  title: '数量',
+      dataIndex: 'value',
+
+
+},
+
+  // {
+  //   title: '回答',
+  //   dataIndex: 'answer',
+  //   render: (_, record) =>(record.answer?record.answer.map(v=>( <>{v}  {record.answerText?("："+record.answerText):""};</> ) ):""),
+  // },
 
   // 回答内容:{item.answer.map(v=>{ return (<a>{v}；</a>)} )}
 
-  {
-    title: '创建时间',
-    key: 'since2',
-    dataIndex: 'createdAt',
-    valueType: 'date',
-  },
+  // {
+  //   title: '创建时间',
+  //   key: 'since2',
+  //   dataIndex: 'createdAt',
+  //   valueType: 'date',
+  // },
 ];
 
 export default () => {
@@ -163,18 +176,16 @@ console.log(surveyData)
           request={async () => {
             console.log(key);
 
-            const getQuestionBasic = async () => {
+
               const getQuestionBasicData = await questionBasicData({id: parseInt(key)})
 
               setQuestionBasic(getQuestionBasicData.data.data);
-            }
-            getQuestionBasic()
-            console.log(questionBasic)
 
-            const ans = await getQuestionAnswersList({ id: parseInt(key) });
+
+            // const ans = await getQuestionAnswersList({ id: parseInt(key) });
             return {
               success: true,
-              data: ans.data,
+              data: getQuestionBasicData.data.data,
             };
           }}
           dateFormatter="string"
