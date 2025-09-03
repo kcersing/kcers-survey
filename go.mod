@@ -18,7 +18,7 @@ require (
 	github.com/alibabacloud-go/tea v1.3.7
 	github.com/alibabacloud-go/tea-utils/v2 v2.0.7
 	github.com/apache/thrift v0.13.0
-	github.com/bytedance/sonic v1.13.2
+	github.com/bytedance/sonic v1.14.0
 	github.com/cloudwego/hertz v0.10.0
 	github.com/cockroachdb/errors v1.11.1
 	github.com/dgraph-io/ristretto v0.1.1
@@ -67,8 +67,8 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bmatcuk/doublestar v1.3.4 // indirect
 	github.com/bmatcuk/doublestar/v4 v4.8.1 // indirect
-	github.com/bytedance/gopkg v0.1.1 // indirect
-	github.com/bytedance/sonic/loader v0.2.4 // indirect
+	github.com/bytedance/gopkg v0.1.3 // indirect
+	github.com/bytedance/sonic/loader v0.3.0 // indirect
 	github.com/casbin/govaluate v1.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/clbanning/mxj/v2 v2.7.0 // indirect
