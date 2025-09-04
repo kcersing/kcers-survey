@@ -3,20 +3,26 @@ package survey
 import (
 	"context"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/redis/go-redis/v9"
 	db "kcers-survey/biz/dal/db/mysql"
 	"kcers-survey/biz/dal/db/mysql/ent"
+	surveyquestion2 "kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
 	surveyresponse2 "kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
 	surveyresponseanswers2 "kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
+	service2 "kcers-survey/biz/infras/service"
 	"kcers-survey/idl_gen/model/service"
 	"strconv"
 	"testing"
+	"time"
 )
 
 type Ree struct {
+	Mu       int
 	Title    string
 	Id       string
 	parentID int64
 	Options  []*service.Options
+	Serial   string
 }
 
 func treeToMap(tree []*Tree) []Ree {
@@ -28,13 +34,19 @@ func treeToMap(tree []*Tree) []Ree {
 			Id:       item.Key,
 			parentID: item.parentID,
 			Options:  item.Options,
+			Serial:   item.Serial,
 		})
 		if item.Children != nil {
 			result = append(result, treeToMap(item.Children)...)
 		}
 	}
+	var result2 []Ree
+	for i, r := range result {
+		r.Mu = i
+		result2 = append(result2, r)
+	}
 
-	return result
+	return result2
 }
 
 type Tree struct {
@@ -45,6 +57,7 @@ type Tree struct {
 	parentID int64
 	Options  []*service.Options
 	Children []*Tree
+	Serial   string
 }
 
 func findTreeQuestionChildren1(data []*ent.SurveyQuestion, parentID int64) []*Tree {
@@ -61,43 +74,88 @@ func findTreeQuestionChildren1(data []*ent.SurveyQuestion, parentID int64) []*Tr
 			m.parentID = v.ParentID
 			m.Options = v.Options
 			m.Children = findTreeQuestionChildren1(data, v.ID)
+			m.Serial = v.Serial
 			result = append(result, m)
 		}
 	}
 	return result
 }
+
+type Data struct {
+	Sn              string
+	Area            string
+	City            string
+	District        string
+	Village         string
+	Question        []*Question
+	Address         string
+	Respondent      string
+	RespondentPhone string
+	Researcher      string
+	ResearcherPhone string
+	At              string
+	AnswersCount    int64
+}
+type Question struct {
+	Id              string
+	Serial          string
+	QuestionContent string
+	Options         []*service.Options
+	Answer          []string
+	AnswerText      string
+}
+
 func TestSurvey(t *testing.T) {
 
 	dbs := db.InItDB("root:kcer-913639@tcp(101.126.9.226:3306)/survey?charset=utf8mb4&parseTime=True&loc=Local", true)
+
+	rd := redis.NewClient(&redis.Options{
+		Addr: "127.0.0.1:6379",
+		DB:   1,
+	})
+
 	ctx := context.Background()
 
 	//areas, err := dbs.Area.Query().All(ctx)
 	//if err != nil {
 	//	return
 	//}
-	//areaArr := make(map[int64]string)
+	//areaArr := make(map[string]string)
+	//
 	//for _, item := range areas {
-	//	areaArr[item.ID] = item.Name
+	//	//areaArr[strconv.FormatInt(item.ID, 10)] = item.Name
+	//	//tx.Append(ctx, "area"+strconv.FormatInt(item.ID, 10), item.Name)
+	//	//tx.Exec(ctx)
+	//	rd.Del(ctx, "area"+strconv.FormatInt(item.ID, 10))
+	//	rd.Set(ctx, "area"+strconv.FormatInt(item.ID, 10), item.Name, 0)
+	//	result, err := rd.Get(ctx, "area"+strconv.FormatInt(item.ID, 10)).Result()
+	//	if err != nil {
+	//		return
+	//	}
 	//
-	//}
-	//
-	//sq, err := dbs.SurveyQuestion.Query().
-	//	Where(surveyquestion2.SurveyID(1), surveyquestion2.Delete(0)).
-	//	Order(ent.Asc(surveyquestion2.FieldID, surveyquestion2.FieldParentID, surveyquestion2.FieldSort)).
-	//	All(ctx)
-	//if err != nil {
-	//	return
-	//}
-
-	//sqArr := make(map[int64]*ent.SurveyQuestion)
-	//for _, item := range sq {
-	//	sqArr[item.ID] = item
+	//	hlog.Info(result)
 	//
 	//}
 
-	//resp := findTreeQuestionChildren1(sq, 0)
 	//
-	//treeMap := treeToMap(resp)
+	sq, err := dbs.SurveyQuestion.Query().
+		Where(surveyquestion2.SurveyID(1), surveyquestion2.Delete(0)).
+		Order(ent.Asc(surveyquestion2.FieldID, surveyquestion2.FieldParentID, surveyquestion2.FieldSort)).
+		All(ctx)
+	if err != nil {
+		return
+	}
+
+	sqArr := make(map[int64]*ent.SurveyQuestion)
+	for _, item := range sq {
+		sqArr[item.ID] = item
+
+	}
+
+	resp := findTreeQuestionChildren1(sq, 0)
+
+	treeMap := treeToMap(resp)
+
 	//
 	//for i, item := range treeMap {
 	//	hlog.Info(i)
@@ -121,7 +179,28 @@ func TestSurvey(t *testing.T) {
 		return
 	}
 
-	for i, item := range sr {
+	var datas []*Data
+	for _, item := range sr {
+
+		area, _ := rd.Get(ctx, "area"+item.Area).Result()
+		city, _ := rd.Get(ctx, "area"+item.City).Result()
+		district, _ := rd.Get(ctx, "area"+item.District).Result()
+		village, _ := rd.Get(ctx, "area"+item.Village).Result()
+
+		data := &Data{
+			Sn:              item.Sn,
+			Area:            area,
+			City:            city,
+			District:        district,
+			Village:         village,
+			Address:         item.Address,
+			Respondent:      item.Respondent,
+			RespondentPhone: item.RespondentPhone,
+			Researcher:      item.Researcher,
+			ResearcherPhone: item.ResearcherPhone,
+			At:              item.CreatedAt.Add(8 * time.Hour).Format(time.DateTime),
+			AnswersCount:    item.AnswersCount,
+		}
 
 		sra, err := dbs.SurveyResponseAnswers.
 			Query().
@@ -132,17 +211,43 @@ func TestSurvey(t *testing.T) {
 			return
 		}
 
-		hlog.Info(sra)
-		panic(i)
+		for _, b := range treeMap {
+			for _, s := range sra {
+				if b.Id == strconv.FormatInt(s.SurveyQuestionID, 10) {
+					data.Question = append(data.Question, &Question{
+						Id:              b.Id,
+						Serial:          b.Serial,
+						QuestionContent: b.Title,
+						Options:         b.Options,
+						Answer:          s.Answer,
+						AnswerText:      s.AnswerText,
+					})
+				}
+
+			}
+		}
+
+		datas = append(datas, data)
+
 	}
 
-	//sra, err := dbs.SurveyResponseAnswers.Query().
-	//	Where(surveyresponseanswers2.SurveyID(1), surveyresponseanswers2.Delete(0)).
-	//	Order(ent.Asc(surveyresponseanswers2.FieldID)).
-	//	All(ctx)
-	//if err != nil {
-	//	return
-	//}
+	var tale []interface{}
+	tale = append(tale, "编号")
+	tale = append(tale, "受访人")
+	tale = append(tale, "受访人联系电话")
+	tale = append(tale, "调研员")
+	tale = append(tale, "调研员联系电话")
+	tale = append(tale, "填写问卷时间")
+	tale = append(tale, "完成度")
+	tale = append(tale, "省")
+	tale = append(tale, "市（州）")
+	tale = append(tale, "县（区、旗）")
+	tale = append(tale, "乡（镇）")
+	tale = append(tale, "详细地址")
+
+	for _, s := range treeMap {
+		tale = append(tale, s.Title)
+	}
 
 	//
 	//tale := []interface{}{
@@ -159,7 +264,39 @@ func TestSurvey(t *testing.T) {
 	//	"乡（镇）",
 	//	"村",
 	//}
-	//var list []map[int]interface{}
+	var list []map[int]interface{}
+
+	for _, row := range datas {
+
+		li := map[int]interface{}{
+			1:  row.Sn,
+			2:  row.Respondent,
+			3:  row.RespondentPhone,
+			4:  row.Researcher,
+			5:  row.ResearcherPhone,
+			6:  row.At,
+			7:  row.AnswersCount,
+			8:  row.Area,
+			9:  row.City,
+			10: row.District,
+			11: row.Village,
+			12: row.Address,
+		}
+
+		for i, s1 := range treeMap {
+			for _, s2 := range row.Question {
+				if s1.Id == s2.Id {
+					li[i+12] = s2.QuestionContent
+					//ans := append(s2.Answer, s2.AnswerText)
+
+				}
+
+			}
+
+		}
+		list = append(list, li)
+	}
+
 	//for _, row := range resp {
 	//	list = append(list, map[int]interface{}{
 	//		1:  row.Sn,
@@ -177,8 +314,9 @@ func TestSurvey(t *testing.T) {
 	//	})
 	//
 	//}
-	//domain, err := service2.Export(tale, list)
-	//hlog.Info(err)
-	//hlog.Info(domain)
+
+	domain, err := service2.Export(tale, list)
+	hlog.Info(err)
+	hlog.Info(domain)
 
 }

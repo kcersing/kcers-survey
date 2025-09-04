@@ -10,6 +10,8 @@ import (
 func Export(tale []interface{}, resp []map[int]interface{}) (string, error) {
 
 	exportFilePath, domain := common.ExportFilePath("列表导出")
+	hlog.Info(exportFilePath)
+	hlog.Info(domain)
 	f := excelize.NewFile()
 	defer func() {
 		if err := f.Close(); err != nil {
@@ -89,10 +91,12 @@ func Export(tale []interface{}, resp []map[int]interface{}) (string, error) {
 	if err := sw.Flush(); err != nil {
 		hlog.Errorf("Flush失败: %v", err)
 	}
+
 	//Save spreadsheet by the given path.
 	if err := f.SaveAs(exportFilePath); err != nil {
 		hlog.Errorf("保存文件失败: %v", err)
 	}
+	hlog.Infof("文件路径: %v", f.Path)
 	return domain, nil
 
 }
