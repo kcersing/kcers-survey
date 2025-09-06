@@ -7,11 +7,12 @@ import (
 	"kcers-survey/biz/infras/service/common"
 )
 
-func Export(tale []interface{}, resp []map[int]interface{}) (string, error) {
+func Export(tale []interface{}, resp []map[int]interface{}, name string) (string, error) {
+	if name == "" {
+		name = "列表导出"
+	}
+	exportFilePath, domain := common.ExportFilePath(name)
 
-	exportFilePath, domain := common.ExportFilePath("列表导出")
-	hlog.Info(exportFilePath)
-	hlog.Info(domain)
 	f := excelize.NewFile()
 	defer func() {
 		if err := f.Close(); err != nil {
@@ -80,7 +81,6 @@ func Export(tale []interface{}, resp []map[int]interface{}) (string, error) {
 		//for i := 0; i < value.NumField(); i++ {
 		//	r = append(r, value.Field(i))
 		//}
-		hlog.Infof("设置行数据: %v", r)
 
 		err = sw.SetRow(cell, r)
 		if err != nil {
@@ -96,7 +96,7 @@ func Export(tale []interface{}, resp []map[int]interface{}) (string, error) {
 	if err := f.SaveAs(exportFilePath); err != nil {
 		hlog.Errorf("保存文件失败: %v", err)
 	}
-	hlog.Infof("文件路径: %v", f.Path)
+
 	return domain, nil
 
 }

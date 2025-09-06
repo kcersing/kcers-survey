@@ -22,6 +22,7 @@ type Ree struct {
 	Title    string
 	Id       string
 	parentID int64
+	Type     string
 	Options  []*service.Options
 	Serial   string
 	Question Question
@@ -37,6 +38,7 @@ func treeToMap(tree []*Tree) []Ree {
 			parentID: item.parentID,
 			Options:  item.Options,
 			Serial:   item.Serial,
+			Type:     item.Type,
 		})
 		if item.Children != nil {
 			result = append(result, treeToMap(item.Children)...)
@@ -56,6 +58,7 @@ type Tree struct {
 	Value    string
 	Key      string
 	Method   string
+	Type     string
 	parentID int64
 	Options  []*service.Options
 	Children []*Tree
@@ -77,6 +80,7 @@ func findTreeQuestionChildren1(data []*ent.SurveyQuestion, parentID int64) []*Tr
 			m.Options = v.Options
 			m.Children = findTreeQuestionChildren1(data, v.ID)
 			m.Serial = v.Serial
+			m.Type = v.Type
 			result = append(result, m)
 		}
 	}
@@ -106,6 +110,7 @@ type Question struct {
 	Options         []*service.Options
 	Answer          []string
 	AnswerText      string
+	Type            string
 }
 
 func TestSurvey(t *testing.T) {
@@ -173,8 +178,20 @@ func TestSurvey(t *testing.T) {
 	tale = append(tale, "县（区、旗）")
 	tale = append(tale, "乡（镇）")
 	tale = append(tale, "详细地址")
+
 	for _, s := range treeMap {
-		tale = append(tale, s.Title)
+		if s.Type == "single_choice" {
+			for _, o := range s.Options {
+				tale = append(tale, o.Content)
+			}
+		} else if s.Type == "multiple_choice" {
+			for _, o := range s.Options {
+				tale = append(tale, o.Content)
+			}
+		} else {
+			tale = append(tale, s.Title)
+		}
+
 	}
 
 	sr, err := dbs.SurveyResponse.Query().
@@ -283,7 +300,7 @@ func TestSurvey(t *testing.T) {
 	//
 	//}
 
-	domain, err := service2.Export(tale, list)
+	domain, err := service2.Export(tale, list, "")
 	//hlog.Info(err)
 	hlog.Info(domain)
 }

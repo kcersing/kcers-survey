@@ -48,7 +48,7 @@ func (s Survey) ListResponseExport(req *service.ResponseListReq) (string, error)
 		})
 
 	}
-	domain, err := service2.Export(tale, list)
+	domain, err := service2.Export(tale, list, "")
 	if err != nil {
 		return "", err
 	}
