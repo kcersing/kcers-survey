@@ -49,7 +49,7 @@ func TestSurvey1(t *testing.T) {
 		Where(
 			surveyquestion2.SurveyID(2),
 			surveyquestion2.Delete(0),
-			surveyquestion2.Type("single_choice"),
+			surveyquestion2.Type("multiple_choice"),
 		).
 		Order(ent.Asc(surveyquestion2.FieldID, surveyquestion2.FieldParentID, surveyquestion2.FieldSort)).
 		First(ctx)
@@ -154,14 +154,12 @@ func TestSurvey1(t *testing.T) {
 		}
 
 		for ib, b := range sq.Options {
+			li[ib+1+13] = 0
 
-			li[ib+1+13] = ""
 			for _, s := range sra {
 				for _, s1 := range s.Answer {
 					if b.Content == s1 {
 						li[ib+1+13] = 1
-					} else {
-						li[ib+1+13] = 0
 					}
 				}
 				if s.AnswerText != "" {
