@@ -43,7 +43,7 @@ func Export(tale []interface{}, resp []map[int]interface{}, name string) (string
 	)
 	if err != nil {
 		hlog.Errorf("设置行数据失败: %v", err)
-
+		return "", err
 	}
 	styleID2, err := f.NewStyle(
 		&excelize.Style{
@@ -53,38 +53,37 @@ func Export(tale []interface{}, resp []map[int]interface{}, name string) (string
 	)
 	if err != nil {
 		hlog.Errorf("设置行数据失败: %v", err)
+		return "", err
 
 	}
 	var tales []interface{}
 	for _, v := range tale {
 		tales = append(tales, excelize.Cell{StyleID: styleID, Value: v})
 	}
-
+	hlog.Info(tales)
 	if err := sw.SetRow("A1", tales,
 		excelize.RowOpts{Height: 45, Hidden: false, OutlineLevel: 1}); err != nil {
 		hlog.Errorf("设置行数据失败: %v", err)
+		return "", err
 	}
 
 	for idx, row := range resp {
+
 		cell, err = excelize.CoordinatesToCellName(1, idx+2)
 		if err != nil {
 			hlog.Errorf("转换坐标失败2: %v", err)
 			return "", err
 		}
-
+		hlog.Info(cell)
 		var r []interface{}
-
-		for i := 1; i <= len(row); i++ {
+		hlog.Info(len(row))
+		for i := 1; i <= len(tale); i++ {
 			r = append(r, excelize.Cell{StyleID: styleID2, Value: row[i]})
 		}
-		//value := reflect.ValueOf(row)
-		//for i := 0; i < value.NumField(); i++ {
-		//	r = append(r, value.Field(i))
-		//}
 
-		err = sw.SetRow(cell, r)
-		if err != nil {
+		if err := sw.SetRow(cell, r); err != nil {
 			hlog.Errorf("设置行数据失败: %v", err)
+			hlog.Info(err)
 			return "", err
 		}
 	}

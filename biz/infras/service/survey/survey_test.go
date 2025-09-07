@@ -128,7 +128,7 @@ func TestSurvey(t *testing.T) {
 	//if err != nil {
 	//	return
 	//}
-	//areaArr := make(map[string]string)
+	////areaArr := make(map[string]string)
 	//
 	//for _, item := range areas {
 	//	//areaArr[strconv.FormatInt(item.ID, 10)] = item.Name
@@ -144,10 +144,10 @@ func TestSurvey(t *testing.T) {
 	//	hlog.Info(result)
 	//
 	//}
-
+	//print("")
 	//
 	sq, err := dbs.SurveyQuestion.Query().
-		Where(surveyquestion2.SurveyID(2), surveyquestion2.Delete(0)).
+		Where(surveyquestion2.SurveyID(1), surveyquestion2.Delete(0)).
 		Order(ent.Asc(surveyquestion2.FieldID, surveyquestion2.FieldParentID, surveyquestion2.FieldSort)).
 		All(ctx)
 	if err != nil {
@@ -166,6 +166,7 @@ func TestSurvey(t *testing.T) {
 
 	var tale []interface{}
 	var list []map[int]interface{}
+
 	tale = append(tale, "编号")
 	tale = append(tale, "受访人")
 	tale = append(tale, "受访人联系电话")
@@ -178,25 +179,28 @@ func TestSurvey(t *testing.T) {
 	tale = append(tale, "县（区、旗）")
 	tale = append(tale, "乡（镇）")
 	tale = append(tale, "详细地址")
-
 	for _, s := range treeMap {
-		if s.Type == "single_choice" {
+		tale = append(tale, s.Id+"-"+s.Title)
+		if s.Type == "multiple_choice" {
 			for _, o := range s.Options {
-				tale = append(tale, o.Content)
+				tale = append(tale, s.Id+"-"+s.Title+"-"+o.Content)
 			}
-		} else if s.Type == "multiple_choice" {
-			for _, o := range s.Options {
-				tale = append(tale, o.Content)
-			}
-		} else {
-			tale = append(tale, s.Title)
+			tale = append(tale, s.Id+"-"+s.Title+"-其他补充")
 		}
+	}
 
+	mun := make(map[string]interface{})
+
+	for i, item := range tale {
+		it := item.(string)
+		//hlog.Info(item)
+		mun[it] = i
 	}
 
 	sr, err := dbs.SurveyResponse.Query().
-		Where(surveyresponse2.SurveyID(2), surveyresponse2.Delete(0),
-			//surveyresponse2.AnswersCountGTE(100),
+		Where(
+			surveyresponse2.SurveyID(1), surveyresponse2.Delete(0),
+			surveyresponse2.AnswersCountGTE(100),
 			surveyresponse2.Or(surveyresponse2.ResearcherNEQ(""),
 				surveyresponse2.ResearcherPhoneNEQ(""),
 			),
@@ -214,8 +218,9 @@ func TestSurvey(t *testing.T) {
 		city, _ := rd.Get(ctx, "area"+item.City).Result()
 		district, _ := rd.Get(ctx, "area"+item.District).Result()
 		village, _ := rd.Get(ctx, "area"+item.Village).Result()
+		li := map[int]interface{}{}
 
-		li := map[int]interface{}{
+		li = map[int]interface{}{
 			1:  item.Sn,
 			2:  item.Respondent,
 			3:  item.RespondentPhone,
@@ -229,76 +234,54 @@ func TestSurvey(t *testing.T) {
 			11: village,
 			12: item.Address,
 		}
-
 		sra, err := dbs.SurveyResponseAnswers.
 			Query().
-			Where(surveyresponseanswers2.SurveyResponseID(item.ID), surveyresponseanswers2.Delete(0)).
+			Where(
+				surveyresponseanswers2.SurveyResponseID(item.ID),
+				surveyresponseanswers2.Delete(0),
+			).
 			Order(ent.Asc(surveyresponse2.FieldID)).
 			All(ctx)
 		if err != nil {
 			return
 		}
 
-		for ib, b := range treeMap {
+		//for ib, b := range treeMap {
 
-			li[ib+12] = ""
-			for _, s := range sra {
-				if b.Id == strconv.FormatInt(s.SurveyQuestionID, 10) {
+		for _, s := range sra {
+			//if b.Id == strconv.FormatInt(s.SurveyQuestionID, 10) {
+			bian := mun[strconv.FormatInt(s.SurveyQuestionID, 10)+"-"+sqArr[s.SurveyQuestionID].Content].(int) + 1
 
-					ans := append(s.Answer, s.AnswerText)
-					li[ib+12] = strings.Join(ans, " ")
+			ans := append(s.Answer, s.AnswerText)
+			li[bian] = strings.Join(ans, " ")
 
-					//data.Ree[ib].Question = Question{
-					//	Id:              b.Id,
-					//	Serial:          b.Serial,
-					//	QuestionContent: b.Title,
-					//	Options:         b.Options,
-					//	Answer:          s.Answer,
-					//	AnswerText:      s.AnswerText,
-					//}
+			if sqArr[s.SurveyQuestionID].Type == "multiple_choice" {
+				li[bian] = strings.Join(ans, ",")
+				for _, b := range sqArr[s.SurveyQuestionID].Options {
+
+					bian1 := mun[strconv.FormatInt(s.SurveyQuestionID, 10)+"-"+sqArr[s.SurveyQuestionID].Content+"-"+b.Content].(int) + 1
+					li[bian1] = 0
+
+					for _, s1 := range s.Answer {
+						if b.Content == s1 {
+							li[bian1] = 1
+						}
+					}
+					if s.AnswerText != "" {
+						bian2 := mun[strconv.FormatInt(s.SurveyQuestionID, 10)+"-"+sqArr[s.SurveyQuestionID].Content+"-其他补充"].(int) + 1
+
+						li[bian2] = s.AnswerText
+					}
 
 				}
+
 			}
+
 		}
 
-		//for _, s := range data.Ree {
-		//	hlog.Info(s.Question)
-		//}
 		list = append(list, li)
+
 	}
-
-	//for _, row := range datas {
-
-	//for i, s1 := range treeMap {
-	//	for _, s2 := range row.Question {
-	//		if s1.Id == s2.Id {
-	//			li[i+12] = s2.QuestionContent
-	//			//ans := append(s2.Answer, s2.AnswerText)
-	//
-	//		}
-	//
-	//	}
-	//
-	//}
-	//list = append(list, li)
-
-	//for _, row := range resp {
-	//	list = append(list, map[int]interface{}{
-	//		1:  row.Sn,
-	//		2:  row.Respondent,
-	//		3:  row.RespondentPhone,
-	//		4:  row.Researcher,
-	//		5:  row.ResearcherPhone,
-	//		6:  row.CreatedAt,
-	//		7:  row.AnswerCount,
-	//		8:  row.Area,
-	//		9:  row.City,
-	//		10: row.District,
-	//		11: row.Village,
-	//		12: row.Address,
-	//	})
-	//
-	//}
 
 	domain, err := service2.Export(tale, list, "")
 	//hlog.Info(err)
