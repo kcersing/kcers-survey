@@ -10,7 +10,7 @@ import {
     deleteQuestion,
     getSurvey,
     listSurvey
-} from '@/services/ant-design-pro/survey';
+} from '@/services/survey';
 import { MenuOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 

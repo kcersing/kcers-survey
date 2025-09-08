@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { RadioChangeEvent } from 'antd';
 
 import {ProFormDependency, ProFormSelect,ProFormUploadDragger, ProFormUploadButton,ProFormText,StepsForm,ProForm} from "@ant-design/pro-components";
-import { pubUpload, queryCity, queryProvince } from '@/services/ant-design-pro/api';
+import { pubUpload, queryCity, queryProvince } from '@/services/api';
 
 import { Input, Form,Checkbox,message } from 'antd';
 

@@ -6,7 +6,7 @@ import {
 import { Button, Divider, message, Modal } from 'antd';
 import React, { useState } from 'react';
 import { DeleteOutlined,MenuOutlined, PlusOutlined } from '@ant-design/icons';
-import { createQuestion, updateQuestion, deleteQuestion } from '@/services/ant-design-pro/survey';
+import { createQuestion, updateQuestion, deleteQuestion } from '@/services/survey';
 
 export type FormValueType = {
   target?: string;

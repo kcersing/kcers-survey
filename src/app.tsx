@@ -1,13 +1,13 @@
-import { Footer, Question, SelectLang, AvatarDropdown, AvatarName } from '@/components';
-import { LinkOutlined } from '@ant-design/icons';
+import { AvatarDropdown, AvatarName, Footer, Question, SelectLang } from '@/components';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
-import { history, Link } from '@umijs/max';
+import { history } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
-import { currentUser as queryCurrentUser } from '@/services/ant-design-pro/api';
+import {currentUser as queryCurrentUser, fetchMenuData} from '@/services/api';
 import React from 'react';
+
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
@@ -25,6 +25,7 @@ export async function getInitialState(): Promise<{
       const msg = await queryCurrentUser({
         skipErrorHandler: true,
       });
+
       return msg.data;
     } catch (error) {
       history.push(loginPath);
@@ -61,6 +62,22 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     waterMarkProps: {
       content: initialState?.currentUser?.name,
     },
+
+    menu: {
+      // 每当 initialState?.currentUser?.userid 发生修改时重新执行 request
+      params: {
+        userId: initialState?.currentUser?.id,
+      },
+      request: async (params) => {
+        // initialState.currentUser 中包含了所有用户信息
+        const menuData = await fetchMenuData(params);
+        console.log(menuData)
+        return menuData;
+      },
+    },
+
+
+
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
@@ -89,11 +106,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         width: '331px',
       },
     ],
-    links: isDev
-      ? [
-        <div>测试</div>,
-        ]
-      : [],
+    links: isDev ? [] : [],
     menuHeaderRender: undefined,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ProForm, ProFormText, ProFormSelect, ProFormDatePicker,  } from '@ant-design/pro-components';
 import { history } from 'umi';
-import { createSurvey, updateSurvey, getSurvey } from '@/services/ant-design-pro/survey';
+import { createSurvey, updateSurvey, getSurvey } from '@/services/survey';
 
 import {Button, message  } from 'antd';
 

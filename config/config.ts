@@ -4,6 +4,7 @@ import { join } from 'path';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
+import { layout } from '@/app';
 
 const { REACT_APP_ENV = 'dev' } = process.env;
 
@@ -78,7 +79,6 @@ export default defineConfig({
    */
   title: '问卷调查',
   layout: {
-    locale: false,
     ...defaultSettings,
   },
   /**
@@ -97,9 +97,9 @@ export default defineConfig({
   locale: {
     // default zh-CN
     default: 'zh-CN',
-    antd: true,
+    antd: false,
     // default true, when it is true, will use `navigator.language` overwrite default
-    baseNavigator: true,
+    baseNavigator: false,
   },
   /**
    * @name antd 插件

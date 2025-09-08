@@ -3,7 +3,7 @@ import type { ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Card, Descriptions, Menu, Modal,Button } from 'antd';
 import React, { useState,useEffect  } from 'react';
-import {getSurvey, treeQuestion,getQuestionAnswersList,getHeatmap,questionBasicData,getSurveyStatistics} from '@/services/ant-design-pro/survey';
+import {getSurvey, treeQuestion,getQuestionAnswersList,getHeatmap,questionBasicData,getSurveyStatistics} from '@/services/survey';
 import {useParams} from "react-router";
 import { DemoCustomColor } from '@/pages/survey/statistics/components/custom-color';
 import { DemoRose } from '@/pages/survey/statistics/components/donut-rose';

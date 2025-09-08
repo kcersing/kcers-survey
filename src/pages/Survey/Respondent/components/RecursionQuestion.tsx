@@ -8,7 +8,7 @@ import {
   ProFormTextArea, ProFormUploadButton
 } from "@ant-design/pro-components";
 
-import API from "@/services/ant-design-pro/typings";
+import API from "@/services/typings";
 
 const QuestionRenderer = memo(({
                                  question,

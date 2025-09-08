@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import {history, useNavigate, useParams} from '@@/exports';
 import { useLocation } from 'react-router-dom';
-import { createRespondent, getSurvey, listQuestion,getNext } from '@/services/ant-design-pro/survey';
+import { createRespondent, getSurvey, listQuestion,getNext } from '@/services/survey';
 
 import type { ProFormInstance } from '@ant-design/pro-components';
 import { ProCard, StepsForm } from '@ant-design/pro-components';

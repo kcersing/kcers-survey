@@ -7,7 +7,7 @@ import { GridContent, PageContainer, RouteContext,ProTable } from '@ant-design/p
 import {FC, useEffect, useState} from 'react';
 import React from 'react';
 
-import {getResponse, getResponseAnswers} from "@/services/ant-design-pro/survey";
+import {getResponse, getResponseAnswers} from "@/services/survey";
 import useStyles from './style.style';
 import {useParams} from "@@/exports";
 

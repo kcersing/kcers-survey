@@ -9,7 +9,7 @@
 // @ts-ignore
 /* eslint-disable */
 import { request } from '@umijs/max';
-import { Urls } from '@/services/ant-design-pro/url';
+import { Urls } from '@/services/url';
 
 
 

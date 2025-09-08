@@ -1,4 +1,4 @@
-import { createSurvey, deleteSurvey, listSurvey, updateSurvey } from '@/services/ant-design-pro/survey';
+import { createSurvey, deleteSurvey, listSurvey, updateSurvey } from '@/services/survey';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {

@@ -5,7 +5,7 @@ import { Button, Dropdown, Input, Space, Tag } from 'antd';
 import React, { useRef, useState } from 'react';
 import request from 'umi-request';
 import { history } from '@@/core/history';
-import { listResponse,listResponseExport} from '@/services/ant-design-pro/survey';
+import { listResponse,listResponseExport} from '@/services/survey';
 import { useParams } from '@@/exports';
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {

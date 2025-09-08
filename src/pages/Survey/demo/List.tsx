@@ -1,7 +1,7 @@
 import React from 'react';
 import { ProTable, ProCard, ProDescriptions } from '@ant-design/pro-components';
 import { DeleteOutlined, EditOutlined, EyeOutlined, FileAddOutlined } from '@ant-design/icons';
-import { listSurvey, deleteSurvey } from '@/services/ant-design-pro/survey';
+import { listSurvey, deleteSurvey } from '@/services/survey';
 import { history } from 'umi';
 import { message  } from 'antd';
 const SurveyList: React.FC = () => {

@@ -22,7 +22,7 @@ import {
 } from '@ant-design/pro-components';
 import './survey.css';
 
-import { getSurvey, listQuestion } from '@/services/ant-design-pro/survey';
+import { getSurvey, listQuestion } from '@/services/survey';
 const { Title, Text } = Typography;
 
 import RecursionQuestion from '@/pages/survey/respondent/components/RecursionQuestion';

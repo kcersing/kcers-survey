@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {getSurvey, listQuestion} from "@/services/ant-design-pro/survey";
+import {getSurvey, listQuestion} from "@/services/survey";
 
 import {useNavigate, useParams} from "@@/exports";
 import {

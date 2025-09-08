@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import { Urls } from '@/services/ant-design-pro/url';
+import { Urls } from '@/services/url';
 import { request } from '@umijs/max';
 
 /** 获取当前的用户 GET /api/currentUser */
@@ -137,5 +137,16 @@ export async function pubUpload(options?: PubUploadOptions) {
     //   // 若需要认证，添加认证信息
     //   Authorization: 'Bearer ' + sessionStorage.getItem('token') || '',
     // },
+  });
+}
+
+
+export async function fetchMenuData(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/service/sys/menu-list', {
+    method: 'POST',
+    data: {
+      method: 'post',
+      ...(options || {}),
+    },
   });
 }

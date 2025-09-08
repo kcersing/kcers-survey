@@ -23,7 +23,7 @@ import {
   updateQuestion,
   deleteQuestion,
   treeQuestion,
-} from '@/services/ant-design-pro/survey';
+} from '@/services/survey';
 
 import { PlusOutlined , SnippetsOutlined,CloseOutlined} from '@ant-design/icons';
 
