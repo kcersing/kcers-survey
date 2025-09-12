@@ -7,9 +7,6 @@ import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
 import {currentUser as queryCurrentUser, fetchMenuData} from '@/services/api';
 import React from 'react';
-import dynamic  from '@umijs/core';
-
-
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
