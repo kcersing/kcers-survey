@@ -1,12 +1,15 @@
 import { AvatarDropdown, AvatarName, Footer, Question, SelectLang } from '@/components';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
-import type { RunTimeLayoutConfig } from '@umijs/max';
-import { history } from '@umijs/max';
+import type { RequestConfig, RunTimeLayoutConfig } from '@umijs/max';
+import { history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
 import {currentUser as queryCurrentUser, fetchMenuData} from '@/services/api';
 import React from 'react';
+import dynamic  from '@umijs/core';
+
+
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -19,6 +22,7 @@ export async function getInitialState(): Promise<{
   currentUser?: API.CurrentUser;
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  routes?: any[];
 }> {
   const fetchUserInfo = async () => {
     try {
@@ -36,9 +40,15 @@ export async function getInitialState(): Promise<{
   const { location } = history;
   if (location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
+    const routes = await fetchMenuData({
+      ids: currentUser?.userRoleIds,
+    });
+    console.log(routes);
     return {
       fetchUserInfo,
       currentUser,
+      // routes: generateRoutes(routes.data),
+      routes: routes.data,
       settings: defaultSettings as Partial<LayoutSettings>,
     };
   }
@@ -63,18 +73,19 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       content: initialState?.currentUser?.name,
     },
 
-    menu: {
-      // 每当 initialState?.currentUser?.userid 发生修改时重新执行 request
-      params: {
-        userId: initialState?.currentUser?.id,
-      },
-      request: async (params) => {
-        // initialState.currentUser 中包含了所有用户信息
-        const menuData = await fetchMenuData(params);
-        console.log(menuData)
-        return menuData;
-      },
-    },
+    // menu: {
+    //   locale:false,
+    //   // 每当 initialState?.currentUser?.userid 发生修改时重新执行 request
+    //   params: {
+    //     ids: initialState?.currentUser?.userRoleIds,
+    //   },
+    //   request: async (params) => {
+    //     // initialState.currentUser 中包含了所有用户信息
+    //     const menuData = await fetchMenuData(params);
+    //     console.log(menuData)
+    //     return menuData;
+    //   },
+    // },
 
 
 
@@ -141,6 +152,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
  * 它基于 axios 和 ahooks 的 useRequest 提供了一套统一的网络请求和错误处理方案。
  * @doc https://umijs.org/docs/max/request#配置
  */
-export const request = {
+export const request: RequestConfig = {
+  baseURL: 'https://proapi.azurewebsites.net',
   ...errorConfig,
 };

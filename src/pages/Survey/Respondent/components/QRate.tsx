@@ -5,7 +5,7 @@ import type { RadioChangeEvent } from 'antd';
 import { Input, Form,Checkbox } from 'antd';
 import { ProFormRate, ProFormTextArea } from '@ant-design/pro-components';
 import QJumpRules from '@/pages/survey/respondent/components/QJumpRules';
-
+import { Flex, Rate } from 'antd';
 
 const QRate = (props) => {
 
@@ -38,11 +38,12 @@ const QRate = (props) => {
   return (
     <Form.Item name={['question', "'"+question.id+"'"]}  required={question.required===1} >
       <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
-    <ProFormRate
+    <Rate
       name={['question', question.id]}
       onChange={onChange}
-      rules={[{required: question.required === 1, message: '必填项'}]}/>
-
+      rules={[{required: question.required === 1, message: '必填项'}]}
+      character={({ index = 0 }) => index + 1}
+    />
 
       <QJumpRules
         surveyId={surveyId}
@@ -53,6 +54,8 @@ const QRate = (props) => {
         setCurrent={setCurrent}
         value={value}
       />
+
+
     </Form.Item>
   );
 };

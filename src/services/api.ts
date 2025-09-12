@@ -142,8 +142,12 @@ export async function pubUpload(options?: PubUploadOptions) {
 
 
 export async function fetchMenuData(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/service/sys/menu-list', {
+  return request<Record<string, any>>('/service/menu/role', {
     method: 'POST',
+    headers: {
+      // 若需要认证，添加认证信息
+      Authorization: 'Bearer ' + sessionStorage.getItem('token') || '',
+    },
     data: {
       method: 'post',
       ...(options || {}),

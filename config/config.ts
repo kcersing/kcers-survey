@@ -4,7 +4,6 @@ import { join } from 'path';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
-import { layout } from '@/app';
 
 const { REACT_APP_ENV = 'dev' } = process.env;
 
@@ -79,6 +78,7 @@ export default defineConfig({
    */
   title: '问卷调查',
   layout: {
+    locale: false,
     ...defaultSettings,
   },
   /**
