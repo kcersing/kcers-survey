@@ -347,16 +347,16 @@ if (res.data){
           }}
         >
 
-          <>
-            <Address
-              surveyId={surveyId}
-              questions={questions}
-              generateRandom={generateRandom}
-              addRespondent={addRespondent}
-              setCurrentNum={setCurrentNum}
-              setCurrent={setCurrent}
-            />
-          </>
+          {/*<>*/}
+          {/*  <Address*/}
+          {/*    surveyId={surveyId}*/}
+          {/*    questions={questions}*/}
+          {/*    generateRandom={generateRandom}*/}
+          {/*    addRespondent={addRespondent}*/}
+          {/*    setCurrentNum={setCurrentNum}*/}
+          {/*    setCurrent={setCurrent}*/}
+          {/*  />*/}
+          {/*</>*/}
 
           {questions.map((question) => (
             <>
