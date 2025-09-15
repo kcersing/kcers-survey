@@ -14,7 +14,6 @@ const QRate = (props) => {
   if (!question ){return null}
   const onChange = (e: RadioChangeEvent) => {
 
-    console.log(e)
 
     addRespondent({
       surveyId:surveyId,
