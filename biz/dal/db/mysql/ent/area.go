@@ -75,7 +75,7 @@ func (*Area) scanValues(columns []string) ([]any, error) {
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
 // to the Area fields.
-func (a *Area) assignValues(columns []string, values []any) error {
+func (_m *Area) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
@@ -86,111 +86,111 @@ func (a *Area) assignValues(columns []string, values []any) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			a.ID = int64(value.Int64)
+			_m.ID = int64(value.Int64)
 		case area.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				a.CreatedAt = value.Time
+				_m.CreatedAt = value.Time
 			}
 		case area.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				a.UpdatedAt = value.Time
+				_m.UpdatedAt = value.Time
 			}
 		case area.FieldDelete:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field delete", values[i])
 			} else if value.Valid {
-				a.Delete = value.Int64
+				_m.Delete = value.Int64
 			}
 		case area.FieldCreatedID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_id", values[i])
 			} else if value.Valid {
-				a.CreatedID = value.Int64
+				_m.CreatedID = value.Int64
 			}
 		case area.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				a.Status = value.Int64
+				_m.Status = value.Int64
 			}
 		case area.FieldParentID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field parent_id", values[i])
 			} else if value.Valid {
-				a.ParentID = value.Int64
+				_m.ParentID = value.Int64
 			}
 		case area.FieldLevel:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field level", values[i])
 			} else if value.Valid {
-				a.Level = value.Int64
+				_m.Level = value.Int64
 			}
 		case area.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
-				a.Name = value.String
+				_m.Name = value.String
 			}
 		case area.FieldWholeName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field whole_name", values[i])
 			} else if value.Valid {
-				a.WholeName = value.String
+				_m.WholeName = value.String
 			}
 		case area.FieldLon:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field lon", values[i])
 			} else if value.Valid {
-				a.Lon = value.String
+				_m.Lon = value.String
 			}
 		case area.FieldLat:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field lat", values[i])
 			} else if value.Valid {
-				a.Lat = value.String
+				_m.Lat = value.String
 			}
 		case area.FieldCityCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field city_code", values[i])
 			} else if value.Valid {
-				a.CityCode = value.String
+				_m.CityCode = value.String
 			}
 		case area.FieldZipCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field zip_code", values[i])
 			} else if value.Valid {
-				a.ZipCode = value.String
+				_m.ZipCode = value.String
 			}
 		case area.FieldAreaCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field area_code", values[i])
 			} else if value.Valid {
-				a.AreaCode = value.String
+				_m.AreaCode = value.String
 			}
 		case area.FieldPinYin:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field pin_yin", values[i])
 			} else if value.Valid {
-				a.PinYin = value.String
+				_m.PinYin = value.String
 			}
 		case area.FieldSimplePy:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field simple_py", values[i])
 			} else if value.Valid {
-				a.SimplePy = value.String
+				_m.SimplePy = value.String
 			}
 		case area.FieldPerPinYin:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field per_pin_yin", values[i])
 			} else if value.Valid {
-				a.PerPinYin = value.String
+				_m.PerPinYin = value.String
 			}
 		default:
-			a.selectValues.Set(columns[i], values[i])
+			_m.selectValues.Set(columns[i], values[i])
 		}
 	}
 	return nil
@@ -198,83 +198,83 @@ func (a *Area) assignValues(columns []string, values []any) error {
 
 // Value returns the ent.Value that was dynamically selected and assigned to the Area.
 // This includes values selected through modifiers, order, etc.
-func (a *Area) Value(name string) (ent.Value, error) {
-	return a.selectValues.Get(name)
+func (_m *Area) Value(name string) (ent.Value, error) {
+	return _m.selectValues.Get(name)
 }
 
 // Update returns a builder for updating this Area.
 // Note that you need to call Area.Unwrap() before calling this method if this Area
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (a *Area) Update() *AreaUpdateOne {
-	return NewAreaClient(a.config).UpdateOne(a)
+func (_m *Area) Update() *AreaUpdateOne {
+	return NewAreaClient(_m.config).UpdateOne(_m)
 }
 
 // Unwrap unwraps the Area entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (a *Area) Unwrap() *Area {
-	_tx, ok := a.config.driver.(*txDriver)
+func (_m *Area) Unwrap() *Area {
+	_tx, ok := _m.config.driver.(*txDriver)
 	if !ok {
 		panic("ent: Area is not a transactional entity")
 	}
-	a.config.driver = _tx.drv
-	return a
+	_m.config.driver = _tx.drv
+	return _m
 }
 
 // String implements the fmt.Stringer.
-func (a *Area) String() string {
+func (_m *Area) String() string {
 	var builder strings.Builder
 	builder.WriteString("Area(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", a.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
 	builder.WriteString("created_at=")
-	builder.WriteString(a.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
-	builder.WriteString(a.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("delete=")
-	builder.WriteString(fmt.Sprintf("%v", a.Delete))
+	builder.WriteString(fmt.Sprintf("%v", _m.Delete))
 	builder.WriteString(", ")
 	builder.WriteString("created_id=")
-	builder.WriteString(fmt.Sprintf("%v", a.CreatedID))
+	builder.WriteString(fmt.Sprintf("%v", _m.CreatedID))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
-	builder.WriteString(fmt.Sprintf("%v", a.Status))
+	builder.WriteString(fmt.Sprintf("%v", _m.Status))
 	builder.WriteString(", ")
 	builder.WriteString("parent_id=")
-	builder.WriteString(fmt.Sprintf("%v", a.ParentID))
+	builder.WriteString(fmt.Sprintf("%v", _m.ParentID))
 	builder.WriteString(", ")
 	builder.WriteString("level=")
-	builder.WriteString(fmt.Sprintf("%v", a.Level))
+	builder.WriteString(fmt.Sprintf("%v", _m.Level))
 	builder.WriteString(", ")
 	builder.WriteString("name=")
-	builder.WriteString(a.Name)
+	builder.WriteString(_m.Name)
 	builder.WriteString(", ")
 	builder.WriteString("whole_name=")
-	builder.WriteString(a.WholeName)
+	builder.WriteString(_m.WholeName)
 	builder.WriteString(", ")
 	builder.WriteString("lon=")
-	builder.WriteString(a.Lon)
+	builder.WriteString(_m.Lon)
 	builder.WriteString(", ")
 	builder.WriteString("lat=")
-	builder.WriteString(a.Lat)
+	builder.WriteString(_m.Lat)
 	builder.WriteString(", ")
 	builder.WriteString("city_code=")
-	builder.WriteString(a.CityCode)
+	builder.WriteString(_m.CityCode)
 	builder.WriteString(", ")
 	builder.WriteString("zip_code=")
-	builder.WriteString(a.ZipCode)
+	builder.WriteString(_m.ZipCode)
 	builder.WriteString(", ")
 	builder.WriteString("area_code=")
-	builder.WriteString(a.AreaCode)
+	builder.WriteString(_m.AreaCode)
 	builder.WriteString(", ")
 	builder.WriteString("pin_yin=")
-	builder.WriteString(a.PinYin)
+	builder.WriteString(_m.PinYin)
 	builder.WriteString(", ")
 	builder.WriteString("simple_py=")
-	builder.WriteString(a.SimplePy)
+	builder.WriteString(_m.SimplePy)
 	builder.WriteString(", ")
 	builder.WriteString("per_pin_yin=")
-	builder.WriteString(a.PerPinYin)
+	builder.WriteString(_m.PerPinYin)
 	builder.WriteByte(')')
 	return builder.String()
 }

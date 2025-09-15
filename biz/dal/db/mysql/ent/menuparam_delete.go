@@ -20,56 +20,56 @@ type MenuParamDelete struct {
 }
 
 // Where appends a list predicates to the MenuParamDelete builder.
-func (mpd *MenuParamDelete) Where(ps ...predicate.MenuParam) *MenuParamDelete {
-	mpd.mutation.Where(ps...)
-	return mpd
+func (_d *MenuParamDelete) Where(ps ...predicate.MenuParam) *MenuParamDelete {
+	_d.mutation.Where(ps...)
+	return _d
 }
 
 // Exec executes the deletion query and returns how many vertices were deleted.
-func (mpd *MenuParamDelete) Exec(ctx context.Context) (int, error) {
-	return withHooks(ctx, mpd.sqlExec, mpd.mutation, mpd.hooks)
+func (_d *MenuParamDelete) Exec(ctx context.Context) (int, error) {
+	return withHooks(ctx, _d.sqlExec, _d.mutation, _d.hooks)
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (mpd *MenuParamDelete) ExecX(ctx context.Context) int {
-	n, err := mpd.Exec(ctx)
+func (_d *MenuParamDelete) ExecX(ctx context.Context) int {
+	n, err := _d.Exec(ctx)
 	if err != nil {
 		panic(err)
 	}
 	return n
 }
 
-func (mpd *MenuParamDelete) sqlExec(ctx context.Context) (int, error) {
+func (_d *MenuParamDelete) sqlExec(ctx context.Context) (int, error) {
 	_spec := sqlgraph.NewDeleteSpec(menuparam.Table, sqlgraph.NewFieldSpec(menuparam.FieldID, field.TypeInt64))
-	if ps := mpd.mutation.predicates; len(ps) > 0 {
+	if ps := _d.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	affected, err := sqlgraph.DeleteNodes(ctx, mpd.driver, _spec)
+	affected, err := sqlgraph.DeleteNodes(ctx, _d.driver, _spec)
 	if err != nil && sqlgraph.IsConstraintError(err) {
 		err = &ConstraintError{msg: err.Error(), wrap: err}
 	}
-	mpd.mutation.done = true
+	_d.mutation.done = true
 	return affected, err
 }
 
 // MenuParamDeleteOne is the builder for deleting a single MenuParam entity.
 type MenuParamDeleteOne struct {
-	mpd *MenuParamDelete
+	_d *MenuParamDelete
 }
 
 // Where appends a list predicates to the MenuParamDelete builder.
-func (mpdo *MenuParamDeleteOne) Where(ps ...predicate.MenuParam) *MenuParamDeleteOne {
-	mpdo.mpd.mutation.Where(ps...)
-	return mpdo
+func (_d *MenuParamDeleteOne) Where(ps ...predicate.MenuParam) *MenuParamDeleteOne {
+	_d._d.mutation.Where(ps...)
+	return _d
 }
 
 // Exec executes the deletion query.
-func (mpdo *MenuParamDeleteOne) Exec(ctx context.Context) error {
-	n, err := mpdo.mpd.Exec(ctx)
+func (_d *MenuParamDeleteOne) Exec(ctx context.Context) error {
+	n, err := _d._d.Exec(ctx)
 	switch {
 	case err != nil:
 		return err
@@ -81,8 +81,8 @@ func (mpdo *MenuParamDeleteOne) Exec(ctx context.Context) error {
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (mpdo *MenuParamDeleteOne) ExecX(ctx context.Context) {
-	if err := mpdo.Exec(ctx); err != nil {
+func (_d *MenuParamDeleteOne) ExecX(ctx context.Context) {
+	if err := _d.Exec(ctx); err != nil {
 		panic(err)
 	}
 }

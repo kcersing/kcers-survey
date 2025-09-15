@@ -90,6 +90,16 @@ func Type(v int64) predicate.Token {
 	return predicate.Token(sql.FieldEQ(FieldType, v))
 }
 
+// Drive applies equality check predicate on the "drive" field. It's identical to DriveEQ.
+func Drive(v string) predicate.Token {
+	return predicate.Token(sql.FieldEQ(FieldDrive, v))
+}
+
+// IP applies equality check predicate on the "IP" field. It's identical to IPEQ.
+func IP(v string) predicate.Token {
+	return predicate.Token(sql.FieldEQ(FieldIP, v))
+}
+
 // Source applies equality check predicate on the "source" field. It's identical to SourceEQ.
 func Source(v string) predicate.Token {
 	return predicate.Token(sql.FieldEQ(FieldSource, v))
@@ -453,6 +463,136 @@ func TypeIsNil() predicate.Token {
 // TypeNotNil applies the NotNil predicate on the "type" field.
 func TypeNotNil() predicate.Token {
 	return predicate.Token(sql.FieldNotNull(FieldType))
+}
+
+// DriveEQ applies the EQ predicate on the "drive" field.
+func DriveEQ(v string) predicate.Token {
+	return predicate.Token(sql.FieldEQ(FieldDrive, v))
+}
+
+// DriveNEQ applies the NEQ predicate on the "drive" field.
+func DriveNEQ(v string) predicate.Token {
+	return predicate.Token(sql.FieldNEQ(FieldDrive, v))
+}
+
+// DriveIn applies the In predicate on the "drive" field.
+func DriveIn(vs ...string) predicate.Token {
+	return predicate.Token(sql.FieldIn(FieldDrive, vs...))
+}
+
+// DriveNotIn applies the NotIn predicate on the "drive" field.
+func DriveNotIn(vs ...string) predicate.Token {
+	return predicate.Token(sql.FieldNotIn(FieldDrive, vs...))
+}
+
+// DriveGT applies the GT predicate on the "drive" field.
+func DriveGT(v string) predicate.Token {
+	return predicate.Token(sql.FieldGT(FieldDrive, v))
+}
+
+// DriveGTE applies the GTE predicate on the "drive" field.
+func DriveGTE(v string) predicate.Token {
+	return predicate.Token(sql.FieldGTE(FieldDrive, v))
+}
+
+// DriveLT applies the LT predicate on the "drive" field.
+func DriveLT(v string) predicate.Token {
+	return predicate.Token(sql.FieldLT(FieldDrive, v))
+}
+
+// DriveLTE applies the LTE predicate on the "drive" field.
+func DriveLTE(v string) predicate.Token {
+	return predicate.Token(sql.FieldLTE(FieldDrive, v))
+}
+
+// DriveContains applies the Contains predicate on the "drive" field.
+func DriveContains(v string) predicate.Token {
+	return predicate.Token(sql.FieldContains(FieldDrive, v))
+}
+
+// DriveHasPrefix applies the HasPrefix predicate on the "drive" field.
+func DriveHasPrefix(v string) predicate.Token {
+	return predicate.Token(sql.FieldHasPrefix(FieldDrive, v))
+}
+
+// DriveHasSuffix applies the HasSuffix predicate on the "drive" field.
+func DriveHasSuffix(v string) predicate.Token {
+	return predicate.Token(sql.FieldHasSuffix(FieldDrive, v))
+}
+
+// DriveEqualFold applies the EqualFold predicate on the "drive" field.
+func DriveEqualFold(v string) predicate.Token {
+	return predicate.Token(sql.FieldEqualFold(FieldDrive, v))
+}
+
+// DriveContainsFold applies the ContainsFold predicate on the "drive" field.
+func DriveContainsFold(v string) predicate.Token {
+	return predicate.Token(sql.FieldContainsFold(FieldDrive, v))
+}
+
+// IPEQ applies the EQ predicate on the "IP" field.
+func IPEQ(v string) predicate.Token {
+	return predicate.Token(sql.FieldEQ(FieldIP, v))
+}
+
+// IPNEQ applies the NEQ predicate on the "IP" field.
+func IPNEQ(v string) predicate.Token {
+	return predicate.Token(sql.FieldNEQ(FieldIP, v))
+}
+
+// IPIn applies the In predicate on the "IP" field.
+func IPIn(vs ...string) predicate.Token {
+	return predicate.Token(sql.FieldIn(FieldIP, vs...))
+}
+
+// IPNotIn applies the NotIn predicate on the "IP" field.
+func IPNotIn(vs ...string) predicate.Token {
+	return predicate.Token(sql.FieldNotIn(FieldIP, vs...))
+}
+
+// IPGT applies the GT predicate on the "IP" field.
+func IPGT(v string) predicate.Token {
+	return predicate.Token(sql.FieldGT(FieldIP, v))
+}
+
+// IPGTE applies the GTE predicate on the "IP" field.
+func IPGTE(v string) predicate.Token {
+	return predicate.Token(sql.FieldGTE(FieldIP, v))
+}
+
+// IPLT applies the LT predicate on the "IP" field.
+func IPLT(v string) predicate.Token {
+	return predicate.Token(sql.FieldLT(FieldIP, v))
+}
+
+// IPLTE applies the LTE predicate on the "IP" field.
+func IPLTE(v string) predicate.Token {
+	return predicate.Token(sql.FieldLTE(FieldIP, v))
+}
+
+// IPContains applies the Contains predicate on the "IP" field.
+func IPContains(v string) predicate.Token {
+	return predicate.Token(sql.FieldContains(FieldIP, v))
+}
+
+// IPHasPrefix applies the HasPrefix predicate on the "IP" field.
+func IPHasPrefix(v string) predicate.Token {
+	return predicate.Token(sql.FieldHasPrefix(FieldIP, v))
+}
+
+// IPHasSuffix applies the HasSuffix predicate on the "IP" field.
+func IPHasSuffix(v string) predicate.Token {
+	return predicate.Token(sql.FieldHasSuffix(FieldIP, v))
+}
+
+// IPEqualFold applies the EqualFold predicate on the "IP" field.
+func IPEqualFold(v string) predicate.Token {
+	return predicate.Token(sql.FieldEqualFold(FieldIP, v))
+}
+
+// IPContainsFold applies the ContainsFold predicate on the "IP" field.
+func IPContainsFold(v string) predicate.Token {
+	return predicate.Token(sql.FieldContainsFold(FieldIP, v))
 }
 
 // SourceEQ applies the EQ predicate on the "source" field.

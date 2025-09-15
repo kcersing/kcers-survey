@@ -14,6 +14,8 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/menu"
 	"kcers-survey/biz/dal/db/mysql/ent/menuparam"
 	"kcers-survey/biz/dal/db/mysql/ent/role"
+	"kcers-survey/biz/dal/db/mysql/ent/sms"
+	"kcers-survey/biz/dal/db/mysql/ent/smslog"
 	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
@@ -83,7 +85,7 @@ var (
 )
 
 // checkColumn checks if the column exists in the given table.
-func checkColumn(table, column string) error {
+func checkColumn(t, c string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
 			api.Table:                   api.ValidColumn,
@@ -94,6 +96,8 @@ func checkColumn(table, column string) error {
 			menu.Table:                  menu.ValidColumn,
 			menuparam.Table:             menuparam.ValidColumn,
 			role.Table:                  role.ValidColumn,
+			sms.Table:                   sms.ValidColumn,
+			smslog.Table:                smslog.ValidColumn,
 			survey.Table:                survey.ValidColumn,
 			surveyquestion.Table:        surveyquestion.ValidColumn,
 			surveyresponse.Table:        surveyresponse.ValidColumn,
@@ -102,7 +106,7 @@ func checkColumn(table, column string) error {
 			user.Table:                  user.ValidColumn,
 		})
 	})
-	return columnCheck(table, column)
+	return columnCheck(t, c)
 }
 
 // Asc applies the given fields in ASC order.

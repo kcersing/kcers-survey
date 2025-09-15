@@ -125,7 +125,7 @@ func (*SurveyResponse) scanValues(columns []string) ([]any, error) {
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
 // to the SurveyResponse fields.
-func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
+func (_m *SurveyResponse) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
@@ -136,78 +136,78 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			sr.ID = int64(value.Int64)
+			_m.ID = int64(value.Int64)
 		case surveyresponse.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				sr.CreatedAt = value.Time
+				_m.CreatedAt = value.Time
 			}
 		case surveyresponse.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				sr.UpdatedAt = value.Time
+				_m.UpdatedAt = value.Time
 			}
 		case surveyresponse.FieldDelete:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field delete", values[i])
 			} else if value.Valid {
-				sr.Delete = value.Int64
+				_m.Delete = value.Int64
 			}
 		case surveyresponse.FieldCreatedID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_id", values[i])
 			} else if value.Valid {
-				sr.CreatedID = value.Int64
+				_m.CreatedID = value.Int64
 			}
 		case surveyresponse.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				sr.Status = value.Int64
+				_m.Status = value.Int64
 			}
 		case surveyresponse.FieldSurveyID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field survey_id", values[i])
 			} else if value.Valid {
-				sr.SurveyID = value.Int64
+				_m.SurveyID = value.Int64
 			}
 		case surveyresponse.FieldSn:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field sn", values[i])
 			} else if value.Valid {
-				sr.Sn = value.String
+				_m.Sn = value.String
 			}
 		case surveyresponse.FieldRespondent:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field respondent", values[i])
 			} else if value.Valid {
-				sr.Respondent = value.String
+				_m.Respondent = value.String
 			}
 		case surveyresponse.FieldRespondentPhone:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field respondent_phone", values[i])
 			} else if value.Valid {
-				sr.RespondentPhone = value.String
+				_m.RespondentPhone = value.String
 			}
 		case surveyresponse.FieldResearcher:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field researcher", values[i])
 			} else if value.Valid {
-				sr.Researcher = value.String
+				_m.Researcher = value.String
 			}
 		case surveyresponse.FieldResearcherPhone:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field researcher_phone", values[i])
 			} else if value.Valid {
-				sr.ResearcherPhone = value.String
+				_m.ResearcherPhone = value.String
 			}
 		case surveyresponse.FieldPic:
 			if value, ok := values[i].(*[]byte); !ok {
 				return fmt.Errorf("unexpected type %T for field pic", values[i])
 			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &sr.Pic); err != nil {
+				if err := json.Unmarshal(*value, &_m.Pic); err != nil {
 					return fmt.Errorf("unmarshal field pic: %w", err)
 				}
 			}
@@ -215,31 +215,31 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field ip", values[i])
 			} else if value.Valid {
-				sr.IP = value.String
+				_m.IP = value.String
 			}
 		case surveyresponse.FieldLatitude:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field latitude", values[i])
 			} else if value.Valid {
-				sr.Latitude = value.String
+				_m.Latitude = value.String
 			}
 		case surveyresponse.FieldLongitude:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field longitude", values[i])
 			} else if value.Valid {
-				sr.Longitude = value.String
+				_m.Longitude = value.String
 			}
 		case surveyresponse.FieldDevice:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field device", values[i])
 			} else if value.Valid {
-				sr.Device = value.String
+				_m.Device = value.String
 			}
 		case surveyresponse.FieldAudio:
 			if value, ok := values[i].(*[]byte); !ok {
 				return fmt.Errorf("unexpected type %T for field audio", values[i])
 			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &sr.Audio); err != nil {
+				if err := json.Unmarshal(*value, &_m.Audio); err != nil {
 					return fmt.Errorf("unmarshal field audio: %w", err)
 				}
 			}
@@ -247,40 +247,40 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field area", values[i])
 			} else if value.Valid {
-				sr.Area = value.String
+				_m.Area = value.String
 			}
 		case surveyresponse.FieldCity:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field city", values[i])
 			} else if value.Valid {
-				sr.City = value.String
+				_m.City = value.String
 			}
 		case surveyresponse.FieldDistrict:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field district", values[i])
 			} else if value.Valid {
-				sr.District = value.String
+				_m.District = value.String
 			}
 		case surveyresponse.FieldVillage:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field village", values[i])
 			} else if value.Valid {
-				sr.Village = value.String
+				_m.Village = value.String
 			}
 		case surveyresponse.FieldAddress:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field address", values[i])
 			} else if value.Valid {
-				sr.Address = value.String
+				_m.Address = value.String
 			}
 		case surveyresponse.FieldAnswersCount:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field answers_count", values[i])
 			} else if value.Valid {
-				sr.AnswersCount = value.Int64
+				_m.AnswersCount = value.Int64
 			}
 		default:
-			sr.selectValues.Set(columns[i], values[i])
+			_m.selectValues.Set(columns[i], values[i])
 		}
 	}
 	return nil
@@ -288,111 +288,111 @@ func (sr *SurveyResponse) assignValues(columns []string, values []any) error {
 
 // Value returns the ent.Value that was dynamically selected and assigned to the SurveyResponse.
 // This includes values selected through modifiers, order, etc.
-func (sr *SurveyResponse) Value(name string) (ent.Value, error) {
-	return sr.selectValues.Get(name)
+func (_m *SurveyResponse) Value(name string) (ent.Value, error) {
+	return _m.selectValues.Get(name)
 }
 
 // QuerySurvey queries the "survey" edge of the SurveyResponse entity.
-func (sr *SurveyResponse) QuerySurvey() *SurveyQuery {
-	return NewSurveyResponseClient(sr.config).QuerySurvey(sr)
+func (_m *SurveyResponse) QuerySurvey() *SurveyQuery {
+	return NewSurveyResponseClient(_m.config).QuerySurvey(_m)
 }
 
 // QueryAnswers queries the "answers" edge of the SurveyResponse entity.
-func (sr *SurveyResponse) QueryAnswers() *SurveyResponseAnswersQuery {
-	return NewSurveyResponseClient(sr.config).QueryAnswers(sr)
+func (_m *SurveyResponse) QueryAnswers() *SurveyResponseAnswersQuery {
+	return NewSurveyResponseClient(_m.config).QueryAnswers(_m)
 }
 
 // Update returns a builder for updating this SurveyResponse.
 // Note that you need to call SurveyResponse.Unwrap() before calling this method if this SurveyResponse
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (sr *SurveyResponse) Update() *SurveyResponseUpdateOne {
-	return NewSurveyResponseClient(sr.config).UpdateOne(sr)
+func (_m *SurveyResponse) Update() *SurveyResponseUpdateOne {
+	return NewSurveyResponseClient(_m.config).UpdateOne(_m)
 }
 
 // Unwrap unwraps the SurveyResponse entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (sr *SurveyResponse) Unwrap() *SurveyResponse {
-	_tx, ok := sr.config.driver.(*txDriver)
+func (_m *SurveyResponse) Unwrap() *SurveyResponse {
+	_tx, ok := _m.config.driver.(*txDriver)
 	if !ok {
 		panic("ent: SurveyResponse is not a transactional entity")
 	}
-	sr.config.driver = _tx.drv
-	return sr
+	_m.config.driver = _tx.drv
+	return _m
 }
 
 // String implements the fmt.Stringer.
-func (sr *SurveyResponse) String() string {
+func (_m *SurveyResponse) String() string {
 	var builder strings.Builder
 	builder.WriteString("SurveyResponse(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", sr.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
 	builder.WriteString("created_at=")
-	builder.WriteString(sr.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
-	builder.WriteString(sr.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("delete=")
-	builder.WriteString(fmt.Sprintf("%v", sr.Delete))
+	builder.WriteString(fmt.Sprintf("%v", _m.Delete))
 	builder.WriteString(", ")
 	builder.WriteString("created_id=")
-	builder.WriteString(fmt.Sprintf("%v", sr.CreatedID))
+	builder.WriteString(fmt.Sprintf("%v", _m.CreatedID))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
-	builder.WriteString(fmt.Sprintf("%v", sr.Status))
+	builder.WriteString(fmt.Sprintf("%v", _m.Status))
 	builder.WriteString(", ")
 	builder.WriteString("survey_id=")
-	builder.WriteString(fmt.Sprintf("%v", sr.SurveyID))
+	builder.WriteString(fmt.Sprintf("%v", _m.SurveyID))
 	builder.WriteString(", ")
 	builder.WriteString("sn=")
-	builder.WriteString(sr.Sn)
+	builder.WriteString(_m.Sn)
 	builder.WriteString(", ")
 	builder.WriteString("respondent=")
-	builder.WriteString(sr.Respondent)
+	builder.WriteString(_m.Respondent)
 	builder.WriteString(", ")
 	builder.WriteString("respondent_phone=")
-	builder.WriteString(sr.RespondentPhone)
+	builder.WriteString(_m.RespondentPhone)
 	builder.WriteString(", ")
 	builder.WriteString("researcher=")
-	builder.WriteString(sr.Researcher)
+	builder.WriteString(_m.Researcher)
 	builder.WriteString(", ")
 	builder.WriteString("researcher_phone=")
-	builder.WriteString(sr.ResearcherPhone)
+	builder.WriteString(_m.ResearcherPhone)
 	builder.WriteString(", ")
 	builder.WriteString("pic=")
-	builder.WriteString(fmt.Sprintf("%v", sr.Pic))
+	builder.WriteString(fmt.Sprintf("%v", _m.Pic))
 	builder.WriteString(", ")
 	builder.WriteString("ip=")
-	builder.WriteString(sr.IP)
+	builder.WriteString(_m.IP)
 	builder.WriteString(", ")
 	builder.WriteString("latitude=")
-	builder.WriteString(sr.Latitude)
+	builder.WriteString(_m.Latitude)
 	builder.WriteString(", ")
 	builder.WriteString("longitude=")
-	builder.WriteString(sr.Longitude)
+	builder.WriteString(_m.Longitude)
 	builder.WriteString(", ")
 	builder.WriteString("device=")
-	builder.WriteString(sr.Device)
+	builder.WriteString(_m.Device)
 	builder.WriteString(", ")
 	builder.WriteString("audio=")
-	builder.WriteString(fmt.Sprintf("%v", sr.Audio))
+	builder.WriteString(fmt.Sprintf("%v", _m.Audio))
 	builder.WriteString(", ")
 	builder.WriteString("area=")
-	builder.WriteString(sr.Area)
+	builder.WriteString(_m.Area)
 	builder.WriteString(", ")
 	builder.WriteString("city=")
-	builder.WriteString(sr.City)
+	builder.WriteString(_m.City)
 	builder.WriteString(", ")
 	builder.WriteString("district=")
-	builder.WriteString(sr.District)
+	builder.WriteString(_m.District)
 	builder.WriteString(", ")
 	builder.WriteString("village=")
-	builder.WriteString(sr.Village)
+	builder.WriteString(_m.Village)
 	builder.WriteString(", ")
 	builder.WriteString("address=")
-	builder.WriteString(sr.Address)
+	builder.WriteString(_m.Address)
 	builder.WriteString(", ")
 	builder.WriteString("answers_count=")
-	builder.WriteString(fmt.Sprintf("%v", sr.AnswersCount))
+	builder.WriteString(fmt.Sprintf("%v", _m.AnswersCount))
 	builder.WriteByte(')')
 	return builder.String()
 }

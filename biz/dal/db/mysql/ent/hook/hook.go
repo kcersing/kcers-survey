@@ -104,6 +104,30 @@ func (f RoleFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error)
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.RoleMutation", m)
 }
 
+// The SmsFunc type is an adapter to allow the use of ordinary
+// function as Sms mutator.
+type SmsFunc func(context.Context, *ent.SmsMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SmsFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.SmsMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SmsMutation", m)
+}
+
+// The SmsLogFunc type is an adapter to allow the use of ordinary
+// function as SmsLog mutator.
+type SmsLogFunc func(context.Context, *ent.SmsLogMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SmsLogFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.SmsLogMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SmsLogMutation", m)
+}
+
 // The SurveyFunc type is an adapter to allow the use of ordinary
 // function as Survey mutator.
 type SurveyFunc func(context.Context, *ent.SurveyMutation) (ent.Value, error)

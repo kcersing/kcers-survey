@@ -24,9 +24,9 @@ service AuthService {
 
 
   // Get role list | 获取角色列表
-  base.NilResponse RoleList(1: base.PageInfoReq req) (api.get = "/service/role/list")
+  base.NilResponse RoleList(1: base.PageReq req) (api.get = "/service/role/list")
 
-  base.NilResponse RoleTree(1: base.PageInfoReq req) (api.get = "/service/role/tree")
+  base.NilResponse RoleTree(1: base.PageReq req) (api.get = "/service/role/tree")
 
   // Set role status | 设置角色状态, 启用1/禁用0
   base.NilResponse UpdateRoleStatus(1: base.StatusCodeReq req) (api.post = "/service/role/status")

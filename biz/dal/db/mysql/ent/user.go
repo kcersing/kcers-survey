@@ -112,7 +112,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
 // to the User fields.
-func (u *User) assignValues(columns []string, values []any) error {
+func (_m *User) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
@@ -123,117 +123,117 @@ func (u *User) assignValues(columns []string, values []any) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			u.ID = int64(value.Int64)
+			_m.ID = int64(value.Int64)
 		case user.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				u.CreatedAt = value.Time
+				_m.CreatedAt = value.Time
 			}
 		case user.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				u.UpdatedAt = value.Time
+				_m.UpdatedAt = value.Time
 			}
 		case user.FieldDelete:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field delete", values[i])
 			} else if value.Valid {
-				u.Delete = value.Int64
+				_m.Delete = value.Int64
 			}
 		case user.FieldCreatedID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_id", values[i])
 			} else if value.Valid {
-				u.CreatedID = value.Int64
+				_m.CreatedID = value.Int64
 			}
 		case user.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				u.Status = value.Int64
+				_m.Status = value.Int64
 			}
 		case user.FieldMobile:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field mobile", values[i])
 			} else if value.Valid {
-				u.Mobile = value.String
+				_m.Mobile = value.String
 			}
 		case user.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
-				u.Name = value.String
+				_m.Name = value.String
 			}
 		case user.FieldGender:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field gender", values[i])
 			} else if value.Valid {
-				u.Gender = value.Int64
+				_m.Gender = value.Int64
 			}
 		case user.FieldUsername:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field username", values[i])
 			} else if value.Valid {
-				u.Username = value.String
+				_m.Username = value.String
 			}
 		case user.FieldPassword:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field password", values[i])
 			} else if value.Valid {
-				u.Password = value.String
+				_m.Password = value.String
 			}
 		case user.FieldDetail:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field detail", values[i])
 			} else if value.Valid {
-				u.Detail = value.String
+				_m.Detail = value.String
 			}
 		case user.FieldSideMode:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field side_mode", values[i])
 			} else if value.Valid {
-				u.SideMode = value.String
+				_m.SideMode = value.String
 			}
 		case user.FieldBaseColor:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field base_color", values[i])
 			} else if value.Valid {
-				u.BaseColor = value.String
+				_m.BaseColor = value.String
 			}
 		case user.FieldActiveColor:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field active_color", values[i])
 			} else if value.Valid {
-				u.ActiveColor = value.String
+				_m.ActiveColor = value.String
 			}
 		case user.FieldEmail:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field email", values[i])
 			} else if value.Valid {
-				u.Email = value.String
+				_m.Email = value.String
 			}
 		case user.FieldWecom:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field wecom", values[i])
 			} else if value.Valid {
-				u.Wecom = value.String
+				_m.Wecom = value.String
 			}
 		case user.FieldAvatar:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field avatar", values[i])
 			} else if value.Valid {
-				u.Avatar = value.String
+				_m.Avatar = value.String
 			}
 		case user.FieldBirthday:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field birthday", values[i])
 			} else if value.Valid {
-				u.Birthday = value.Time
+				_m.Birthday = value.Time
 			}
 		default:
-			u.selectValues.Set(columns[i], values[i])
+			_m.selectValues.Set(columns[i], values[i])
 		}
 	}
 	return nil
@@ -241,96 +241,96 @@ func (u *User) assignValues(columns []string, values []any) error {
 
 // Value returns the ent.Value that was dynamically selected and assigned to the User.
 // This includes values selected through modifiers, order, etc.
-func (u *User) Value(name string) (ent.Value, error) {
-	return u.selectValues.Get(name)
+func (_m *User) Value(name string) (ent.Value, error) {
+	return _m.selectValues.Get(name)
 }
 
 // QueryToken queries the "token" edge of the User entity.
-func (u *User) QueryToken() *TokenQuery {
-	return NewUserClient(u.config).QueryToken(u)
+func (_m *User) QueryToken() *TokenQuery {
+	return NewUserClient(_m.config).QueryToken(_m)
 }
 
 // QueryRoles queries the "roles" edge of the User entity.
-func (u *User) QueryRoles() *RoleQuery {
-	return NewUserClient(u.config).QueryRoles(u)
+func (_m *User) QueryRoles() *RoleQuery {
+	return NewUserClient(_m.config).QueryRoles(_m)
 }
 
 // Update returns a builder for updating this User.
 // Note that you need to call User.Unwrap() before calling this method if this User
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (u *User) Update() *UserUpdateOne {
-	return NewUserClient(u.config).UpdateOne(u)
+func (_m *User) Update() *UserUpdateOne {
+	return NewUserClient(_m.config).UpdateOne(_m)
 }
 
 // Unwrap unwraps the User entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (u *User) Unwrap() *User {
-	_tx, ok := u.config.driver.(*txDriver)
+func (_m *User) Unwrap() *User {
+	_tx, ok := _m.config.driver.(*txDriver)
 	if !ok {
 		panic("ent: User is not a transactional entity")
 	}
-	u.config.driver = _tx.drv
-	return u
+	_m.config.driver = _tx.drv
+	return _m
 }
 
 // String implements the fmt.Stringer.
-func (u *User) String() string {
+func (_m *User) String() string {
 	var builder strings.Builder
 	builder.WriteString("User(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", u.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
 	builder.WriteString("created_at=")
-	builder.WriteString(u.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
-	builder.WriteString(u.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("delete=")
-	builder.WriteString(fmt.Sprintf("%v", u.Delete))
+	builder.WriteString(fmt.Sprintf("%v", _m.Delete))
 	builder.WriteString(", ")
 	builder.WriteString("created_id=")
-	builder.WriteString(fmt.Sprintf("%v", u.CreatedID))
+	builder.WriteString(fmt.Sprintf("%v", _m.CreatedID))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
-	builder.WriteString(fmt.Sprintf("%v", u.Status))
+	builder.WriteString(fmt.Sprintf("%v", _m.Status))
 	builder.WriteString(", ")
 	builder.WriteString("mobile=")
-	builder.WriteString(u.Mobile)
+	builder.WriteString(_m.Mobile)
 	builder.WriteString(", ")
 	builder.WriteString("name=")
-	builder.WriteString(u.Name)
+	builder.WriteString(_m.Name)
 	builder.WriteString(", ")
 	builder.WriteString("gender=")
-	builder.WriteString(fmt.Sprintf("%v", u.Gender))
+	builder.WriteString(fmt.Sprintf("%v", _m.Gender))
 	builder.WriteString(", ")
 	builder.WriteString("username=")
-	builder.WriteString(u.Username)
+	builder.WriteString(_m.Username)
 	builder.WriteString(", ")
 	builder.WriteString("password=")
-	builder.WriteString(u.Password)
+	builder.WriteString(_m.Password)
 	builder.WriteString(", ")
 	builder.WriteString("detail=")
-	builder.WriteString(u.Detail)
+	builder.WriteString(_m.Detail)
 	builder.WriteString(", ")
 	builder.WriteString("side_mode=")
-	builder.WriteString(u.SideMode)
+	builder.WriteString(_m.SideMode)
 	builder.WriteString(", ")
 	builder.WriteString("base_color=")
-	builder.WriteString(u.BaseColor)
+	builder.WriteString(_m.BaseColor)
 	builder.WriteString(", ")
 	builder.WriteString("active_color=")
-	builder.WriteString(u.ActiveColor)
+	builder.WriteString(_m.ActiveColor)
 	builder.WriteString(", ")
 	builder.WriteString("email=")
-	builder.WriteString(u.Email)
+	builder.WriteString(_m.Email)
 	builder.WriteString(", ")
 	builder.WriteString("wecom=")
-	builder.WriteString(u.Wecom)
+	builder.WriteString(_m.Wecom)
 	builder.WriteString(", ")
 	builder.WriteString("avatar=")
-	builder.WriteString(u.Avatar)
+	builder.WriteString(_m.Avatar)
 	builder.WriteString(", ")
 	builder.WriteString("birthday=")
-	builder.WriteString(u.Birthday.Format(time.ANSIC))
+	builder.WriteString(_m.Birthday.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

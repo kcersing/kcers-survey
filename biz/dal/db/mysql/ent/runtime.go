@@ -12,6 +12,8 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/menuparam"
 	"kcers-survey/biz/dal/db/mysql/ent/role"
 	"kcers-survey/biz/dal/db/mysql/ent/schema"
+	"kcers-survey/biz/dal/db/mysql/ent/sms"
+	"kcers-survey/biz/dal/db/mysql/ent/smslog"
 	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
@@ -190,18 +192,30 @@ func init() {
 	menuDescPath := menuFields[1].Descriptor()
 	// menu.DefaultPath holds the default value on creation for the path field.
 	menu.DefaultPath = menuDescPath.Default.(string)
+	// menuDescSort is the schema descriptor for sort field.
+	menuDescSort := menuFields[2].Descriptor()
+	// menu.DefaultSort holds the default value on creation for the sort field.
+	menu.DefaultSort = menuDescSort.Default.(int64)
 	// menuDescOrderNo is the schema descriptor for order_no field.
-	menuDescOrderNo := menuFields[3].Descriptor()
+	menuDescOrderNo := menuFields[4].Descriptor()
 	// menu.DefaultOrderNo holds the default value on creation for the order_no field.
 	menu.DefaultOrderNo = menuDescOrderNo.Default.(int64)
 	// menuDescDisabled is the schema descriptor for disabled field.
-	menuDescDisabled := menuFields[4].Descriptor()
+	menuDescDisabled := menuFields[5].Descriptor()
 	// menu.DefaultDisabled holds the default value on creation for the disabled field.
 	menu.DefaultDisabled = menuDescDisabled.Default.(int64)
 	// menuDescIgnore is the schema descriptor for ignore field.
-	menuDescIgnore := menuFields[5].Descriptor()
+	menuDescIgnore := menuFields[6].Descriptor()
 	// menu.DefaultIgnore holds the default value on creation for the ignore field.
 	menu.DefaultIgnore = menuDescIgnore.Default.(bool)
+	// menuDescRedirect is the schema descriptor for redirect field.
+	menuDescRedirect := menuFields[7].Descriptor()
+	// menu.DefaultRedirect holds the default value on creation for the redirect field.
+	menu.DefaultRedirect = menuDescRedirect.Default.(string)
+	// menuDescComponent is the schema descriptor for component field.
+	menuDescComponent := menuFields[8].Descriptor()
+	// menu.DefaultComponent holds the default value on creation for the component field.
+	menu.DefaultComponent = menuDescComponent.Default.(string)
 	menuparamMixin := schema.MenuParam{}.Mixin()
 	menuparamMixinFields0 := menuparamMixin[0].Fields()
 	_ = menuparamMixinFields0
@@ -274,6 +288,70 @@ func init() {
 	roleDescVenueID := roleFields[6].Descriptor()
 	// role.DefaultVenueID holds the default value on creation for the venue_id field.
 	role.DefaultVenueID = roleDescVenueID.Default.(int64)
+	smsMixin := schema.Sms{}.Mixin()
+	smsMixinFields0 := smsMixin[0].Fields()
+	_ = smsMixinFields0
+	smsFields := schema.Sms{}.Fields()
+	_ = smsFields
+	// smsDescCreatedAt is the schema descriptor for created_at field.
+	smsDescCreatedAt := smsMixinFields0[1].Descriptor()
+	// sms.DefaultCreatedAt holds the default value on creation for the created_at field.
+	sms.DefaultCreatedAt = smsDescCreatedAt.Default.(func() time.Time)
+	// smsDescUpdatedAt is the schema descriptor for updated_at field.
+	smsDescUpdatedAt := smsMixinFields0[2].Descriptor()
+	// sms.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	sms.DefaultUpdatedAt = smsDescUpdatedAt.Default.(func() time.Time)
+	// sms.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	sms.UpdateDefaultUpdatedAt = smsDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// smsDescDelete is the schema descriptor for delete field.
+	smsDescDelete := smsMixinFields0[3].Descriptor()
+	// sms.DefaultDelete holds the default value on creation for the delete field.
+	sms.DefaultDelete = smsDescDelete.Default.(int64)
+	// smsDescCreatedID is the schema descriptor for created_id field.
+	smsDescCreatedID := smsMixinFields0[4].Descriptor()
+	// sms.DefaultCreatedID holds the default value on creation for the created_id field.
+	sms.DefaultCreatedID = smsDescCreatedID.Default.(int64)
+	// smsDescNoticeCount is the schema descriptor for notice_count field.
+	smsDescNoticeCount := smsFields[0].Descriptor()
+	// sms.DefaultNoticeCount holds the default value on creation for the notice_count field.
+	sms.DefaultNoticeCount = smsDescNoticeCount.Default.(int64)
+	// smsDescUsedNotice is the schema descriptor for used_notice field.
+	smsDescUsedNotice := smsFields[1].Descriptor()
+	// sms.DefaultUsedNotice holds the default value on creation for the used_notice field.
+	sms.DefaultUsedNotice = smsDescUsedNotice.Default.(int64)
+	smslogMixin := schema.SmsLog{}.Mixin()
+	smslogMixinFields0 := smslogMixin[0].Fields()
+	_ = smslogMixinFields0
+	smslogMixinFields1 := smslogMixin[1].Fields()
+	_ = smslogMixinFields1
+	smslogFields := schema.SmsLog{}.Fields()
+	_ = smslogFields
+	// smslogDescCreatedAt is the schema descriptor for created_at field.
+	smslogDescCreatedAt := smslogMixinFields0[1].Descriptor()
+	// smslog.DefaultCreatedAt holds the default value on creation for the created_at field.
+	smslog.DefaultCreatedAt = smslogDescCreatedAt.Default.(func() time.Time)
+	// smslogDescUpdatedAt is the schema descriptor for updated_at field.
+	smslogDescUpdatedAt := smslogMixinFields0[2].Descriptor()
+	// smslog.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	smslog.DefaultUpdatedAt = smslogDescUpdatedAt.Default.(func() time.Time)
+	// smslog.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	smslog.UpdateDefaultUpdatedAt = smslogDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// smslogDescDelete is the schema descriptor for delete field.
+	smslogDescDelete := smslogMixinFields0[3].Descriptor()
+	// smslog.DefaultDelete holds the default value on creation for the delete field.
+	smslog.DefaultDelete = smslogDescDelete.Default.(int64)
+	// smslogDescCreatedID is the schema descriptor for created_id field.
+	smslogDescCreatedID := smslogMixinFields0[4].Descriptor()
+	// smslog.DefaultCreatedID holds the default value on creation for the created_id field.
+	smslog.DefaultCreatedID = smslogDescCreatedID.Default.(int64)
+	// smslogDescStatus is the schema descriptor for status field.
+	smslogDescStatus := smslogMixinFields1[0].Descriptor()
+	// smslog.DefaultStatus holds the default value on creation for the status field.
+	smslog.DefaultStatus = smslogDescStatus.Default.(int64)
+	// smslogDescContent is the schema descriptor for content field.
+	smslogDescContent := smslogFields[3].Descriptor()
+	// smslog.DefaultContent holds the default value on creation for the content field.
+	smslog.DefaultContent = smslogDescContent.Default.(string)
 	surveyMixin := schema.Survey{}.Mixin()
 	surveyMixinFields0 := surveyMixin[0].Fields()
 	_ = surveyMixinFields0

@@ -25,158 +25,158 @@ type MenuParamUpdate struct {
 }
 
 // Where appends a list predicates to the MenuParamUpdate builder.
-func (mpu *MenuParamUpdate) Where(ps ...predicate.MenuParam) *MenuParamUpdate {
-	mpu.mutation.Where(ps...)
-	return mpu
+func (_u *MenuParamUpdate) Where(ps ...predicate.MenuParam) *MenuParamUpdate {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (mpu *MenuParamUpdate) SetUpdatedAt(t time.Time) *MenuParamUpdate {
-	mpu.mutation.SetUpdatedAt(t)
-	return mpu
+func (_u *MenuParamUpdate) SetUpdatedAt(v time.Time) *MenuParamUpdate {
+	_u.mutation.SetUpdatedAt(v)
+	return _u
 }
 
 // ClearUpdatedAt clears the value of the "updated_at" field.
-func (mpu *MenuParamUpdate) ClearUpdatedAt() *MenuParamUpdate {
-	mpu.mutation.ClearUpdatedAt()
-	return mpu
+func (_u *MenuParamUpdate) ClearUpdatedAt() *MenuParamUpdate {
+	_u.mutation.ClearUpdatedAt()
+	return _u
 }
 
 // SetDelete sets the "delete" field.
-func (mpu *MenuParamUpdate) SetDelete(i int64) *MenuParamUpdate {
-	mpu.mutation.ResetDelete()
-	mpu.mutation.SetDelete(i)
-	return mpu
+func (_u *MenuParamUpdate) SetDelete(v int64) *MenuParamUpdate {
+	_u.mutation.ResetDelete()
+	_u.mutation.SetDelete(v)
+	return _u
 }
 
 // SetNillableDelete sets the "delete" field if the given value is not nil.
-func (mpu *MenuParamUpdate) SetNillableDelete(i *int64) *MenuParamUpdate {
-	if i != nil {
-		mpu.SetDelete(*i)
+func (_u *MenuParamUpdate) SetNillableDelete(v *int64) *MenuParamUpdate {
+	if v != nil {
+		_u.SetDelete(*v)
 	}
-	return mpu
+	return _u
 }
 
-// AddDelete adds i to the "delete" field.
-func (mpu *MenuParamUpdate) AddDelete(i int64) *MenuParamUpdate {
-	mpu.mutation.AddDelete(i)
-	return mpu
+// AddDelete adds value to the "delete" field.
+func (_u *MenuParamUpdate) AddDelete(v int64) *MenuParamUpdate {
+	_u.mutation.AddDelete(v)
+	return _u
 }
 
 // ClearDelete clears the value of the "delete" field.
-func (mpu *MenuParamUpdate) ClearDelete() *MenuParamUpdate {
-	mpu.mutation.ClearDelete()
-	return mpu
+func (_u *MenuParamUpdate) ClearDelete() *MenuParamUpdate {
+	_u.mutation.ClearDelete()
+	return _u
 }
 
 // SetCreatedID sets the "created_id" field.
-func (mpu *MenuParamUpdate) SetCreatedID(i int64) *MenuParamUpdate {
-	mpu.mutation.ResetCreatedID()
-	mpu.mutation.SetCreatedID(i)
-	return mpu
+func (_u *MenuParamUpdate) SetCreatedID(v int64) *MenuParamUpdate {
+	_u.mutation.ResetCreatedID()
+	_u.mutation.SetCreatedID(v)
+	return _u
 }
 
 // SetNillableCreatedID sets the "created_id" field if the given value is not nil.
-func (mpu *MenuParamUpdate) SetNillableCreatedID(i *int64) *MenuParamUpdate {
-	if i != nil {
-		mpu.SetCreatedID(*i)
+func (_u *MenuParamUpdate) SetNillableCreatedID(v *int64) *MenuParamUpdate {
+	if v != nil {
+		_u.SetCreatedID(*v)
 	}
-	return mpu
+	return _u
 }
 
-// AddCreatedID adds i to the "created_id" field.
-func (mpu *MenuParamUpdate) AddCreatedID(i int64) *MenuParamUpdate {
-	mpu.mutation.AddCreatedID(i)
-	return mpu
+// AddCreatedID adds value to the "created_id" field.
+func (_u *MenuParamUpdate) AddCreatedID(v int64) *MenuParamUpdate {
+	_u.mutation.AddCreatedID(v)
+	return _u
 }
 
 // ClearCreatedID clears the value of the "created_id" field.
-func (mpu *MenuParamUpdate) ClearCreatedID() *MenuParamUpdate {
-	mpu.mutation.ClearCreatedID()
-	return mpu
+func (_u *MenuParamUpdate) ClearCreatedID() *MenuParamUpdate {
+	_u.mutation.ClearCreatedID()
+	return _u
 }
 
 // SetType sets the "type" field.
-func (mpu *MenuParamUpdate) SetType(s string) *MenuParamUpdate {
-	mpu.mutation.SetType(s)
-	return mpu
+func (_u *MenuParamUpdate) SetType(v string) *MenuParamUpdate {
+	_u.mutation.SetType(v)
+	return _u
 }
 
 // SetNillableType sets the "type" field if the given value is not nil.
-func (mpu *MenuParamUpdate) SetNillableType(s *string) *MenuParamUpdate {
-	if s != nil {
-		mpu.SetType(*s)
+func (_u *MenuParamUpdate) SetNillableType(v *string) *MenuParamUpdate {
+	if v != nil {
+		_u.SetType(*v)
 	}
-	return mpu
+	return _u
 }
 
 // SetKey sets the "key" field.
-func (mpu *MenuParamUpdate) SetKey(s string) *MenuParamUpdate {
-	mpu.mutation.SetKey(s)
-	return mpu
+func (_u *MenuParamUpdate) SetKey(v string) *MenuParamUpdate {
+	_u.mutation.SetKey(v)
+	return _u
 }
 
 // SetNillableKey sets the "key" field if the given value is not nil.
-func (mpu *MenuParamUpdate) SetNillableKey(s *string) *MenuParamUpdate {
-	if s != nil {
-		mpu.SetKey(*s)
+func (_u *MenuParamUpdate) SetNillableKey(v *string) *MenuParamUpdate {
+	if v != nil {
+		_u.SetKey(*v)
 	}
-	return mpu
+	return _u
 }
 
 // SetValue sets the "value" field.
-func (mpu *MenuParamUpdate) SetValue(s string) *MenuParamUpdate {
-	mpu.mutation.SetValue(s)
-	return mpu
+func (_u *MenuParamUpdate) SetValue(v string) *MenuParamUpdate {
+	_u.mutation.SetValue(v)
+	return _u
 }
 
 // SetNillableValue sets the "value" field if the given value is not nil.
-func (mpu *MenuParamUpdate) SetNillableValue(s *string) *MenuParamUpdate {
-	if s != nil {
-		mpu.SetValue(*s)
+func (_u *MenuParamUpdate) SetNillableValue(v *string) *MenuParamUpdate {
+	if v != nil {
+		_u.SetValue(*v)
 	}
-	return mpu
+	return _u
 }
 
 // SetMenusID sets the "menus" edge to the Menu entity by ID.
-func (mpu *MenuParamUpdate) SetMenusID(id int64) *MenuParamUpdate {
-	mpu.mutation.SetMenusID(id)
-	return mpu
+func (_u *MenuParamUpdate) SetMenusID(id int64) *MenuParamUpdate {
+	_u.mutation.SetMenusID(id)
+	return _u
 }
 
 // SetNillableMenusID sets the "menus" edge to the Menu entity by ID if the given value is not nil.
-func (mpu *MenuParamUpdate) SetNillableMenusID(id *int64) *MenuParamUpdate {
+func (_u *MenuParamUpdate) SetNillableMenusID(id *int64) *MenuParamUpdate {
 	if id != nil {
-		mpu = mpu.SetMenusID(*id)
+		_u = _u.SetMenusID(*id)
 	}
-	return mpu
+	return _u
 }
 
 // SetMenus sets the "menus" edge to the Menu entity.
-func (mpu *MenuParamUpdate) SetMenus(m *Menu) *MenuParamUpdate {
-	return mpu.SetMenusID(m.ID)
+func (_u *MenuParamUpdate) SetMenus(v *Menu) *MenuParamUpdate {
+	return _u.SetMenusID(v.ID)
 }
 
 // Mutation returns the MenuParamMutation object of the builder.
-func (mpu *MenuParamUpdate) Mutation() *MenuParamMutation {
-	return mpu.mutation
+func (_u *MenuParamUpdate) Mutation() *MenuParamMutation {
+	return _u.mutation
 }
 
 // ClearMenus clears the "menus" edge to the Menu entity.
-func (mpu *MenuParamUpdate) ClearMenus() *MenuParamUpdate {
-	mpu.mutation.ClearMenus()
-	return mpu
+func (_u *MenuParamUpdate) ClearMenus() *MenuParamUpdate {
+	_u.mutation.ClearMenus()
+	return _u
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
-func (mpu *MenuParamUpdate) Save(ctx context.Context) (int, error) {
-	mpu.defaults()
-	return withHooks(ctx, mpu.sqlSave, mpu.mutation, mpu.hooks)
+func (_u *MenuParamUpdate) Save(ctx context.Context) (int, error) {
+	_u.defaults()
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (mpu *MenuParamUpdate) SaveX(ctx context.Context) int {
-	affected, err := mpu.Save(ctx)
+func (_u *MenuParamUpdate) SaveX(ctx context.Context) int {
+	affected, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -184,78 +184,78 @@ func (mpu *MenuParamUpdate) SaveX(ctx context.Context) int {
 }
 
 // Exec executes the query.
-func (mpu *MenuParamUpdate) Exec(ctx context.Context) error {
-	_, err := mpu.Save(ctx)
+func (_u *MenuParamUpdate) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (mpu *MenuParamUpdate) ExecX(ctx context.Context) {
-	if err := mpu.Exec(ctx); err != nil {
+func (_u *MenuParamUpdate) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (mpu *MenuParamUpdate) defaults() {
-	if _, ok := mpu.mutation.UpdatedAt(); !ok && !mpu.mutation.UpdatedAtCleared() {
+func (_u *MenuParamUpdate) defaults() {
+	if _, ok := _u.mutation.UpdatedAt(); !ok && !_u.mutation.UpdatedAtCleared() {
 		v := menuparam.UpdateDefaultUpdatedAt()
-		mpu.mutation.SetUpdatedAt(v)
+		_u.mutation.SetUpdatedAt(v)
 	}
 }
 
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (mpu *MenuParamUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *MenuParamUpdate {
-	mpu.modifiers = append(mpu.modifiers, modifiers...)
-	return mpu
+func (_u *MenuParamUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *MenuParamUpdate {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
 }
 
-func (mpu *MenuParamUpdate) sqlSave(ctx context.Context) (n int, err error) {
+func (_u *MenuParamUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(menuparam.Table, menuparam.Columns, sqlgraph.NewFieldSpec(menuparam.FieldID, field.TypeInt64))
-	if ps := mpu.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if mpu.mutation.CreatedAtCleared() {
+	if _u.mutation.CreatedAtCleared() {
 		_spec.ClearField(menuparam.FieldCreatedAt, field.TypeTime)
 	}
-	if value, ok := mpu.mutation.UpdatedAt(); ok {
+	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(menuparam.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if mpu.mutation.UpdatedAtCleared() {
+	if _u.mutation.UpdatedAtCleared() {
 		_spec.ClearField(menuparam.FieldUpdatedAt, field.TypeTime)
 	}
-	if value, ok := mpu.mutation.Delete(); ok {
+	if value, ok := _u.mutation.Delete(); ok {
 		_spec.SetField(menuparam.FieldDelete, field.TypeInt64, value)
 	}
-	if value, ok := mpu.mutation.AddedDelete(); ok {
+	if value, ok := _u.mutation.AddedDelete(); ok {
 		_spec.AddField(menuparam.FieldDelete, field.TypeInt64, value)
 	}
-	if mpu.mutation.DeleteCleared() {
+	if _u.mutation.DeleteCleared() {
 		_spec.ClearField(menuparam.FieldDelete, field.TypeInt64)
 	}
-	if value, ok := mpu.mutation.CreatedID(); ok {
+	if value, ok := _u.mutation.CreatedID(); ok {
 		_spec.SetField(menuparam.FieldCreatedID, field.TypeInt64, value)
 	}
-	if value, ok := mpu.mutation.AddedCreatedID(); ok {
+	if value, ok := _u.mutation.AddedCreatedID(); ok {
 		_spec.AddField(menuparam.FieldCreatedID, field.TypeInt64, value)
 	}
-	if mpu.mutation.CreatedIDCleared() {
+	if _u.mutation.CreatedIDCleared() {
 		_spec.ClearField(menuparam.FieldCreatedID, field.TypeInt64)
 	}
-	if value, ok := mpu.mutation.GetType(); ok {
+	if value, ok := _u.mutation.GetType(); ok {
 		_spec.SetField(menuparam.FieldType, field.TypeString, value)
 	}
-	if value, ok := mpu.mutation.Key(); ok {
+	if value, ok := _u.mutation.Key(); ok {
 		_spec.SetField(menuparam.FieldKey, field.TypeString, value)
 	}
-	if value, ok := mpu.mutation.Value(); ok {
+	if value, ok := _u.mutation.Value(); ok {
 		_spec.SetField(menuparam.FieldValue, field.TypeString, value)
 	}
-	if mpu.mutation.MenusCleared() {
+	if _u.mutation.MenusCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
@@ -268,7 +268,7 @@ func (mpu *MenuParamUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := mpu.mutation.MenusIDs(); len(nodes) > 0 {
+	if nodes := _u.mutation.MenusIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
@@ -284,8 +284,8 @@ func (mpu *MenuParamUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(mpu.modifiers...)
-	if n, err = sqlgraph.UpdateNodes(ctx, mpu.driver, _spec); err != nil {
+	_spec.AddModifiers(_u.modifiers...)
+	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{menuparam.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -293,8 +293,8 @@ func (mpu *MenuParamUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		return 0, err
 	}
-	mpu.mutation.done = true
-	return n, nil
+	_u.mutation.done = true
+	return _node, nil
 }
 
 // MenuParamUpdateOne is the builder for updating a single MenuParam entity.
@@ -307,165 +307,165 @@ type MenuParamUpdateOne struct {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (mpuo *MenuParamUpdateOne) SetUpdatedAt(t time.Time) *MenuParamUpdateOne {
-	mpuo.mutation.SetUpdatedAt(t)
-	return mpuo
+func (_u *MenuParamUpdateOne) SetUpdatedAt(v time.Time) *MenuParamUpdateOne {
+	_u.mutation.SetUpdatedAt(v)
+	return _u
 }
 
 // ClearUpdatedAt clears the value of the "updated_at" field.
-func (mpuo *MenuParamUpdateOne) ClearUpdatedAt() *MenuParamUpdateOne {
-	mpuo.mutation.ClearUpdatedAt()
-	return mpuo
+func (_u *MenuParamUpdateOne) ClearUpdatedAt() *MenuParamUpdateOne {
+	_u.mutation.ClearUpdatedAt()
+	return _u
 }
 
 // SetDelete sets the "delete" field.
-func (mpuo *MenuParamUpdateOne) SetDelete(i int64) *MenuParamUpdateOne {
-	mpuo.mutation.ResetDelete()
-	mpuo.mutation.SetDelete(i)
-	return mpuo
+func (_u *MenuParamUpdateOne) SetDelete(v int64) *MenuParamUpdateOne {
+	_u.mutation.ResetDelete()
+	_u.mutation.SetDelete(v)
+	return _u
 }
 
 // SetNillableDelete sets the "delete" field if the given value is not nil.
-func (mpuo *MenuParamUpdateOne) SetNillableDelete(i *int64) *MenuParamUpdateOne {
-	if i != nil {
-		mpuo.SetDelete(*i)
+func (_u *MenuParamUpdateOne) SetNillableDelete(v *int64) *MenuParamUpdateOne {
+	if v != nil {
+		_u.SetDelete(*v)
 	}
-	return mpuo
+	return _u
 }
 
-// AddDelete adds i to the "delete" field.
-func (mpuo *MenuParamUpdateOne) AddDelete(i int64) *MenuParamUpdateOne {
-	mpuo.mutation.AddDelete(i)
-	return mpuo
+// AddDelete adds value to the "delete" field.
+func (_u *MenuParamUpdateOne) AddDelete(v int64) *MenuParamUpdateOne {
+	_u.mutation.AddDelete(v)
+	return _u
 }
 
 // ClearDelete clears the value of the "delete" field.
-func (mpuo *MenuParamUpdateOne) ClearDelete() *MenuParamUpdateOne {
-	mpuo.mutation.ClearDelete()
-	return mpuo
+func (_u *MenuParamUpdateOne) ClearDelete() *MenuParamUpdateOne {
+	_u.mutation.ClearDelete()
+	return _u
 }
 
 // SetCreatedID sets the "created_id" field.
-func (mpuo *MenuParamUpdateOne) SetCreatedID(i int64) *MenuParamUpdateOne {
-	mpuo.mutation.ResetCreatedID()
-	mpuo.mutation.SetCreatedID(i)
-	return mpuo
+func (_u *MenuParamUpdateOne) SetCreatedID(v int64) *MenuParamUpdateOne {
+	_u.mutation.ResetCreatedID()
+	_u.mutation.SetCreatedID(v)
+	return _u
 }
 
 // SetNillableCreatedID sets the "created_id" field if the given value is not nil.
-func (mpuo *MenuParamUpdateOne) SetNillableCreatedID(i *int64) *MenuParamUpdateOne {
-	if i != nil {
-		mpuo.SetCreatedID(*i)
+func (_u *MenuParamUpdateOne) SetNillableCreatedID(v *int64) *MenuParamUpdateOne {
+	if v != nil {
+		_u.SetCreatedID(*v)
 	}
-	return mpuo
+	return _u
 }
 
-// AddCreatedID adds i to the "created_id" field.
-func (mpuo *MenuParamUpdateOne) AddCreatedID(i int64) *MenuParamUpdateOne {
-	mpuo.mutation.AddCreatedID(i)
-	return mpuo
+// AddCreatedID adds value to the "created_id" field.
+func (_u *MenuParamUpdateOne) AddCreatedID(v int64) *MenuParamUpdateOne {
+	_u.mutation.AddCreatedID(v)
+	return _u
 }
 
 // ClearCreatedID clears the value of the "created_id" field.
-func (mpuo *MenuParamUpdateOne) ClearCreatedID() *MenuParamUpdateOne {
-	mpuo.mutation.ClearCreatedID()
-	return mpuo
+func (_u *MenuParamUpdateOne) ClearCreatedID() *MenuParamUpdateOne {
+	_u.mutation.ClearCreatedID()
+	return _u
 }
 
 // SetType sets the "type" field.
-func (mpuo *MenuParamUpdateOne) SetType(s string) *MenuParamUpdateOne {
-	mpuo.mutation.SetType(s)
-	return mpuo
+func (_u *MenuParamUpdateOne) SetType(v string) *MenuParamUpdateOne {
+	_u.mutation.SetType(v)
+	return _u
 }
 
 // SetNillableType sets the "type" field if the given value is not nil.
-func (mpuo *MenuParamUpdateOne) SetNillableType(s *string) *MenuParamUpdateOne {
-	if s != nil {
-		mpuo.SetType(*s)
+func (_u *MenuParamUpdateOne) SetNillableType(v *string) *MenuParamUpdateOne {
+	if v != nil {
+		_u.SetType(*v)
 	}
-	return mpuo
+	return _u
 }
 
 // SetKey sets the "key" field.
-func (mpuo *MenuParamUpdateOne) SetKey(s string) *MenuParamUpdateOne {
-	mpuo.mutation.SetKey(s)
-	return mpuo
+func (_u *MenuParamUpdateOne) SetKey(v string) *MenuParamUpdateOne {
+	_u.mutation.SetKey(v)
+	return _u
 }
 
 // SetNillableKey sets the "key" field if the given value is not nil.
-func (mpuo *MenuParamUpdateOne) SetNillableKey(s *string) *MenuParamUpdateOne {
-	if s != nil {
-		mpuo.SetKey(*s)
+func (_u *MenuParamUpdateOne) SetNillableKey(v *string) *MenuParamUpdateOne {
+	if v != nil {
+		_u.SetKey(*v)
 	}
-	return mpuo
+	return _u
 }
 
 // SetValue sets the "value" field.
-func (mpuo *MenuParamUpdateOne) SetValue(s string) *MenuParamUpdateOne {
-	mpuo.mutation.SetValue(s)
-	return mpuo
+func (_u *MenuParamUpdateOne) SetValue(v string) *MenuParamUpdateOne {
+	_u.mutation.SetValue(v)
+	return _u
 }
 
 // SetNillableValue sets the "value" field if the given value is not nil.
-func (mpuo *MenuParamUpdateOne) SetNillableValue(s *string) *MenuParamUpdateOne {
-	if s != nil {
-		mpuo.SetValue(*s)
+func (_u *MenuParamUpdateOne) SetNillableValue(v *string) *MenuParamUpdateOne {
+	if v != nil {
+		_u.SetValue(*v)
 	}
-	return mpuo
+	return _u
 }
 
 // SetMenusID sets the "menus" edge to the Menu entity by ID.
-func (mpuo *MenuParamUpdateOne) SetMenusID(id int64) *MenuParamUpdateOne {
-	mpuo.mutation.SetMenusID(id)
-	return mpuo
+func (_u *MenuParamUpdateOne) SetMenusID(id int64) *MenuParamUpdateOne {
+	_u.mutation.SetMenusID(id)
+	return _u
 }
 
 // SetNillableMenusID sets the "menus" edge to the Menu entity by ID if the given value is not nil.
-func (mpuo *MenuParamUpdateOne) SetNillableMenusID(id *int64) *MenuParamUpdateOne {
+func (_u *MenuParamUpdateOne) SetNillableMenusID(id *int64) *MenuParamUpdateOne {
 	if id != nil {
-		mpuo = mpuo.SetMenusID(*id)
+		_u = _u.SetMenusID(*id)
 	}
-	return mpuo
+	return _u
 }
 
 // SetMenus sets the "menus" edge to the Menu entity.
-func (mpuo *MenuParamUpdateOne) SetMenus(m *Menu) *MenuParamUpdateOne {
-	return mpuo.SetMenusID(m.ID)
+func (_u *MenuParamUpdateOne) SetMenus(v *Menu) *MenuParamUpdateOne {
+	return _u.SetMenusID(v.ID)
 }
 
 // Mutation returns the MenuParamMutation object of the builder.
-func (mpuo *MenuParamUpdateOne) Mutation() *MenuParamMutation {
-	return mpuo.mutation
+func (_u *MenuParamUpdateOne) Mutation() *MenuParamMutation {
+	return _u.mutation
 }
 
 // ClearMenus clears the "menus" edge to the Menu entity.
-func (mpuo *MenuParamUpdateOne) ClearMenus() *MenuParamUpdateOne {
-	mpuo.mutation.ClearMenus()
-	return mpuo
+func (_u *MenuParamUpdateOne) ClearMenus() *MenuParamUpdateOne {
+	_u.mutation.ClearMenus()
+	return _u
 }
 
 // Where appends a list predicates to the MenuParamUpdate builder.
-func (mpuo *MenuParamUpdateOne) Where(ps ...predicate.MenuParam) *MenuParamUpdateOne {
-	mpuo.mutation.Where(ps...)
-	return mpuo
+func (_u *MenuParamUpdateOne) Where(ps ...predicate.MenuParam) *MenuParamUpdateOne {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
 // The default is selecting all fields defined in the entity schema.
-func (mpuo *MenuParamUpdateOne) Select(field string, fields ...string) *MenuParamUpdateOne {
-	mpuo.fields = append([]string{field}, fields...)
-	return mpuo
+func (_u *MenuParamUpdateOne) Select(field string, fields ...string) *MenuParamUpdateOne {
+	_u.fields = append([]string{field}, fields...)
+	return _u
 }
 
 // Save executes the query and returns the updated MenuParam entity.
-func (mpuo *MenuParamUpdateOne) Save(ctx context.Context) (*MenuParam, error) {
-	mpuo.defaults()
-	return withHooks(ctx, mpuo.sqlSave, mpuo.mutation, mpuo.hooks)
+func (_u *MenuParamUpdateOne) Save(ctx context.Context) (*MenuParam, error) {
+	_u.defaults()
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (mpuo *MenuParamUpdateOne) SaveX(ctx context.Context) *MenuParam {
-	node, err := mpuo.Save(ctx)
+func (_u *MenuParamUpdateOne) SaveX(ctx context.Context) *MenuParam {
+	node, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -473,40 +473,40 @@ func (mpuo *MenuParamUpdateOne) SaveX(ctx context.Context) *MenuParam {
 }
 
 // Exec executes the query on the entity.
-func (mpuo *MenuParamUpdateOne) Exec(ctx context.Context) error {
-	_, err := mpuo.Save(ctx)
+func (_u *MenuParamUpdateOne) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (mpuo *MenuParamUpdateOne) ExecX(ctx context.Context) {
-	if err := mpuo.Exec(ctx); err != nil {
+func (_u *MenuParamUpdateOne) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (mpuo *MenuParamUpdateOne) defaults() {
-	if _, ok := mpuo.mutation.UpdatedAt(); !ok && !mpuo.mutation.UpdatedAtCleared() {
+func (_u *MenuParamUpdateOne) defaults() {
+	if _, ok := _u.mutation.UpdatedAt(); !ok && !_u.mutation.UpdatedAtCleared() {
 		v := menuparam.UpdateDefaultUpdatedAt()
-		mpuo.mutation.SetUpdatedAt(v)
+		_u.mutation.SetUpdatedAt(v)
 	}
 }
 
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (mpuo *MenuParamUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *MenuParamUpdateOne {
-	mpuo.modifiers = append(mpuo.modifiers, modifiers...)
-	return mpuo
+func (_u *MenuParamUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *MenuParamUpdateOne {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
 }
 
-func (mpuo *MenuParamUpdateOne) sqlSave(ctx context.Context) (_node *MenuParam, err error) {
+func (_u *MenuParamUpdateOne) sqlSave(ctx context.Context) (_node *MenuParam, err error) {
 	_spec := sqlgraph.NewUpdateSpec(menuparam.Table, menuparam.Columns, sqlgraph.NewFieldSpec(menuparam.FieldID, field.TypeInt64))
-	id, ok := mpuo.mutation.ID()
+	id, ok := _u.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "MenuParam.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
-	if fields := mpuo.fields; len(fields) > 0 {
+	if fields := _u.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
 		_spec.Node.Columns = append(_spec.Node.Columns, menuparam.FieldID)
 		for _, f := range fields {
@@ -518,50 +518,50 @@ func (mpuo *MenuParamUpdateOne) sqlSave(ctx context.Context) (_node *MenuParam, 
 			}
 		}
 	}
-	if ps := mpuo.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if mpuo.mutation.CreatedAtCleared() {
+	if _u.mutation.CreatedAtCleared() {
 		_spec.ClearField(menuparam.FieldCreatedAt, field.TypeTime)
 	}
-	if value, ok := mpuo.mutation.UpdatedAt(); ok {
+	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(menuparam.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if mpuo.mutation.UpdatedAtCleared() {
+	if _u.mutation.UpdatedAtCleared() {
 		_spec.ClearField(menuparam.FieldUpdatedAt, field.TypeTime)
 	}
-	if value, ok := mpuo.mutation.Delete(); ok {
+	if value, ok := _u.mutation.Delete(); ok {
 		_spec.SetField(menuparam.FieldDelete, field.TypeInt64, value)
 	}
-	if value, ok := mpuo.mutation.AddedDelete(); ok {
+	if value, ok := _u.mutation.AddedDelete(); ok {
 		_spec.AddField(menuparam.FieldDelete, field.TypeInt64, value)
 	}
-	if mpuo.mutation.DeleteCleared() {
+	if _u.mutation.DeleteCleared() {
 		_spec.ClearField(menuparam.FieldDelete, field.TypeInt64)
 	}
-	if value, ok := mpuo.mutation.CreatedID(); ok {
+	if value, ok := _u.mutation.CreatedID(); ok {
 		_spec.SetField(menuparam.FieldCreatedID, field.TypeInt64, value)
 	}
-	if value, ok := mpuo.mutation.AddedCreatedID(); ok {
+	if value, ok := _u.mutation.AddedCreatedID(); ok {
 		_spec.AddField(menuparam.FieldCreatedID, field.TypeInt64, value)
 	}
-	if mpuo.mutation.CreatedIDCleared() {
+	if _u.mutation.CreatedIDCleared() {
 		_spec.ClearField(menuparam.FieldCreatedID, field.TypeInt64)
 	}
-	if value, ok := mpuo.mutation.GetType(); ok {
+	if value, ok := _u.mutation.GetType(); ok {
 		_spec.SetField(menuparam.FieldType, field.TypeString, value)
 	}
-	if value, ok := mpuo.mutation.Key(); ok {
+	if value, ok := _u.mutation.Key(); ok {
 		_spec.SetField(menuparam.FieldKey, field.TypeString, value)
 	}
-	if value, ok := mpuo.mutation.Value(); ok {
+	if value, ok := _u.mutation.Value(); ok {
 		_spec.SetField(menuparam.FieldValue, field.TypeString, value)
 	}
-	if mpuo.mutation.MenusCleared() {
+	if _u.mutation.MenusCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
@@ -574,7 +574,7 @@ func (mpuo *MenuParamUpdateOne) sqlSave(ctx context.Context) (_node *MenuParam, 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := mpuo.mutation.MenusIDs(); len(nodes) > 0 {
+	if nodes := _u.mutation.MenusIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
@@ -590,11 +590,11 @@ func (mpuo *MenuParamUpdateOne) sqlSave(ctx context.Context) (_node *MenuParam, 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(mpuo.modifiers...)
-	_node = &MenuParam{config: mpuo.config}
+	_spec.AddModifiers(_u.modifiers...)
+	_node = &MenuParam{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues
-	if err = sqlgraph.UpdateNode(ctx, mpuo.driver, _spec); err != nil {
+	if err = sqlgraph.UpdateNode(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{menuparam.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -602,6 +602,6 @@ func (mpuo *MenuParamUpdateOne) sqlSave(ctx context.Context) (_node *MenuParam, 
 		}
 		return nil, err
 	}
-	mpuo.mutation.done = true
+	_u.mutation.done = true
 	return _node, nil
 }

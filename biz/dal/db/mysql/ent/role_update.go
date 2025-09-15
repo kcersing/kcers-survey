@@ -27,300 +27,300 @@ type RoleUpdate struct {
 }
 
 // Where appends a list predicates to the RoleUpdate builder.
-func (ru *RoleUpdate) Where(ps ...predicate.Role) *RoleUpdate {
-	ru.mutation.Where(ps...)
-	return ru
+func (_u *RoleUpdate) Where(ps ...predicate.Role) *RoleUpdate {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (ru *RoleUpdate) SetUpdatedAt(t time.Time) *RoleUpdate {
-	ru.mutation.SetUpdatedAt(t)
-	return ru
+func (_u *RoleUpdate) SetUpdatedAt(v time.Time) *RoleUpdate {
+	_u.mutation.SetUpdatedAt(v)
+	return _u
 }
 
 // ClearUpdatedAt clears the value of the "updated_at" field.
-func (ru *RoleUpdate) ClearUpdatedAt() *RoleUpdate {
-	ru.mutation.ClearUpdatedAt()
-	return ru
+func (_u *RoleUpdate) ClearUpdatedAt() *RoleUpdate {
+	_u.mutation.ClearUpdatedAt()
+	return _u
 }
 
 // SetDelete sets the "delete" field.
-func (ru *RoleUpdate) SetDelete(i int64) *RoleUpdate {
-	ru.mutation.ResetDelete()
-	ru.mutation.SetDelete(i)
-	return ru
+func (_u *RoleUpdate) SetDelete(v int64) *RoleUpdate {
+	_u.mutation.ResetDelete()
+	_u.mutation.SetDelete(v)
+	return _u
 }
 
 // SetNillableDelete sets the "delete" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableDelete(i *int64) *RoleUpdate {
-	if i != nil {
-		ru.SetDelete(*i)
+func (_u *RoleUpdate) SetNillableDelete(v *int64) *RoleUpdate {
+	if v != nil {
+		_u.SetDelete(*v)
 	}
-	return ru
+	return _u
 }
 
-// AddDelete adds i to the "delete" field.
-func (ru *RoleUpdate) AddDelete(i int64) *RoleUpdate {
-	ru.mutation.AddDelete(i)
-	return ru
+// AddDelete adds value to the "delete" field.
+func (_u *RoleUpdate) AddDelete(v int64) *RoleUpdate {
+	_u.mutation.AddDelete(v)
+	return _u
 }
 
 // ClearDelete clears the value of the "delete" field.
-func (ru *RoleUpdate) ClearDelete() *RoleUpdate {
-	ru.mutation.ClearDelete()
-	return ru
+func (_u *RoleUpdate) ClearDelete() *RoleUpdate {
+	_u.mutation.ClearDelete()
+	return _u
 }
 
 // SetCreatedID sets the "created_id" field.
-func (ru *RoleUpdate) SetCreatedID(i int64) *RoleUpdate {
-	ru.mutation.ResetCreatedID()
-	ru.mutation.SetCreatedID(i)
-	return ru
+func (_u *RoleUpdate) SetCreatedID(v int64) *RoleUpdate {
+	_u.mutation.ResetCreatedID()
+	_u.mutation.SetCreatedID(v)
+	return _u
 }
 
 // SetNillableCreatedID sets the "created_id" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableCreatedID(i *int64) *RoleUpdate {
-	if i != nil {
-		ru.SetCreatedID(*i)
+func (_u *RoleUpdate) SetNillableCreatedID(v *int64) *RoleUpdate {
+	if v != nil {
+		_u.SetCreatedID(*v)
 	}
-	return ru
+	return _u
 }
 
-// AddCreatedID adds i to the "created_id" field.
-func (ru *RoleUpdate) AddCreatedID(i int64) *RoleUpdate {
-	ru.mutation.AddCreatedID(i)
-	return ru
+// AddCreatedID adds value to the "created_id" field.
+func (_u *RoleUpdate) AddCreatedID(v int64) *RoleUpdate {
+	_u.mutation.AddCreatedID(v)
+	return _u
 }
 
 // ClearCreatedID clears the value of the "created_id" field.
-func (ru *RoleUpdate) ClearCreatedID() *RoleUpdate {
-	ru.mutation.ClearCreatedID()
-	return ru
+func (_u *RoleUpdate) ClearCreatedID() *RoleUpdate {
+	_u.mutation.ClearCreatedID()
+	return _u
 }
 
 // SetStatus sets the "status" field.
-func (ru *RoleUpdate) SetStatus(i int64) *RoleUpdate {
-	ru.mutation.ResetStatus()
-	ru.mutation.SetStatus(i)
-	return ru
+func (_u *RoleUpdate) SetStatus(v int64) *RoleUpdate {
+	_u.mutation.ResetStatus()
+	_u.mutation.SetStatus(v)
+	return _u
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableStatus(i *int64) *RoleUpdate {
-	if i != nil {
-		ru.SetStatus(*i)
+func (_u *RoleUpdate) SetNillableStatus(v *int64) *RoleUpdate {
+	if v != nil {
+		_u.SetStatus(*v)
 	}
-	return ru
+	return _u
 }
 
-// AddStatus adds i to the "status" field.
-func (ru *RoleUpdate) AddStatus(i int64) *RoleUpdate {
-	ru.mutation.AddStatus(i)
-	return ru
+// AddStatus adds value to the "status" field.
+func (_u *RoleUpdate) AddStatus(v int64) *RoleUpdate {
+	_u.mutation.AddStatus(v)
+	return _u
 }
 
 // ClearStatus clears the value of the "status" field.
-func (ru *RoleUpdate) ClearStatus() *RoleUpdate {
-	ru.mutation.ClearStatus()
-	return ru
+func (_u *RoleUpdate) ClearStatus() *RoleUpdate {
+	_u.mutation.ClearStatus()
+	return _u
 }
 
 // SetName sets the "name" field.
-func (ru *RoleUpdate) SetName(s string) *RoleUpdate {
-	ru.mutation.SetName(s)
-	return ru
+func (_u *RoleUpdate) SetName(v string) *RoleUpdate {
+	_u.mutation.SetName(v)
+	return _u
 }
 
 // SetNillableName sets the "name" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableName(s *string) *RoleUpdate {
-	if s != nil {
-		ru.SetName(*s)
+func (_u *RoleUpdate) SetNillableName(v *string) *RoleUpdate {
+	if v != nil {
+		_u.SetName(*v)
 	}
-	return ru
+	return _u
 }
 
 // SetValue sets the "value" field.
-func (ru *RoleUpdate) SetValue(s string) *RoleUpdate {
-	ru.mutation.SetValue(s)
-	return ru
+func (_u *RoleUpdate) SetValue(v string) *RoleUpdate {
+	_u.mutation.SetValue(v)
+	return _u
 }
 
 // SetNillableValue sets the "value" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableValue(s *string) *RoleUpdate {
-	if s != nil {
-		ru.SetValue(*s)
+func (_u *RoleUpdate) SetNillableValue(v *string) *RoleUpdate {
+	if v != nil {
+		_u.SetValue(*v)
 	}
-	return ru
+	return _u
 }
 
 // SetDefaultRouter sets the "default_router" field.
-func (ru *RoleUpdate) SetDefaultRouter(s string) *RoleUpdate {
-	ru.mutation.SetDefaultRouter(s)
-	return ru
+func (_u *RoleUpdate) SetDefaultRouter(v string) *RoleUpdate {
+	_u.mutation.SetDefaultRouter(v)
+	return _u
 }
 
 // SetNillableDefaultRouter sets the "default_router" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableDefaultRouter(s *string) *RoleUpdate {
-	if s != nil {
-		ru.SetDefaultRouter(*s)
+func (_u *RoleUpdate) SetNillableDefaultRouter(v *string) *RoleUpdate {
+	if v != nil {
+		_u.SetDefaultRouter(*v)
 	}
-	return ru
+	return _u
 }
 
 // SetRemark sets the "remark" field.
-func (ru *RoleUpdate) SetRemark(s string) *RoleUpdate {
-	ru.mutation.SetRemark(s)
-	return ru
+func (_u *RoleUpdate) SetRemark(v string) *RoleUpdate {
+	_u.mutation.SetRemark(v)
+	return _u
 }
 
 // SetNillableRemark sets the "remark" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableRemark(s *string) *RoleUpdate {
-	if s != nil {
-		ru.SetRemark(*s)
+func (_u *RoleUpdate) SetNillableRemark(v *string) *RoleUpdate {
+	if v != nil {
+		_u.SetRemark(*v)
 	}
-	return ru
+	return _u
 }
 
 // SetOrderNo sets the "order_no" field.
-func (ru *RoleUpdate) SetOrderNo(i int64) *RoleUpdate {
-	ru.mutation.ResetOrderNo()
-	ru.mutation.SetOrderNo(i)
-	return ru
+func (_u *RoleUpdate) SetOrderNo(v int64) *RoleUpdate {
+	_u.mutation.ResetOrderNo()
+	_u.mutation.SetOrderNo(v)
+	return _u
 }
 
 // SetNillableOrderNo sets the "order_no" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableOrderNo(i *int64) *RoleUpdate {
-	if i != nil {
-		ru.SetOrderNo(*i)
+func (_u *RoleUpdate) SetNillableOrderNo(v *int64) *RoleUpdate {
+	if v != nil {
+		_u.SetOrderNo(*v)
 	}
-	return ru
+	return _u
 }
 
-// AddOrderNo adds i to the "order_no" field.
-func (ru *RoleUpdate) AddOrderNo(i int64) *RoleUpdate {
-	ru.mutation.AddOrderNo(i)
-	return ru
+// AddOrderNo adds value to the "order_no" field.
+func (_u *RoleUpdate) AddOrderNo(v int64) *RoleUpdate {
+	_u.mutation.AddOrderNo(v)
+	return _u
 }
 
 // SetApis sets the "apis" field.
-func (ru *RoleUpdate) SetApis(i []int) *RoleUpdate {
-	ru.mutation.SetApis(i)
-	return ru
+func (_u *RoleUpdate) SetApis(v []int) *RoleUpdate {
+	_u.mutation.SetApis(v)
+	return _u
 }
 
-// AppendApis appends i to the "apis" field.
-func (ru *RoleUpdate) AppendApis(i []int) *RoleUpdate {
-	ru.mutation.AppendApis(i)
-	return ru
+// AppendApis appends value to the "apis" field.
+func (_u *RoleUpdate) AppendApis(v []int) *RoleUpdate {
+	_u.mutation.AppendApis(v)
+	return _u
 }
 
 // SetVenueID sets the "venue_id" field.
-func (ru *RoleUpdate) SetVenueID(i int64) *RoleUpdate {
-	ru.mutation.ResetVenueID()
-	ru.mutation.SetVenueID(i)
-	return ru
+func (_u *RoleUpdate) SetVenueID(v int64) *RoleUpdate {
+	_u.mutation.ResetVenueID()
+	_u.mutation.SetVenueID(v)
+	return _u
 }
 
 // SetNillableVenueID sets the "venue_id" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableVenueID(i *int64) *RoleUpdate {
-	if i != nil {
-		ru.SetVenueID(*i)
+func (_u *RoleUpdate) SetNillableVenueID(v *int64) *RoleUpdate {
+	if v != nil {
+		_u.SetVenueID(*v)
 	}
-	return ru
+	return _u
 }
 
-// AddVenueID adds i to the "venue_id" field.
-func (ru *RoleUpdate) AddVenueID(i int64) *RoleUpdate {
-	ru.mutation.AddVenueID(i)
-	return ru
+// AddVenueID adds value to the "venue_id" field.
+func (_u *RoleUpdate) AddVenueID(v int64) *RoleUpdate {
+	_u.mutation.AddVenueID(v)
+	return _u
 }
 
 // AddMenuIDs adds the "menus" edge to the Menu entity by IDs.
-func (ru *RoleUpdate) AddMenuIDs(ids ...int64) *RoleUpdate {
-	ru.mutation.AddMenuIDs(ids...)
-	return ru
+func (_u *RoleUpdate) AddMenuIDs(ids ...int64) *RoleUpdate {
+	_u.mutation.AddMenuIDs(ids...)
+	return _u
 }
 
 // AddMenus adds the "menus" edges to the Menu entity.
-func (ru *RoleUpdate) AddMenus(m ...*Menu) *RoleUpdate {
-	ids := make([]int64, len(m))
-	for i := range m {
-		ids[i] = m[i].ID
+func (_u *RoleUpdate) AddMenus(v ...*Menu) *RoleUpdate {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return ru.AddMenuIDs(ids...)
+	return _u.AddMenuIDs(ids...)
 }
 
 // AddUserIDs adds the "users" edge to the User entity by IDs.
-func (ru *RoleUpdate) AddUserIDs(ids ...int64) *RoleUpdate {
-	ru.mutation.AddUserIDs(ids...)
-	return ru
+func (_u *RoleUpdate) AddUserIDs(ids ...int64) *RoleUpdate {
+	_u.mutation.AddUserIDs(ids...)
+	return _u
 }
 
 // AddUsers adds the "users" edges to the User entity.
-func (ru *RoleUpdate) AddUsers(u ...*User) *RoleUpdate {
-	ids := make([]int64, len(u))
-	for i := range u {
-		ids[i] = u[i].ID
+func (_u *RoleUpdate) AddUsers(v ...*User) *RoleUpdate {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return ru.AddUserIDs(ids...)
+	return _u.AddUserIDs(ids...)
 }
 
 // Mutation returns the RoleMutation object of the builder.
-func (ru *RoleUpdate) Mutation() *RoleMutation {
-	return ru.mutation
+func (_u *RoleUpdate) Mutation() *RoleMutation {
+	return _u.mutation
 }
 
 // ClearMenus clears all "menus" edges to the Menu entity.
-func (ru *RoleUpdate) ClearMenus() *RoleUpdate {
-	ru.mutation.ClearMenus()
-	return ru
+func (_u *RoleUpdate) ClearMenus() *RoleUpdate {
+	_u.mutation.ClearMenus()
+	return _u
 }
 
 // RemoveMenuIDs removes the "menus" edge to Menu entities by IDs.
-func (ru *RoleUpdate) RemoveMenuIDs(ids ...int64) *RoleUpdate {
-	ru.mutation.RemoveMenuIDs(ids...)
-	return ru
+func (_u *RoleUpdate) RemoveMenuIDs(ids ...int64) *RoleUpdate {
+	_u.mutation.RemoveMenuIDs(ids...)
+	return _u
 }
 
 // RemoveMenus removes "menus" edges to Menu entities.
-func (ru *RoleUpdate) RemoveMenus(m ...*Menu) *RoleUpdate {
-	ids := make([]int64, len(m))
-	for i := range m {
-		ids[i] = m[i].ID
+func (_u *RoleUpdate) RemoveMenus(v ...*Menu) *RoleUpdate {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return ru.RemoveMenuIDs(ids...)
+	return _u.RemoveMenuIDs(ids...)
 }
 
 // ClearUsers clears all "users" edges to the User entity.
-func (ru *RoleUpdate) ClearUsers() *RoleUpdate {
-	ru.mutation.ClearUsers()
-	return ru
+func (_u *RoleUpdate) ClearUsers() *RoleUpdate {
+	_u.mutation.ClearUsers()
+	return _u
 }
 
 // RemoveUserIDs removes the "users" edge to User entities by IDs.
-func (ru *RoleUpdate) RemoveUserIDs(ids ...int64) *RoleUpdate {
-	ru.mutation.RemoveUserIDs(ids...)
-	return ru
+func (_u *RoleUpdate) RemoveUserIDs(ids ...int64) *RoleUpdate {
+	_u.mutation.RemoveUserIDs(ids...)
+	return _u
 }
 
 // RemoveUsers removes "users" edges to User entities.
-func (ru *RoleUpdate) RemoveUsers(u ...*User) *RoleUpdate {
-	ids := make([]int64, len(u))
-	for i := range u {
-		ids[i] = u[i].ID
+func (_u *RoleUpdate) RemoveUsers(v ...*User) *RoleUpdate {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return ru.RemoveUserIDs(ids...)
+	return _u.RemoveUserIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
-func (ru *RoleUpdate) Save(ctx context.Context) (int, error) {
-	ru.defaults()
-	return withHooks(ctx, ru.sqlSave, ru.mutation, ru.hooks)
+func (_u *RoleUpdate) Save(ctx context.Context) (int, error) {
+	_u.defaults()
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (ru *RoleUpdate) SaveX(ctx context.Context) int {
-	affected, err := ru.Save(ctx)
+func (_u *RoleUpdate) SaveX(ctx context.Context) int {
+	affected, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -328,110 +328,110 @@ func (ru *RoleUpdate) SaveX(ctx context.Context) int {
 }
 
 // Exec executes the query.
-func (ru *RoleUpdate) Exec(ctx context.Context) error {
-	_, err := ru.Save(ctx)
+func (_u *RoleUpdate) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (ru *RoleUpdate) ExecX(ctx context.Context) {
-	if err := ru.Exec(ctx); err != nil {
+func (_u *RoleUpdate) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (ru *RoleUpdate) defaults() {
-	if _, ok := ru.mutation.UpdatedAt(); !ok && !ru.mutation.UpdatedAtCleared() {
+func (_u *RoleUpdate) defaults() {
+	if _, ok := _u.mutation.UpdatedAt(); !ok && !_u.mutation.UpdatedAtCleared() {
 		v := role.UpdateDefaultUpdatedAt()
-		ru.mutation.SetUpdatedAt(v)
+		_u.mutation.SetUpdatedAt(v)
 	}
 }
 
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (ru *RoleUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *RoleUpdate {
-	ru.modifiers = append(ru.modifiers, modifiers...)
-	return ru
+func (_u *RoleUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *RoleUpdate {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
 }
 
-func (ru *RoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
+func (_u *RoleUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(role.Table, role.Columns, sqlgraph.NewFieldSpec(role.FieldID, field.TypeInt64))
-	if ps := ru.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if ru.mutation.CreatedAtCleared() {
+	if _u.mutation.CreatedAtCleared() {
 		_spec.ClearField(role.FieldCreatedAt, field.TypeTime)
 	}
-	if value, ok := ru.mutation.UpdatedAt(); ok {
+	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(role.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if ru.mutation.UpdatedAtCleared() {
+	if _u.mutation.UpdatedAtCleared() {
 		_spec.ClearField(role.FieldUpdatedAt, field.TypeTime)
 	}
-	if value, ok := ru.mutation.Delete(); ok {
+	if value, ok := _u.mutation.Delete(); ok {
 		_spec.SetField(role.FieldDelete, field.TypeInt64, value)
 	}
-	if value, ok := ru.mutation.AddedDelete(); ok {
+	if value, ok := _u.mutation.AddedDelete(); ok {
 		_spec.AddField(role.FieldDelete, field.TypeInt64, value)
 	}
-	if ru.mutation.DeleteCleared() {
+	if _u.mutation.DeleteCleared() {
 		_spec.ClearField(role.FieldDelete, field.TypeInt64)
 	}
-	if value, ok := ru.mutation.CreatedID(); ok {
+	if value, ok := _u.mutation.CreatedID(); ok {
 		_spec.SetField(role.FieldCreatedID, field.TypeInt64, value)
 	}
-	if value, ok := ru.mutation.AddedCreatedID(); ok {
+	if value, ok := _u.mutation.AddedCreatedID(); ok {
 		_spec.AddField(role.FieldCreatedID, field.TypeInt64, value)
 	}
-	if ru.mutation.CreatedIDCleared() {
+	if _u.mutation.CreatedIDCleared() {
 		_spec.ClearField(role.FieldCreatedID, field.TypeInt64)
 	}
-	if value, ok := ru.mutation.Status(); ok {
+	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(role.FieldStatus, field.TypeInt64, value)
 	}
-	if value, ok := ru.mutation.AddedStatus(); ok {
+	if value, ok := _u.mutation.AddedStatus(); ok {
 		_spec.AddField(role.FieldStatus, field.TypeInt64, value)
 	}
-	if ru.mutation.StatusCleared() {
+	if _u.mutation.StatusCleared() {
 		_spec.ClearField(role.FieldStatus, field.TypeInt64)
 	}
-	if value, ok := ru.mutation.Name(); ok {
+	if value, ok := _u.mutation.Name(); ok {
 		_spec.SetField(role.FieldName, field.TypeString, value)
 	}
-	if value, ok := ru.mutation.Value(); ok {
+	if value, ok := _u.mutation.Value(); ok {
 		_spec.SetField(role.FieldValue, field.TypeString, value)
 	}
-	if value, ok := ru.mutation.DefaultRouter(); ok {
+	if value, ok := _u.mutation.DefaultRouter(); ok {
 		_spec.SetField(role.FieldDefaultRouter, field.TypeString, value)
 	}
-	if value, ok := ru.mutation.Remark(); ok {
+	if value, ok := _u.mutation.Remark(); ok {
 		_spec.SetField(role.FieldRemark, field.TypeString, value)
 	}
-	if value, ok := ru.mutation.OrderNo(); ok {
+	if value, ok := _u.mutation.OrderNo(); ok {
 		_spec.SetField(role.FieldOrderNo, field.TypeInt64, value)
 	}
-	if value, ok := ru.mutation.AddedOrderNo(); ok {
+	if value, ok := _u.mutation.AddedOrderNo(); ok {
 		_spec.AddField(role.FieldOrderNo, field.TypeInt64, value)
 	}
-	if value, ok := ru.mutation.Apis(); ok {
+	if value, ok := _u.mutation.Apis(); ok {
 		_spec.SetField(role.FieldApis, field.TypeJSON, value)
 	}
-	if value, ok := ru.mutation.AppendedApis(); ok {
+	if value, ok := _u.mutation.AppendedApis(); ok {
 		_spec.AddModifier(func(u *sql.UpdateBuilder) {
 			sqljson.Append(u, role.FieldApis, value)
 		})
 	}
-	if value, ok := ru.mutation.VenueID(); ok {
+	if value, ok := _u.mutation.VenueID(); ok {
 		_spec.SetField(role.FieldVenueID, field.TypeInt64, value)
 	}
-	if value, ok := ru.mutation.AddedVenueID(); ok {
+	if value, ok := _u.mutation.AddedVenueID(); ok {
 		_spec.AddField(role.FieldVenueID, field.TypeInt64, value)
 	}
-	if ru.mutation.MenusCleared() {
+	if _u.mutation.MenusCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
@@ -444,7 +444,7 @@ func (ru *RoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ru.mutation.RemovedMenusIDs(); len(nodes) > 0 && !ru.mutation.MenusCleared() {
+	if nodes := _u.mutation.RemovedMenusIDs(); len(nodes) > 0 && !_u.mutation.MenusCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
@@ -460,7 +460,7 @@ func (ru *RoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ru.mutation.MenusIDs(); len(nodes) > 0 {
+	if nodes := _u.mutation.MenusIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
@@ -476,7 +476,7 @@ func (ru *RoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if ru.mutation.UsersCleared() {
+	if _u.mutation.UsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
@@ -489,7 +489,7 @@ func (ru *RoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ru.mutation.RemovedUsersIDs(); len(nodes) > 0 && !ru.mutation.UsersCleared() {
+	if nodes := _u.mutation.RemovedUsersIDs(); len(nodes) > 0 && !_u.mutation.UsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
@@ -505,7 +505,7 @@ func (ru *RoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ru.mutation.UsersIDs(); len(nodes) > 0 {
+	if nodes := _u.mutation.UsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
@@ -521,8 +521,8 @@ func (ru *RoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(ru.modifiers...)
-	if n, err = sqlgraph.UpdateNodes(ctx, ru.driver, _spec); err != nil {
+	_spec.AddModifiers(_u.modifiers...)
+	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{role.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -530,8 +530,8 @@ func (ru *RoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		return 0, err
 	}
-	ru.mutation.done = true
-	return n, nil
+	_u.mutation.done = true
+	return _node, nil
 }
 
 // RoleUpdateOne is the builder for updating a single Role entity.
@@ -544,307 +544,307 @@ type RoleUpdateOne struct {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (ruo *RoleUpdateOne) SetUpdatedAt(t time.Time) *RoleUpdateOne {
-	ruo.mutation.SetUpdatedAt(t)
-	return ruo
+func (_u *RoleUpdateOne) SetUpdatedAt(v time.Time) *RoleUpdateOne {
+	_u.mutation.SetUpdatedAt(v)
+	return _u
 }
 
 // ClearUpdatedAt clears the value of the "updated_at" field.
-func (ruo *RoleUpdateOne) ClearUpdatedAt() *RoleUpdateOne {
-	ruo.mutation.ClearUpdatedAt()
-	return ruo
+func (_u *RoleUpdateOne) ClearUpdatedAt() *RoleUpdateOne {
+	_u.mutation.ClearUpdatedAt()
+	return _u
 }
 
 // SetDelete sets the "delete" field.
-func (ruo *RoleUpdateOne) SetDelete(i int64) *RoleUpdateOne {
-	ruo.mutation.ResetDelete()
-	ruo.mutation.SetDelete(i)
-	return ruo
+func (_u *RoleUpdateOne) SetDelete(v int64) *RoleUpdateOne {
+	_u.mutation.ResetDelete()
+	_u.mutation.SetDelete(v)
+	return _u
 }
 
 // SetNillableDelete sets the "delete" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableDelete(i *int64) *RoleUpdateOne {
-	if i != nil {
-		ruo.SetDelete(*i)
+func (_u *RoleUpdateOne) SetNillableDelete(v *int64) *RoleUpdateOne {
+	if v != nil {
+		_u.SetDelete(*v)
 	}
-	return ruo
+	return _u
 }
 
-// AddDelete adds i to the "delete" field.
-func (ruo *RoleUpdateOne) AddDelete(i int64) *RoleUpdateOne {
-	ruo.mutation.AddDelete(i)
-	return ruo
+// AddDelete adds value to the "delete" field.
+func (_u *RoleUpdateOne) AddDelete(v int64) *RoleUpdateOne {
+	_u.mutation.AddDelete(v)
+	return _u
 }
 
 // ClearDelete clears the value of the "delete" field.
-func (ruo *RoleUpdateOne) ClearDelete() *RoleUpdateOne {
-	ruo.mutation.ClearDelete()
-	return ruo
+func (_u *RoleUpdateOne) ClearDelete() *RoleUpdateOne {
+	_u.mutation.ClearDelete()
+	return _u
 }
 
 // SetCreatedID sets the "created_id" field.
-func (ruo *RoleUpdateOne) SetCreatedID(i int64) *RoleUpdateOne {
-	ruo.mutation.ResetCreatedID()
-	ruo.mutation.SetCreatedID(i)
-	return ruo
+func (_u *RoleUpdateOne) SetCreatedID(v int64) *RoleUpdateOne {
+	_u.mutation.ResetCreatedID()
+	_u.mutation.SetCreatedID(v)
+	return _u
 }
 
 // SetNillableCreatedID sets the "created_id" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableCreatedID(i *int64) *RoleUpdateOne {
-	if i != nil {
-		ruo.SetCreatedID(*i)
+func (_u *RoleUpdateOne) SetNillableCreatedID(v *int64) *RoleUpdateOne {
+	if v != nil {
+		_u.SetCreatedID(*v)
 	}
-	return ruo
+	return _u
 }
 
-// AddCreatedID adds i to the "created_id" field.
-func (ruo *RoleUpdateOne) AddCreatedID(i int64) *RoleUpdateOne {
-	ruo.mutation.AddCreatedID(i)
-	return ruo
+// AddCreatedID adds value to the "created_id" field.
+func (_u *RoleUpdateOne) AddCreatedID(v int64) *RoleUpdateOne {
+	_u.mutation.AddCreatedID(v)
+	return _u
 }
 
 // ClearCreatedID clears the value of the "created_id" field.
-func (ruo *RoleUpdateOne) ClearCreatedID() *RoleUpdateOne {
-	ruo.mutation.ClearCreatedID()
-	return ruo
+func (_u *RoleUpdateOne) ClearCreatedID() *RoleUpdateOne {
+	_u.mutation.ClearCreatedID()
+	return _u
 }
 
 // SetStatus sets the "status" field.
-func (ruo *RoleUpdateOne) SetStatus(i int64) *RoleUpdateOne {
-	ruo.mutation.ResetStatus()
-	ruo.mutation.SetStatus(i)
-	return ruo
+func (_u *RoleUpdateOne) SetStatus(v int64) *RoleUpdateOne {
+	_u.mutation.ResetStatus()
+	_u.mutation.SetStatus(v)
+	return _u
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableStatus(i *int64) *RoleUpdateOne {
-	if i != nil {
-		ruo.SetStatus(*i)
+func (_u *RoleUpdateOne) SetNillableStatus(v *int64) *RoleUpdateOne {
+	if v != nil {
+		_u.SetStatus(*v)
 	}
-	return ruo
+	return _u
 }
 
-// AddStatus adds i to the "status" field.
-func (ruo *RoleUpdateOne) AddStatus(i int64) *RoleUpdateOne {
-	ruo.mutation.AddStatus(i)
-	return ruo
+// AddStatus adds value to the "status" field.
+func (_u *RoleUpdateOne) AddStatus(v int64) *RoleUpdateOne {
+	_u.mutation.AddStatus(v)
+	return _u
 }
 
 // ClearStatus clears the value of the "status" field.
-func (ruo *RoleUpdateOne) ClearStatus() *RoleUpdateOne {
-	ruo.mutation.ClearStatus()
-	return ruo
+func (_u *RoleUpdateOne) ClearStatus() *RoleUpdateOne {
+	_u.mutation.ClearStatus()
+	return _u
 }
 
 // SetName sets the "name" field.
-func (ruo *RoleUpdateOne) SetName(s string) *RoleUpdateOne {
-	ruo.mutation.SetName(s)
-	return ruo
+func (_u *RoleUpdateOne) SetName(v string) *RoleUpdateOne {
+	_u.mutation.SetName(v)
+	return _u
 }
 
 // SetNillableName sets the "name" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableName(s *string) *RoleUpdateOne {
-	if s != nil {
-		ruo.SetName(*s)
+func (_u *RoleUpdateOne) SetNillableName(v *string) *RoleUpdateOne {
+	if v != nil {
+		_u.SetName(*v)
 	}
-	return ruo
+	return _u
 }
 
 // SetValue sets the "value" field.
-func (ruo *RoleUpdateOne) SetValue(s string) *RoleUpdateOne {
-	ruo.mutation.SetValue(s)
-	return ruo
+func (_u *RoleUpdateOne) SetValue(v string) *RoleUpdateOne {
+	_u.mutation.SetValue(v)
+	return _u
 }
 
 // SetNillableValue sets the "value" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableValue(s *string) *RoleUpdateOne {
-	if s != nil {
-		ruo.SetValue(*s)
+func (_u *RoleUpdateOne) SetNillableValue(v *string) *RoleUpdateOne {
+	if v != nil {
+		_u.SetValue(*v)
 	}
-	return ruo
+	return _u
 }
 
 // SetDefaultRouter sets the "default_router" field.
-func (ruo *RoleUpdateOne) SetDefaultRouter(s string) *RoleUpdateOne {
-	ruo.mutation.SetDefaultRouter(s)
-	return ruo
+func (_u *RoleUpdateOne) SetDefaultRouter(v string) *RoleUpdateOne {
+	_u.mutation.SetDefaultRouter(v)
+	return _u
 }
 
 // SetNillableDefaultRouter sets the "default_router" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableDefaultRouter(s *string) *RoleUpdateOne {
-	if s != nil {
-		ruo.SetDefaultRouter(*s)
+func (_u *RoleUpdateOne) SetNillableDefaultRouter(v *string) *RoleUpdateOne {
+	if v != nil {
+		_u.SetDefaultRouter(*v)
 	}
-	return ruo
+	return _u
 }
 
 // SetRemark sets the "remark" field.
-func (ruo *RoleUpdateOne) SetRemark(s string) *RoleUpdateOne {
-	ruo.mutation.SetRemark(s)
-	return ruo
+func (_u *RoleUpdateOne) SetRemark(v string) *RoleUpdateOne {
+	_u.mutation.SetRemark(v)
+	return _u
 }
 
 // SetNillableRemark sets the "remark" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableRemark(s *string) *RoleUpdateOne {
-	if s != nil {
-		ruo.SetRemark(*s)
+func (_u *RoleUpdateOne) SetNillableRemark(v *string) *RoleUpdateOne {
+	if v != nil {
+		_u.SetRemark(*v)
 	}
-	return ruo
+	return _u
 }
 
 // SetOrderNo sets the "order_no" field.
-func (ruo *RoleUpdateOne) SetOrderNo(i int64) *RoleUpdateOne {
-	ruo.mutation.ResetOrderNo()
-	ruo.mutation.SetOrderNo(i)
-	return ruo
+func (_u *RoleUpdateOne) SetOrderNo(v int64) *RoleUpdateOne {
+	_u.mutation.ResetOrderNo()
+	_u.mutation.SetOrderNo(v)
+	return _u
 }
 
 // SetNillableOrderNo sets the "order_no" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableOrderNo(i *int64) *RoleUpdateOne {
-	if i != nil {
-		ruo.SetOrderNo(*i)
+func (_u *RoleUpdateOne) SetNillableOrderNo(v *int64) *RoleUpdateOne {
+	if v != nil {
+		_u.SetOrderNo(*v)
 	}
-	return ruo
+	return _u
 }
 
-// AddOrderNo adds i to the "order_no" field.
-func (ruo *RoleUpdateOne) AddOrderNo(i int64) *RoleUpdateOne {
-	ruo.mutation.AddOrderNo(i)
-	return ruo
+// AddOrderNo adds value to the "order_no" field.
+func (_u *RoleUpdateOne) AddOrderNo(v int64) *RoleUpdateOne {
+	_u.mutation.AddOrderNo(v)
+	return _u
 }
 
 // SetApis sets the "apis" field.
-func (ruo *RoleUpdateOne) SetApis(i []int) *RoleUpdateOne {
-	ruo.mutation.SetApis(i)
-	return ruo
+func (_u *RoleUpdateOne) SetApis(v []int) *RoleUpdateOne {
+	_u.mutation.SetApis(v)
+	return _u
 }
 
-// AppendApis appends i to the "apis" field.
-func (ruo *RoleUpdateOne) AppendApis(i []int) *RoleUpdateOne {
-	ruo.mutation.AppendApis(i)
-	return ruo
+// AppendApis appends value to the "apis" field.
+func (_u *RoleUpdateOne) AppendApis(v []int) *RoleUpdateOne {
+	_u.mutation.AppendApis(v)
+	return _u
 }
 
 // SetVenueID sets the "venue_id" field.
-func (ruo *RoleUpdateOne) SetVenueID(i int64) *RoleUpdateOne {
-	ruo.mutation.ResetVenueID()
-	ruo.mutation.SetVenueID(i)
-	return ruo
+func (_u *RoleUpdateOne) SetVenueID(v int64) *RoleUpdateOne {
+	_u.mutation.ResetVenueID()
+	_u.mutation.SetVenueID(v)
+	return _u
 }
 
 // SetNillableVenueID sets the "venue_id" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableVenueID(i *int64) *RoleUpdateOne {
-	if i != nil {
-		ruo.SetVenueID(*i)
+func (_u *RoleUpdateOne) SetNillableVenueID(v *int64) *RoleUpdateOne {
+	if v != nil {
+		_u.SetVenueID(*v)
 	}
-	return ruo
+	return _u
 }
 
-// AddVenueID adds i to the "venue_id" field.
-func (ruo *RoleUpdateOne) AddVenueID(i int64) *RoleUpdateOne {
-	ruo.mutation.AddVenueID(i)
-	return ruo
+// AddVenueID adds value to the "venue_id" field.
+func (_u *RoleUpdateOne) AddVenueID(v int64) *RoleUpdateOne {
+	_u.mutation.AddVenueID(v)
+	return _u
 }
 
 // AddMenuIDs adds the "menus" edge to the Menu entity by IDs.
-func (ruo *RoleUpdateOne) AddMenuIDs(ids ...int64) *RoleUpdateOne {
-	ruo.mutation.AddMenuIDs(ids...)
-	return ruo
+func (_u *RoleUpdateOne) AddMenuIDs(ids ...int64) *RoleUpdateOne {
+	_u.mutation.AddMenuIDs(ids...)
+	return _u
 }
 
 // AddMenus adds the "menus" edges to the Menu entity.
-func (ruo *RoleUpdateOne) AddMenus(m ...*Menu) *RoleUpdateOne {
-	ids := make([]int64, len(m))
-	for i := range m {
-		ids[i] = m[i].ID
+func (_u *RoleUpdateOne) AddMenus(v ...*Menu) *RoleUpdateOne {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return ruo.AddMenuIDs(ids...)
+	return _u.AddMenuIDs(ids...)
 }
 
 // AddUserIDs adds the "users" edge to the User entity by IDs.
-func (ruo *RoleUpdateOne) AddUserIDs(ids ...int64) *RoleUpdateOne {
-	ruo.mutation.AddUserIDs(ids...)
-	return ruo
+func (_u *RoleUpdateOne) AddUserIDs(ids ...int64) *RoleUpdateOne {
+	_u.mutation.AddUserIDs(ids...)
+	return _u
 }
 
 // AddUsers adds the "users" edges to the User entity.
-func (ruo *RoleUpdateOne) AddUsers(u ...*User) *RoleUpdateOne {
-	ids := make([]int64, len(u))
-	for i := range u {
-		ids[i] = u[i].ID
+func (_u *RoleUpdateOne) AddUsers(v ...*User) *RoleUpdateOne {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return ruo.AddUserIDs(ids...)
+	return _u.AddUserIDs(ids...)
 }
 
 // Mutation returns the RoleMutation object of the builder.
-func (ruo *RoleUpdateOne) Mutation() *RoleMutation {
-	return ruo.mutation
+func (_u *RoleUpdateOne) Mutation() *RoleMutation {
+	return _u.mutation
 }
 
 // ClearMenus clears all "menus" edges to the Menu entity.
-func (ruo *RoleUpdateOne) ClearMenus() *RoleUpdateOne {
-	ruo.mutation.ClearMenus()
-	return ruo
+func (_u *RoleUpdateOne) ClearMenus() *RoleUpdateOne {
+	_u.mutation.ClearMenus()
+	return _u
 }
 
 // RemoveMenuIDs removes the "menus" edge to Menu entities by IDs.
-func (ruo *RoleUpdateOne) RemoveMenuIDs(ids ...int64) *RoleUpdateOne {
-	ruo.mutation.RemoveMenuIDs(ids...)
-	return ruo
+func (_u *RoleUpdateOne) RemoveMenuIDs(ids ...int64) *RoleUpdateOne {
+	_u.mutation.RemoveMenuIDs(ids...)
+	return _u
 }
 
 // RemoveMenus removes "menus" edges to Menu entities.
-func (ruo *RoleUpdateOne) RemoveMenus(m ...*Menu) *RoleUpdateOne {
-	ids := make([]int64, len(m))
-	for i := range m {
-		ids[i] = m[i].ID
+func (_u *RoleUpdateOne) RemoveMenus(v ...*Menu) *RoleUpdateOne {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return ruo.RemoveMenuIDs(ids...)
+	return _u.RemoveMenuIDs(ids...)
 }
 
 // ClearUsers clears all "users" edges to the User entity.
-func (ruo *RoleUpdateOne) ClearUsers() *RoleUpdateOne {
-	ruo.mutation.ClearUsers()
-	return ruo
+func (_u *RoleUpdateOne) ClearUsers() *RoleUpdateOne {
+	_u.mutation.ClearUsers()
+	return _u
 }
 
 // RemoveUserIDs removes the "users" edge to User entities by IDs.
-func (ruo *RoleUpdateOne) RemoveUserIDs(ids ...int64) *RoleUpdateOne {
-	ruo.mutation.RemoveUserIDs(ids...)
-	return ruo
+func (_u *RoleUpdateOne) RemoveUserIDs(ids ...int64) *RoleUpdateOne {
+	_u.mutation.RemoveUserIDs(ids...)
+	return _u
 }
 
 // RemoveUsers removes "users" edges to User entities.
-func (ruo *RoleUpdateOne) RemoveUsers(u ...*User) *RoleUpdateOne {
-	ids := make([]int64, len(u))
-	for i := range u {
-		ids[i] = u[i].ID
+func (_u *RoleUpdateOne) RemoveUsers(v ...*User) *RoleUpdateOne {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return ruo.RemoveUserIDs(ids...)
+	return _u.RemoveUserIDs(ids...)
 }
 
 // Where appends a list predicates to the RoleUpdate builder.
-func (ruo *RoleUpdateOne) Where(ps ...predicate.Role) *RoleUpdateOne {
-	ruo.mutation.Where(ps...)
-	return ruo
+func (_u *RoleUpdateOne) Where(ps ...predicate.Role) *RoleUpdateOne {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
 // The default is selecting all fields defined in the entity schema.
-func (ruo *RoleUpdateOne) Select(field string, fields ...string) *RoleUpdateOne {
-	ruo.fields = append([]string{field}, fields...)
-	return ruo
+func (_u *RoleUpdateOne) Select(field string, fields ...string) *RoleUpdateOne {
+	_u.fields = append([]string{field}, fields...)
+	return _u
 }
 
 // Save executes the query and returns the updated Role entity.
-func (ruo *RoleUpdateOne) Save(ctx context.Context) (*Role, error) {
-	ruo.defaults()
-	return withHooks(ctx, ruo.sqlSave, ruo.mutation, ruo.hooks)
+func (_u *RoleUpdateOne) Save(ctx context.Context) (*Role, error) {
+	_u.defaults()
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (ruo *RoleUpdateOne) SaveX(ctx context.Context) *Role {
-	node, err := ruo.Save(ctx)
+func (_u *RoleUpdateOne) SaveX(ctx context.Context) *Role {
+	node, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -852,40 +852,40 @@ func (ruo *RoleUpdateOne) SaveX(ctx context.Context) *Role {
 }
 
 // Exec executes the query on the entity.
-func (ruo *RoleUpdateOne) Exec(ctx context.Context) error {
-	_, err := ruo.Save(ctx)
+func (_u *RoleUpdateOne) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (ruo *RoleUpdateOne) ExecX(ctx context.Context) {
-	if err := ruo.Exec(ctx); err != nil {
+func (_u *RoleUpdateOne) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (ruo *RoleUpdateOne) defaults() {
-	if _, ok := ruo.mutation.UpdatedAt(); !ok && !ruo.mutation.UpdatedAtCleared() {
+func (_u *RoleUpdateOne) defaults() {
+	if _, ok := _u.mutation.UpdatedAt(); !ok && !_u.mutation.UpdatedAtCleared() {
 		v := role.UpdateDefaultUpdatedAt()
-		ruo.mutation.SetUpdatedAt(v)
+		_u.mutation.SetUpdatedAt(v)
 	}
 }
 
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (ruo *RoleUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *RoleUpdateOne {
-	ruo.modifiers = append(ruo.modifiers, modifiers...)
-	return ruo
+func (_u *RoleUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *RoleUpdateOne {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
 }
 
-func (ruo *RoleUpdateOne) sqlSave(ctx context.Context) (_node *Role, err error) {
+func (_u *RoleUpdateOne) sqlSave(ctx context.Context) (_node *Role, err error) {
 	_spec := sqlgraph.NewUpdateSpec(role.Table, role.Columns, sqlgraph.NewFieldSpec(role.FieldID, field.TypeInt64))
-	id, ok := ruo.mutation.ID()
+	id, ok := _u.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Role.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
-	if fields := ruo.fields; len(fields) > 0 {
+	if fields := _u.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
 		_spec.Node.Columns = append(_spec.Node.Columns, role.FieldID)
 		for _, f := range fields {
@@ -897,82 +897,82 @@ func (ruo *RoleUpdateOne) sqlSave(ctx context.Context) (_node *Role, err error) 
 			}
 		}
 	}
-	if ps := ruo.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if ruo.mutation.CreatedAtCleared() {
+	if _u.mutation.CreatedAtCleared() {
 		_spec.ClearField(role.FieldCreatedAt, field.TypeTime)
 	}
-	if value, ok := ruo.mutation.UpdatedAt(); ok {
+	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(role.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if ruo.mutation.UpdatedAtCleared() {
+	if _u.mutation.UpdatedAtCleared() {
 		_spec.ClearField(role.FieldUpdatedAt, field.TypeTime)
 	}
-	if value, ok := ruo.mutation.Delete(); ok {
+	if value, ok := _u.mutation.Delete(); ok {
 		_spec.SetField(role.FieldDelete, field.TypeInt64, value)
 	}
-	if value, ok := ruo.mutation.AddedDelete(); ok {
+	if value, ok := _u.mutation.AddedDelete(); ok {
 		_spec.AddField(role.FieldDelete, field.TypeInt64, value)
 	}
-	if ruo.mutation.DeleteCleared() {
+	if _u.mutation.DeleteCleared() {
 		_spec.ClearField(role.FieldDelete, field.TypeInt64)
 	}
-	if value, ok := ruo.mutation.CreatedID(); ok {
+	if value, ok := _u.mutation.CreatedID(); ok {
 		_spec.SetField(role.FieldCreatedID, field.TypeInt64, value)
 	}
-	if value, ok := ruo.mutation.AddedCreatedID(); ok {
+	if value, ok := _u.mutation.AddedCreatedID(); ok {
 		_spec.AddField(role.FieldCreatedID, field.TypeInt64, value)
 	}
-	if ruo.mutation.CreatedIDCleared() {
+	if _u.mutation.CreatedIDCleared() {
 		_spec.ClearField(role.FieldCreatedID, field.TypeInt64)
 	}
-	if value, ok := ruo.mutation.Status(); ok {
+	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(role.FieldStatus, field.TypeInt64, value)
 	}
-	if value, ok := ruo.mutation.AddedStatus(); ok {
+	if value, ok := _u.mutation.AddedStatus(); ok {
 		_spec.AddField(role.FieldStatus, field.TypeInt64, value)
 	}
-	if ruo.mutation.StatusCleared() {
+	if _u.mutation.StatusCleared() {
 		_spec.ClearField(role.FieldStatus, field.TypeInt64)
 	}
-	if value, ok := ruo.mutation.Name(); ok {
+	if value, ok := _u.mutation.Name(); ok {
 		_spec.SetField(role.FieldName, field.TypeString, value)
 	}
-	if value, ok := ruo.mutation.Value(); ok {
+	if value, ok := _u.mutation.Value(); ok {
 		_spec.SetField(role.FieldValue, field.TypeString, value)
 	}
-	if value, ok := ruo.mutation.DefaultRouter(); ok {
+	if value, ok := _u.mutation.DefaultRouter(); ok {
 		_spec.SetField(role.FieldDefaultRouter, field.TypeString, value)
 	}
-	if value, ok := ruo.mutation.Remark(); ok {
+	if value, ok := _u.mutation.Remark(); ok {
 		_spec.SetField(role.FieldRemark, field.TypeString, value)
 	}
-	if value, ok := ruo.mutation.OrderNo(); ok {
+	if value, ok := _u.mutation.OrderNo(); ok {
 		_spec.SetField(role.FieldOrderNo, field.TypeInt64, value)
 	}
-	if value, ok := ruo.mutation.AddedOrderNo(); ok {
+	if value, ok := _u.mutation.AddedOrderNo(); ok {
 		_spec.AddField(role.FieldOrderNo, field.TypeInt64, value)
 	}
-	if value, ok := ruo.mutation.Apis(); ok {
+	if value, ok := _u.mutation.Apis(); ok {
 		_spec.SetField(role.FieldApis, field.TypeJSON, value)
 	}
-	if value, ok := ruo.mutation.AppendedApis(); ok {
+	if value, ok := _u.mutation.AppendedApis(); ok {
 		_spec.AddModifier(func(u *sql.UpdateBuilder) {
 			sqljson.Append(u, role.FieldApis, value)
 		})
 	}
-	if value, ok := ruo.mutation.VenueID(); ok {
+	if value, ok := _u.mutation.VenueID(); ok {
 		_spec.SetField(role.FieldVenueID, field.TypeInt64, value)
 	}
-	if value, ok := ruo.mutation.AddedVenueID(); ok {
+	if value, ok := _u.mutation.AddedVenueID(); ok {
 		_spec.AddField(role.FieldVenueID, field.TypeInt64, value)
 	}
-	if ruo.mutation.MenusCleared() {
+	if _u.mutation.MenusCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
@@ -985,7 +985,7 @@ func (ruo *RoleUpdateOne) sqlSave(ctx context.Context) (_node *Role, err error) 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ruo.mutation.RemovedMenusIDs(); len(nodes) > 0 && !ruo.mutation.MenusCleared() {
+	if nodes := _u.mutation.RemovedMenusIDs(); len(nodes) > 0 && !_u.mutation.MenusCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
@@ -1001,7 +1001,7 @@ func (ruo *RoleUpdateOne) sqlSave(ctx context.Context) (_node *Role, err error) 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ruo.mutation.MenusIDs(); len(nodes) > 0 {
+	if nodes := _u.mutation.MenusIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
@@ -1017,7 +1017,7 @@ func (ruo *RoleUpdateOne) sqlSave(ctx context.Context) (_node *Role, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if ruo.mutation.UsersCleared() {
+	if _u.mutation.UsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
@@ -1030,7 +1030,7 @@ func (ruo *RoleUpdateOne) sqlSave(ctx context.Context) (_node *Role, err error) 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ruo.mutation.RemovedUsersIDs(); len(nodes) > 0 && !ruo.mutation.UsersCleared() {
+	if nodes := _u.mutation.RemovedUsersIDs(); len(nodes) > 0 && !_u.mutation.UsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
@@ -1046,7 +1046,7 @@ func (ruo *RoleUpdateOne) sqlSave(ctx context.Context) (_node *Role, err error) 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ruo.mutation.UsersIDs(); len(nodes) > 0 {
+	if nodes := _u.mutation.UsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
@@ -1062,11 +1062,11 @@ func (ruo *RoleUpdateOne) sqlSave(ctx context.Context) (_node *Role, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(ruo.modifiers...)
-	_node = &Role{config: ruo.config}
+	_spec.AddModifiers(_u.modifiers...)
+	_node = &Role{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues
-	if err = sqlgraph.UpdateNode(ctx, ruo.driver, _spec); err != nil {
+	if err = sqlgraph.UpdateNode(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{role.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -1074,6 +1074,6 @@ func (ruo *RoleUpdateOne) sqlSave(ctx context.Context) (_node *Role, err error) 
 		}
 		return nil, err
 	}
-	ruo.mutation.done = true
+	_u.mutation.done = true
 	return _node, nil
 }

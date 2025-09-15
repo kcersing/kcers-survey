@@ -93,7 +93,7 @@ func (*Survey) scanValues(columns []string) ([]any, error) {
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
 // to the Survey fields.
-func (s *Survey) assignValues(columns []string, values []any) error {
+func (_m *Survey) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
@@ -104,69 +104,69 @@ func (s *Survey) assignValues(columns []string, values []any) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			s.ID = int64(value.Int64)
+			_m.ID = int64(value.Int64)
 		case survey.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				s.CreatedAt = value.Time
+				_m.CreatedAt = value.Time
 			}
 		case survey.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				s.UpdatedAt = value.Time
+				_m.UpdatedAt = value.Time
 			}
 		case survey.FieldDelete:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field delete", values[i])
 			} else if value.Valid {
-				s.Delete = value.Int64
+				_m.Delete = value.Int64
 			}
 		case survey.FieldCreatedID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_id", values[i])
 			} else if value.Valid {
-				s.CreatedID = value.Int64
+				_m.CreatedID = value.Int64
 			}
 		case survey.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				s.Status = value.Int64
+				_m.Status = value.Int64
 			}
 		case survey.FieldTitle:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field title", values[i])
 			} else if value.Valid {
-				s.Title = value.String
+				_m.Title = value.String
 			}
 		case survey.FieldPic:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field pic", values[i])
 			} else if value.Valid {
-				s.Pic = value.String
+				_m.Pic = value.String
 			}
 		case survey.FieldDesc:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field desc", values[i])
 			} else if value.Valid {
-				s.Desc = value.String
+				_m.Desc = value.String
 			}
 		case survey.FieldStartAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field start_at", values[i])
 			} else if value.Valid {
-				s.StartAt = value.Time
+				_m.StartAt = value.Time
 			}
 		case survey.FieldEndAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field end_at", values[i])
 			} else if value.Valid {
-				s.EndAt = value.Time
+				_m.EndAt = value.Time
 			}
 		default:
-			s.selectValues.Set(columns[i], values[i])
+			_m.selectValues.Set(columns[i], values[i])
 		}
 	}
 	return nil
@@ -174,72 +174,72 @@ func (s *Survey) assignValues(columns []string, values []any) error {
 
 // Value returns the ent.Value that was dynamically selected and assigned to the Survey.
 // This includes values selected through modifiers, order, etc.
-func (s *Survey) Value(name string) (ent.Value, error) {
-	return s.selectValues.Get(name)
+func (_m *Survey) Value(name string) (ent.Value, error) {
+	return _m.selectValues.Get(name)
 }
 
 // QueryQuestion queries the "question" edge of the Survey entity.
-func (s *Survey) QueryQuestion() *SurveyQuestionQuery {
-	return NewSurveyClient(s.config).QueryQuestion(s)
+func (_m *Survey) QueryQuestion() *SurveyQuestionQuery {
+	return NewSurveyClient(_m.config).QueryQuestion(_m)
 }
 
 // QueryResponse queries the "response" edge of the Survey entity.
-func (s *Survey) QueryResponse() *SurveyResponseQuery {
-	return NewSurveyClient(s.config).QueryResponse(s)
+func (_m *Survey) QueryResponse() *SurveyResponseQuery {
+	return NewSurveyClient(_m.config).QueryResponse(_m)
 }
 
 // Update returns a builder for updating this Survey.
 // Note that you need to call Survey.Unwrap() before calling this method if this Survey
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (s *Survey) Update() *SurveyUpdateOne {
-	return NewSurveyClient(s.config).UpdateOne(s)
+func (_m *Survey) Update() *SurveyUpdateOne {
+	return NewSurveyClient(_m.config).UpdateOne(_m)
 }
 
 // Unwrap unwraps the Survey entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (s *Survey) Unwrap() *Survey {
-	_tx, ok := s.config.driver.(*txDriver)
+func (_m *Survey) Unwrap() *Survey {
+	_tx, ok := _m.config.driver.(*txDriver)
 	if !ok {
 		panic("ent: Survey is not a transactional entity")
 	}
-	s.config.driver = _tx.drv
-	return s
+	_m.config.driver = _tx.drv
+	return _m
 }
 
 // String implements the fmt.Stringer.
-func (s *Survey) String() string {
+func (_m *Survey) String() string {
 	var builder strings.Builder
 	builder.WriteString("Survey(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", s.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
 	builder.WriteString("created_at=")
-	builder.WriteString(s.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
-	builder.WriteString(s.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("delete=")
-	builder.WriteString(fmt.Sprintf("%v", s.Delete))
+	builder.WriteString(fmt.Sprintf("%v", _m.Delete))
 	builder.WriteString(", ")
 	builder.WriteString("created_id=")
-	builder.WriteString(fmt.Sprintf("%v", s.CreatedID))
+	builder.WriteString(fmt.Sprintf("%v", _m.CreatedID))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
-	builder.WriteString(fmt.Sprintf("%v", s.Status))
+	builder.WriteString(fmt.Sprintf("%v", _m.Status))
 	builder.WriteString(", ")
 	builder.WriteString("title=")
-	builder.WriteString(s.Title)
+	builder.WriteString(_m.Title)
 	builder.WriteString(", ")
 	builder.WriteString("pic=")
-	builder.WriteString(s.Pic)
+	builder.WriteString(_m.Pic)
 	builder.WriteString(", ")
 	builder.WriteString("desc=")
-	builder.WriteString(s.Desc)
+	builder.WriteString(_m.Desc)
 	builder.WriteString(", ")
 	builder.WriteString("start_at=")
-	builder.WriteString(s.StartAt.Format(time.ANSIC))
+	builder.WriteString(_m.StartAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("end_at=")
-	builder.WriteString(s.EndAt.Format(time.ANSIC))
+	builder.WriteString(_m.EndAt.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

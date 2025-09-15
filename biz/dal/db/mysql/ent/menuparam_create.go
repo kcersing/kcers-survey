@@ -22,118 +22,118 @@ type MenuParamCreate struct {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (mpc *MenuParamCreate) SetCreatedAt(t time.Time) *MenuParamCreate {
-	mpc.mutation.SetCreatedAt(t)
-	return mpc
+func (_c *MenuParamCreate) SetCreatedAt(v time.Time) *MenuParamCreate {
+	_c.mutation.SetCreatedAt(v)
+	return _c
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (mpc *MenuParamCreate) SetNillableCreatedAt(t *time.Time) *MenuParamCreate {
-	if t != nil {
-		mpc.SetCreatedAt(*t)
+func (_c *MenuParamCreate) SetNillableCreatedAt(v *time.Time) *MenuParamCreate {
+	if v != nil {
+		_c.SetCreatedAt(*v)
 	}
-	return mpc
+	return _c
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (mpc *MenuParamCreate) SetUpdatedAt(t time.Time) *MenuParamCreate {
-	mpc.mutation.SetUpdatedAt(t)
-	return mpc
+func (_c *MenuParamCreate) SetUpdatedAt(v time.Time) *MenuParamCreate {
+	_c.mutation.SetUpdatedAt(v)
+	return _c
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (mpc *MenuParamCreate) SetNillableUpdatedAt(t *time.Time) *MenuParamCreate {
-	if t != nil {
-		mpc.SetUpdatedAt(*t)
+func (_c *MenuParamCreate) SetNillableUpdatedAt(v *time.Time) *MenuParamCreate {
+	if v != nil {
+		_c.SetUpdatedAt(*v)
 	}
-	return mpc
+	return _c
 }
 
 // SetDelete sets the "delete" field.
-func (mpc *MenuParamCreate) SetDelete(i int64) *MenuParamCreate {
-	mpc.mutation.SetDelete(i)
-	return mpc
+func (_c *MenuParamCreate) SetDelete(v int64) *MenuParamCreate {
+	_c.mutation.SetDelete(v)
+	return _c
 }
 
 // SetNillableDelete sets the "delete" field if the given value is not nil.
-func (mpc *MenuParamCreate) SetNillableDelete(i *int64) *MenuParamCreate {
-	if i != nil {
-		mpc.SetDelete(*i)
+func (_c *MenuParamCreate) SetNillableDelete(v *int64) *MenuParamCreate {
+	if v != nil {
+		_c.SetDelete(*v)
 	}
-	return mpc
+	return _c
 }
 
 // SetCreatedID sets the "created_id" field.
-func (mpc *MenuParamCreate) SetCreatedID(i int64) *MenuParamCreate {
-	mpc.mutation.SetCreatedID(i)
-	return mpc
+func (_c *MenuParamCreate) SetCreatedID(v int64) *MenuParamCreate {
+	_c.mutation.SetCreatedID(v)
+	return _c
 }
 
 // SetNillableCreatedID sets the "created_id" field if the given value is not nil.
-func (mpc *MenuParamCreate) SetNillableCreatedID(i *int64) *MenuParamCreate {
-	if i != nil {
-		mpc.SetCreatedID(*i)
+func (_c *MenuParamCreate) SetNillableCreatedID(v *int64) *MenuParamCreate {
+	if v != nil {
+		_c.SetCreatedID(*v)
 	}
-	return mpc
+	return _c
 }
 
 // SetType sets the "type" field.
-func (mpc *MenuParamCreate) SetType(s string) *MenuParamCreate {
-	mpc.mutation.SetType(s)
-	return mpc
+func (_c *MenuParamCreate) SetType(v string) *MenuParamCreate {
+	_c.mutation.SetType(v)
+	return _c
 }
 
 // SetKey sets the "key" field.
-func (mpc *MenuParamCreate) SetKey(s string) *MenuParamCreate {
-	mpc.mutation.SetKey(s)
-	return mpc
+func (_c *MenuParamCreate) SetKey(v string) *MenuParamCreate {
+	_c.mutation.SetKey(v)
+	return _c
 }
 
 // SetValue sets the "value" field.
-func (mpc *MenuParamCreate) SetValue(s string) *MenuParamCreate {
-	mpc.mutation.SetValue(s)
-	return mpc
+func (_c *MenuParamCreate) SetValue(v string) *MenuParamCreate {
+	_c.mutation.SetValue(v)
+	return _c
 }
 
 // SetID sets the "id" field.
-func (mpc *MenuParamCreate) SetID(i int64) *MenuParamCreate {
-	mpc.mutation.SetID(i)
-	return mpc
+func (_c *MenuParamCreate) SetID(v int64) *MenuParamCreate {
+	_c.mutation.SetID(v)
+	return _c
 }
 
 // SetMenusID sets the "menus" edge to the Menu entity by ID.
-func (mpc *MenuParamCreate) SetMenusID(id int64) *MenuParamCreate {
-	mpc.mutation.SetMenusID(id)
-	return mpc
+func (_c *MenuParamCreate) SetMenusID(id int64) *MenuParamCreate {
+	_c.mutation.SetMenusID(id)
+	return _c
 }
 
 // SetNillableMenusID sets the "menus" edge to the Menu entity by ID if the given value is not nil.
-func (mpc *MenuParamCreate) SetNillableMenusID(id *int64) *MenuParamCreate {
+func (_c *MenuParamCreate) SetNillableMenusID(id *int64) *MenuParamCreate {
 	if id != nil {
-		mpc = mpc.SetMenusID(*id)
+		_c = _c.SetMenusID(*id)
 	}
-	return mpc
+	return _c
 }
 
 // SetMenus sets the "menus" edge to the Menu entity.
-func (mpc *MenuParamCreate) SetMenus(m *Menu) *MenuParamCreate {
-	return mpc.SetMenusID(m.ID)
+func (_c *MenuParamCreate) SetMenus(v *Menu) *MenuParamCreate {
+	return _c.SetMenusID(v.ID)
 }
 
 // Mutation returns the MenuParamMutation object of the builder.
-func (mpc *MenuParamCreate) Mutation() *MenuParamMutation {
-	return mpc.mutation
+func (_c *MenuParamCreate) Mutation() *MenuParamMutation {
+	return _c.mutation
 }
 
 // Save creates the MenuParam in the database.
-func (mpc *MenuParamCreate) Save(ctx context.Context) (*MenuParam, error) {
-	mpc.defaults()
-	return withHooks(ctx, mpc.sqlSave, mpc.mutation, mpc.hooks)
+func (_c *MenuParamCreate) Save(ctx context.Context) (*MenuParam, error) {
+	_c.defaults()
+	return withHooks(ctx, _c.sqlSave, _c.mutation, _c.hooks)
 }
 
 // SaveX calls Save and panics if Save returns an error.
-func (mpc *MenuParamCreate) SaveX(ctx context.Context) *MenuParam {
-	v, err := mpc.Save(ctx)
+func (_c *MenuParamCreate) SaveX(ctx context.Context) *MenuParam {
+	v, err := _c.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -141,58 +141,58 @@ func (mpc *MenuParamCreate) SaveX(ctx context.Context) *MenuParam {
 }
 
 // Exec executes the query.
-func (mpc *MenuParamCreate) Exec(ctx context.Context) error {
-	_, err := mpc.Save(ctx)
+func (_c *MenuParamCreate) Exec(ctx context.Context) error {
+	_, err := _c.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (mpc *MenuParamCreate) ExecX(ctx context.Context) {
-	if err := mpc.Exec(ctx); err != nil {
+func (_c *MenuParamCreate) ExecX(ctx context.Context) {
+	if err := _c.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (mpc *MenuParamCreate) defaults() {
-	if _, ok := mpc.mutation.CreatedAt(); !ok {
+func (_c *MenuParamCreate) defaults() {
+	if _, ok := _c.mutation.CreatedAt(); !ok {
 		v := menuparam.DefaultCreatedAt()
-		mpc.mutation.SetCreatedAt(v)
+		_c.mutation.SetCreatedAt(v)
 	}
-	if _, ok := mpc.mutation.UpdatedAt(); !ok {
+	if _, ok := _c.mutation.UpdatedAt(); !ok {
 		v := menuparam.DefaultUpdatedAt()
-		mpc.mutation.SetUpdatedAt(v)
+		_c.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := mpc.mutation.Delete(); !ok {
+	if _, ok := _c.mutation.Delete(); !ok {
 		v := menuparam.DefaultDelete
-		mpc.mutation.SetDelete(v)
+		_c.mutation.SetDelete(v)
 	}
-	if _, ok := mpc.mutation.CreatedID(); !ok {
+	if _, ok := _c.mutation.CreatedID(); !ok {
 		v := menuparam.DefaultCreatedID
-		mpc.mutation.SetCreatedID(v)
+		_c.mutation.SetCreatedID(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
-func (mpc *MenuParamCreate) check() error {
-	if _, ok := mpc.mutation.GetType(); !ok {
+func (_c *MenuParamCreate) check() error {
+	if _, ok := _c.mutation.GetType(); !ok {
 		return &ValidationError{Name: "type", err: errors.New(`ent: missing required field "MenuParam.type"`)}
 	}
-	if _, ok := mpc.mutation.Key(); !ok {
+	if _, ok := _c.mutation.Key(); !ok {
 		return &ValidationError{Name: "key", err: errors.New(`ent: missing required field "MenuParam.key"`)}
 	}
-	if _, ok := mpc.mutation.Value(); !ok {
+	if _, ok := _c.mutation.Value(); !ok {
 		return &ValidationError{Name: "value", err: errors.New(`ent: missing required field "MenuParam.value"`)}
 	}
 	return nil
 }
 
-func (mpc *MenuParamCreate) sqlSave(ctx context.Context) (*MenuParam, error) {
-	if err := mpc.check(); err != nil {
+func (_c *MenuParamCreate) sqlSave(ctx context.Context) (*MenuParam, error) {
+	if err := _c.check(); err != nil {
 		return nil, err
 	}
-	_node, _spec := mpc.createSpec()
-	if err := sqlgraph.CreateNode(ctx, mpc.driver, _spec); err != nil {
+	_node, _spec := _c.createSpec()
+	if err := sqlgraph.CreateNode(ctx, _c.driver, _spec); err != nil {
 		if sqlgraph.IsConstraintError(err) {
 			err = &ConstraintError{msg: err.Error(), wrap: err}
 		}
@@ -202,49 +202,49 @@ func (mpc *MenuParamCreate) sqlSave(ctx context.Context) (*MenuParam, error) {
 		id := _spec.ID.Value.(int64)
 		_node.ID = int64(id)
 	}
-	mpc.mutation.id = &_node.ID
-	mpc.mutation.done = true
+	_c.mutation.id = &_node.ID
+	_c.mutation.done = true
 	return _node, nil
 }
 
-func (mpc *MenuParamCreate) createSpec() (*MenuParam, *sqlgraph.CreateSpec) {
+func (_c *MenuParamCreate) createSpec() (*MenuParam, *sqlgraph.CreateSpec) {
 	var (
-		_node = &MenuParam{config: mpc.config}
+		_node = &MenuParam{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(menuparam.Table, sqlgraph.NewFieldSpec(menuparam.FieldID, field.TypeInt64))
 	)
-	if id, ok := mpc.mutation.ID(); ok {
+	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
 	}
-	if value, ok := mpc.mutation.CreatedAt(); ok {
+	if value, ok := _c.mutation.CreatedAt(); ok {
 		_spec.SetField(menuparam.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := mpc.mutation.UpdatedAt(); ok {
+	if value, ok := _c.mutation.UpdatedAt(); ok {
 		_spec.SetField(menuparam.FieldUpdatedAt, field.TypeTime, value)
 		_node.UpdatedAt = value
 	}
-	if value, ok := mpc.mutation.Delete(); ok {
+	if value, ok := _c.mutation.Delete(); ok {
 		_spec.SetField(menuparam.FieldDelete, field.TypeInt64, value)
 		_node.Delete = value
 	}
-	if value, ok := mpc.mutation.CreatedID(); ok {
+	if value, ok := _c.mutation.CreatedID(); ok {
 		_spec.SetField(menuparam.FieldCreatedID, field.TypeInt64, value)
 		_node.CreatedID = value
 	}
-	if value, ok := mpc.mutation.GetType(); ok {
+	if value, ok := _c.mutation.GetType(); ok {
 		_spec.SetField(menuparam.FieldType, field.TypeString, value)
 		_node.Type = value
 	}
-	if value, ok := mpc.mutation.Key(); ok {
+	if value, ok := _c.mutation.Key(); ok {
 		_spec.SetField(menuparam.FieldKey, field.TypeString, value)
 		_node.Key = value
 	}
-	if value, ok := mpc.mutation.Value(); ok {
+	if value, ok := _c.mutation.Value(); ok {
 		_spec.SetField(menuparam.FieldValue, field.TypeString, value)
 		_node.Value = value
 	}
-	if nodes := mpc.mutation.MenusIDs(); len(nodes) > 0 {
+	if nodes := _c.mutation.MenusIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
@@ -272,16 +272,16 @@ type MenuParamCreateBulk struct {
 }
 
 // Save creates the MenuParam entities in the database.
-func (mpcb *MenuParamCreateBulk) Save(ctx context.Context) ([]*MenuParam, error) {
-	if mpcb.err != nil {
-		return nil, mpcb.err
+func (_c *MenuParamCreateBulk) Save(ctx context.Context) ([]*MenuParam, error) {
+	if _c.err != nil {
+		return nil, _c.err
 	}
-	specs := make([]*sqlgraph.CreateSpec, len(mpcb.builders))
-	nodes := make([]*MenuParam, len(mpcb.builders))
-	mutators := make([]Mutator, len(mpcb.builders))
-	for i := range mpcb.builders {
+	specs := make([]*sqlgraph.CreateSpec, len(_c.builders))
+	nodes := make([]*MenuParam, len(_c.builders))
+	mutators := make([]Mutator, len(_c.builders))
+	for i := range _c.builders {
 		func(i int, root context.Context) {
-			builder := mpcb.builders[i]
+			builder := _c.builders[i]
 			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*MenuParamMutation)
@@ -295,11 +295,11 @@ func (mpcb *MenuParamCreateBulk) Save(ctx context.Context) ([]*MenuParam, error)
 				var err error
 				nodes[i], specs[i] = builder.createSpec()
 				if i < len(mutators)-1 {
-					_, err = mutators[i+1].Mutate(root, mpcb.builders[i+1].mutation)
+					_, err = mutators[i+1].Mutate(root, _c.builders[i+1].mutation)
 				} else {
 					spec := &sqlgraph.BatchCreateSpec{Nodes: specs}
 					// Invoke the actual operation on the latest mutation in the chain.
-					if err = sqlgraph.BatchCreate(ctx, mpcb.driver, spec); err != nil {
+					if err = sqlgraph.BatchCreate(ctx, _c.driver, spec); err != nil {
 						if sqlgraph.IsConstraintError(err) {
 							err = &ConstraintError{msg: err.Error(), wrap: err}
 						}
@@ -323,7 +323,7 @@ func (mpcb *MenuParamCreateBulk) Save(ctx context.Context) ([]*MenuParam, error)
 		}(i, ctx)
 	}
 	if len(mutators) > 0 {
-		if _, err := mutators[0].Mutate(ctx, mpcb.builders[0].mutation); err != nil {
+		if _, err := mutators[0].Mutate(ctx, _c.builders[0].mutation); err != nil {
 			return nil, err
 		}
 	}
@@ -331,8 +331,8 @@ func (mpcb *MenuParamCreateBulk) Save(ctx context.Context) ([]*MenuParam, error)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (mpcb *MenuParamCreateBulk) SaveX(ctx context.Context) []*MenuParam {
-	v, err := mpcb.Save(ctx)
+func (_c *MenuParamCreateBulk) SaveX(ctx context.Context) []*MenuParam {
+	v, err := _c.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -340,14 +340,14 @@ func (mpcb *MenuParamCreateBulk) SaveX(ctx context.Context) []*MenuParam {
 }
 
 // Exec executes the query.
-func (mpcb *MenuParamCreateBulk) Exec(ctx context.Context) error {
-	_, err := mpcb.Save(ctx)
+func (_c *MenuParamCreateBulk) Exec(ctx context.Context) error {
+	_, err := _c.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (mpcb *MenuParamCreateBulk) ExecX(ctx context.Context) {
-	if err := mpcb.Exec(ctx); err != nil {
+func (_c *MenuParamCreateBulk) ExecX(ctx context.Context) {
+	if err := _c.Exec(ctx); err != nil {
 		panic(err)
 	}
 }

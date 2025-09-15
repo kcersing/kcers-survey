@@ -34,44 +34,44 @@ type SurveyResponseQuery struct {
 }
 
 // Where adds a new predicate for the SurveyResponseQuery builder.
-func (srq *SurveyResponseQuery) Where(ps ...predicate.SurveyResponse) *SurveyResponseQuery {
-	srq.predicates = append(srq.predicates, ps...)
-	return srq
+func (_q *SurveyResponseQuery) Where(ps ...predicate.SurveyResponse) *SurveyResponseQuery {
+	_q.predicates = append(_q.predicates, ps...)
+	return _q
 }
 
 // Limit the number of records to be returned by this query.
-func (srq *SurveyResponseQuery) Limit(limit int) *SurveyResponseQuery {
-	srq.ctx.Limit = &limit
-	return srq
+func (_q *SurveyResponseQuery) Limit(limit int) *SurveyResponseQuery {
+	_q.ctx.Limit = &limit
+	return _q
 }
 
 // Offset to start from.
-func (srq *SurveyResponseQuery) Offset(offset int) *SurveyResponseQuery {
-	srq.ctx.Offset = &offset
-	return srq
+func (_q *SurveyResponseQuery) Offset(offset int) *SurveyResponseQuery {
+	_q.ctx.Offset = &offset
+	return _q
 }
 
 // Unique configures the query builder to filter duplicate records on query.
 // By default, unique is set to true, and can be disabled using this method.
-func (srq *SurveyResponseQuery) Unique(unique bool) *SurveyResponseQuery {
-	srq.ctx.Unique = &unique
-	return srq
+func (_q *SurveyResponseQuery) Unique(unique bool) *SurveyResponseQuery {
+	_q.ctx.Unique = &unique
+	return _q
 }
 
 // Order specifies how the records should be ordered.
-func (srq *SurveyResponseQuery) Order(o ...surveyresponse.OrderOption) *SurveyResponseQuery {
-	srq.order = append(srq.order, o...)
-	return srq
+func (_q *SurveyResponseQuery) Order(o ...surveyresponse.OrderOption) *SurveyResponseQuery {
+	_q.order = append(_q.order, o...)
+	return _q
 }
 
 // QuerySurvey chains the current query on the "survey" edge.
-func (srq *SurveyResponseQuery) QuerySurvey() *SurveyQuery {
-	query := (&SurveyClient{config: srq.config}).Query()
+func (_q *SurveyResponseQuery) QuerySurvey() *SurveyQuery {
+	query := (&SurveyClient{config: _q.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := srq.prepareQuery(ctx); err != nil {
+		if err := _q.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
-		selector := srq.sqlQuery(ctx)
+		selector := _q.sqlQuery(ctx)
 		if err := selector.Err(); err != nil {
 			return nil, err
 		}
@@ -80,20 +80,20 @@ func (srq *SurveyResponseQuery) QuerySurvey() *SurveyQuery {
 			sqlgraph.To(survey.Table, survey.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, surveyresponse.SurveyTable, surveyresponse.SurveyColumn),
 		)
-		fromU = sqlgraph.SetNeighbors(srq.driver.Dialect(), step)
+		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
 		return fromU, nil
 	}
 	return query
 }
 
 // QueryAnswers chains the current query on the "answers" edge.
-func (srq *SurveyResponseQuery) QueryAnswers() *SurveyResponseAnswersQuery {
-	query := (&SurveyResponseAnswersClient{config: srq.config}).Query()
+func (_q *SurveyResponseQuery) QueryAnswers() *SurveyResponseAnswersQuery {
+	query := (&SurveyResponseAnswersClient{config: _q.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := srq.prepareQuery(ctx); err != nil {
+		if err := _q.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
-		selector := srq.sqlQuery(ctx)
+		selector := _q.sqlQuery(ctx)
 		if err := selector.Err(); err != nil {
 			return nil, err
 		}
@@ -102,7 +102,7 @@ func (srq *SurveyResponseQuery) QueryAnswers() *SurveyResponseAnswersQuery {
 			sqlgraph.To(surveyresponseanswers.Table, surveyresponseanswers.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, surveyresponse.AnswersTable, surveyresponse.AnswersColumn),
 		)
-		fromU = sqlgraph.SetNeighbors(srq.driver.Dialect(), step)
+		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
 		return fromU, nil
 	}
 	return query
@@ -110,8 +110,8 @@ func (srq *SurveyResponseQuery) QueryAnswers() *SurveyResponseAnswersQuery {
 
 // First returns the first SurveyResponse entity from the query.
 // Returns a *NotFoundError when no SurveyResponse was found.
-func (srq *SurveyResponseQuery) First(ctx context.Context) (*SurveyResponse, error) {
-	nodes, err := srq.Limit(1).All(setContextOp(ctx, srq.ctx, ent.OpQueryFirst))
+func (_q *SurveyResponseQuery) First(ctx context.Context) (*SurveyResponse, error) {
+	nodes, err := _q.Limit(1).All(setContextOp(ctx, _q.ctx, ent.OpQueryFirst))
 	if err != nil {
 		return nil, err
 	}
@@ -122,8 +122,8 @@ func (srq *SurveyResponseQuery) First(ctx context.Context) (*SurveyResponse, err
 }
 
 // FirstX is like First, but panics if an error occurs.
-func (srq *SurveyResponseQuery) FirstX(ctx context.Context) *SurveyResponse {
-	node, err := srq.First(ctx)
+func (_q *SurveyResponseQuery) FirstX(ctx context.Context) *SurveyResponse {
+	node, err := _q.First(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
 	}
@@ -132,9 +132,9 @@ func (srq *SurveyResponseQuery) FirstX(ctx context.Context) *SurveyResponse {
 
 // FirstID returns the first SurveyResponse ID from the query.
 // Returns a *NotFoundError when no SurveyResponse ID was found.
-func (srq *SurveyResponseQuery) FirstID(ctx context.Context) (id int64, err error) {
+func (_q *SurveyResponseQuery) FirstID(ctx context.Context) (id int64, err error) {
 	var ids []int64
-	if ids, err = srq.Limit(1).IDs(setContextOp(ctx, srq.ctx, ent.OpQueryFirstID)); err != nil {
+	if ids, err = _q.Limit(1).IDs(setContextOp(ctx, _q.ctx, ent.OpQueryFirstID)); err != nil {
 		return
 	}
 	if len(ids) == 0 {
@@ -145,8 +145,8 @@ func (srq *SurveyResponseQuery) FirstID(ctx context.Context) (id int64, err erro
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (srq *SurveyResponseQuery) FirstIDX(ctx context.Context) int64 {
-	id, err := srq.FirstID(ctx)
+func (_q *SurveyResponseQuery) FirstIDX(ctx context.Context) int64 {
+	id, err := _q.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
 	}
@@ -156,8 +156,8 @@ func (srq *SurveyResponseQuery) FirstIDX(ctx context.Context) int64 {
 // Only returns a single SurveyResponse entity found by the query, ensuring it only returns one.
 // Returns a *NotSingularError when more than one SurveyResponse entity is found.
 // Returns a *NotFoundError when no SurveyResponse entities are found.
-func (srq *SurveyResponseQuery) Only(ctx context.Context) (*SurveyResponse, error) {
-	nodes, err := srq.Limit(2).All(setContextOp(ctx, srq.ctx, ent.OpQueryOnly))
+func (_q *SurveyResponseQuery) Only(ctx context.Context) (*SurveyResponse, error) {
+	nodes, err := _q.Limit(2).All(setContextOp(ctx, _q.ctx, ent.OpQueryOnly))
 	if err != nil {
 		return nil, err
 	}
@@ -172,8 +172,8 @@ func (srq *SurveyResponseQuery) Only(ctx context.Context) (*SurveyResponse, erro
 }
 
 // OnlyX is like Only, but panics if an error occurs.
-func (srq *SurveyResponseQuery) OnlyX(ctx context.Context) *SurveyResponse {
-	node, err := srq.Only(ctx)
+func (_q *SurveyResponseQuery) OnlyX(ctx context.Context) *SurveyResponse {
+	node, err := _q.Only(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -183,9 +183,9 @@ func (srq *SurveyResponseQuery) OnlyX(ctx context.Context) *SurveyResponse {
 // OnlyID is like Only, but returns the only SurveyResponse ID in the query.
 // Returns a *NotSingularError when more than one SurveyResponse ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (srq *SurveyResponseQuery) OnlyID(ctx context.Context) (id int64, err error) {
+func (_q *SurveyResponseQuery) OnlyID(ctx context.Context) (id int64, err error) {
 	var ids []int64
-	if ids, err = srq.Limit(2).IDs(setContextOp(ctx, srq.ctx, ent.OpQueryOnlyID)); err != nil {
+	if ids, err = _q.Limit(2).IDs(setContextOp(ctx, _q.ctx, ent.OpQueryOnlyID)); err != nil {
 		return
 	}
 	switch len(ids) {
@@ -200,8 +200,8 @@ func (srq *SurveyResponseQuery) OnlyID(ctx context.Context) (id int64, err error
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (srq *SurveyResponseQuery) OnlyIDX(ctx context.Context) int64 {
-	id, err := srq.OnlyID(ctx)
+func (_q *SurveyResponseQuery) OnlyIDX(ctx context.Context) int64 {
+	id, err := _q.OnlyID(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -209,18 +209,18 @@ func (srq *SurveyResponseQuery) OnlyIDX(ctx context.Context) int64 {
 }
 
 // All executes the query and returns a list of SurveyResponses.
-func (srq *SurveyResponseQuery) All(ctx context.Context) ([]*SurveyResponse, error) {
-	ctx = setContextOp(ctx, srq.ctx, ent.OpQueryAll)
-	if err := srq.prepareQuery(ctx); err != nil {
+func (_q *SurveyResponseQuery) All(ctx context.Context) ([]*SurveyResponse, error) {
+	ctx = setContextOp(ctx, _q.ctx, ent.OpQueryAll)
+	if err := _q.prepareQuery(ctx); err != nil {
 		return nil, err
 	}
 	qr := querierAll[[]*SurveyResponse, *SurveyResponseQuery]()
-	return withInterceptors[[]*SurveyResponse](ctx, srq, qr, srq.inters)
+	return withInterceptors[[]*SurveyResponse](ctx, _q, qr, _q.inters)
 }
 
 // AllX is like All, but panics if an error occurs.
-func (srq *SurveyResponseQuery) AllX(ctx context.Context) []*SurveyResponse {
-	nodes, err := srq.All(ctx)
+func (_q *SurveyResponseQuery) AllX(ctx context.Context) []*SurveyResponse {
+	nodes, err := _q.All(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -228,20 +228,20 @@ func (srq *SurveyResponseQuery) AllX(ctx context.Context) []*SurveyResponse {
 }
 
 // IDs executes the query and returns a list of SurveyResponse IDs.
-func (srq *SurveyResponseQuery) IDs(ctx context.Context) (ids []int64, err error) {
-	if srq.ctx.Unique == nil && srq.path != nil {
-		srq.Unique(true)
+func (_q *SurveyResponseQuery) IDs(ctx context.Context) (ids []int64, err error) {
+	if _q.ctx.Unique == nil && _q.path != nil {
+		_q.Unique(true)
 	}
-	ctx = setContextOp(ctx, srq.ctx, ent.OpQueryIDs)
-	if err = srq.Select(surveyresponse.FieldID).Scan(ctx, &ids); err != nil {
+	ctx = setContextOp(ctx, _q.ctx, ent.OpQueryIDs)
+	if err = _q.Select(surveyresponse.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
 	return ids, nil
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (srq *SurveyResponseQuery) IDsX(ctx context.Context) []int64 {
-	ids, err := srq.IDs(ctx)
+func (_q *SurveyResponseQuery) IDsX(ctx context.Context) []int64 {
+	ids, err := _q.IDs(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -249,17 +249,17 @@ func (srq *SurveyResponseQuery) IDsX(ctx context.Context) []int64 {
 }
 
 // Count returns the count of the given query.
-func (srq *SurveyResponseQuery) Count(ctx context.Context) (int, error) {
-	ctx = setContextOp(ctx, srq.ctx, ent.OpQueryCount)
-	if err := srq.prepareQuery(ctx); err != nil {
+func (_q *SurveyResponseQuery) Count(ctx context.Context) (int, error) {
+	ctx = setContextOp(ctx, _q.ctx, ent.OpQueryCount)
+	if err := _q.prepareQuery(ctx); err != nil {
 		return 0, err
 	}
-	return withInterceptors[int](ctx, srq, querierCount[*SurveyResponseQuery](), srq.inters)
+	return withInterceptors[int](ctx, _q, querierCount[*SurveyResponseQuery](), _q.inters)
 }
 
 // CountX is like Count, but panics if an error occurs.
-func (srq *SurveyResponseQuery) CountX(ctx context.Context) int {
-	count, err := srq.Count(ctx)
+func (_q *SurveyResponseQuery) CountX(ctx context.Context) int {
+	count, err := _q.Count(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -267,9 +267,9 @@ func (srq *SurveyResponseQuery) CountX(ctx context.Context) int {
 }
 
 // Exist returns true if the query has elements in the graph.
-func (srq *SurveyResponseQuery) Exist(ctx context.Context) (bool, error) {
-	ctx = setContextOp(ctx, srq.ctx, ent.OpQueryExist)
-	switch _, err := srq.FirstID(ctx); {
+func (_q *SurveyResponseQuery) Exist(ctx context.Context) (bool, error) {
+	ctx = setContextOp(ctx, _q.ctx, ent.OpQueryExist)
+	switch _, err := _q.FirstID(ctx); {
 	case IsNotFound(err):
 		return false, nil
 	case err != nil:
@@ -280,8 +280,8 @@ func (srq *SurveyResponseQuery) Exist(ctx context.Context) (bool, error) {
 }
 
 // ExistX is like Exist, but panics if an error occurs.
-func (srq *SurveyResponseQuery) ExistX(ctx context.Context) bool {
-	exist, err := srq.Exist(ctx)
+func (_q *SurveyResponseQuery) ExistX(ctx context.Context) bool {
+	exist, err := _q.Exist(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -290,45 +290,45 @@ func (srq *SurveyResponseQuery) ExistX(ctx context.Context) bool {
 
 // Clone returns a duplicate of the SurveyResponseQuery builder, including all associated steps. It can be
 // used to prepare common query builders and use them differently after the clone is made.
-func (srq *SurveyResponseQuery) Clone() *SurveyResponseQuery {
-	if srq == nil {
+func (_q *SurveyResponseQuery) Clone() *SurveyResponseQuery {
+	if _q == nil {
 		return nil
 	}
 	return &SurveyResponseQuery{
-		config:      srq.config,
-		ctx:         srq.ctx.Clone(),
-		order:       append([]surveyresponse.OrderOption{}, srq.order...),
-		inters:      append([]Interceptor{}, srq.inters...),
-		predicates:  append([]predicate.SurveyResponse{}, srq.predicates...),
-		withSurvey:  srq.withSurvey.Clone(),
-		withAnswers: srq.withAnswers.Clone(),
+		config:      _q.config,
+		ctx:         _q.ctx.Clone(),
+		order:       append([]surveyresponse.OrderOption{}, _q.order...),
+		inters:      append([]Interceptor{}, _q.inters...),
+		predicates:  append([]predicate.SurveyResponse{}, _q.predicates...),
+		withSurvey:  _q.withSurvey.Clone(),
+		withAnswers: _q.withAnswers.Clone(),
 		// clone intermediate query.
-		sql:       srq.sql.Clone(),
-		path:      srq.path,
-		modifiers: append([]func(*sql.Selector){}, srq.modifiers...),
+		sql:       _q.sql.Clone(),
+		path:      _q.path,
+		modifiers: append([]func(*sql.Selector){}, _q.modifiers...),
 	}
 }
 
 // WithSurvey tells the query-builder to eager-load the nodes that are connected to
 // the "survey" edge. The optional arguments are used to configure the query builder of the edge.
-func (srq *SurveyResponseQuery) WithSurvey(opts ...func(*SurveyQuery)) *SurveyResponseQuery {
-	query := (&SurveyClient{config: srq.config}).Query()
+func (_q *SurveyResponseQuery) WithSurvey(opts ...func(*SurveyQuery)) *SurveyResponseQuery {
+	query := (&SurveyClient{config: _q.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	srq.withSurvey = query
-	return srq
+	_q.withSurvey = query
+	return _q
 }
 
 // WithAnswers tells the query-builder to eager-load the nodes that are connected to
 // the "answers" edge. The optional arguments are used to configure the query builder of the edge.
-func (srq *SurveyResponseQuery) WithAnswers(opts ...func(*SurveyResponseAnswersQuery)) *SurveyResponseQuery {
-	query := (&SurveyResponseAnswersClient{config: srq.config}).Query()
+func (_q *SurveyResponseQuery) WithAnswers(opts ...func(*SurveyResponseAnswersQuery)) *SurveyResponseQuery {
+	query := (&SurveyResponseAnswersClient{config: _q.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	srq.withAnswers = query
-	return srq
+	_q.withAnswers = query
+	return _q
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -345,10 +345,10 @@ func (srq *SurveyResponseQuery) WithAnswers(opts ...func(*SurveyResponseAnswersQ
 //		GroupBy(surveyresponse.FieldCreatedAt).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
-func (srq *SurveyResponseQuery) GroupBy(field string, fields ...string) *SurveyResponseGroupBy {
-	srq.ctx.Fields = append([]string{field}, fields...)
-	grbuild := &SurveyResponseGroupBy{build: srq}
-	grbuild.flds = &srq.ctx.Fields
+func (_q *SurveyResponseQuery) GroupBy(field string, fields ...string) *SurveyResponseGroupBy {
+	_q.ctx.Fields = append([]string{field}, fields...)
+	grbuild := &SurveyResponseGroupBy{build: _q}
+	grbuild.flds = &_q.ctx.Fields
 	grbuild.label = surveyresponse.Label
 	grbuild.scan = grbuild.Scan
 	return grbuild
@@ -366,83 +366,83 @@ func (srq *SurveyResponseQuery) GroupBy(field string, fields ...string) *SurveyR
 //	client.SurveyResponse.Query().
 //		Select(surveyresponse.FieldCreatedAt).
 //		Scan(ctx, &v)
-func (srq *SurveyResponseQuery) Select(fields ...string) *SurveyResponseSelect {
-	srq.ctx.Fields = append(srq.ctx.Fields, fields...)
-	sbuild := &SurveyResponseSelect{SurveyResponseQuery: srq}
+func (_q *SurveyResponseQuery) Select(fields ...string) *SurveyResponseSelect {
+	_q.ctx.Fields = append(_q.ctx.Fields, fields...)
+	sbuild := &SurveyResponseSelect{SurveyResponseQuery: _q}
 	sbuild.label = surveyresponse.Label
-	sbuild.flds, sbuild.scan = &srq.ctx.Fields, sbuild.Scan
+	sbuild.flds, sbuild.scan = &_q.ctx.Fields, sbuild.Scan
 	return sbuild
 }
 
 // Aggregate returns a SurveyResponseSelect configured with the given aggregations.
-func (srq *SurveyResponseQuery) Aggregate(fns ...AggregateFunc) *SurveyResponseSelect {
-	return srq.Select().Aggregate(fns...)
+func (_q *SurveyResponseQuery) Aggregate(fns ...AggregateFunc) *SurveyResponseSelect {
+	return _q.Select().Aggregate(fns...)
 }
 
-func (srq *SurveyResponseQuery) prepareQuery(ctx context.Context) error {
-	for _, inter := range srq.inters {
+func (_q *SurveyResponseQuery) prepareQuery(ctx context.Context) error {
+	for _, inter := range _q.inters {
 		if inter == nil {
 			return fmt.Errorf("ent: uninitialized interceptor (forgotten import ent/runtime?)")
 		}
 		if trv, ok := inter.(Traverser); ok {
-			if err := trv.Traverse(ctx, srq); err != nil {
+			if err := trv.Traverse(ctx, _q); err != nil {
 				return err
 			}
 		}
 	}
-	for _, f := range srq.ctx.Fields {
+	for _, f := range _q.ctx.Fields {
 		if !surveyresponse.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 		}
 	}
-	if srq.path != nil {
-		prev, err := srq.path(ctx)
+	if _q.path != nil {
+		prev, err := _q.path(ctx)
 		if err != nil {
 			return err
 		}
-		srq.sql = prev
+		_q.sql = prev
 	}
 	return nil
 }
 
-func (srq *SurveyResponseQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*SurveyResponse, error) {
+func (_q *SurveyResponseQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*SurveyResponse, error) {
 	var (
 		nodes       = []*SurveyResponse{}
-		_spec       = srq.querySpec()
+		_spec       = _q.querySpec()
 		loadedTypes = [2]bool{
-			srq.withSurvey != nil,
-			srq.withAnswers != nil,
+			_q.withSurvey != nil,
+			_q.withAnswers != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*SurveyResponse).scanValues(nil, columns)
 	}
 	_spec.Assign = func(columns []string, values []any) error {
-		node := &SurveyResponse{config: srq.config}
+		node := &SurveyResponse{config: _q.config}
 		nodes = append(nodes, node)
 		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
-	if len(srq.modifiers) > 0 {
-		_spec.Modifiers = srq.modifiers
+	if len(_q.modifiers) > 0 {
+		_spec.Modifiers = _q.modifiers
 	}
 	for i := range hooks {
 		hooks[i](ctx, _spec)
 	}
-	if err := sqlgraph.QueryNodes(ctx, srq.driver, _spec); err != nil {
+	if err := sqlgraph.QueryNodes(ctx, _q.driver, _spec); err != nil {
 		return nil, err
 	}
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := srq.withSurvey; query != nil {
-		if err := srq.loadSurvey(ctx, query, nodes, nil,
+	if query := _q.withSurvey; query != nil {
+		if err := _q.loadSurvey(ctx, query, nodes, nil,
 			func(n *SurveyResponse, e *Survey) { n.Edges.Survey = e }); err != nil {
 			return nil, err
 		}
 	}
-	if query := srq.withAnswers; query != nil {
-		if err := srq.loadAnswers(ctx, query, nodes,
+	if query := _q.withAnswers; query != nil {
+		if err := _q.loadAnswers(ctx, query, nodes,
 			func(n *SurveyResponse) { n.Edges.Answers = []*SurveyResponseAnswers{} },
 			func(n *SurveyResponse, e *SurveyResponseAnswers) { n.Edges.Answers = append(n.Edges.Answers, e) }); err != nil {
 			return nil, err
@@ -451,7 +451,7 @@ func (srq *SurveyResponseQuery) sqlAll(ctx context.Context, hooks ...queryHook) 
 	return nodes, nil
 }
 
-func (srq *SurveyResponseQuery) loadSurvey(ctx context.Context, query *SurveyQuery, nodes []*SurveyResponse, init func(*SurveyResponse), assign func(*SurveyResponse, *Survey)) error {
+func (_q *SurveyResponseQuery) loadSurvey(ctx context.Context, query *SurveyQuery, nodes []*SurveyResponse, init func(*SurveyResponse), assign func(*SurveyResponse, *Survey)) error {
 	ids := make([]int64, 0, len(nodes))
 	nodeids := make(map[int64][]*SurveyResponse)
 	for i := range nodes {
@@ -480,7 +480,7 @@ func (srq *SurveyResponseQuery) loadSurvey(ctx context.Context, query *SurveyQue
 	}
 	return nil
 }
-func (srq *SurveyResponseQuery) loadAnswers(ctx context.Context, query *SurveyResponseAnswersQuery, nodes []*SurveyResponse, init func(*SurveyResponse), assign func(*SurveyResponse, *SurveyResponseAnswers)) error {
+func (_q *SurveyResponseQuery) loadAnswers(ctx context.Context, query *SurveyResponseAnswersQuery, nodes []*SurveyResponse, init func(*SurveyResponse), assign func(*SurveyResponse, *SurveyResponseAnswers)) error {
 	fks := make([]driver.Value, 0, len(nodes))
 	nodeids := make(map[int64]*SurveyResponse)
 	for i := range nodes {
@@ -511,27 +511,27 @@ func (srq *SurveyResponseQuery) loadAnswers(ctx context.Context, query *SurveyRe
 	return nil
 }
 
-func (srq *SurveyResponseQuery) sqlCount(ctx context.Context) (int, error) {
-	_spec := srq.querySpec()
-	if len(srq.modifiers) > 0 {
-		_spec.Modifiers = srq.modifiers
+func (_q *SurveyResponseQuery) sqlCount(ctx context.Context) (int, error) {
+	_spec := _q.querySpec()
+	if len(_q.modifiers) > 0 {
+		_spec.Modifiers = _q.modifiers
 	}
-	_spec.Node.Columns = srq.ctx.Fields
-	if len(srq.ctx.Fields) > 0 {
-		_spec.Unique = srq.ctx.Unique != nil && *srq.ctx.Unique
+	_spec.Node.Columns = _q.ctx.Fields
+	if len(_q.ctx.Fields) > 0 {
+		_spec.Unique = _q.ctx.Unique != nil && *_q.ctx.Unique
 	}
-	return sqlgraph.CountNodes(ctx, srq.driver, _spec)
+	return sqlgraph.CountNodes(ctx, _q.driver, _spec)
 }
 
-func (srq *SurveyResponseQuery) querySpec() *sqlgraph.QuerySpec {
+func (_q *SurveyResponseQuery) querySpec() *sqlgraph.QuerySpec {
 	_spec := sqlgraph.NewQuerySpec(surveyresponse.Table, surveyresponse.Columns, sqlgraph.NewFieldSpec(surveyresponse.FieldID, field.TypeInt64))
-	_spec.From = srq.sql
-	if unique := srq.ctx.Unique; unique != nil {
+	_spec.From = _q.sql
+	if unique := _q.ctx.Unique; unique != nil {
 		_spec.Unique = *unique
-	} else if srq.path != nil {
+	} else if _q.path != nil {
 		_spec.Unique = true
 	}
-	if fields := srq.ctx.Fields; len(fields) > 0 {
+	if fields := _q.ctx.Fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
 		_spec.Node.Columns = append(_spec.Node.Columns, surveyresponse.FieldID)
 		for i := range fields {
@@ -539,24 +539,24 @@ func (srq *SurveyResponseQuery) querySpec() *sqlgraph.QuerySpec {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
 		}
-		if srq.withSurvey != nil {
+		if _q.withSurvey != nil {
 			_spec.Node.AddColumnOnce(surveyresponse.FieldSurveyID)
 		}
 	}
-	if ps := srq.predicates; len(ps) > 0 {
+	if ps := _q.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if limit := srq.ctx.Limit; limit != nil {
+	if limit := _q.ctx.Limit; limit != nil {
 		_spec.Limit = *limit
 	}
-	if offset := srq.ctx.Offset; offset != nil {
+	if offset := _q.ctx.Offset; offset != nil {
 		_spec.Offset = *offset
 	}
-	if ps := srq.order; len(ps) > 0 {
+	if ps := _q.order; len(ps) > 0 {
 		_spec.Order = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
@@ -566,45 +566,45 @@ func (srq *SurveyResponseQuery) querySpec() *sqlgraph.QuerySpec {
 	return _spec
 }
 
-func (srq *SurveyResponseQuery) sqlQuery(ctx context.Context) *sql.Selector {
-	builder := sql.Dialect(srq.driver.Dialect())
+func (_q *SurveyResponseQuery) sqlQuery(ctx context.Context) *sql.Selector {
+	builder := sql.Dialect(_q.driver.Dialect())
 	t1 := builder.Table(surveyresponse.Table)
-	columns := srq.ctx.Fields
+	columns := _q.ctx.Fields
 	if len(columns) == 0 {
 		columns = surveyresponse.Columns
 	}
 	selector := builder.Select(t1.Columns(columns...)...).From(t1)
-	if srq.sql != nil {
-		selector = srq.sql
+	if _q.sql != nil {
+		selector = _q.sql
 		selector.Select(selector.Columns(columns...)...)
 	}
-	if srq.ctx.Unique != nil && *srq.ctx.Unique {
+	if _q.ctx.Unique != nil && *_q.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range srq.modifiers {
+	for _, m := range _q.modifiers {
 		m(selector)
 	}
-	for _, p := range srq.predicates {
+	for _, p := range _q.predicates {
 		p(selector)
 	}
-	for _, p := range srq.order {
+	for _, p := range _q.order {
 		p(selector)
 	}
-	if offset := srq.ctx.Offset; offset != nil {
+	if offset := _q.ctx.Offset; offset != nil {
 		// limit is mandatory for offset clause. We start
 		// with default value, and override it below if needed.
 		selector.Offset(*offset).Limit(math.MaxInt32)
 	}
-	if limit := srq.ctx.Limit; limit != nil {
+	if limit := _q.ctx.Limit; limit != nil {
 		selector.Limit(*limit)
 	}
 	return selector
 }
 
 // Modify adds a query modifier for attaching custom logic to queries.
-func (srq *SurveyResponseQuery) Modify(modifiers ...func(s *sql.Selector)) *SurveyResponseSelect {
-	srq.modifiers = append(srq.modifiers, modifiers...)
-	return srq.Select()
+func (_q *SurveyResponseQuery) Modify(modifiers ...func(s *sql.Selector)) *SurveyResponseSelect {
+	_q.modifiers = append(_q.modifiers, modifiers...)
+	return _q.Select()
 }
 
 // SurveyResponseGroupBy is the group-by builder for SurveyResponse entities.
@@ -614,41 +614,41 @@ type SurveyResponseGroupBy struct {
 }
 
 // Aggregate adds the given aggregation functions to the group-by query.
-func (srgb *SurveyResponseGroupBy) Aggregate(fns ...AggregateFunc) *SurveyResponseGroupBy {
-	srgb.fns = append(srgb.fns, fns...)
-	return srgb
+func (_g *SurveyResponseGroupBy) Aggregate(fns ...AggregateFunc) *SurveyResponseGroupBy {
+	_g.fns = append(_g.fns, fns...)
+	return _g
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (srgb *SurveyResponseGroupBy) Scan(ctx context.Context, v any) error {
-	ctx = setContextOp(ctx, srgb.build.ctx, ent.OpQueryGroupBy)
-	if err := srgb.build.prepareQuery(ctx); err != nil {
+func (_g *SurveyResponseGroupBy) Scan(ctx context.Context, v any) error {
+	ctx = setContextOp(ctx, _g.build.ctx, ent.OpQueryGroupBy)
+	if err := _g.build.prepareQuery(ctx); err != nil {
 		return err
 	}
-	return scanWithInterceptors[*SurveyResponseQuery, *SurveyResponseGroupBy](ctx, srgb.build, srgb, srgb.build.inters, v)
+	return scanWithInterceptors[*SurveyResponseQuery, *SurveyResponseGroupBy](ctx, _g.build, _g, _g.build.inters, v)
 }
 
-func (srgb *SurveyResponseGroupBy) sqlScan(ctx context.Context, root *SurveyResponseQuery, v any) error {
+func (_g *SurveyResponseGroupBy) sqlScan(ctx context.Context, root *SurveyResponseQuery, v any) error {
 	selector := root.sqlQuery(ctx).Select()
-	aggregation := make([]string, 0, len(srgb.fns))
-	for _, fn := range srgb.fns {
+	aggregation := make([]string, 0, len(_g.fns))
+	for _, fn := range _g.fns {
 		aggregation = append(aggregation, fn(selector))
 	}
 	if len(selector.SelectedColumns()) == 0 {
-		columns := make([]string, 0, len(*srgb.flds)+len(srgb.fns))
-		for _, f := range *srgb.flds {
+		columns := make([]string, 0, len(*_g.flds)+len(_g.fns))
+		for _, f := range *_g.flds {
 			columns = append(columns, selector.C(f))
 		}
 		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
-	selector.GroupBy(selector.Columns(*srgb.flds...)...)
+	selector.GroupBy(selector.Columns(*_g.flds...)...)
 	if err := selector.Err(); err != nil {
 		return err
 	}
 	rows := &sql.Rows{}
 	query, args := selector.Query()
-	if err := srgb.build.driver.Query(ctx, query, args, rows); err != nil {
+	if err := _g.build.driver.Query(ctx, query, args, rows); err != nil {
 		return err
 	}
 	defer rows.Close()
@@ -662,27 +662,27 @@ type SurveyResponseSelect struct {
 }
 
 // Aggregate adds the given aggregation functions to the selector query.
-func (srs *SurveyResponseSelect) Aggregate(fns ...AggregateFunc) *SurveyResponseSelect {
-	srs.fns = append(srs.fns, fns...)
-	return srs
+func (_s *SurveyResponseSelect) Aggregate(fns ...AggregateFunc) *SurveyResponseSelect {
+	_s.fns = append(_s.fns, fns...)
+	return _s
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (srs *SurveyResponseSelect) Scan(ctx context.Context, v any) error {
-	ctx = setContextOp(ctx, srs.ctx, ent.OpQuerySelect)
-	if err := srs.prepareQuery(ctx); err != nil {
+func (_s *SurveyResponseSelect) Scan(ctx context.Context, v any) error {
+	ctx = setContextOp(ctx, _s.ctx, ent.OpQuerySelect)
+	if err := _s.prepareQuery(ctx); err != nil {
 		return err
 	}
-	return scanWithInterceptors[*SurveyResponseQuery, *SurveyResponseSelect](ctx, srs.SurveyResponseQuery, srs, srs.inters, v)
+	return scanWithInterceptors[*SurveyResponseQuery, *SurveyResponseSelect](ctx, _s.SurveyResponseQuery, _s, _s.inters, v)
 }
 
-func (srs *SurveyResponseSelect) sqlScan(ctx context.Context, root *SurveyResponseQuery, v any) error {
+func (_s *SurveyResponseSelect) sqlScan(ctx context.Context, root *SurveyResponseQuery, v any) error {
 	selector := root.sqlQuery(ctx)
-	aggregation := make([]string, 0, len(srs.fns))
-	for _, fn := range srs.fns {
+	aggregation := make([]string, 0, len(_s.fns))
+	for _, fn := range _s.fns {
 		aggregation = append(aggregation, fn(selector))
 	}
-	switch n := len(*srs.selector.flds); {
+	switch n := len(*_s.selector.flds); {
 	case n == 0 && len(aggregation) > 0:
 		selector.Select(aggregation...)
 	case n != 0 && len(aggregation) > 0:
@@ -690,7 +690,7 @@ func (srs *SurveyResponseSelect) sqlScan(ctx context.Context, root *SurveyRespon
 	}
 	rows := &sql.Rows{}
 	query, args := selector.Query()
-	if err := srs.driver.Query(ctx, query, args, rows); err != nil {
+	if err := _s.driver.Query(ctx, query, args, rows); err != nil {
 		return err
 	}
 	defer rows.Close()
@@ -698,7 +698,7 @@ func (srs *SurveyResponseSelect) sqlScan(ctx context.Context, root *SurveyRespon
 }
 
 // Modify adds a query modifier for attaching custom logic to queries.
-func (srs *SurveyResponseSelect) Modify(modifiers ...func(s *sql.Selector)) *SurveyResponseSelect {
-	srs.modifiers = append(srs.modifiers, modifiers...)
-	return srs
+func (_s *SurveyResponseSelect) Modify(modifiers ...func(s *sql.Selector)) *SurveyResponseSelect {
+	_s.modifiers = append(_s.modifiers, modifiers...)
+	return _s
 }

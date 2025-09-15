@@ -11,7 +11,8 @@ namespace go base
 struct BaseResp {
     1: string message  ="" (api.raw = "message")
     2: i32 code = 0  (api.raw = "code")
-    3: optional map<string, string> Extra={} (api.raw = "extra")
+    3: i64 total = 0 (api.raw = "total")
+    4: optional map<string, string> Extra={} (api.raw = "extra")
 }
 
 struct BaseResponse {
@@ -38,7 +39,7 @@ struct Ids{
     1: list<i64> ids,
 }
 
-struct PageInfoReq{
+struct PageReq{
     1: i64 page=1(api.raw = "page")
     2: i64 pageSize=100 (api.raw = "pageSize")
 }

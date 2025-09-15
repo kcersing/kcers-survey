@@ -30,6 +30,12 @@ type MenuParam func(*sql.Selector)
 // Role is the predicate function for role builders.
 type Role func(*sql.Selector)
 
+// Sms is the predicate function for sms builders.
+type Sms func(*sql.Selector)
+
+// SmsLog is the predicate function for smslog builders.
+type SmsLog func(*sql.Selector)
+
 // Survey is the predicate function for survey builders.
 type Survey func(*sql.Selector)
 

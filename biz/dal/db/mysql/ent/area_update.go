@@ -24,372 +24,372 @@ type AreaUpdate struct {
 }
 
 // Where appends a list predicates to the AreaUpdate builder.
-func (au *AreaUpdate) Where(ps ...predicate.Area) *AreaUpdate {
-	au.mutation.Where(ps...)
-	return au
+func (_u *AreaUpdate) Where(ps ...predicate.Area) *AreaUpdate {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (au *AreaUpdate) SetUpdatedAt(t time.Time) *AreaUpdate {
-	au.mutation.SetUpdatedAt(t)
-	return au
+func (_u *AreaUpdate) SetUpdatedAt(v time.Time) *AreaUpdate {
+	_u.mutation.SetUpdatedAt(v)
+	return _u
 }
 
 // ClearUpdatedAt clears the value of the "updated_at" field.
-func (au *AreaUpdate) ClearUpdatedAt() *AreaUpdate {
-	au.mutation.ClearUpdatedAt()
-	return au
+func (_u *AreaUpdate) ClearUpdatedAt() *AreaUpdate {
+	_u.mutation.ClearUpdatedAt()
+	return _u
 }
 
 // SetDelete sets the "delete" field.
-func (au *AreaUpdate) SetDelete(i int64) *AreaUpdate {
-	au.mutation.ResetDelete()
-	au.mutation.SetDelete(i)
-	return au
+func (_u *AreaUpdate) SetDelete(v int64) *AreaUpdate {
+	_u.mutation.ResetDelete()
+	_u.mutation.SetDelete(v)
+	return _u
 }
 
 // SetNillableDelete sets the "delete" field if the given value is not nil.
-func (au *AreaUpdate) SetNillableDelete(i *int64) *AreaUpdate {
-	if i != nil {
-		au.SetDelete(*i)
+func (_u *AreaUpdate) SetNillableDelete(v *int64) *AreaUpdate {
+	if v != nil {
+		_u.SetDelete(*v)
 	}
-	return au
+	return _u
 }
 
-// AddDelete adds i to the "delete" field.
-func (au *AreaUpdate) AddDelete(i int64) *AreaUpdate {
-	au.mutation.AddDelete(i)
-	return au
+// AddDelete adds value to the "delete" field.
+func (_u *AreaUpdate) AddDelete(v int64) *AreaUpdate {
+	_u.mutation.AddDelete(v)
+	return _u
 }
 
 // ClearDelete clears the value of the "delete" field.
-func (au *AreaUpdate) ClearDelete() *AreaUpdate {
-	au.mutation.ClearDelete()
-	return au
+func (_u *AreaUpdate) ClearDelete() *AreaUpdate {
+	_u.mutation.ClearDelete()
+	return _u
 }
 
 // SetCreatedID sets the "created_id" field.
-func (au *AreaUpdate) SetCreatedID(i int64) *AreaUpdate {
-	au.mutation.ResetCreatedID()
-	au.mutation.SetCreatedID(i)
-	return au
+func (_u *AreaUpdate) SetCreatedID(v int64) *AreaUpdate {
+	_u.mutation.ResetCreatedID()
+	_u.mutation.SetCreatedID(v)
+	return _u
 }
 
 // SetNillableCreatedID sets the "created_id" field if the given value is not nil.
-func (au *AreaUpdate) SetNillableCreatedID(i *int64) *AreaUpdate {
-	if i != nil {
-		au.SetCreatedID(*i)
+func (_u *AreaUpdate) SetNillableCreatedID(v *int64) *AreaUpdate {
+	if v != nil {
+		_u.SetCreatedID(*v)
 	}
-	return au
+	return _u
 }
 
-// AddCreatedID adds i to the "created_id" field.
-func (au *AreaUpdate) AddCreatedID(i int64) *AreaUpdate {
-	au.mutation.AddCreatedID(i)
-	return au
+// AddCreatedID adds value to the "created_id" field.
+func (_u *AreaUpdate) AddCreatedID(v int64) *AreaUpdate {
+	_u.mutation.AddCreatedID(v)
+	return _u
 }
 
 // ClearCreatedID clears the value of the "created_id" field.
-func (au *AreaUpdate) ClearCreatedID() *AreaUpdate {
-	au.mutation.ClearCreatedID()
-	return au
+func (_u *AreaUpdate) ClearCreatedID() *AreaUpdate {
+	_u.mutation.ClearCreatedID()
+	return _u
 }
 
 // SetStatus sets the "status" field.
-func (au *AreaUpdate) SetStatus(i int64) *AreaUpdate {
-	au.mutation.ResetStatus()
-	au.mutation.SetStatus(i)
-	return au
+func (_u *AreaUpdate) SetStatus(v int64) *AreaUpdate {
+	_u.mutation.ResetStatus()
+	_u.mutation.SetStatus(v)
+	return _u
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (au *AreaUpdate) SetNillableStatus(i *int64) *AreaUpdate {
-	if i != nil {
-		au.SetStatus(*i)
+func (_u *AreaUpdate) SetNillableStatus(v *int64) *AreaUpdate {
+	if v != nil {
+		_u.SetStatus(*v)
 	}
-	return au
+	return _u
 }
 
-// AddStatus adds i to the "status" field.
-func (au *AreaUpdate) AddStatus(i int64) *AreaUpdate {
-	au.mutation.AddStatus(i)
-	return au
+// AddStatus adds value to the "status" field.
+func (_u *AreaUpdate) AddStatus(v int64) *AreaUpdate {
+	_u.mutation.AddStatus(v)
+	return _u
 }
 
 // ClearStatus clears the value of the "status" field.
-func (au *AreaUpdate) ClearStatus() *AreaUpdate {
-	au.mutation.ClearStatus()
-	return au
+func (_u *AreaUpdate) ClearStatus() *AreaUpdate {
+	_u.mutation.ClearStatus()
+	return _u
 }
 
 // SetParentID sets the "parent_id" field.
-func (au *AreaUpdate) SetParentID(i int64) *AreaUpdate {
-	au.mutation.ResetParentID()
-	au.mutation.SetParentID(i)
-	return au
+func (_u *AreaUpdate) SetParentID(v int64) *AreaUpdate {
+	_u.mutation.ResetParentID()
+	_u.mutation.SetParentID(v)
+	return _u
 }
 
 // SetNillableParentID sets the "parent_id" field if the given value is not nil.
-func (au *AreaUpdate) SetNillableParentID(i *int64) *AreaUpdate {
-	if i != nil {
-		au.SetParentID(*i)
+func (_u *AreaUpdate) SetNillableParentID(v *int64) *AreaUpdate {
+	if v != nil {
+		_u.SetParentID(*v)
 	}
-	return au
+	return _u
 }
 
-// AddParentID adds i to the "parent_id" field.
-func (au *AreaUpdate) AddParentID(i int64) *AreaUpdate {
-	au.mutation.AddParentID(i)
-	return au
+// AddParentID adds value to the "parent_id" field.
+func (_u *AreaUpdate) AddParentID(v int64) *AreaUpdate {
+	_u.mutation.AddParentID(v)
+	return _u
 }
 
 // ClearParentID clears the value of the "parent_id" field.
-func (au *AreaUpdate) ClearParentID() *AreaUpdate {
-	au.mutation.ClearParentID()
-	return au
+func (_u *AreaUpdate) ClearParentID() *AreaUpdate {
+	_u.mutation.ClearParentID()
+	return _u
 }
 
 // SetLevel sets the "level" field.
-func (au *AreaUpdate) SetLevel(i int64) *AreaUpdate {
-	au.mutation.ResetLevel()
-	au.mutation.SetLevel(i)
-	return au
+func (_u *AreaUpdate) SetLevel(v int64) *AreaUpdate {
+	_u.mutation.ResetLevel()
+	_u.mutation.SetLevel(v)
+	return _u
 }
 
 // SetNillableLevel sets the "level" field if the given value is not nil.
-func (au *AreaUpdate) SetNillableLevel(i *int64) *AreaUpdate {
-	if i != nil {
-		au.SetLevel(*i)
+func (_u *AreaUpdate) SetNillableLevel(v *int64) *AreaUpdate {
+	if v != nil {
+		_u.SetLevel(*v)
 	}
-	return au
+	return _u
 }
 
-// AddLevel adds i to the "level" field.
-func (au *AreaUpdate) AddLevel(i int64) *AreaUpdate {
-	au.mutation.AddLevel(i)
-	return au
+// AddLevel adds value to the "level" field.
+func (_u *AreaUpdate) AddLevel(v int64) *AreaUpdate {
+	_u.mutation.AddLevel(v)
+	return _u
 }
 
 // ClearLevel clears the value of the "level" field.
-func (au *AreaUpdate) ClearLevel() *AreaUpdate {
-	au.mutation.ClearLevel()
-	return au
+func (_u *AreaUpdate) ClearLevel() *AreaUpdate {
+	_u.mutation.ClearLevel()
+	return _u
 }
 
 // SetName sets the "name" field.
-func (au *AreaUpdate) SetName(s string) *AreaUpdate {
-	au.mutation.SetName(s)
-	return au
+func (_u *AreaUpdate) SetName(v string) *AreaUpdate {
+	_u.mutation.SetName(v)
+	return _u
 }
 
 // SetNillableName sets the "name" field if the given value is not nil.
-func (au *AreaUpdate) SetNillableName(s *string) *AreaUpdate {
-	if s != nil {
-		au.SetName(*s)
+func (_u *AreaUpdate) SetNillableName(v *string) *AreaUpdate {
+	if v != nil {
+		_u.SetName(*v)
 	}
-	return au
+	return _u
 }
 
 // ClearName clears the value of the "name" field.
-func (au *AreaUpdate) ClearName() *AreaUpdate {
-	au.mutation.ClearName()
-	return au
+func (_u *AreaUpdate) ClearName() *AreaUpdate {
+	_u.mutation.ClearName()
+	return _u
 }
 
 // SetWholeName sets the "whole_name" field.
-func (au *AreaUpdate) SetWholeName(s string) *AreaUpdate {
-	au.mutation.SetWholeName(s)
-	return au
+func (_u *AreaUpdate) SetWholeName(v string) *AreaUpdate {
+	_u.mutation.SetWholeName(v)
+	return _u
 }
 
 // SetNillableWholeName sets the "whole_name" field if the given value is not nil.
-func (au *AreaUpdate) SetNillableWholeName(s *string) *AreaUpdate {
-	if s != nil {
-		au.SetWholeName(*s)
+func (_u *AreaUpdate) SetNillableWholeName(v *string) *AreaUpdate {
+	if v != nil {
+		_u.SetWholeName(*v)
 	}
-	return au
+	return _u
 }
 
 // ClearWholeName clears the value of the "whole_name" field.
-func (au *AreaUpdate) ClearWholeName() *AreaUpdate {
-	au.mutation.ClearWholeName()
-	return au
+func (_u *AreaUpdate) ClearWholeName() *AreaUpdate {
+	_u.mutation.ClearWholeName()
+	return _u
 }
 
 // SetLon sets the "lon" field.
-func (au *AreaUpdate) SetLon(s string) *AreaUpdate {
-	au.mutation.SetLon(s)
-	return au
+func (_u *AreaUpdate) SetLon(v string) *AreaUpdate {
+	_u.mutation.SetLon(v)
+	return _u
 }
 
 // SetNillableLon sets the "lon" field if the given value is not nil.
-func (au *AreaUpdate) SetNillableLon(s *string) *AreaUpdate {
-	if s != nil {
-		au.SetLon(*s)
+func (_u *AreaUpdate) SetNillableLon(v *string) *AreaUpdate {
+	if v != nil {
+		_u.SetLon(*v)
 	}
-	return au
+	return _u
 }
 
 // ClearLon clears the value of the "lon" field.
-func (au *AreaUpdate) ClearLon() *AreaUpdate {
-	au.mutation.ClearLon()
-	return au
+func (_u *AreaUpdate) ClearLon() *AreaUpdate {
+	_u.mutation.ClearLon()
+	return _u
 }
 
 // SetLat sets the "lat" field.
-func (au *AreaUpdate) SetLat(s string) *AreaUpdate {
-	au.mutation.SetLat(s)
-	return au
+func (_u *AreaUpdate) SetLat(v string) *AreaUpdate {
+	_u.mutation.SetLat(v)
+	return _u
 }
 
 // SetNillableLat sets the "lat" field if the given value is not nil.
-func (au *AreaUpdate) SetNillableLat(s *string) *AreaUpdate {
-	if s != nil {
-		au.SetLat(*s)
+func (_u *AreaUpdate) SetNillableLat(v *string) *AreaUpdate {
+	if v != nil {
+		_u.SetLat(*v)
 	}
-	return au
+	return _u
 }
 
 // ClearLat clears the value of the "lat" field.
-func (au *AreaUpdate) ClearLat() *AreaUpdate {
-	au.mutation.ClearLat()
-	return au
+func (_u *AreaUpdate) ClearLat() *AreaUpdate {
+	_u.mutation.ClearLat()
+	return _u
 }
 
 // SetCityCode sets the "city_code" field.
-func (au *AreaUpdate) SetCityCode(s string) *AreaUpdate {
-	au.mutation.SetCityCode(s)
-	return au
+func (_u *AreaUpdate) SetCityCode(v string) *AreaUpdate {
+	_u.mutation.SetCityCode(v)
+	return _u
 }
 
 // SetNillableCityCode sets the "city_code" field if the given value is not nil.
-func (au *AreaUpdate) SetNillableCityCode(s *string) *AreaUpdate {
-	if s != nil {
-		au.SetCityCode(*s)
+func (_u *AreaUpdate) SetNillableCityCode(v *string) *AreaUpdate {
+	if v != nil {
+		_u.SetCityCode(*v)
 	}
-	return au
+	return _u
 }
 
 // ClearCityCode clears the value of the "city_code" field.
-func (au *AreaUpdate) ClearCityCode() *AreaUpdate {
-	au.mutation.ClearCityCode()
-	return au
+func (_u *AreaUpdate) ClearCityCode() *AreaUpdate {
+	_u.mutation.ClearCityCode()
+	return _u
 }
 
 // SetZipCode sets the "zip_code" field.
-func (au *AreaUpdate) SetZipCode(s string) *AreaUpdate {
-	au.mutation.SetZipCode(s)
-	return au
+func (_u *AreaUpdate) SetZipCode(v string) *AreaUpdate {
+	_u.mutation.SetZipCode(v)
+	return _u
 }
 
 // SetNillableZipCode sets the "zip_code" field if the given value is not nil.
-func (au *AreaUpdate) SetNillableZipCode(s *string) *AreaUpdate {
-	if s != nil {
-		au.SetZipCode(*s)
+func (_u *AreaUpdate) SetNillableZipCode(v *string) *AreaUpdate {
+	if v != nil {
+		_u.SetZipCode(*v)
 	}
-	return au
+	return _u
 }
 
 // ClearZipCode clears the value of the "zip_code" field.
-func (au *AreaUpdate) ClearZipCode() *AreaUpdate {
-	au.mutation.ClearZipCode()
-	return au
+func (_u *AreaUpdate) ClearZipCode() *AreaUpdate {
+	_u.mutation.ClearZipCode()
+	return _u
 }
 
 // SetAreaCode sets the "area_code" field.
-func (au *AreaUpdate) SetAreaCode(s string) *AreaUpdate {
-	au.mutation.SetAreaCode(s)
-	return au
+func (_u *AreaUpdate) SetAreaCode(v string) *AreaUpdate {
+	_u.mutation.SetAreaCode(v)
+	return _u
 }
 
 // SetNillableAreaCode sets the "area_code" field if the given value is not nil.
-func (au *AreaUpdate) SetNillableAreaCode(s *string) *AreaUpdate {
-	if s != nil {
-		au.SetAreaCode(*s)
+func (_u *AreaUpdate) SetNillableAreaCode(v *string) *AreaUpdate {
+	if v != nil {
+		_u.SetAreaCode(*v)
 	}
-	return au
+	return _u
 }
 
 // ClearAreaCode clears the value of the "area_code" field.
-func (au *AreaUpdate) ClearAreaCode() *AreaUpdate {
-	au.mutation.ClearAreaCode()
-	return au
+func (_u *AreaUpdate) ClearAreaCode() *AreaUpdate {
+	_u.mutation.ClearAreaCode()
+	return _u
 }
 
 // SetPinYin sets the "pin_yin" field.
-func (au *AreaUpdate) SetPinYin(s string) *AreaUpdate {
-	au.mutation.SetPinYin(s)
-	return au
+func (_u *AreaUpdate) SetPinYin(v string) *AreaUpdate {
+	_u.mutation.SetPinYin(v)
+	return _u
 }
 
 // SetNillablePinYin sets the "pin_yin" field if the given value is not nil.
-func (au *AreaUpdate) SetNillablePinYin(s *string) *AreaUpdate {
-	if s != nil {
-		au.SetPinYin(*s)
+func (_u *AreaUpdate) SetNillablePinYin(v *string) *AreaUpdate {
+	if v != nil {
+		_u.SetPinYin(*v)
 	}
-	return au
+	return _u
 }
 
 // ClearPinYin clears the value of the "pin_yin" field.
-func (au *AreaUpdate) ClearPinYin() *AreaUpdate {
-	au.mutation.ClearPinYin()
-	return au
+func (_u *AreaUpdate) ClearPinYin() *AreaUpdate {
+	_u.mutation.ClearPinYin()
+	return _u
 }
 
 // SetSimplePy sets the "simple_py" field.
-func (au *AreaUpdate) SetSimplePy(s string) *AreaUpdate {
-	au.mutation.SetSimplePy(s)
-	return au
+func (_u *AreaUpdate) SetSimplePy(v string) *AreaUpdate {
+	_u.mutation.SetSimplePy(v)
+	return _u
 }
 
 // SetNillableSimplePy sets the "simple_py" field if the given value is not nil.
-func (au *AreaUpdate) SetNillableSimplePy(s *string) *AreaUpdate {
-	if s != nil {
-		au.SetSimplePy(*s)
+func (_u *AreaUpdate) SetNillableSimplePy(v *string) *AreaUpdate {
+	if v != nil {
+		_u.SetSimplePy(*v)
 	}
-	return au
+	return _u
 }
 
 // ClearSimplePy clears the value of the "simple_py" field.
-func (au *AreaUpdate) ClearSimplePy() *AreaUpdate {
-	au.mutation.ClearSimplePy()
-	return au
+func (_u *AreaUpdate) ClearSimplePy() *AreaUpdate {
+	_u.mutation.ClearSimplePy()
+	return _u
 }
 
 // SetPerPinYin sets the "per_pin_yin" field.
-func (au *AreaUpdate) SetPerPinYin(s string) *AreaUpdate {
-	au.mutation.SetPerPinYin(s)
-	return au
+func (_u *AreaUpdate) SetPerPinYin(v string) *AreaUpdate {
+	_u.mutation.SetPerPinYin(v)
+	return _u
 }
 
 // SetNillablePerPinYin sets the "per_pin_yin" field if the given value is not nil.
-func (au *AreaUpdate) SetNillablePerPinYin(s *string) *AreaUpdate {
-	if s != nil {
-		au.SetPerPinYin(*s)
+func (_u *AreaUpdate) SetNillablePerPinYin(v *string) *AreaUpdate {
+	if v != nil {
+		_u.SetPerPinYin(*v)
 	}
-	return au
+	return _u
 }
 
 // ClearPerPinYin clears the value of the "per_pin_yin" field.
-func (au *AreaUpdate) ClearPerPinYin() *AreaUpdate {
-	au.mutation.ClearPerPinYin()
-	return au
+func (_u *AreaUpdate) ClearPerPinYin() *AreaUpdate {
+	_u.mutation.ClearPerPinYin()
+	return _u
 }
 
 // Mutation returns the AreaMutation object of the builder.
-func (au *AreaUpdate) Mutation() *AreaMutation {
-	return au.mutation
+func (_u *AreaUpdate) Mutation() *AreaMutation {
+	return _u.mutation
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
-func (au *AreaUpdate) Save(ctx context.Context) (int, error) {
-	au.defaults()
-	return withHooks(ctx, au.sqlSave, au.mutation, au.hooks)
+func (_u *AreaUpdate) Save(ctx context.Context) (int, error) {
+	_u.defaults()
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (au *AreaUpdate) SaveX(ctx context.Context) int {
-	affected, err := au.Save(ctx)
+func (_u *AreaUpdate) SaveX(ctx context.Context) int {
+	affected, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -397,157 +397,157 @@ func (au *AreaUpdate) SaveX(ctx context.Context) int {
 }
 
 // Exec executes the query.
-func (au *AreaUpdate) Exec(ctx context.Context) error {
-	_, err := au.Save(ctx)
+func (_u *AreaUpdate) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (au *AreaUpdate) ExecX(ctx context.Context) {
-	if err := au.Exec(ctx); err != nil {
+func (_u *AreaUpdate) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (au *AreaUpdate) defaults() {
-	if _, ok := au.mutation.UpdatedAt(); !ok && !au.mutation.UpdatedAtCleared() {
+func (_u *AreaUpdate) defaults() {
+	if _, ok := _u.mutation.UpdatedAt(); !ok && !_u.mutation.UpdatedAtCleared() {
 		v := area.UpdateDefaultUpdatedAt()
-		au.mutation.SetUpdatedAt(v)
+		_u.mutation.SetUpdatedAt(v)
 	}
 }
 
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (au *AreaUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *AreaUpdate {
-	au.modifiers = append(au.modifiers, modifiers...)
-	return au
+func (_u *AreaUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *AreaUpdate {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
 }
 
-func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
+func (_u *AreaUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(area.Table, area.Columns, sqlgraph.NewFieldSpec(area.FieldID, field.TypeInt64))
-	if ps := au.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if au.mutation.CreatedAtCleared() {
+	if _u.mutation.CreatedAtCleared() {
 		_spec.ClearField(area.FieldCreatedAt, field.TypeTime)
 	}
-	if value, ok := au.mutation.UpdatedAt(); ok {
+	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(area.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if au.mutation.UpdatedAtCleared() {
+	if _u.mutation.UpdatedAtCleared() {
 		_spec.ClearField(area.FieldUpdatedAt, field.TypeTime)
 	}
-	if value, ok := au.mutation.Delete(); ok {
+	if value, ok := _u.mutation.Delete(); ok {
 		_spec.SetField(area.FieldDelete, field.TypeInt64, value)
 	}
-	if value, ok := au.mutation.AddedDelete(); ok {
+	if value, ok := _u.mutation.AddedDelete(); ok {
 		_spec.AddField(area.FieldDelete, field.TypeInt64, value)
 	}
-	if au.mutation.DeleteCleared() {
+	if _u.mutation.DeleteCleared() {
 		_spec.ClearField(area.FieldDelete, field.TypeInt64)
 	}
-	if value, ok := au.mutation.CreatedID(); ok {
+	if value, ok := _u.mutation.CreatedID(); ok {
 		_spec.SetField(area.FieldCreatedID, field.TypeInt64, value)
 	}
-	if value, ok := au.mutation.AddedCreatedID(); ok {
+	if value, ok := _u.mutation.AddedCreatedID(); ok {
 		_spec.AddField(area.FieldCreatedID, field.TypeInt64, value)
 	}
-	if au.mutation.CreatedIDCleared() {
+	if _u.mutation.CreatedIDCleared() {
 		_spec.ClearField(area.FieldCreatedID, field.TypeInt64)
 	}
-	if value, ok := au.mutation.Status(); ok {
+	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(area.FieldStatus, field.TypeInt64, value)
 	}
-	if value, ok := au.mutation.AddedStatus(); ok {
+	if value, ok := _u.mutation.AddedStatus(); ok {
 		_spec.AddField(area.FieldStatus, field.TypeInt64, value)
 	}
-	if au.mutation.StatusCleared() {
+	if _u.mutation.StatusCleared() {
 		_spec.ClearField(area.FieldStatus, field.TypeInt64)
 	}
-	if value, ok := au.mutation.ParentID(); ok {
+	if value, ok := _u.mutation.ParentID(); ok {
 		_spec.SetField(area.FieldParentID, field.TypeInt64, value)
 	}
-	if value, ok := au.mutation.AddedParentID(); ok {
+	if value, ok := _u.mutation.AddedParentID(); ok {
 		_spec.AddField(area.FieldParentID, field.TypeInt64, value)
 	}
-	if au.mutation.ParentIDCleared() {
+	if _u.mutation.ParentIDCleared() {
 		_spec.ClearField(area.FieldParentID, field.TypeInt64)
 	}
-	if value, ok := au.mutation.Level(); ok {
+	if value, ok := _u.mutation.Level(); ok {
 		_spec.SetField(area.FieldLevel, field.TypeInt64, value)
 	}
-	if value, ok := au.mutation.AddedLevel(); ok {
+	if value, ok := _u.mutation.AddedLevel(); ok {
 		_spec.AddField(area.FieldLevel, field.TypeInt64, value)
 	}
-	if au.mutation.LevelCleared() {
+	if _u.mutation.LevelCleared() {
 		_spec.ClearField(area.FieldLevel, field.TypeInt64)
 	}
-	if value, ok := au.mutation.Name(); ok {
+	if value, ok := _u.mutation.Name(); ok {
 		_spec.SetField(area.FieldName, field.TypeString, value)
 	}
-	if au.mutation.NameCleared() {
+	if _u.mutation.NameCleared() {
 		_spec.ClearField(area.FieldName, field.TypeString)
 	}
-	if value, ok := au.mutation.WholeName(); ok {
+	if value, ok := _u.mutation.WholeName(); ok {
 		_spec.SetField(area.FieldWholeName, field.TypeString, value)
 	}
-	if au.mutation.WholeNameCleared() {
+	if _u.mutation.WholeNameCleared() {
 		_spec.ClearField(area.FieldWholeName, field.TypeString)
 	}
-	if value, ok := au.mutation.Lon(); ok {
+	if value, ok := _u.mutation.Lon(); ok {
 		_spec.SetField(area.FieldLon, field.TypeString, value)
 	}
-	if au.mutation.LonCleared() {
+	if _u.mutation.LonCleared() {
 		_spec.ClearField(area.FieldLon, field.TypeString)
 	}
-	if value, ok := au.mutation.Lat(); ok {
+	if value, ok := _u.mutation.Lat(); ok {
 		_spec.SetField(area.FieldLat, field.TypeString, value)
 	}
-	if au.mutation.LatCleared() {
+	if _u.mutation.LatCleared() {
 		_spec.ClearField(area.FieldLat, field.TypeString)
 	}
-	if value, ok := au.mutation.CityCode(); ok {
+	if value, ok := _u.mutation.CityCode(); ok {
 		_spec.SetField(area.FieldCityCode, field.TypeString, value)
 	}
-	if au.mutation.CityCodeCleared() {
+	if _u.mutation.CityCodeCleared() {
 		_spec.ClearField(area.FieldCityCode, field.TypeString)
 	}
-	if value, ok := au.mutation.ZipCode(); ok {
+	if value, ok := _u.mutation.ZipCode(); ok {
 		_spec.SetField(area.FieldZipCode, field.TypeString, value)
 	}
-	if au.mutation.ZipCodeCleared() {
+	if _u.mutation.ZipCodeCleared() {
 		_spec.ClearField(area.FieldZipCode, field.TypeString)
 	}
-	if value, ok := au.mutation.AreaCode(); ok {
+	if value, ok := _u.mutation.AreaCode(); ok {
 		_spec.SetField(area.FieldAreaCode, field.TypeString, value)
 	}
-	if au.mutation.AreaCodeCleared() {
+	if _u.mutation.AreaCodeCleared() {
 		_spec.ClearField(area.FieldAreaCode, field.TypeString)
 	}
-	if value, ok := au.mutation.PinYin(); ok {
+	if value, ok := _u.mutation.PinYin(); ok {
 		_spec.SetField(area.FieldPinYin, field.TypeString, value)
 	}
-	if au.mutation.PinYinCleared() {
+	if _u.mutation.PinYinCleared() {
 		_spec.ClearField(area.FieldPinYin, field.TypeString)
 	}
-	if value, ok := au.mutation.SimplePy(); ok {
+	if value, ok := _u.mutation.SimplePy(); ok {
 		_spec.SetField(area.FieldSimplePy, field.TypeString, value)
 	}
-	if au.mutation.SimplePyCleared() {
+	if _u.mutation.SimplePyCleared() {
 		_spec.ClearField(area.FieldSimplePy, field.TypeString)
 	}
-	if value, ok := au.mutation.PerPinYin(); ok {
+	if value, ok := _u.mutation.PerPinYin(); ok {
 		_spec.SetField(area.FieldPerPinYin, field.TypeString, value)
 	}
-	if au.mutation.PerPinYinCleared() {
+	if _u.mutation.PerPinYinCleared() {
 		_spec.ClearField(area.FieldPerPinYin, field.TypeString)
 	}
-	_spec.AddModifiers(au.modifiers...)
-	if n, err = sqlgraph.UpdateNodes(ctx, au.driver, _spec); err != nil {
+	_spec.AddModifiers(_u.modifiers...)
+	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{area.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -555,8 +555,8 @@ func (au *AreaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		return 0, err
 	}
-	au.mutation.done = true
-	return n, nil
+	_u.mutation.done = true
+	return _node, nil
 }
 
 // AreaUpdateOne is the builder for updating a single Area entity.
@@ -569,379 +569,379 @@ type AreaUpdateOne struct {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (auo *AreaUpdateOne) SetUpdatedAt(t time.Time) *AreaUpdateOne {
-	auo.mutation.SetUpdatedAt(t)
-	return auo
+func (_u *AreaUpdateOne) SetUpdatedAt(v time.Time) *AreaUpdateOne {
+	_u.mutation.SetUpdatedAt(v)
+	return _u
 }
 
 // ClearUpdatedAt clears the value of the "updated_at" field.
-func (auo *AreaUpdateOne) ClearUpdatedAt() *AreaUpdateOne {
-	auo.mutation.ClearUpdatedAt()
-	return auo
+func (_u *AreaUpdateOne) ClearUpdatedAt() *AreaUpdateOne {
+	_u.mutation.ClearUpdatedAt()
+	return _u
 }
 
 // SetDelete sets the "delete" field.
-func (auo *AreaUpdateOne) SetDelete(i int64) *AreaUpdateOne {
-	auo.mutation.ResetDelete()
-	auo.mutation.SetDelete(i)
-	return auo
+func (_u *AreaUpdateOne) SetDelete(v int64) *AreaUpdateOne {
+	_u.mutation.ResetDelete()
+	_u.mutation.SetDelete(v)
+	return _u
 }
 
 // SetNillableDelete sets the "delete" field if the given value is not nil.
-func (auo *AreaUpdateOne) SetNillableDelete(i *int64) *AreaUpdateOne {
-	if i != nil {
-		auo.SetDelete(*i)
+func (_u *AreaUpdateOne) SetNillableDelete(v *int64) *AreaUpdateOne {
+	if v != nil {
+		_u.SetDelete(*v)
 	}
-	return auo
+	return _u
 }
 
-// AddDelete adds i to the "delete" field.
-func (auo *AreaUpdateOne) AddDelete(i int64) *AreaUpdateOne {
-	auo.mutation.AddDelete(i)
-	return auo
+// AddDelete adds value to the "delete" field.
+func (_u *AreaUpdateOne) AddDelete(v int64) *AreaUpdateOne {
+	_u.mutation.AddDelete(v)
+	return _u
 }
 
 // ClearDelete clears the value of the "delete" field.
-func (auo *AreaUpdateOne) ClearDelete() *AreaUpdateOne {
-	auo.mutation.ClearDelete()
-	return auo
+func (_u *AreaUpdateOne) ClearDelete() *AreaUpdateOne {
+	_u.mutation.ClearDelete()
+	return _u
 }
 
 // SetCreatedID sets the "created_id" field.
-func (auo *AreaUpdateOne) SetCreatedID(i int64) *AreaUpdateOne {
-	auo.mutation.ResetCreatedID()
-	auo.mutation.SetCreatedID(i)
-	return auo
+func (_u *AreaUpdateOne) SetCreatedID(v int64) *AreaUpdateOne {
+	_u.mutation.ResetCreatedID()
+	_u.mutation.SetCreatedID(v)
+	return _u
 }
 
 // SetNillableCreatedID sets the "created_id" field if the given value is not nil.
-func (auo *AreaUpdateOne) SetNillableCreatedID(i *int64) *AreaUpdateOne {
-	if i != nil {
-		auo.SetCreatedID(*i)
+func (_u *AreaUpdateOne) SetNillableCreatedID(v *int64) *AreaUpdateOne {
+	if v != nil {
+		_u.SetCreatedID(*v)
 	}
-	return auo
+	return _u
 }
 
-// AddCreatedID adds i to the "created_id" field.
-func (auo *AreaUpdateOne) AddCreatedID(i int64) *AreaUpdateOne {
-	auo.mutation.AddCreatedID(i)
-	return auo
+// AddCreatedID adds value to the "created_id" field.
+func (_u *AreaUpdateOne) AddCreatedID(v int64) *AreaUpdateOne {
+	_u.mutation.AddCreatedID(v)
+	return _u
 }
 
 // ClearCreatedID clears the value of the "created_id" field.
-func (auo *AreaUpdateOne) ClearCreatedID() *AreaUpdateOne {
-	auo.mutation.ClearCreatedID()
-	return auo
+func (_u *AreaUpdateOne) ClearCreatedID() *AreaUpdateOne {
+	_u.mutation.ClearCreatedID()
+	return _u
 }
 
 // SetStatus sets the "status" field.
-func (auo *AreaUpdateOne) SetStatus(i int64) *AreaUpdateOne {
-	auo.mutation.ResetStatus()
-	auo.mutation.SetStatus(i)
-	return auo
+func (_u *AreaUpdateOne) SetStatus(v int64) *AreaUpdateOne {
+	_u.mutation.ResetStatus()
+	_u.mutation.SetStatus(v)
+	return _u
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (auo *AreaUpdateOne) SetNillableStatus(i *int64) *AreaUpdateOne {
-	if i != nil {
-		auo.SetStatus(*i)
+func (_u *AreaUpdateOne) SetNillableStatus(v *int64) *AreaUpdateOne {
+	if v != nil {
+		_u.SetStatus(*v)
 	}
-	return auo
+	return _u
 }
 
-// AddStatus adds i to the "status" field.
-func (auo *AreaUpdateOne) AddStatus(i int64) *AreaUpdateOne {
-	auo.mutation.AddStatus(i)
-	return auo
+// AddStatus adds value to the "status" field.
+func (_u *AreaUpdateOne) AddStatus(v int64) *AreaUpdateOne {
+	_u.mutation.AddStatus(v)
+	return _u
 }
 
 // ClearStatus clears the value of the "status" field.
-func (auo *AreaUpdateOne) ClearStatus() *AreaUpdateOne {
-	auo.mutation.ClearStatus()
-	return auo
+func (_u *AreaUpdateOne) ClearStatus() *AreaUpdateOne {
+	_u.mutation.ClearStatus()
+	return _u
 }
 
 // SetParentID sets the "parent_id" field.
-func (auo *AreaUpdateOne) SetParentID(i int64) *AreaUpdateOne {
-	auo.mutation.ResetParentID()
-	auo.mutation.SetParentID(i)
-	return auo
+func (_u *AreaUpdateOne) SetParentID(v int64) *AreaUpdateOne {
+	_u.mutation.ResetParentID()
+	_u.mutation.SetParentID(v)
+	return _u
 }
 
 // SetNillableParentID sets the "parent_id" field if the given value is not nil.
-func (auo *AreaUpdateOne) SetNillableParentID(i *int64) *AreaUpdateOne {
-	if i != nil {
-		auo.SetParentID(*i)
+func (_u *AreaUpdateOne) SetNillableParentID(v *int64) *AreaUpdateOne {
+	if v != nil {
+		_u.SetParentID(*v)
 	}
-	return auo
+	return _u
 }
 
-// AddParentID adds i to the "parent_id" field.
-func (auo *AreaUpdateOne) AddParentID(i int64) *AreaUpdateOne {
-	auo.mutation.AddParentID(i)
-	return auo
+// AddParentID adds value to the "parent_id" field.
+func (_u *AreaUpdateOne) AddParentID(v int64) *AreaUpdateOne {
+	_u.mutation.AddParentID(v)
+	return _u
 }
 
 // ClearParentID clears the value of the "parent_id" field.
-func (auo *AreaUpdateOne) ClearParentID() *AreaUpdateOne {
-	auo.mutation.ClearParentID()
-	return auo
+func (_u *AreaUpdateOne) ClearParentID() *AreaUpdateOne {
+	_u.mutation.ClearParentID()
+	return _u
 }
 
 // SetLevel sets the "level" field.
-func (auo *AreaUpdateOne) SetLevel(i int64) *AreaUpdateOne {
-	auo.mutation.ResetLevel()
-	auo.mutation.SetLevel(i)
-	return auo
+func (_u *AreaUpdateOne) SetLevel(v int64) *AreaUpdateOne {
+	_u.mutation.ResetLevel()
+	_u.mutation.SetLevel(v)
+	return _u
 }
 
 // SetNillableLevel sets the "level" field if the given value is not nil.
-func (auo *AreaUpdateOne) SetNillableLevel(i *int64) *AreaUpdateOne {
-	if i != nil {
-		auo.SetLevel(*i)
+func (_u *AreaUpdateOne) SetNillableLevel(v *int64) *AreaUpdateOne {
+	if v != nil {
+		_u.SetLevel(*v)
 	}
-	return auo
+	return _u
 }
 
-// AddLevel adds i to the "level" field.
-func (auo *AreaUpdateOne) AddLevel(i int64) *AreaUpdateOne {
-	auo.mutation.AddLevel(i)
-	return auo
+// AddLevel adds value to the "level" field.
+func (_u *AreaUpdateOne) AddLevel(v int64) *AreaUpdateOne {
+	_u.mutation.AddLevel(v)
+	return _u
 }
 
 // ClearLevel clears the value of the "level" field.
-func (auo *AreaUpdateOne) ClearLevel() *AreaUpdateOne {
-	auo.mutation.ClearLevel()
-	return auo
+func (_u *AreaUpdateOne) ClearLevel() *AreaUpdateOne {
+	_u.mutation.ClearLevel()
+	return _u
 }
 
 // SetName sets the "name" field.
-func (auo *AreaUpdateOne) SetName(s string) *AreaUpdateOne {
-	auo.mutation.SetName(s)
-	return auo
+func (_u *AreaUpdateOne) SetName(v string) *AreaUpdateOne {
+	_u.mutation.SetName(v)
+	return _u
 }
 
 // SetNillableName sets the "name" field if the given value is not nil.
-func (auo *AreaUpdateOne) SetNillableName(s *string) *AreaUpdateOne {
-	if s != nil {
-		auo.SetName(*s)
+func (_u *AreaUpdateOne) SetNillableName(v *string) *AreaUpdateOne {
+	if v != nil {
+		_u.SetName(*v)
 	}
-	return auo
+	return _u
 }
 
 // ClearName clears the value of the "name" field.
-func (auo *AreaUpdateOne) ClearName() *AreaUpdateOne {
-	auo.mutation.ClearName()
-	return auo
+func (_u *AreaUpdateOne) ClearName() *AreaUpdateOne {
+	_u.mutation.ClearName()
+	return _u
 }
 
 // SetWholeName sets the "whole_name" field.
-func (auo *AreaUpdateOne) SetWholeName(s string) *AreaUpdateOne {
-	auo.mutation.SetWholeName(s)
-	return auo
+func (_u *AreaUpdateOne) SetWholeName(v string) *AreaUpdateOne {
+	_u.mutation.SetWholeName(v)
+	return _u
 }
 
 // SetNillableWholeName sets the "whole_name" field if the given value is not nil.
-func (auo *AreaUpdateOne) SetNillableWholeName(s *string) *AreaUpdateOne {
-	if s != nil {
-		auo.SetWholeName(*s)
+func (_u *AreaUpdateOne) SetNillableWholeName(v *string) *AreaUpdateOne {
+	if v != nil {
+		_u.SetWholeName(*v)
 	}
-	return auo
+	return _u
 }
 
 // ClearWholeName clears the value of the "whole_name" field.
-func (auo *AreaUpdateOne) ClearWholeName() *AreaUpdateOne {
-	auo.mutation.ClearWholeName()
-	return auo
+func (_u *AreaUpdateOne) ClearWholeName() *AreaUpdateOne {
+	_u.mutation.ClearWholeName()
+	return _u
 }
 
 // SetLon sets the "lon" field.
-func (auo *AreaUpdateOne) SetLon(s string) *AreaUpdateOne {
-	auo.mutation.SetLon(s)
-	return auo
+func (_u *AreaUpdateOne) SetLon(v string) *AreaUpdateOne {
+	_u.mutation.SetLon(v)
+	return _u
 }
 
 // SetNillableLon sets the "lon" field if the given value is not nil.
-func (auo *AreaUpdateOne) SetNillableLon(s *string) *AreaUpdateOne {
-	if s != nil {
-		auo.SetLon(*s)
+func (_u *AreaUpdateOne) SetNillableLon(v *string) *AreaUpdateOne {
+	if v != nil {
+		_u.SetLon(*v)
 	}
-	return auo
+	return _u
 }
 
 // ClearLon clears the value of the "lon" field.
-func (auo *AreaUpdateOne) ClearLon() *AreaUpdateOne {
-	auo.mutation.ClearLon()
-	return auo
+func (_u *AreaUpdateOne) ClearLon() *AreaUpdateOne {
+	_u.mutation.ClearLon()
+	return _u
 }
 
 // SetLat sets the "lat" field.
-func (auo *AreaUpdateOne) SetLat(s string) *AreaUpdateOne {
-	auo.mutation.SetLat(s)
-	return auo
+func (_u *AreaUpdateOne) SetLat(v string) *AreaUpdateOne {
+	_u.mutation.SetLat(v)
+	return _u
 }
 
 // SetNillableLat sets the "lat" field if the given value is not nil.
-func (auo *AreaUpdateOne) SetNillableLat(s *string) *AreaUpdateOne {
-	if s != nil {
-		auo.SetLat(*s)
+func (_u *AreaUpdateOne) SetNillableLat(v *string) *AreaUpdateOne {
+	if v != nil {
+		_u.SetLat(*v)
 	}
-	return auo
+	return _u
 }
 
 // ClearLat clears the value of the "lat" field.
-func (auo *AreaUpdateOne) ClearLat() *AreaUpdateOne {
-	auo.mutation.ClearLat()
-	return auo
+func (_u *AreaUpdateOne) ClearLat() *AreaUpdateOne {
+	_u.mutation.ClearLat()
+	return _u
 }
 
 // SetCityCode sets the "city_code" field.
-func (auo *AreaUpdateOne) SetCityCode(s string) *AreaUpdateOne {
-	auo.mutation.SetCityCode(s)
-	return auo
+func (_u *AreaUpdateOne) SetCityCode(v string) *AreaUpdateOne {
+	_u.mutation.SetCityCode(v)
+	return _u
 }
 
 // SetNillableCityCode sets the "city_code" field if the given value is not nil.
-func (auo *AreaUpdateOne) SetNillableCityCode(s *string) *AreaUpdateOne {
-	if s != nil {
-		auo.SetCityCode(*s)
+func (_u *AreaUpdateOne) SetNillableCityCode(v *string) *AreaUpdateOne {
+	if v != nil {
+		_u.SetCityCode(*v)
 	}
-	return auo
+	return _u
 }
 
 // ClearCityCode clears the value of the "city_code" field.
-func (auo *AreaUpdateOne) ClearCityCode() *AreaUpdateOne {
-	auo.mutation.ClearCityCode()
-	return auo
+func (_u *AreaUpdateOne) ClearCityCode() *AreaUpdateOne {
+	_u.mutation.ClearCityCode()
+	return _u
 }
 
 // SetZipCode sets the "zip_code" field.
-func (auo *AreaUpdateOne) SetZipCode(s string) *AreaUpdateOne {
-	auo.mutation.SetZipCode(s)
-	return auo
+func (_u *AreaUpdateOne) SetZipCode(v string) *AreaUpdateOne {
+	_u.mutation.SetZipCode(v)
+	return _u
 }
 
 // SetNillableZipCode sets the "zip_code" field if the given value is not nil.
-func (auo *AreaUpdateOne) SetNillableZipCode(s *string) *AreaUpdateOne {
-	if s != nil {
-		auo.SetZipCode(*s)
+func (_u *AreaUpdateOne) SetNillableZipCode(v *string) *AreaUpdateOne {
+	if v != nil {
+		_u.SetZipCode(*v)
 	}
-	return auo
+	return _u
 }
 
 // ClearZipCode clears the value of the "zip_code" field.
-func (auo *AreaUpdateOne) ClearZipCode() *AreaUpdateOne {
-	auo.mutation.ClearZipCode()
-	return auo
+func (_u *AreaUpdateOne) ClearZipCode() *AreaUpdateOne {
+	_u.mutation.ClearZipCode()
+	return _u
 }
 
 // SetAreaCode sets the "area_code" field.
-func (auo *AreaUpdateOne) SetAreaCode(s string) *AreaUpdateOne {
-	auo.mutation.SetAreaCode(s)
-	return auo
+func (_u *AreaUpdateOne) SetAreaCode(v string) *AreaUpdateOne {
+	_u.mutation.SetAreaCode(v)
+	return _u
 }
 
 // SetNillableAreaCode sets the "area_code" field if the given value is not nil.
-func (auo *AreaUpdateOne) SetNillableAreaCode(s *string) *AreaUpdateOne {
-	if s != nil {
-		auo.SetAreaCode(*s)
+func (_u *AreaUpdateOne) SetNillableAreaCode(v *string) *AreaUpdateOne {
+	if v != nil {
+		_u.SetAreaCode(*v)
 	}
-	return auo
+	return _u
 }
 
 // ClearAreaCode clears the value of the "area_code" field.
-func (auo *AreaUpdateOne) ClearAreaCode() *AreaUpdateOne {
-	auo.mutation.ClearAreaCode()
-	return auo
+func (_u *AreaUpdateOne) ClearAreaCode() *AreaUpdateOne {
+	_u.mutation.ClearAreaCode()
+	return _u
 }
 
 // SetPinYin sets the "pin_yin" field.
-func (auo *AreaUpdateOne) SetPinYin(s string) *AreaUpdateOne {
-	auo.mutation.SetPinYin(s)
-	return auo
+func (_u *AreaUpdateOne) SetPinYin(v string) *AreaUpdateOne {
+	_u.mutation.SetPinYin(v)
+	return _u
 }
 
 // SetNillablePinYin sets the "pin_yin" field if the given value is not nil.
-func (auo *AreaUpdateOne) SetNillablePinYin(s *string) *AreaUpdateOne {
-	if s != nil {
-		auo.SetPinYin(*s)
+func (_u *AreaUpdateOne) SetNillablePinYin(v *string) *AreaUpdateOne {
+	if v != nil {
+		_u.SetPinYin(*v)
 	}
-	return auo
+	return _u
 }
 
 // ClearPinYin clears the value of the "pin_yin" field.
-func (auo *AreaUpdateOne) ClearPinYin() *AreaUpdateOne {
-	auo.mutation.ClearPinYin()
-	return auo
+func (_u *AreaUpdateOne) ClearPinYin() *AreaUpdateOne {
+	_u.mutation.ClearPinYin()
+	return _u
 }
 
 // SetSimplePy sets the "simple_py" field.
-func (auo *AreaUpdateOne) SetSimplePy(s string) *AreaUpdateOne {
-	auo.mutation.SetSimplePy(s)
-	return auo
+func (_u *AreaUpdateOne) SetSimplePy(v string) *AreaUpdateOne {
+	_u.mutation.SetSimplePy(v)
+	return _u
 }
 
 // SetNillableSimplePy sets the "simple_py" field if the given value is not nil.
-func (auo *AreaUpdateOne) SetNillableSimplePy(s *string) *AreaUpdateOne {
-	if s != nil {
-		auo.SetSimplePy(*s)
+func (_u *AreaUpdateOne) SetNillableSimplePy(v *string) *AreaUpdateOne {
+	if v != nil {
+		_u.SetSimplePy(*v)
 	}
-	return auo
+	return _u
 }
 
 // ClearSimplePy clears the value of the "simple_py" field.
-func (auo *AreaUpdateOne) ClearSimplePy() *AreaUpdateOne {
-	auo.mutation.ClearSimplePy()
-	return auo
+func (_u *AreaUpdateOne) ClearSimplePy() *AreaUpdateOne {
+	_u.mutation.ClearSimplePy()
+	return _u
 }
 
 // SetPerPinYin sets the "per_pin_yin" field.
-func (auo *AreaUpdateOne) SetPerPinYin(s string) *AreaUpdateOne {
-	auo.mutation.SetPerPinYin(s)
-	return auo
+func (_u *AreaUpdateOne) SetPerPinYin(v string) *AreaUpdateOne {
+	_u.mutation.SetPerPinYin(v)
+	return _u
 }
 
 // SetNillablePerPinYin sets the "per_pin_yin" field if the given value is not nil.
-func (auo *AreaUpdateOne) SetNillablePerPinYin(s *string) *AreaUpdateOne {
-	if s != nil {
-		auo.SetPerPinYin(*s)
+func (_u *AreaUpdateOne) SetNillablePerPinYin(v *string) *AreaUpdateOne {
+	if v != nil {
+		_u.SetPerPinYin(*v)
 	}
-	return auo
+	return _u
 }
 
 // ClearPerPinYin clears the value of the "per_pin_yin" field.
-func (auo *AreaUpdateOne) ClearPerPinYin() *AreaUpdateOne {
-	auo.mutation.ClearPerPinYin()
-	return auo
+func (_u *AreaUpdateOne) ClearPerPinYin() *AreaUpdateOne {
+	_u.mutation.ClearPerPinYin()
+	return _u
 }
 
 // Mutation returns the AreaMutation object of the builder.
-func (auo *AreaUpdateOne) Mutation() *AreaMutation {
-	return auo.mutation
+func (_u *AreaUpdateOne) Mutation() *AreaMutation {
+	return _u.mutation
 }
 
 // Where appends a list predicates to the AreaUpdate builder.
-func (auo *AreaUpdateOne) Where(ps ...predicate.Area) *AreaUpdateOne {
-	auo.mutation.Where(ps...)
-	return auo
+func (_u *AreaUpdateOne) Where(ps ...predicate.Area) *AreaUpdateOne {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
 // The default is selecting all fields defined in the entity schema.
-func (auo *AreaUpdateOne) Select(field string, fields ...string) *AreaUpdateOne {
-	auo.fields = append([]string{field}, fields...)
-	return auo
+func (_u *AreaUpdateOne) Select(field string, fields ...string) *AreaUpdateOne {
+	_u.fields = append([]string{field}, fields...)
+	return _u
 }
 
 // Save executes the query and returns the updated Area entity.
-func (auo *AreaUpdateOne) Save(ctx context.Context) (*Area, error) {
-	auo.defaults()
-	return withHooks(ctx, auo.sqlSave, auo.mutation, auo.hooks)
+func (_u *AreaUpdateOne) Save(ctx context.Context) (*Area, error) {
+	_u.defaults()
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (auo *AreaUpdateOne) SaveX(ctx context.Context) *Area {
-	node, err := auo.Save(ctx)
+func (_u *AreaUpdateOne) SaveX(ctx context.Context) *Area {
+	node, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -949,40 +949,40 @@ func (auo *AreaUpdateOne) SaveX(ctx context.Context) *Area {
 }
 
 // Exec executes the query on the entity.
-func (auo *AreaUpdateOne) Exec(ctx context.Context) error {
-	_, err := auo.Save(ctx)
+func (_u *AreaUpdateOne) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (auo *AreaUpdateOne) ExecX(ctx context.Context) {
-	if err := auo.Exec(ctx); err != nil {
+func (_u *AreaUpdateOne) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (auo *AreaUpdateOne) defaults() {
-	if _, ok := auo.mutation.UpdatedAt(); !ok && !auo.mutation.UpdatedAtCleared() {
+func (_u *AreaUpdateOne) defaults() {
+	if _, ok := _u.mutation.UpdatedAt(); !ok && !_u.mutation.UpdatedAtCleared() {
 		v := area.UpdateDefaultUpdatedAt()
-		auo.mutation.SetUpdatedAt(v)
+		_u.mutation.SetUpdatedAt(v)
 	}
 }
 
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (auo *AreaUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *AreaUpdateOne {
-	auo.modifiers = append(auo.modifiers, modifiers...)
-	return auo
+func (_u *AreaUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *AreaUpdateOne {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
 }
 
-func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) {
+func (_u *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) {
 	_spec := sqlgraph.NewUpdateSpec(area.Table, area.Columns, sqlgraph.NewFieldSpec(area.FieldID, field.TypeInt64))
-	id, ok := auo.mutation.ID()
+	id, ok := _u.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Area.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
-	if fields := auo.fields; len(fields) > 0 {
+	if fields := _u.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
 		_spec.Node.Columns = append(_spec.Node.Columns, area.FieldID)
 		for _, f := range fields {
@@ -994,132 +994,132 @@ func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) 
 			}
 		}
 	}
-	if ps := auo.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if auo.mutation.CreatedAtCleared() {
+	if _u.mutation.CreatedAtCleared() {
 		_spec.ClearField(area.FieldCreatedAt, field.TypeTime)
 	}
-	if value, ok := auo.mutation.UpdatedAt(); ok {
+	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(area.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if auo.mutation.UpdatedAtCleared() {
+	if _u.mutation.UpdatedAtCleared() {
 		_spec.ClearField(area.FieldUpdatedAt, field.TypeTime)
 	}
-	if value, ok := auo.mutation.Delete(); ok {
+	if value, ok := _u.mutation.Delete(); ok {
 		_spec.SetField(area.FieldDelete, field.TypeInt64, value)
 	}
-	if value, ok := auo.mutation.AddedDelete(); ok {
+	if value, ok := _u.mutation.AddedDelete(); ok {
 		_spec.AddField(area.FieldDelete, field.TypeInt64, value)
 	}
-	if auo.mutation.DeleteCleared() {
+	if _u.mutation.DeleteCleared() {
 		_spec.ClearField(area.FieldDelete, field.TypeInt64)
 	}
-	if value, ok := auo.mutation.CreatedID(); ok {
+	if value, ok := _u.mutation.CreatedID(); ok {
 		_spec.SetField(area.FieldCreatedID, field.TypeInt64, value)
 	}
-	if value, ok := auo.mutation.AddedCreatedID(); ok {
+	if value, ok := _u.mutation.AddedCreatedID(); ok {
 		_spec.AddField(area.FieldCreatedID, field.TypeInt64, value)
 	}
-	if auo.mutation.CreatedIDCleared() {
+	if _u.mutation.CreatedIDCleared() {
 		_spec.ClearField(area.FieldCreatedID, field.TypeInt64)
 	}
-	if value, ok := auo.mutation.Status(); ok {
+	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(area.FieldStatus, field.TypeInt64, value)
 	}
-	if value, ok := auo.mutation.AddedStatus(); ok {
+	if value, ok := _u.mutation.AddedStatus(); ok {
 		_spec.AddField(area.FieldStatus, field.TypeInt64, value)
 	}
-	if auo.mutation.StatusCleared() {
+	if _u.mutation.StatusCleared() {
 		_spec.ClearField(area.FieldStatus, field.TypeInt64)
 	}
-	if value, ok := auo.mutation.ParentID(); ok {
+	if value, ok := _u.mutation.ParentID(); ok {
 		_spec.SetField(area.FieldParentID, field.TypeInt64, value)
 	}
-	if value, ok := auo.mutation.AddedParentID(); ok {
+	if value, ok := _u.mutation.AddedParentID(); ok {
 		_spec.AddField(area.FieldParentID, field.TypeInt64, value)
 	}
-	if auo.mutation.ParentIDCleared() {
+	if _u.mutation.ParentIDCleared() {
 		_spec.ClearField(area.FieldParentID, field.TypeInt64)
 	}
-	if value, ok := auo.mutation.Level(); ok {
+	if value, ok := _u.mutation.Level(); ok {
 		_spec.SetField(area.FieldLevel, field.TypeInt64, value)
 	}
-	if value, ok := auo.mutation.AddedLevel(); ok {
+	if value, ok := _u.mutation.AddedLevel(); ok {
 		_spec.AddField(area.FieldLevel, field.TypeInt64, value)
 	}
-	if auo.mutation.LevelCleared() {
+	if _u.mutation.LevelCleared() {
 		_spec.ClearField(area.FieldLevel, field.TypeInt64)
 	}
-	if value, ok := auo.mutation.Name(); ok {
+	if value, ok := _u.mutation.Name(); ok {
 		_spec.SetField(area.FieldName, field.TypeString, value)
 	}
-	if auo.mutation.NameCleared() {
+	if _u.mutation.NameCleared() {
 		_spec.ClearField(area.FieldName, field.TypeString)
 	}
-	if value, ok := auo.mutation.WholeName(); ok {
+	if value, ok := _u.mutation.WholeName(); ok {
 		_spec.SetField(area.FieldWholeName, field.TypeString, value)
 	}
-	if auo.mutation.WholeNameCleared() {
+	if _u.mutation.WholeNameCleared() {
 		_spec.ClearField(area.FieldWholeName, field.TypeString)
 	}
-	if value, ok := auo.mutation.Lon(); ok {
+	if value, ok := _u.mutation.Lon(); ok {
 		_spec.SetField(area.FieldLon, field.TypeString, value)
 	}
-	if auo.mutation.LonCleared() {
+	if _u.mutation.LonCleared() {
 		_spec.ClearField(area.FieldLon, field.TypeString)
 	}
-	if value, ok := auo.mutation.Lat(); ok {
+	if value, ok := _u.mutation.Lat(); ok {
 		_spec.SetField(area.FieldLat, field.TypeString, value)
 	}
-	if auo.mutation.LatCleared() {
+	if _u.mutation.LatCleared() {
 		_spec.ClearField(area.FieldLat, field.TypeString)
 	}
-	if value, ok := auo.mutation.CityCode(); ok {
+	if value, ok := _u.mutation.CityCode(); ok {
 		_spec.SetField(area.FieldCityCode, field.TypeString, value)
 	}
-	if auo.mutation.CityCodeCleared() {
+	if _u.mutation.CityCodeCleared() {
 		_spec.ClearField(area.FieldCityCode, field.TypeString)
 	}
-	if value, ok := auo.mutation.ZipCode(); ok {
+	if value, ok := _u.mutation.ZipCode(); ok {
 		_spec.SetField(area.FieldZipCode, field.TypeString, value)
 	}
-	if auo.mutation.ZipCodeCleared() {
+	if _u.mutation.ZipCodeCleared() {
 		_spec.ClearField(area.FieldZipCode, field.TypeString)
 	}
-	if value, ok := auo.mutation.AreaCode(); ok {
+	if value, ok := _u.mutation.AreaCode(); ok {
 		_spec.SetField(area.FieldAreaCode, field.TypeString, value)
 	}
-	if auo.mutation.AreaCodeCleared() {
+	if _u.mutation.AreaCodeCleared() {
 		_spec.ClearField(area.FieldAreaCode, field.TypeString)
 	}
-	if value, ok := auo.mutation.PinYin(); ok {
+	if value, ok := _u.mutation.PinYin(); ok {
 		_spec.SetField(area.FieldPinYin, field.TypeString, value)
 	}
-	if auo.mutation.PinYinCleared() {
+	if _u.mutation.PinYinCleared() {
 		_spec.ClearField(area.FieldPinYin, field.TypeString)
 	}
-	if value, ok := auo.mutation.SimplePy(); ok {
+	if value, ok := _u.mutation.SimplePy(); ok {
 		_spec.SetField(area.FieldSimplePy, field.TypeString, value)
 	}
-	if auo.mutation.SimplePyCleared() {
+	if _u.mutation.SimplePyCleared() {
 		_spec.ClearField(area.FieldSimplePy, field.TypeString)
 	}
-	if value, ok := auo.mutation.PerPinYin(); ok {
+	if value, ok := _u.mutation.PerPinYin(); ok {
 		_spec.SetField(area.FieldPerPinYin, field.TypeString, value)
 	}
-	if auo.mutation.PerPinYinCleared() {
+	if _u.mutation.PerPinYinCleared() {
 		_spec.ClearField(area.FieldPerPinYin, field.TypeString)
 	}
-	_spec.AddModifiers(auo.modifiers...)
-	_node = &Area{config: auo.config}
+	_spec.AddModifiers(_u.modifiers...)
+	_node = &Area{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues
-	if err = sqlgraph.UpdateNode(ctx, auo.driver, _spec); err != nil {
+	if err = sqlgraph.UpdateNode(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{area.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -1127,6 +1127,6 @@ func (auo *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) 
 		}
 		return nil, err
 	}
-	auo.mutation.done = true
+	_u.mutation.done = true
 	return _node, nil
 }

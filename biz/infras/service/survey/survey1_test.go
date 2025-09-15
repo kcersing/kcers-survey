@@ -143,11 +143,13 @@ func answerCount1(sq *ent.SurveyQuestion, ids []int64, db *ent.Client, ctx conte
 		})
 	}
 
-	all, err := db.SurveyResponseAnswers.Query().Where(
-		surveyresponseanswers2.SurveyQuestionID(sq.ID),
-		surveyresponseanswers2.Delete(0),
-		surveyresponseanswers2.SurveyResponseIDIn(ids...),
-	).All(ctx)
+	all, err := db.SurveyResponseAnswers.
+		Query().
+		Where(
+			surveyresponseanswers2.SurveyQuestionID(sq.ID),
+			surveyresponseanswers2.Delete(0),
+			surveyresponseanswers2.SurveyResponseIDIn(ids...),
+		).All(ctx)
 	if err != nil {
 		hlog.Error(err)
 		return nil

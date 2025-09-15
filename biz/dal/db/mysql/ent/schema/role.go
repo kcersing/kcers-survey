@@ -23,7 +23,7 @@ func (Role) Fields() []ent.Field {
 		field.Int64("order_no").Default(0).Comment("order number | 排序编号"),
 		field.Ints("apis").Default([]int{}).
 			//SchemaType(map[string]string{dialect.MySQL: "varchar(512)"}).
-			Comment("apis"),
+			Comment("接口权限列表 | 接口权限列表"),
 		field.Int64("venue_id").Default(0).Comment("场馆ID"),
 	}
 }

@@ -39,7 +39,7 @@ type Role struct {
 	Remark string `json:"remark,omitempty"`
 	// order number | 排序编号
 	OrderNo int64 `json:"order_no,omitempty"`
-	// apis
+	// 接口权限列表 | 接口权限列表
 	Apis []int `json:"apis,omitempty"`
 	// 场馆ID
 	VenueID int64 `json:"venue_id,omitempty"`
@@ -100,7 +100,7 @@ func (*Role) scanValues(columns []string) ([]any, error) {
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
 // to the Role fields.
-func (r *Role) assignValues(columns []string, values []any) error {
+func (_m *Role) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
@@ -111,72 +111,72 @@ func (r *Role) assignValues(columns []string, values []any) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			r.ID = int64(value.Int64)
+			_m.ID = int64(value.Int64)
 		case role.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				r.CreatedAt = value.Time
+				_m.CreatedAt = value.Time
 			}
 		case role.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				r.UpdatedAt = value.Time
+				_m.UpdatedAt = value.Time
 			}
 		case role.FieldDelete:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field delete", values[i])
 			} else if value.Valid {
-				r.Delete = value.Int64
+				_m.Delete = value.Int64
 			}
 		case role.FieldCreatedID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_id", values[i])
 			} else if value.Valid {
-				r.CreatedID = value.Int64
+				_m.CreatedID = value.Int64
 			}
 		case role.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				r.Status = value.Int64
+				_m.Status = value.Int64
 			}
 		case role.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
-				r.Name = value.String
+				_m.Name = value.String
 			}
 		case role.FieldValue:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field value", values[i])
 			} else if value.Valid {
-				r.Value = value.String
+				_m.Value = value.String
 			}
 		case role.FieldDefaultRouter:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field default_router", values[i])
 			} else if value.Valid {
-				r.DefaultRouter = value.String
+				_m.DefaultRouter = value.String
 			}
 		case role.FieldRemark:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field remark", values[i])
 			} else if value.Valid {
-				r.Remark = value.String
+				_m.Remark = value.String
 			}
 		case role.FieldOrderNo:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field order_no", values[i])
 			} else if value.Valid {
-				r.OrderNo = value.Int64
+				_m.OrderNo = value.Int64
 			}
 		case role.FieldApis:
 			if value, ok := values[i].(*[]byte); !ok {
 				return fmt.Errorf("unexpected type %T for field apis", values[i])
 			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &r.Apis); err != nil {
+				if err := json.Unmarshal(*value, &_m.Apis); err != nil {
 					return fmt.Errorf("unmarshal field apis: %w", err)
 				}
 			}
@@ -184,10 +184,10 @@ func (r *Role) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field venue_id", values[i])
 			} else if value.Valid {
-				r.VenueID = value.Int64
+				_m.VenueID = value.Int64
 			}
 		default:
-			r.selectValues.Set(columns[i], values[i])
+			_m.selectValues.Set(columns[i], values[i])
 		}
 	}
 	return nil
@@ -195,78 +195,78 @@ func (r *Role) assignValues(columns []string, values []any) error {
 
 // GetValue returns the ent.Value that was dynamically selected and assigned to the Role.
 // This includes values selected through modifiers, order, etc.
-func (r *Role) GetValue(name string) (ent.Value, error) {
-	return r.selectValues.Get(name)
+func (_m *Role) GetValue(name string) (ent.Value, error) {
+	return _m.selectValues.Get(name)
 }
 
 // QueryMenus queries the "menus" edge of the Role entity.
-func (r *Role) QueryMenus() *MenuQuery {
-	return NewRoleClient(r.config).QueryMenus(r)
+func (_m *Role) QueryMenus() *MenuQuery {
+	return NewRoleClient(_m.config).QueryMenus(_m)
 }
 
 // QueryUsers queries the "users" edge of the Role entity.
-func (r *Role) QueryUsers() *UserQuery {
-	return NewRoleClient(r.config).QueryUsers(r)
+func (_m *Role) QueryUsers() *UserQuery {
+	return NewRoleClient(_m.config).QueryUsers(_m)
 }
 
 // Update returns a builder for updating this Role.
 // Note that you need to call Role.Unwrap() before calling this method if this Role
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (r *Role) Update() *RoleUpdateOne {
-	return NewRoleClient(r.config).UpdateOne(r)
+func (_m *Role) Update() *RoleUpdateOne {
+	return NewRoleClient(_m.config).UpdateOne(_m)
 }
 
 // Unwrap unwraps the Role entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (r *Role) Unwrap() *Role {
-	_tx, ok := r.config.driver.(*txDriver)
+func (_m *Role) Unwrap() *Role {
+	_tx, ok := _m.config.driver.(*txDriver)
 	if !ok {
 		panic("ent: Role is not a transactional entity")
 	}
-	r.config.driver = _tx.drv
-	return r
+	_m.config.driver = _tx.drv
+	return _m
 }
 
 // String implements the fmt.Stringer.
-func (r *Role) String() string {
+func (_m *Role) String() string {
 	var builder strings.Builder
 	builder.WriteString("Role(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", r.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
 	builder.WriteString("created_at=")
-	builder.WriteString(r.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
-	builder.WriteString(r.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("delete=")
-	builder.WriteString(fmt.Sprintf("%v", r.Delete))
+	builder.WriteString(fmt.Sprintf("%v", _m.Delete))
 	builder.WriteString(", ")
 	builder.WriteString("created_id=")
-	builder.WriteString(fmt.Sprintf("%v", r.CreatedID))
+	builder.WriteString(fmt.Sprintf("%v", _m.CreatedID))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
-	builder.WriteString(fmt.Sprintf("%v", r.Status))
+	builder.WriteString(fmt.Sprintf("%v", _m.Status))
 	builder.WriteString(", ")
 	builder.WriteString("name=")
-	builder.WriteString(r.Name)
+	builder.WriteString(_m.Name)
 	builder.WriteString(", ")
 	builder.WriteString("value=")
-	builder.WriteString(r.Value)
+	builder.WriteString(_m.Value)
 	builder.WriteString(", ")
 	builder.WriteString("default_router=")
-	builder.WriteString(r.DefaultRouter)
+	builder.WriteString(_m.DefaultRouter)
 	builder.WriteString(", ")
 	builder.WriteString("remark=")
-	builder.WriteString(r.Remark)
+	builder.WriteString(_m.Remark)
 	builder.WriteString(", ")
 	builder.WriteString("order_no=")
-	builder.WriteString(fmt.Sprintf("%v", r.OrderNo))
+	builder.WriteString(fmt.Sprintf("%v", _m.OrderNo))
 	builder.WriteString(", ")
 	builder.WriteString("apis=")
-	builder.WriteString(fmt.Sprintf("%v", r.Apis))
+	builder.WriteString(fmt.Sprintf("%v", _m.Apis))
 	builder.WriteString(", ")
 	builder.WriteString("venue_id=")
-	builder.WriteString(fmt.Sprintf("%v", r.VenueID))
+	builder.WriteString(fmt.Sprintf("%v", _m.VenueID))
 	builder.WriteByte(')')
 	return builder.String()
 }

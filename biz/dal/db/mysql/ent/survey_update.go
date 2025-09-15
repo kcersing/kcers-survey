@@ -26,290 +26,290 @@ type SurveyUpdate struct {
 }
 
 // Where appends a list predicates to the SurveyUpdate builder.
-func (su *SurveyUpdate) Where(ps ...predicate.Survey) *SurveyUpdate {
-	su.mutation.Where(ps...)
-	return su
+func (_u *SurveyUpdate) Where(ps ...predicate.Survey) *SurveyUpdate {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (su *SurveyUpdate) SetUpdatedAt(t time.Time) *SurveyUpdate {
-	su.mutation.SetUpdatedAt(t)
-	return su
+func (_u *SurveyUpdate) SetUpdatedAt(v time.Time) *SurveyUpdate {
+	_u.mutation.SetUpdatedAt(v)
+	return _u
 }
 
 // ClearUpdatedAt clears the value of the "updated_at" field.
-func (su *SurveyUpdate) ClearUpdatedAt() *SurveyUpdate {
-	su.mutation.ClearUpdatedAt()
-	return su
+func (_u *SurveyUpdate) ClearUpdatedAt() *SurveyUpdate {
+	_u.mutation.ClearUpdatedAt()
+	return _u
 }
 
 // SetDelete sets the "delete" field.
-func (su *SurveyUpdate) SetDelete(i int64) *SurveyUpdate {
-	su.mutation.ResetDelete()
-	su.mutation.SetDelete(i)
-	return su
+func (_u *SurveyUpdate) SetDelete(v int64) *SurveyUpdate {
+	_u.mutation.ResetDelete()
+	_u.mutation.SetDelete(v)
+	return _u
 }
 
 // SetNillableDelete sets the "delete" field if the given value is not nil.
-func (su *SurveyUpdate) SetNillableDelete(i *int64) *SurveyUpdate {
-	if i != nil {
-		su.SetDelete(*i)
+func (_u *SurveyUpdate) SetNillableDelete(v *int64) *SurveyUpdate {
+	if v != nil {
+		_u.SetDelete(*v)
 	}
-	return su
+	return _u
 }
 
-// AddDelete adds i to the "delete" field.
-func (su *SurveyUpdate) AddDelete(i int64) *SurveyUpdate {
-	su.mutation.AddDelete(i)
-	return su
+// AddDelete adds value to the "delete" field.
+func (_u *SurveyUpdate) AddDelete(v int64) *SurveyUpdate {
+	_u.mutation.AddDelete(v)
+	return _u
 }
 
 // ClearDelete clears the value of the "delete" field.
-func (su *SurveyUpdate) ClearDelete() *SurveyUpdate {
-	su.mutation.ClearDelete()
-	return su
+func (_u *SurveyUpdate) ClearDelete() *SurveyUpdate {
+	_u.mutation.ClearDelete()
+	return _u
 }
 
 // SetCreatedID sets the "created_id" field.
-func (su *SurveyUpdate) SetCreatedID(i int64) *SurveyUpdate {
-	su.mutation.ResetCreatedID()
-	su.mutation.SetCreatedID(i)
-	return su
+func (_u *SurveyUpdate) SetCreatedID(v int64) *SurveyUpdate {
+	_u.mutation.ResetCreatedID()
+	_u.mutation.SetCreatedID(v)
+	return _u
 }
 
 // SetNillableCreatedID sets the "created_id" field if the given value is not nil.
-func (su *SurveyUpdate) SetNillableCreatedID(i *int64) *SurveyUpdate {
-	if i != nil {
-		su.SetCreatedID(*i)
+func (_u *SurveyUpdate) SetNillableCreatedID(v *int64) *SurveyUpdate {
+	if v != nil {
+		_u.SetCreatedID(*v)
 	}
-	return su
+	return _u
 }
 
-// AddCreatedID adds i to the "created_id" field.
-func (su *SurveyUpdate) AddCreatedID(i int64) *SurveyUpdate {
-	su.mutation.AddCreatedID(i)
-	return su
+// AddCreatedID adds value to the "created_id" field.
+func (_u *SurveyUpdate) AddCreatedID(v int64) *SurveyUpdate {
+	_u.mutation.AddCreatedID(v)
+	return _u
 }
 
 // ClearCreatedID clears the value of the "created_id" field.
-func (su *SurveyUpdate) ClearCreatedID() *SurveyUpdate {
-	su.mutation.ClearCreatedID()
-	return su
+func (_u *SurveyUpdate) ClearCreatedID() *SurveyUpdate {
+	_u.mutation.ClearCreatedID()
+	return _u
 }
 
 // SetStatus sets the "status" field.
-func (su *SurveyUpdate) SetStatus(i int64) *SurveyUpdate {
-	su.mutation.ResetStatus()
-	su.mutation.SetStatus(i)
-	return su
+func (_u *SurveyUpdate) SetStatus(v int64) *SurveyUpdate {
+	_u.mutation.ResetStatus()
+	_u.mutation.SetStatus(v)
+	return _u
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (su *SurveyUpdate) SetNillableStatus(i *int64) *SurveyUpdate {
-	if i != nil {
-		su.SetStatus(*i)
+func (_u *SurveyUpdate) SetNillableStatus(v *int64) *SurveyUpdate {
+	if v != nil {
+		_u.SetStatus(*v)
 	}
-	return su
+	return _u
 }
 
-// AddStatus adds i to the "status" field.
-func (su *SurveyUpdate) AddStatus(i int64) *SurveyUpdate {
-	su.mutation.AddStatus(i)
-	return su
+// AddStatus adds value to the "status" field.
+func (_u *SurveyUpdate) AddStatus(v int64) *SurveyUpdate {
+	_u.mutation.AddStatus(v)
+	return _u
 }
 
 // ClearStatus clears the value of the "status" field.
-func (su *SurveyUpdate) ClearStatus() *SurveyUpdate {
-	su.mutation.ClearStatus()
-	return su
+func (_u *SurveyUpdate) ClearStatus() *SurveyUpdate {
+	_u.mutation.ClearStatus()
+	return _u
 }
 
 // SetTitle sets the "title" field.
-func (su *SurveyUpdate) SetTitle(s string) *SurveyUpdate {
-	su.mutation.SetTitle(s)
-	return su
+func (_u *SurveyUpdate) SetTitle(v string) *SurveyUpdate {
+	_u.mutation.SetTitle(v)
+	return _u
 }
 
 // SetNillableTitle sets the "title" field if the given value is not nil.
-func (su *SurveyUpdate) SetNillableTitle(s *string) *SurveyUpdate {
-	if s != nil {
-		su.SetTitle(*s)
+func (_u *SurveyUpdate) SetNillableTitle(v *string) *SurveyUpdate {
+	if v != nil {
+		_u.SetTitle(*v)
 	}
-	return su
+	return _u
 }
 
 // ClearTitle clears the value of the "title" field.
-func (su *SurveyUpdate) ClearTitle() *SurveyUpdate {
-	su.mutation.ClearTitle()
-	return su
+func (_u *SurveyUpdate) ClearTitle() *SurveyUpdate {
+	_u.mutation.ClearTitle()
+	return _u
 }
 
 // SetPic sets the "pic" field.
-func (su *SurveyUpdate) SetPic(s string) *SurveyUpdate {
-	su.mutation.SetPic(s)
-	return su
+func (_u *SurveyUpdate) SetPic(v string) *SurveyUpdate {
+	_u.mutation.SetPic(v)
+	return _u
 }
 
 // SetNillablePic sets the "pic" field if the given value is not nil.
-func (su *SurveyUpdate) SetNillablePic(s *string) *SurveyUpdate {
-	if s != nil {
-		su.SetPic(*s)
+func (_u *SurveyUpdate) SetNillablePic(v *string) *SurveyUpdate {
+	if v != nil {
+		_u.SetPic(*v)
 	}
-	return su
+	return _u
 }
 
 // ClearPic clears the value of the "pic" field.
-func (su *SurveyUpdate) ClearPic() *SurveyUpdate {
-	su.mutation.ClearPic()
-	return su
+func (_u *SurveyUpdate) ClearPic() *SurveyUpdate {
+	_u.mutation.ClearPic()
+	return _u
 }
 
 // SetDesc sets the "desc" field.
-func (su *SurveyUpdate) SetDesc(s string) *SurveyUpdate {
-	su.mutation.SetDesc(s)
-	return su
+func (_u *SurveyUpdate) SetDesc(v string) *SurveyUpdate {
+	_u.mutation.SetDesc(v)
+	return _u
 }
 
 // SetNillableDesc sets the "desc" field if the given value is not nil.
-func (su *SurveyUpdate) SetNillableDesc(s *string) *SurveyUpdate {
-	if s != nil {
-		su.SetDesc(*s)
+func (_u *SurveyUpdate) SetNillableDesc(v *string) *SurveyUpdate {
+	if v != nil {
+		_u.SetDesc(*v)
 	}
-	return su
+	return _u
 }
 
 // ClearDesc clears the value of the "desc" field.
-func (su *SurveyUpdate) ClearDesc() *SurveyUpdate {
-	su.mutation.ClearDesc()
-	return su
+func (_u *SurveyUpdate) ClearDesc() *SurveyUpdate {
+	_u.mutation.ClearDesc()
+	return _u
 }
 
 // SetStartAt sets the "start_at" field.
-func (su *SurveyUpdate) SetStartAt(t time.Time) *SurveyUpdate {
-	su.mutation.SetStartAt(t)
-	return su
+func (_u *SurveyUpdate) SetStartAt(v time.Time) *SurveyUpdate {
+	_u.mutation.SetStartAt(v)
+	return _u
 }
 
 // SetNillableStartAt sets the "start_at" field if the given value is not nil.
-func (su *SurveyUpdate) SetNillableStartAt(t *time.Time) *SurveyUpdate {
-	if t != nil {
-		su.SetStartAt(*t)
+func (_u *SurveyUpdate) SetNillableStartAt(v *time.Time) *SurveyUpdate {
+	if v != nil {
+		_u.SetStartAt(*v)
 	}
-	return su
+	return _u
 }
 
 // ClearStartAt clears the value of the "start_at" field.
-func (su *SurveyUpdate) ClearStartAt() *SurveyUpdate {
-	su.mutation.ClearStartAt()
-	return su
+func (_u *SurveyUpdate) ClearStartAt() *SurveyUpdate {
+	_u.mutation.ClearStartAt()
+	return _u
 }
 
 // SetEndAt sets the "end_at" field.
-func (su *SurveyUpdate) SetEndAt(t time.Time) *SurveyUpdate {
-	su.mutation.SetEndAt(t)
-	return su
+func (_u *SurveyUpdate) SetEndAt(v time.Time) *SurveyUpdate {
+	_u.mutation.SetEndAt(v)
+	return _u
 }
 
 // SetNillableEndAt sets the "end_at" field if the given value is not nil.
-func (su *SurveyUpdate) SetNillableEndAt(t *time.Time) *SurveyUpdate {
-	if t != nil {
-		su.SetEndAt(*t)
+func (_u *SurveyUpdate) SetNillableEndAt(v *time.Time) *SurveyUpdate {
+	if v != nil {
+		_u.SetEndAt(*v)
 	}
-	return su
+	return _u
 }
 
 // ClearEndAt clears the value of the "end_at" field.
-func (su *SurveyUpdate) ClearEndAt() *SurveyUpdate {
-	su.mutation.ClearEndAt()
-	return su
+func (_u *SurveyUpdate) ClearEndAt() *SurveyUpdate {
+	_u.mutation.ClearEndAt()
+	return _u
 }
 
 // AddQuestionIDs adds the "question" edge to the SurveyQuestion entity by IDs.
-func (su *SurveyUpdate) AddQuestionIDs(ids ...int64) *SurveyUpdate {
-	su.mutation.AddQuestionIDs(ids...)
-	return su
+func (_u *SurveyUpdate) AddQuestionIDs(ids ...int64) *SurveyUpdate {
+	_u.mutation.AddQuestionIDs(ids...)
+	return _u
 }
 
 // AddQuestion adds the "question" edges to the SurveyQuestion entity.
-func (su *SurveyUpdate) AddQuestion(s ...*SurveyQuestion) *SurveyUpdate {
-	ids := make([]int64, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
+func (_u *SurveyUpdate) AddQuestion(v ...*SurveyQuestion) *SurveyUpdate {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return su.AddQuestionIDs(ids...)
+	return _u.AddQuestionIDs(ids...)
 }
 
 // AddResponseIDs adds the "response" edge to the SurveyResponse entity by IDs.
-func (su *SurveyUpdate) AddResponseIDs(ids ...int64) *SurveyUpdate {
-	su.mutation.AddResponseIDs(ids...)
-	return su
+func (_u *SurveyUpdate) AddResponseIDs(ids ...int64) *SurveyUpdate {
+	_u.mutation.AddResponseIDs(ids...)
+	return _u
 }
 
 // AddResponse adds the "response" edges to the SurveyResponse entity.
-func (su *SurveyUpdate) AddResponse(s ...*SurveyResponse) *SurveyUpdate {
-	ids := make([]int64, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
+func (_u *SurveyUpdate) AddResponse(v ...*SurveyResponse) *SurveyUpdate {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return su.AddResponseIDs(ids...)
+	return _u.AddResponseIDs(ids...)
 }
 
 // Mutation returns the SurveyMutation object of the builder.
-func (su *SurveyUpdate) Mutation() *SurveyMutation {
-	return su.mutation
+func (_u *SurveyUpdate) Mutation() *SurveyMutation {
+	return _u.mutation
 }
 
 // ClearQuestion clears all "question" edges to the SurveyQuestion entity.
-func (su *SurveyUpdate) ClearQuestion() *SurveyUpdate {
-	su.mutation.ClearQuestion()
-	return su
+func (_u *SurveyUpdate) ClearQuestion() *SurveyUpdate {
+	_u.mutation.ClearQuestion()
+	return _u
 }
 
 // RemoveQuestionIDs removes the "question" edge to SurveyQuestion entities by IDs.
-func (su *SurveyUpdate) RemoveQuestionIDs(ids ...int64) *SurveyUpdate {
-	su.mutation.RemoveQuestionIDs(ids...)
-	return su
+func (_u *SurveyUpdate) RemoveQuestionIDs(ids ...int64) *SurveyUpdate {
+	_u.mutation.RemoveQuestionIDs(ids...)
+	return _u
 }
 
 // RemoveQuestion removes "question" edges to SurveyQuestion entities.
-func (su *SurveyUpdate) RemoveQuestion(s ...*SurveyQuestion) *SurveyUpdate {
-	ids := make([]int64, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
+func (_u *SurveyUpdate) RemoveQuestion(v ...*SurveyQuestion) *SurveyUpdate {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return su.RemoveQuestionIDs(ids...)
+	return _u.RemoveQuestionIDs(ids...)
 }
 
 // ClearResponse clears all "response" edges to the SurveyResponse entity.
-func (su *SurveyUpdate) ClearResponse() *SurveyUpdate {
-	su.mutation.ClearResponse()
-	return su
+func (_u *SurveyUpdate) ClearResponse() *SurveyUpdate {
+	_u.mutation.ClearResponse()
+	return _u
 }
 
 // RemoveResponseIDs removes the "response" edge to SurveyResponse entities by IDs.
-func (su *SurveyUpdate) RemoveResponseIDs(ids ...int64) *SurveyUpdate {
-	su.mutation.RemoveResponseIDs(ids...)
-	return su
+func (_u *SurveyUpdate) RemoveResponseIDs(ids ...int64) *SurveyUpdate {
+	_u.mutation.RemoveResponseIDs(ids...)
+	return _u
 }
 
 // RemoveResponse removes "response" edges to SurveyResponse entities.
-func (su *SurveyUpdate) RemoveResponse(s ...*SurveyResponse) *SurveyUpdate {
-	ids := make([]int64, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
+func (_u *SurveyUpdate) RemoveResponse(v ...*SurveyResponse) *SurveyUpdate {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return su.RemoveResponseIDs(ids...)
+	return _u.RemoveResponseIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
-func (su *SurveyUpdate) Save(ctx context.Context) (int, error) {
-	su.defaults()
-	return withHooks(ctx, su.sqlSave, su.mutation, su.hooks)
+func (_u *SurveyUpdate) Save(ctx context.Context) (int, error) {
+	_u.defaults()
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (su *SurveyUpdate) SaveX(ctx context.Context) int {
-	affected, err := su.Save(ctx)
+func (_u *SurveyUpdate) SaveX(ctx context.Context) int {
+	affected, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -317,108 +317,108 @@ func (su *SurveyUpdate) SaveX(ctx context.Context) int {
 }
 
 // Exec executes the query.
-func (su *SurveyUpdate) Exec(ctx context.Context) error {
-	_, err := su.Save(ctx)
+func (_u *SurveyUpdate) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (su *SurveyUpdate) ExecX(ctx context.Context) {
-	if err := su.Exec(ctx); err != nil {
+func (_u *SurveyUpdate) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (su *SurveyUpdate) defaults() {
-	if _, ok := su.mutation.UpdatedAt(); !ok && !su.mutation.UpdatedAtCleared() {
+func (_u *SurveyUpdate) defaults() {
+	if _, ok := _u.mutation.UpdatedAt(); !ok && !_u.mutation.UpdatedAtCleared() {
 		v := survey.UpdateDefaultUpdatedAt()
-		su.mutation.SetUpdatedAt(v)
+		_u.mutation.SetUpdatedAt(v)
 	}
 }
 
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (su *SurveyUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SurveyUpdate {
-	su.modifiers = append(su.modifiers, modifiers...)
-	return su
+func (_u *SurveyUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SurveyUpdate {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
 }
 
-func (su *SurveyUpdate) sqlSave(ctx context.Context) (n int, err error) {
+func (_u *SurveyUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(survey.Table, survey.Columns, sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64))
-	if ps := su.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if su.mutation.CreatedAtCleared() {
+	if _u.mutation.CreatedAtCleared() {
 		_spec.ClearField(survey.FieldCreatedAt, field.TypeTime)
 	}
-	if value, ok := su.mutation.UpdatedAt(); ok {
+	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(survey.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if su.mutation.UpdatedAtCleared() {
+	if _u.mutation.UpdatedAtCleared() {
 		_spec.ClearField(survey.FieldUpdatedAt, field.TypeTime)
 	}
-	if value, ok := su.mutation.Delete(); ok {
+	if value, ok := _u.mutation.Delete(); ok {
 		_spec.SetField(survey.FieldDelete, field.TypeInt64, value)
 	}
-	if value, ok := su.mutation.AddedDelete(); ok {
+	if value, ok := _u.mutation.AddedDelete(); ok {
 		_spec.AddField(survey.FieldDelete, field.TypeInt64, value)
 	}
-	if su.mutation.DeleteCleared() {
+	if _u.mutation.DeleteCleared() {
 		_spec.ClearField(survey.FieldDelete, field.TypeInt64)
 	}
-	if value, ok := su.mutation.CreatedID(); ok {
+	if value, ok := _u.mutation.CreatedID(); ok {
 		_spec.SetField(survey.FieldCreatedID, field.TypeInt64, value)
 	}
-	if value, ok := su.mutation.AddedCreatedID(); ok {
+	if value, ok := _u.mutation.AddedCreatedID(); ok {
 		_spec.AddField(survey.FieldCreatedID, field.TypeInt64, value)
 	}
-	if su.mutation.CreatedIDCleared() {
+	if _u.mutation.CreatedIDCleared() {
 		_spec.ClearField(survey.FieldCreatedID, field.TypeInt64)
 	}
-	if value, ok := su.mutation.Status(); ok {
+	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(survey.FieldStatus, field.TypeInt64, value)
 	}
-	if value, ok := su.mutation.AddedStatus(); ok {
+	if value, ok := _u.mutation.AddedStatus(); ok {
 		_spec.AddField(survey.FieldStatus, field.TypeInt64, value)
 	}
-	if su.mutation.StatusCleared() {
+	if _u.mutation.StatusCleared() {
 		_spec.ClearField(survey.FieldStatus, field.TypeInt64)
 	}
-	if value, ok := su.mutation.Title(); ok {
+	if value, ok := _u.mutation.Title(); ok {
 		_spec.SetField(survey.FieldTitle, field.TypeString, value)
 	}
-	if su.mutation.TitleCleared() {
+	if _u.mutation.TitleCleared() {
 		_spec.ClearField(survey.FieldTitle, field.TypeString)
 	}
-	if value, ok := su.mutation.Pic(); ok {
+	if value, ok := _u.mutation.Pic(); ok {
 		_spec.SetField(survey.FieldPic, field.TypeString, value)
 	}
-	if su.mutation.PicCleared() {
+	if _u.mutation.PicCleared() {
 		_spec.ClearField(survey.FieldPic, field.TypeString)
 	}
-	if value, ok := su.mutation.Desc(); ok {
+	if value, ok := _u.mutation.Desc(); ok {
 		_spec.SetField(survey.FieldDesc, field.TypeString, value)
 	}
-	if su.mutation.DescCleared() {
+	if _u.mutation.DescCleared() {
 		_spec.ClearField(survey.FieldDesc, field.TypeString)
 	}
-	if value, ok := su.mutation.StartAt(); ok {
+	if value, ok := _u.mutation.StartAt(); ok {
 		_spec.SetField(survey.FieldStartAt, field.TypeTime, value)
 	}
-	if su.mutation.StartAtCleared() {
+	if _u.mutation.StartAtCleared() {
 		_spec.ClearField(survey.FieldStartAt, field.TypeTime)
 	}
-	if value, ok := su.mutation.EndAt(); ok {
+	if value, ok := _u.mutation.EndAt(); ok {
 		_spec.SetField(survey.FieldEndAt, field.TypeTime, value)
 	}
-	if su.mutation.EndAtCleared() {
+	if _u.mutation.EndAtCleared() {
 		_spec.ClearField(survey.FieldEndAt, field.TypeTime)
 	}
-	if su.mutation.QuestionCleared() {
+	if _u.mutation.QuestionCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -431,7 +431,7 @@ func (su *SurveyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := su.mutation.RemovedQuestionIDs(); len(nodes) > 0 && !su.mutation.QuestionCleared() {
+	if nodes := _u.mutation.RemovedQuestionIDs(); len(nodes) > 0 && !_u.mutation.QuestionCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -447,7 +447,7 @@ func (su *SurveyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := su.mutation.QuestionIDs(); len(nodes) > 0 {
+	if nodes := _u.mutation.QuestionIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -463,7 +463,7 @@ func (su *SurveyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if su.mutation.ResponseCleared() {
+	if _u.mutation.ResponseCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -476,7 +476,7 @@ func (su *SurveyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := su.mutation.RemovedResponseIDs(); len(nodes) > 0 && !su.mutation.ResponseCleared() {
+	if nodes := _u.mutation.RemovedResponseIDs(); len(nodes) > 0 && !_u.mutation.ResponseCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -492,7 +492,7 @@ func (su *SurveyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := su.mutation.ResponseIDs(); len(nodes) > 0 {
+	if nodes := _u.mutation.ResponseIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -508,8 +508,8 @@ func (su *SurveyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(su.modifiers...)
-	if n, err = sqlgraph.UpdateNodes(ctx, su.driver, _spec); err != nil {
+	_spec.AddModifiers(_u.modifiers...)
+	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{survey.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -517,8 +517,8 @@ func (su *SurveyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		return 0, err
 	}
-	su.mutation.done = true
-	return n, nil
+	_u.mutation.done = true
+	return _node, nil
 }
 
 // SurveyUpdateOne is the builder for updating a single Survey entity.
@@ -531,297 +531,297 @@ type SurveyUpdateOne struct {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (suo *SurveyUpdateOne) SetUpdatedAt(t time.Time) *SurveyUpdateOne {
-	suo.mutation.SetUpdatedAt(t)
-	return suo
+func (_u *SurveyUpdateOne) SetUpdatedAt(v time.Time) *SurveyUpdateOne {
+	_u.mutation.SetUpdatedAt(v)
+	return _u
 }
 
 // ClearUpdatedAt clears the value of the "updated_at" field.
-func (suo *SurveyUpdateOne) ClearUpdatedAt() *SurveyUpdateOne {
-	suo.mutation.ClearUpdatedAt()
-	return suo
+func (_u *SurveyUpdateOne) ClearUpdatedAt() *SurveyUpdateOne {
+	_u.mutation.ClearUpdatedAt()
+	return _u
 }
 
 // SetDelete sets the "delete" field.
-func (suo *SurveyUpdateOne) SetDelete(i int64) *SurveyUpdateOne {
-	suo.mutation.ResetDelete()
-	suo.mutation.SetDelete(i)
-	return suo
+func (_u *SurveyUpdateOne) SetDelete(v int64) *SurveyUpdateOne {
+	_u.mutation.ResetDelete()
+	_u.mutation.SetDelete(v)
+	return _u
 }
 
 // SetNillableDelete sets the "delete" field if the given value is not nil.
-func (suo *SurveyUpdateOne) SetNillableDelete(i *int64) *SurveyUpdateOne {
-	if i != nil {
-		suo.SetDelete(*i)
+func (_u *SurveyUpdateOne) SetNillableDelete(v *int64) *SurveyUpdateOne {
+	if v != nil {
+		_u.SetDelete(*v)
 	}
-	return suo
+	return _u
 }
 
-// AddDelete adds i to the "delete" field.
-func (suo *SurveyUpdateOne) AddDelete(i int64) *SurveyUpdateOne {
-	suo.mutation.AddDelete(i)
-	return suo
+// AddDelete adds value to the "delete" field.
+func (_u *SurveyUpdateOne) AddDelete(v int64) *SurveyUpdateOne {
+	_u.mutation.AddDelete(v)
+	return _u
 }
 
 // ClearDelete clears the value of the "delete" field.
-func (suo *SurveyUpdateOne) ClearDelete() *SurveyUpdateOne {
-	suo.mutation.ClearDelete()
-	return suo
+func (_u *SurveyUpdateOne) ClearDelete() *SurveyUpdateOne {
+	_u.mutation.ClearDelete()
+	return _u
 }
 
 // SetCreatedID sets the "created_id" field.
-func (suo *SurveyUpdateOne) SetCreatedID(i int64) *SurveyUpdateOne {
-	suo.mutation.ResetCreatedID()
-	suo.mutation.SetCreatedID(i)
-	return suo
+func (_u *SurveyUpdateOne) SetCreatedID(v int64) *SurveyUpdateOne {
+	_u.mutation.ResetCreatedID()
+	_u.mutation.SetCreatedID(v)
+	return _u
 }
 
 // SetNillableCreatedID sets the "created_id" field if the given value is not nil.
-func (suo *SurveyUpdateOne) SetNillableCreatedID(i *int64) *SurveyUpdateOne {
-	if i != nil {
-		suo.SetCreatedID(*i)
+func (_u *SurveyUpdateOne) SetNillableCreatedID(v *int64) *SurveyUpdateOne {
+	if v != nil {
+		_u.SetCreatedID(*v)
 	}
-	return suo
+	return _u
 }
 
-// AddCreatedID adds i to the "created_id" field.
-func (suo *SurveyUpdateOne) AddCreatedID(i int64) *SurveyUpdateOne {
-	suo.mutation.AddCreatedID(i)
-	return suo
+// AddCreatedID adds value to the "created_id" field.
+func (_u *SurveyUpdateOne) AddCreatedID(v int64) *SurveyUpdateOne {
+	_u.mutation.AddCreatedID(v)
+	return _u
 }
 
 // ClearCreatedID clears the value of the "created_id" field.
-func (suo *SurveyUpdateOne) ClearCreatedID() *SurveyUpdateOne {
-	suo.mutation.ClearCreatedID()
-	return suo
+func (_u *SurveyUpdateOne) ClearCreatedID() *SurveyUpdateOne {
+	_u.mutation.ClearCreatedID()
+	return _u
 }
 
 // SetStatus sets the "status" field.
-func (suo *SurveyUpdateOne) SetStatus(i int64) *SurveyUpdateOne {
-	suo.mutation.ResetStatus()
-	suo.mutation.SetStatus(i)
-	return suo
+func (_u *SurveyUpdateOne) SetStatus(v int64) *SurveyUpdateOne {
+	_u.mutation.ResetStatus()
+	_u.mutation.SetStatus(v)
+	return _u
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (suo *SurveyUpdateOne) SetNillableStatus(i *int64) *SurveyUpdateOne {
-	if i != nil {
-		suo.SetStatus(*i)
+func (_u *SurveyUpdateOne) SetNillableStatus(v *int64) *SurveyUpdateOne {
+	if v != nil {
+		_u.SetStatus(*v)
 	}
-	return suo
+	return _u
 }
 
-// AddStatus adds i to the "status" field.
-func (suo *SurveyUpdateOne) AddStatus(i int64) *SurveyUpdateOne {
-	suo.mutation.AddStatus(i)
-	return suo
+// AddStatus adds value to the "status" field.
+func (_u *SurveyUpdateOne) AddStatus(v int64) *SurveyUpdateOne {
+	_u.mutation.AddStatus(v)
+	return _u
 }
 
 // ClearStatus clears the value of the "status" field.
-func (suo *SurveyUpdateOne) ClearStatus() *SurveyUpdateOne {
-	suo.mutation.ClearStatus()
-	return suo
+func (_u *SurveyUpdateOne) ClearStatus() *SurveyUpdateOne {
+	_u.mutation.ClearStatus()
+	return _u
 }
 
 // SetTitle sets the "title" field.
-func (suo *SurveyUpdateOne) SetTitle(s string) *SurveyUpdateOne {
-	suo.mutation.SetTitle(s)
-	return suo
+func (_u *SurveyUpdateOne) SetTitle(v string) *SurveyUpdateOne {
+	_u.mutation.SetTitle(v)
+	return _u
 }
 
 // SetNillableTitle sets the "title" field if the given value is not nil.
-func (suo *SurveyUpdateOne) SetNillableTitle(s *string) *SurveyUpdateOne {
-	if s != nil {
-		suo.SetTitle(*s)
+func (_u *SurveyUpdateOne) SetNillableTitle(v *string) *SurveyUpdateOne {
+	if v != nil {
+		_u.SetTitle(*v)
 	}
-	return suo
+	return _u
 }
 
 // ClearTitle clears the value of the "title" field.
-func (suo *SurveyUpdateOne) ClearTitle() *SurveyUpdateOne {
-	suo.mutation.ClearTitle()
-	return suo
+func (_u *SurveyUpdateOne) ClearTitle() *SurveyUpdateOne {
+	_u.mutation.ClearTitle()
+	return _u
 }
 
 // SetPic sets the "pic" field.
-func (suo *SurveyUpdateOne) SetPic(s string) *SurveyUpdateOne {
-	suo.mutation.SetPic(s)
-	return suo
+func (_u *SurveyUpdateOne) SetPic(v string) *SurveyUpdateOne {
+	_u.mutation.SetPic(v)
+	return _u
 }
 
 // SetNillablePic sets the "pic" field if the given value is not nil.
-func (suo *SurveyUpdateOne) SetNillablePic(s *string) *SurveyUpdateOne {
-	if s != nil {
-		suo.SetPic(*s)
+func (_u *SurveyUpdateOne) SetNillablePic(v *string) *SurveyUpdateOne {
+	if v != nil {
+		_u.SetPic(*v)
 	}
-	return suo
+	return _u
 }
 
 // ClearPic clears the value of the "pic" field.
-func (suo *SurveyUpdateOne) ClearPic() *SurveyUpdateOne {
-	suo.mutation.ClearPic()
-	return suo
+func (_u *SurveyUpdateOne) ClearPic() *SurveyUpdateOne {
+	_u.mutation.ClearPic()
+	return _u
 }
 
 // SetDesc sets the "desc" field.
-func (suo *SurveyUpdateOne) SetDesc(s string) *SurveyUpdateOne {
-	suo.mutation.SetDesc(s)
-	return suo
+func (_u *SurveyUpdateOne) SetDesc(v string) *SurveyUpdateOne {
+	_u.mutation.SetDesc(v)
+	return _u
 }
 
 // SetNillableDesc sets the "desc" field if the given value is not nil.
-func (suo *SurveyUpdateOne) SetNillableDesc(s *string) *SurveyUpdateOne {
-	if s != nil {
-		suo.SetDesc(*s)
+func (_u *SurveyUpdateOne) SetNillableDesc(v *string) *SurveyUpdateOne {
+	if v != nil {
+		_u.SetDesc(*v)
 	}
-	return suo
+	return _u
 }
 
 // ClearDesc clears the value of the "desc" field.
-func (suo *SurveyUpdateOne) ClearDesc() *SurveyUpdateOne {
-	suo.mutation.ClearDesc()
-	return suo
+func (_u *SurveyUpdateOne) ClearDesc() *SurveyUpdateOne {
+	_u.mutation.ClearDesc()
+	return _u
 }
 
 // SetStartAt sets the "start_at" field.
-func (suo *SurveyUpdateOne) SetStartAt(t time.Time) *SurveyUpdateOne {
-	suo.mutation.SetStartAt(t)
-	return suo
+func (_u *SurveyUpdateOne) SetStartAt(v time.Time) *SurveyUpdateOne {
+	_u.mutation.SetStartAt(v)
+	return _u
 }
 
 // SetNillableStartAt sets the "start_at" field if the given value is not nil.
-func (suo *SurveyUpdateOne) SetNillableStartAt(t *time.Time) *SurveyUpdateOne {
-	if t != nil {
-		suo.SetStartAt(*t)
+func (_u *SurveyUpdateOne) SetNillableStartAt(v *time.Time) *SurveyUpdateOne {
+	if v != nil {
+		_u.SetStartAt(*v)
 	}
-	return suo
+	return _u
 }
 
 // ClearStartAt clears the value of the "start_at" field.
-func (suo *SurveyUpdateOne) ClearStartAt() *SurveyUpdateOne {
-	suo.mutation.ClearStartAt()
-	return suo
+func (_u *SurveyUpdateOne) ClearStartAt() *SurveyUpdateOne {
+	_u.mutation.ClearStartAt()
+	return _u
 }
 
 // SetEndAt sets the "end_at" field.
-func (suo *SurveyUpdateOne) SetEndAt(t time.Time) *SurveyUpdateOne {
-	suo.mutation.SetEndAt(t)
-	return suo
+func (_u *SurveyUpdateOne) SetEndAt(v time.Time) *SurveyUpdateOne {
+	_u.mutation.SetEndAt(v)
+	return _u
 }
 
 // SetNillableEndAt sets the "end_at" field if the given value is not nil.
-func (suo *SurveyUpdateOne) SetNillableEndAt(t *time.Time) *SurveyUpdateOne {
-	if t != nil {
-		suo.SetEndAt(*t)
+func (_u *SurveyUpdateOne) SetNillableEndAt(v *time.Time) *SurveyUpdateOne {
+	if v != nil {
+		_u.SetEndAt(*v)
 	}
-	return suo
+	return _u
 }
 
 // ClearEndAt clears the value of the "end_at" field.
-func (suo *SurveyUpdateOne) ClearEndAt() *SurveyUpdateOne {
-	suo.mutation.ClearEndAt()
-	return suo
+func (_u *SurveyUpdateOne) ClearEndAt() *SurveyUpdateOne {
+	_u.mutation.ClearEndAt()
+	return _u
 }
 
 // AddQuestionIDs adds the "question" edge to the SurveyQuestion entity by IDs.
-func (suo *SurveyUpdateOne) AddQuestionIDs(ids ...int64) *SurveyUpdateOne {
-	suo.mutation.AddQuestionIDs(ids...)
-	return suo
+func (_u *SurveyUpdateOne) AddQuestionIDs(ids ...int64) *SurveyUpdateOne {
+	_u.mutation.AddQuestionIDs(ids...)
+	return _u
 }
 
 // AddQuestion adds the "question" edges to the SurveyQuestion entity.
-func (suo *SurveyUpdateOne) AddQuestion(s ...*SurveyQuestion) *SurveyUpdateOne {
-	ids := make([]int64, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
+func (_u *SurveyUpdateOne) AddQuestion(v ...*SurveyQuestion) *SurveyUpdateOne {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return suo.AddQuestionIDs(ids...)
+	return _u.AddQuestionIDs(ids...)
 }
 
 // AddResponseIDs adds the "response" edge to the SurveyResponse entity by IDs.
-func (suo *SurveyUpdateOne) AddResponseIDs(ids ...int64) *SurveyUpdateOne {
-	suo.mutation.AddResponseIDs(ids...)
-	return suo
+func (_u *SurveyUpdateOne) AddResponseIDs(ids ...int64) *SurveyUpdateOne {
+	_u.mutation.AddResponseIDs(ids...)
+	return _u
 }
 
 // AddResponse adds the "response" edges to the SurveyResponse entity.
-func (suo *SurveyUpdateOne) AddResponse(s ...*SurveyResponse) *SurveyUpdateOne {
-	ids := make([]int64, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
+func (_u *SurveyUpdateOne) AddResponse(v ...*SurveyResponse) *SurveyUpdateOne {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return suo.AddResponseIDs(ids...)
+	return _u.AddResponseIDs(ids...)
 }
 
 // Mutation returns the SurveyMutation object of the builder.
-func (suo *SurveyUpdateOne) Mutation() *SurveyMutation {
-	return suo.mutation
+func (_u *SurveyUpdateOne) Mutation() *SurveyMutation {
+	return _u.mutation
 }
 
 // ClearQuestion clears all "question" edges to the SurveyQuestion entity.
-func (suo *SurveyUpdateOne) ClearQuestion() *SurveyUpdateOne {
-	suo.mutation.ClearQuestion()
-	return suo
+func (_u *SurveyUpdateOne) ClearQuestion() *SurveyUpdateOne {
+	_u.mutation.ClearQuestion()
+	return _u
 }
 
 // RemoveQuestionIDs removes the "question" edge to SurveyQuestion entities by IDs.
-func (suo *SurveyUpdateOne) RemoveQuestionIDs(ids ...int64) *SurveyUpdateOne {
-	suo.mutation.RemoveQuestionIDs(ids...)
-	return suo
+func (_u *SurveyUpdateOne) RemoveQuestionIDs(ids ...int64) *SurveyUpdateOne {
+	_u.mutation.RemoveQuestionIDs(ids...)
+	return _u
 }
 
 // RemoveQuestion removes "question" edges to SurveyQuestion entities.
-func (suo *SurveyUpdateOne) RemoveQuestion(s ...*SurveyQuestion) *SurveyUpdateOne {
-	ids := make([]int64, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
+func (_u *SurveyUpdateOne) RemoveQuestion(v ...*SurveyQuestion) *SurveyUpdateOne {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return suo.RemoveQuestionIDs(ids...)
+	return _u.RemoveQuestionIDs(ids...)
 }
 
 // ClearResponse clears all "response" edges to the SurveyResponse entity.
-func (suo *SurveyUpdateOne) ClearResponse() *SurveyUpdateOne {
-	suo.mutation.ClearResponse()
-	return suo
+func (_u *SurveyUpdateOne) ClearResponse() *SurveyUpdateOne {
+	_u.mutation.ClearResponse()
+	return _u
 }
 
 // RemoveResponseIDs removes the "response" edge to SurveyResponse entities by IDs.
-func (suo *SurveyUpdateOne) RemoveResponseIDs(ids ...int64) *SurveyUpdateOne {
-	suo.mutation.RemoveResponseIDs(ids...)
-	return suo
+func (_u *SurveyUpdateOne) RemoveResponseIDs(ids ...int64) *SurveyUpdateOne {
+	_u.mutation.RemoveResponseIDs(ids...)
+	return _u
 }
 
 // RemoveResponse removes "response" edges to SurveyResponse entities.
-func (suo *SurveyUpdateOne) RemoveResponse(s ...*SurveyResponse) *SurveyUpdateOne {
-	ids := make([]int64, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
+func (_u *SurveyUpdateOne) RemoveResponse(v ...*SurveyResponse) *SurveyUpdateOne {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return suo.RemoveResponseIDs(ids...)
+	return _u.RemoveResponseIDs(ids...)
 }
 
 // Where appends a list predicates to the SurveyUpdate builder.
-func (suo *SurveyUpdateOne) Where(ps ...predicate.Survey) *SurveyUpdateOne {
-	suo.mutation.Where(ps...)
-	return suo
+func (_u *SurveyUpdateOne) Where(ps ...predicate.Survey) *SurveyUpdateOne {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
 // The default is selecting all fields defined in the entity schema.
-func (suo *SurveyUpdateOne) Select(field string, fields ...string) *SurveyUpdateOne {
-	suo.fields = append([]string{field}, fields...)
-	return suo
+func (_u *SurveyUpdateOne) Select(field string, fields ...string) *SurveyUpdateOne {
+	_u.fields = append([]string{field}, fields...)
+	return _u
 }
 
 // Save executes the query and returns the updated Survey entity.
-func (suo *SurveyUpdateOne) Save(ctx context.Context) (*Survey, error) {
-	suo.defaults()
-	return withHooks(ctx, suo.sqlSave, suo.mutation, suo.hooks)
+func (_u *SurveyUpdateOne) Save(ctx context.Context) (*Survey, error) {
+	_u.defaults()
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (suo *SurveyUpdateOne) SaveX(ctx context.Context) *Survey {
-	node, err := suo.Save(ctx)
+func (_u *SurveyUpdateOne) SaveX(ctx context.Context) *Survey {
+	node, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -829,40 +829,40 @@ func (suo *SurveyUpdateOne) SaveX(ctx context.Context) *Survey {
 }
 
 // Exec executes the query on the entity.
-func (suo *SurveyUpdateOne) Exec(ctx context.Context) error {
-	_, err := suo.Save(ctx)
+func (_u *SurveyUpdateOne) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (suo *SurveyUpdateOne) ExecX(ctx context.Context) {
-	if err := suo.Exec(ctx); err != nil {
+func (_u *SurveyUpdateOne) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (suo *SurveyUpdateOne) defaults() {
-	if _, ok := suo.mutation.UpdatedAt(); !ok && !suo.mutation.UpdatedAtCleared() {
+func (_u *SurveyUpdateOne) defaults() {
+	if _, ok := _u.mutation.UpdatedAt(); !ok && !_u.mutation.UpdatedAtCleared() {
 		v := survey.UpdateDefaultUpdatedAt()
-		suo.mutation.SetUpdatedAt(v)
+		_u.mutation.SetUpdatedAt(v)
 	}
 }
 
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (suo *SurveyUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SurveyUpdateOne {
-	suo.modifiers = append(suo.modifiers, modifiers...)
-	return suo
+func (_u *SurveyUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SurveyUpdateOne {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
 }
 
-func (suo *SurveyUpdateOne) sqlSave(ctx context.Context) (_node *Survey, err error) {
+func (_u *SurveyUpdateOne) sqlSave(ctx context.Context) (_node *Survey, err error) {
 	_spec := sqlgraph.NewUpdateSpec(survey.Table, survey.Columns, sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64))
-	id, ok := suo.mutation.ID()
+	id, ok := _u.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Survey.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
-	if fields := suo.fields; len(fields) > 0 {
+	if fields := _u.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
 		_spec.Node.Columns = append(_spec.Node.Columns, survey.FieldID)
 		for _, f := range fields {
@@ -874,80 +874,80 @@ func (suo *SurveyUpdateOne) sqlSave(ctx context.Context) (_node *Survey, err err
 			}
 		}
 	}
-	if ps := suo.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if suo.mutation.CreatedAtCleared() {
+	if _u.mutation.CreatedAtCleared() {
 		_spec.ClearField(survey.FieldCreatedAt, field.TypeTime)
 	}
-	if value, ok := suo.mutation.UpdatedAt(); ok {
+	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(survey.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if suo.mutation.UpdatedAtCleared() {
+	if _u.mutation.UpdatedAtCleared() {
 		_spec.ClearField(survey.FieldUpdatedAt, field.TypeTime)
 	}
-	if value, ok := suo.mutation.Delete(); ok {
+	if value, ok := _u.mutation.Delete(); ok {
 		_spec.SetField(survey.FieldDelete, field.TypeInt64, value)
 	}
-	if value, ok := suo.mutation.AddedDelete(); ok {
+	if value, ok := _u.mutation.AddedDelete(); ok {
 		_spec.AddField(survey.FieldDelete, field.TypeInt64, value)
 	}
-	if suo.mutation.DeleteCleared() {
+	if _u.mutation.DeleteCleared() {
 		_spec.ClearField(survey.FieldDelete, field.TypeInt64)
 	}
-	if value, ok := suo.mutation.CreatedID(); ok {
+	if value, ok := _u.mutation.CreatedID(); ok {
 		_spec.SetField(survey.FieldCreatedID, field.TypeInt64, value)
 	}
-	if value, ok := suo.mutation.AddedCreatedID(); ok {
+	if value, ok := _u.mutation.AddedCreatedID(); ok {
 		_spec.AddField(survey.FieldCreatedID, field.TypeInt64, value)
 	}
-	if suo.mutation.CreatedIDCleared() {
+	if _u.mutation.CreatedIDCleared() {
 		_spec.ClearField(survey.FieldCreatedID, field.TypeInt64)
 	}
-	if value, ok := suo.mutation.Status(); ok {
+	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(survey.FieldStatus, field.TypeInt64, value)
 	}
-	if value, ok := suo.mutation.AddedStatus(); ok {
+	if value, ok := _u.mutation.AddedStatus(); ok {
 		_spec.AddField(survey.FieldStatus, field.TypeInt64, value)
 	}
-	if suo.mutation.StatusCleared() {
+	if _u.mutation.StatusCleared() {
 		_spec.ClearField(survey.FieldStatus, field.TypeInt64)
 	}
-	if value, ok := suo.mutation.Title(); ok {
+	if value, ok := _u.mutation.Title(); ok {
 		_spec.SetField(survey.FieldTitle, field.TypeString, value)
 	}
-	if suo.mutation.TitleCleared() {
+	if _u.mutation.TitleCleared() {
 		_spec.ClearField(survey.FieldTitle, field.TypeString)
 	}
-	if value, ok := suo.mutation.Pic(); ok {
+	if value, ok := _u.mutation.Pic(); ok {
 		_spec.SetField(survey.FieldPic, field.TypeString, value)
 	}
-	if suo.mutation.PicCleared() {
+	if _u.mutation.PicCleared() {
 		_spec.ClearField(survey.FieldPic, field.TypeString)
 	}
-	if value, ok := suo.mutation.Desc(); ok {
+	if value, ok := _u.mutation.Desc(); ok {
 		_spec.SetField(survey.FieldDesc, field.TypeString, value)
 	}
-	if suo.mutation.DescCleared() {
+	if _u.mutation.DescCleared() {
 		_spec.ClearField(survey.FieldDesc, field.TypeString)
 	}
-	if value, ok := suo.mutation.StartAt(); ok {
+	if value, ok := _u.mutation.StartAt(); ok {
 		_spec.SetField(survey.FieldStartAt, field.TypeTime, value)
 	}
-	if suo.mutation.StartAtCleared() {
+	if _u.mutation.StartAtCleared() {
 		_spec.ClearField(survey.FieldStartAt, field.TypeTime)
 	}
-	if value, ok := suo.mutation.EndAt(); ok {
+	if value, ok := _u.mutation.EndAt(); ok {
 		_spec.SetField(survey.FieldEndAt, field.TypeTime, value)
 	}
-	if suo.mutation.EndAtCleared() {
+	if _u.mutation.EndAtCleared() {
 		_spec.ClearField(survey.FieldEndAt, field.TypeTime)
 	}
-	if suo.mutation.QuestionCleared() {
+	if _u.mutation.QuestionCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -960,7 +960,7 @@ func (suo *SurveyUpdateOne) sqlSave(ctx context.Context) (_node *Survey, err err
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := suo.mutation.RemovedQuestionIDs(); len(nodes) > 0 && !suo.mutation.QuestionCleared() {
+	if nodes := _u.mutation.RemovedQuestionIDs(); len(nodes) > 0 && !_u.mutation.QuestionCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -976,7 +976,7 @@ func (suo *SurveyUpdateOne) sqlSave(ctx context.Context) (_node *Survey, err err
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := suo.mutation.QuestionIDs(); len(nodes) > 0 {
+	if nodes := _u.mutation.QuestionIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -992,7 +992,7 @@ func (suo *SurveyUpdateOne) sqlSave(ctx context.Context) (_node *Survey, err err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if suo.mutation.ResponseCleared() {
+	if _u.mutation.ResponseCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -1005,7 +1005,7 @@ func (suo *SurveyUpdateOne) sqlSave(ctx context.Context) (_node *Survey, err err
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := suo.mutation.RemovedResponseIDs(); len(nodes) > 0 && !suo.mutation.ResponseCleared() {
+	if nodes := _u.mutation.RemovedResponseIDs(); len(nodes) > 0 && !_u.mutation.ResponseCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -1021,7 +1021,7 @@ func (suo *SurveyUpdateOne) sqlSave(ctx context.Context) (_node *Survey, err err
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := suo.mutation.ResponseIDs(); len(nodes) > 0 {
+	if nodes := _u.mutation.ResponseIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -1037,11 +1037,11 @@ func (suo *SurveyUpdateOne) sqlSave(ctx context.Context) (_node *Survey, err err
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(suo.modifiers...)
-	_node = &Survey{config: suo.config}
+	_spec.AddModifiers(_u.modifiers...)
+	_node = &Survey{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues
-	if err = sqlgraph.UpdateNode(ctx, suo.driver, _spec); err != nil {
+	if err = sqlgraph.UpdateNode(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{survey.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -1049,6 +1049,6 @@ func (suo *SurveyUpdateOne) sqlSave(ctx context.Context) (_node *Survey, err err
 		}
 		return nil, err
 	}
-	suo.mutation.done = true
+	_u.mutation.done = true
 	return _node, nil
 }

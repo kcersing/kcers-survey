@@ -154,10 +154,14 @@ var (
 		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "path", Type: field.TypeString, Nullable: true, Comment: "index path | 菜单路由路径", Default: ""},
+		{Name: "sort", Type: field.TypeInt64, Nullable: true, Comment: "sort | 排序编号", Default: 0},
 		{Name: "name", Type: field.TypeString, Comment: "index name | 菜单名称"},
 		{Name: "order_no", Type: field.TypeInt64, Comment: "sorting numbers | 排序编号", Default: 0},
 		{Name: "disabled", Type: field.TypeInt64, Nullable: true, Comment: "disable status | 是否停用", Default: 0},
 		{Name: "ignore", Type: field.TypeBool, Nullable: true, Comment: "当前路由是否渲染菜单项，为 true 的话不会在菜单中显示，但可通过路由地址访问", Default: false},
+		{Name: "redirect", Type: field.TypeString, Nullable: true, Comment: "redirect path | 跳转路径 （外链）", Default: ""},
+		{Name: "component", Type: field.TypeString, Nullable: true, Comment: "the path of vue file | 组件路径", Default: ""},
+		{Name: "icon", Type: field.TypeString, Comment: "menu icon | 菜单图标"},
 		{Name: "parent_id", Type: field.TypeInt64, Nullable: true, Comment: "parent menu ID | 父菜单ID"},
 	}
 	// SysMenusTable holds the schema information for the "sys_menus" table.
@@ -168,7 +172,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "sys_menus_sys_menus_children",
-				Columns:    []*schema.Column{SysMenusColumns[10]},
+				Columns:    []*schema.Column{SysMenusColumns[14]},
 				RefColumns: []*schema.Column{SysMenusColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -213,7 +217,7 @@ var (
 		{Name: "default_router", Type: field.TypeString, Comment: "default menu : dashboard | 默认登录页面", Default: "dashboard"},
 		{Name: "remark", Type: field.TypeString, Comment: "remark | 备注", Default: ""},
 		{Name: "order_no", Type: field.TypeInt64, Comment: "order number | 排序编号", Default: 0},
-		{Name: "apis", Type: field.TypeJSON, Comment: "apis"},
+		{Name: "apis", Type: field.TypeJSON, Comment: "接口权限列表 | 接口权限列表"},
 		{Name: "venue_id", Type: field.TypeInt64, Comment: "场馆ID", Default: 0},
 	}
 	// SysRolesTable holds the schema information for the "sys_roles" table.
@@ -221,6 +225,43 @@ var (
 		Name:       "sys_roles",
 		Columns:    SysRolesColumns,
 		PrimaryKey: []*schema.Column{SysRolesColumns[0]},
+	}
+	// SysSmsColumns holds the columns for the "sys_sms" table.
+	SysSmsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Increment: true, Comment: "primary key"},
+		{Name: "created_at", Type: field.TypeTime, Nullable: true, Comment: "created time"},
+		{Name: "updated_at", Type: field.TypeTime, Nullable: true, Comment: "last update time"},
+		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
+		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
+		{Name: "notice_count", Type: field.TypeInt64, Comment: "通知短信数量", Default: 0},
+		{Name: "used_notice", Type: field.TypeInt64, Comment: "已用通知", Default: 0},
+	}
+	// SysSmsTable holds the schema information for the "sys_sms" table.
+	SysSmsTable = &schema.Table{
+		Name:       "sys_sms",
+		Columns:    SysSmsColumns,
+		PrimaryKey: []*schema.Column{SysSmsColumns[0]},
+	}
+	// SysSmsLogColumns holds the columns for the "sys_sms_log" table.
+	SysSmsLogColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Increment: true, Comment: "primary key"},
+		{Name: "created_at", Type: field.TypeTime, Nullable: true, Comment: "created time"},
+		{Name: "updated_at", Type: field.TypeTime, Nullable: true, Comment: "last update time"},
+		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
+		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
+		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
+		{Name: "mobile", Type: field.TypeString, Comment: "手机号"},
+		{Name: "biz_id", Type: field.TypeString, Comment: "BizId"},
+		{Name: "code", Type: field.TypeString, Comment: "验证码"},
+		{Name: "content", Type: field.TypeString, Comment: "内容", Default: ""},
+		{Name: "notify_type", Type: field.TypeInt64, Nullable: true, Comment: "通知类型[1会员;2员工]"},
+		{Name: "template", Type: field.TypeString, Comment: "短信模板"},
+	}
+	// SysSmsLogTable holds the schema information for the "sys_sms_log" table.
+	SysSmsLogTable = &schema.Table{
+		Name:       "sys_sms_log",
+		Columns:    SysSmsLogColumns,
+		PrimaryKey: []*schema.Column{SysSmsLogColumns[0]},
 	}
 	// SurveyColumns holds the columns for the "survey" table.
 	SurveyColumns = []*schema.Column{
@@ -361,8 +402,10 @@ var (
 		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "user_id", Type: field.TypeInt64, Unique: true, Comment: " User's ID | 用户的ID"},
-		{Name: "token", Type: field.TypeString, Comment: "Token string | Token 字符串"},
+		{Name: "token", Type: field.TypeString, Comment: "Token string | Token 字符串", SchemaType: map[string]string{"mysql": "varchar(5120)"}},
 		{Name: "type", Type: field.TypeInt64, Nullable: true, Comment: "类型[1会员;2员工]"},
+		{Name: "drive", Type: field.TypeString, Comment: "设备"},
+		{Name: "ip", Type: field.TypeString, Comment: "IP"},
 		{Name: "source", Type: field.TypeString, Comment: "Log in source such as GitHub | Token 来源 （本地为core, 第三方如github等）"},
 		{Name: "expired_at", Type: field.TypeTime, Comment: " Expire time | 过期时间"},
 		{Name: "user_token", Type: field.TypeInt64, Unique: true, Nullable: true},
@@ -375,7 +418,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "sys_tokens_sys_users_token",
-				Columns:    []*schema.Column{SysTokensColumns[10]},
+				Columns:    []*schema.Column{SysTokensColumns[12]},
 				RefColumns: []*schema.Column{SysUsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -389,7 +432,7 @@ var (
 			{
 				Name:    "token_expired_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysTokensColumns[9]},
+				Columns: []*schema.Column{SysTokensColumns[11]},
 			},
 		},
 	}
@@ -498,6 +541,8 @@ var (
 		SysMenusTable,
 		SysMenuParamsTable,
 		SysRolesTable,
+		SysSmsTable,
+		SysSmsLogTable,
 		SurveyTable,
 		SurveyQuestionTable,
 		SurveyResponseTable,
@@ -536,6 +581,12 @@ func init() {
 	}
 	SysRolesTable.Annotation = &entsql.Annotation{
 		Table: "sys_roles",
+	}
+	SysSmsTable.Annotation = &entsql.Annotation{
+		Table: "sys_sms",
+	}
+	SysSmsLogTable.Annotation = &entsql.Annotation{
+		Table: "sys_sms_log",
 	}
 	SurveyTable.Annotation = &entsql.Annotation{
 		Table: "survey",

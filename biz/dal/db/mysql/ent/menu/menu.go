@@ -26,6 +26,8 @@ const (
 	FieldParentID = "parent_id"
 	// FieldPath holds the string denoting the path field in the database.
 	FieldPath = "path"
+	// FieldSort holds the string denoting the sort field in the database.
+	FieldSort = "sort"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldOrderNo holds the string denoting the order_no field in the database.
@@ -34,6 +36,12 @@ const (
 	FieldDisabled = "disabled"
 	// FieldIgnore holds the string denoting the ignore field in the database.
 	FieldIgnore = "ignore"
+	// FieldRedirect holds the string denoting the redirect field in the database.
+	FieldRedirect = "redirect"
+	// FieldComponent holds the string denoting the component field in the database.
+	FieldComponent = "component"
+	// FieldIcon holds the string denoting the icon field in the database.
+	FieldIcon = "icon"
 	// EdgeRoles holds the string denoting the roles edge name in mutations.
 	EdgeRoles = "roles"
 	// EdgeParent holds the string denoting the parent edge name in mutations.
@@ -75,10 +83,14 @@ var Columns = []string{
 	FieldCreatedID,
 	FieldParentID,
 	FieldPath,
+	FieldSort,
 	FieldName,
 	FieldOrderNo,
 	FieldDisabled,
 	FieldIgnore,
+	FieldRedirect,
+	FieldComponent,
+	FieldIcon,
 }
 
 var (
@@ -110,12 +122,18 @@ var (
 	DefaultCreatedID int64
 	// DefaultPath holds the default value on creation for the "path" field.
 	DefaultPath string
+	// DefaultSort holds the default value on creation for the "sort" field.
+	DefaultSort int64
 	// DefaultOrderNo holds the default value on creation for the "order_no" field.
 	DefaultOrderNo int64
 	// DefaultDisabled holds the default value on creation for the "disabled" field.
 	DefaultDisabled int64
 	// DefaultIgnore holds the default value on creation for the "ignore" field.
 	DefaultIgnore bool
+	// DefaultRedirect holds the default value on creation for the "redirect" field.
+	DefaultRedirect string
+	// DefaultComponent holds the default value on creation for the "component" field.
+	DefaultComponent string
 )
 
 // OrderOption defines the ordering options for the Menu queries.
@@ -156,6 +174,11 @@ func ByPath(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPath, opts...).ToFunc()
 }
 
+// BySort orders the results by the sort field.
+func BySort(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSort, opts...).ToFunc()
+}
+
 // ByName orders the results by the name field.
 func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
@@ -174,6 +197,21 @@ func ByDisabled(opts ...sql.OrderTermOption) OrderOption {
 // ByIgnore orders the results by the ignore field.
 func ByIgnore(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIgnore, opts...).ToFunc()
+}
+
+// ByRedirect orders the results by the redirect field.
+func ByRedirect(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRedirect, opts...).ToFunc()
+}
+
+// ByComponent orders the results by the component field.
+func ByComponent(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldComponent, opts...).ToFunc()
+}
+
+// ByIcon orders the results by the icon field.
+func ByIcon(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIcon, opts...).ToFunc()
 }
 
 // ByRolesCount orders the results by roles count.

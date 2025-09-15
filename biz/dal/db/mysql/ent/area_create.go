@@ -20,263 +20,263 @@ type AreaCreate struct {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (ac *AreaCreate) SetCreatedAt(t time.Time) *AreaCreate {
-	ac.mutation.SetCreatedAt(t)
-	return ac
+func (_c *AreaCreate) SetCreatedAt(v time.Time) *AreaCreate {
+	_c.mutation.SetCreatedAt(v)
+	return _c
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (ac *AreaCreate) SetNillableCreatedAt(t *time.Time) *AreaCreate {
-	if t != nil {
-		ac.SetCreatedAt(*t)
+func (_c *AreaCreate) SetNillableCreatedAt(v *time.Time) *AreaCreate {
+	if v != nil {
+		_c.SetCreatedAt(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (ac *AreaCreate) SetUpdatedAt(t time.Time) *AreaCreate {
-	ac.mutation.SetUpdatedAt(t)
-	return ac
+func (_c *AreaCreate) SetUpdatedAt(v time.Time) *AreaCreate {
+	_c.mutation.SetUpdatedAt(v)
+	return _c
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (ac *AreaCreate) SetNillableUpdatedAt(t *time.Time) *AreaCreate {
-	if t != nil {
-		ac.SetUpdatedAt(*t)
+func (_c *AreaCreate) SetNillableUpdatedAt(v *time.Time) *AreaCreate {
+	if v != nil {
+		_c.SetUpdatedAt(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetDelete sets the "delete" field.
-func (ac *AreaCreate) SetDelete(i int64) *AreaCreate {
-	ac.mutation.SetDelete(i)
-	return ac
+func (_c *AreaCreate) SetDelete(v int64) *AreaCreate {
+	_c.mutation.SetDelete(v)
+	return _c
 }
 
 // SetNillableDelete sets the "delete" field if the given value is not nil.
-func (ac *AreaCreate) SetNillableDelete(i *int64) *AreaCreate {
-	if i != nil {
-		ac.SetDelete(*i)
+func (_c *AreaCreate) SetNillableDelete(v *int64) *AreaCreate {
+	if v != nil {
+		_c.SetDelete(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetCreatedID sets the "created_id" field.
-func (ac *AreaCreate) SetCreatedID(i int64) *AreaCreate {
-	ac.mutation.SetCreatedID(i)
-	return ac
+func (_c *AreaCreate) SetCreatedID(v int64) *AreaCreate {
+	_c.mutation.SetCreatedID(v)
+	return _c
 }
 
 // SetNillableCreatedID sets the "created_id" field if the given value is not nil.
-func (ac *AreaCreate) SetNillableCreatedID(i *int64) *AreaCreate {
-	if i != nil {
-		ac.SetCreatedID(*i)
+func (_c *AreaCreate) SetNillableCreatedID(v *int64) *AreaCreate {
+	if v != nil {
+		_c.SetCreatedID(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetStatus sets the "status" field.
-func (ac *AreaCreate) SetStatus(i int64) *AreaCreate {
-	ac.mutation.SetStatus(i)
-	return ac
+func (_c *AreaCreate) SetStatus(v int64) *AreaCreate {
+	_c.mutation.SetStatus(v)
+	return _c
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (ac *AreaCreate) SetNillableStatus(i *int64) *AreaCreate {
-	if i != nil {
-		ac.SetStatus(*i)
+func (_c *AreaCreate) SetNillableStatus(v *int64) *AreaCreate {
+	if v != nil {
+		_c.SetStatus(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetParentID sets the "parent_id" field.
-func (ac *AreaCreate) SetParentID(i int64) *AreaCreate {
-	ac.mutation.SetParentID(i)
-	return ac
+func (_c *AreaCreate) SetParentID(v int64) *AreaCreate {
+	_c.mutation.SetParentID(v)
+	return _c
 }
 
 // SetNillableParentID sets the "parent_id" field if the given value is not nil.
-func (ac *AreaCreate) SetNillableParentID(i *int64) *AreaCreate {
-	if i != nil {
-		ac.SetParentID(*i)
+func (_c *AreaCreate) SetNillableParentID(v *int64) *AreaCreate {
+	if v != nil {
+		_c.SetParentID(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetLevel sets the "level" field.
-func (ac *AreaCreate) SetLevel(i int64) *AreaCreate {
-	ac.mutation.SetLevel(i)
-	return ac
+func (_c *AreaCreate) SetLevel(v int64) *AreaCreate {
+	_c.mutation.SetLevel(v)
+	return _c
 }
 
 // SetNillableLevel sets the "level" field if the given value is not nil.
-func (ac *AreaCreate) SetNillableLevel(i *int64) *AreaCreate {
-	if i != nil {
-		ac.SetLevel(*i)
+func (_c *AreaCreate) SetNillableLevel(v *int64) *AreaCreate {
+	if v != nil {
+		_c.SetLevel(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetName sets the "name" field.
-func (ac *AreaCreate) SetName(s string) *AreaCreate {
-	ac.mutation.SetName(s)
-	return ac
+func (_c *AreaCreate) SetName(v string) *AreaCreate {
+	_c.mutation.SetName(v)
+	return _c
 }
 
 // SetNillableName sets the "name" field if the given value is not nil.
-func (ac *AreaCreate) SetNillableName(s *string) *AreaCreate {
-	if s != nil {
-		ac.SetName(*s)
+func (_c *AreaCreate) SetNillableName(v *string) *AreaCreate {
+	if v != nil {
+		_c.SetName(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetWholeName sets the "whole_name" field.
-func (ac *AreaCreate) SetWholeName(s string) *AreaCreate {
-	ac.mutation.SetWholeName(s)
-	return ac
+func (_c *AreaCreate) SetWholeName(v string) *AreaCreate {
+	_c.mutation.SetWholeName(v)
+	return _c
 }
 
 // SetNillableWholeName sets the "whole_name" field if the given value is not nil.
-func (ac *AreaCreate) SetNillableWholeName(s *string) *AreaCreate {
-	if s != nil {
-		ac.SetWholeName(*s)
+func (_c *AreaCreate) SetNillableWholeName(v *string) *AreaCreate {
+	if v != nil {
+		_c.SetWholeName(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetLon sets the "lon" field.
-func (ac *AreaCreate) SetLon(s string) *AreaCreate {
-	ac.mutation.SetLon(s)
-	return ac
+func (_c *AreaCreate) SetLon(v string) *AreaCreate {
+	_c.mutation.SetLon(v)
+	return _c
 }
 
 // SetNillableLon sets the "lon" field if the given value is not nil.
-func (ac *AreaCreate) SetNillableLon(s *string) *AreaCreate {
-	if s != nil {
-		ac.SetLon(*s)
+func (_c *AreaCreate) SetNillableLon(v *string) *AreaCreate {
+	if v != nil {
+		_c.SetLon(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetLat sets the "lat" field.
-func (ac *AreaCreate) SetLat(s string) *AreaCreate {
-	ac.mutation.SetLat(s)
-	return ac
+func (_c *AreaCreate) SetLat(v string) *AreaCreate {
+	_c.mutation.SetLat(v)
+	return _c
 }
 
 // SetNillableLat sets the "lat" field if the given value is not nil.
-func (ac *AreaCreate) SetNillableLat(s *string) *AreaCreate {
-	if s != nil {
-		ac.SetLat(*s)
+func (_c *AreaCreate) SetNillableLat(v *string) *AreaCreate {
+	if v != nil {
+		_c.SetLat(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetCityCode sets the "city_code" field.
-func (ac *AreaCreate) SetCityCode(s string) *AreaCreate {
-	ac.mutation.SetCityCode(s)
-	return ac
+func (_c *AreaCreate) SetCityCode(v string) *AreaCreate {
+	_c.mutation.SetCityCode(v)
+	return _c
 }
 
 // SetNillableCityCode sets the "city_code" field if the given value is not nil.
-func (ac *AreaCreate) SetNillableCityCode(s *string) *AreaCreate {
-	if s != nil {
-		ac.SetCityCode(*s)
+func (_c *AreaCreate) SetNillableCityCode(v *string) *AreaCreate {
+	if v != nil {
+		_c.SetCityCode(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetZipCode sets the "zip_code" field.
-func (ac *AreaCreate) SetZipCode(s string) *AreaCreate {
-	ac.mutation.SetZipCode(s)
-	return ac
+func (_c *AreaCreate) SetZipCode(v string) *AreaCreate {
+	_c.mutation.SetZipCode(v)
+	return _c
 }
 
 // SetNillableZipCode sets the "zip_code" field if the given value is not nil.
-func (ac *AreaCreate) SetNillableZipCode(s *string) *AreaCreate {
-	if s != nil {
-		ac.SetZipCode(*s)
+func (_c *AreaCreate) SetNillableZipCode(v *string) *AreaCreate {
+	if v != nil {
+		_c.SetZipCode(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetAreaCode sets the "area_code" field.
-func (ac *AreaCreate) SetAreaCode(s string) *AreaCreate {
-	ac.mutation.SetAreaCode(s)
-	return ac
+func (_c *AreaCreate) SetAreaCode(v string) *AreaCreate {
+	_c.mutation.SetAreaCode(v)
+	return _c
 }
 
 // SetNillableAreaCode sets the "area_code" field if the given value is not nil.
-func (ac *AreaCreate) SetNillableAreaCode(s *string) *AreaCreate {
-	if s != nil {
-		ac.SetAreaCode(*s)
+func (_c *AreaCreate) SetNillableAreaCode(v *string) *AreaCreate {
+	if v != nil {
+		_c.SetAreaCode(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetPinYin sets the "pin_yin" field.
-func (ac *AreaCreate) SetPinYin(s string) *AreaCreate {
-	ac.mutation.SetPinYin(s)
-	return ac
+func (_c *AreaCreate) SetPinYin(v string) *AreaCreate {
+	_c.mutation.SetPinYin(v)
+	return _c
 }
 
 // SetNillablePinYin sets the "pin_yin" field if the given value is not nil.
-func (ac *AreaCreate) SetNillablePinYin(s *string) *AreaCreate {
-	if s != nil {
-		ac.SetPinYin(*s)
+func (_c *AreaCreate) SetNillablePinYin(v *string) *AreaCreate {
+	if v != nil {
+		_c.SetPinYin(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetSimplePy sets the "simple_py" field.
-func (ac *AreaCreate) SetSimplePy(s string) *AreaCreate {
-	ac.mutation.SetSimplePy(s)
-	return ac
+func (_c *AreaCreate) SetSimplePy(v string) *AreaCreate {
+	_c.mutation.SetSimplePy(v)
+	return _c
 }
 
 // SetNillableSimplePy sets the "simple_py" field if the given value is not nil.
-func (ac *AreaCreate) SetNillableSimplePy(s *string) *AreaCreate {
-	if s != nil {
-		ac.SetSimplePy(*s)
+func (_c *AreaCreate) SetNillableSimplePy(v *string) *AreaCreate {
+	if v != nil {
+		_c.SetSimplePy(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetPerPinYin sets the "per_pin_yin" field.
-func (ac *AreaCreate) SetPerPinYin(s string) *AreaCreate {
-	ac.mutation.SetPerPinYin(s)
-	return ac
+func (_c *AreaCreate) SetPerPinYin(v string) *AreaCreate {
+	_c.mutation.SetPerPinYin(v)
+	return _c
 }
 
 // SetNillablePerPinYin sets the "per_pin_yin" field if the given value is not nil.
-func (ac *AreaCreate) SetNillablePerPinYin(s *string) *AreaCreate {
-	if s != nil {
-		ac.SetPerPinYin(*s)
+func (_c *AreaCreate) SetNillablePerPinYin(v *string) *AreaCreate {
+	if v != nil {
+		_c.SetPerPinYin(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetID sets the "id" field.
-func (ac *AreaCreate) SetID(i int64) *AreaCreate {
-	ac.mutation.SetID(i)
-	return ac
+func (_c *AreaCreate) SetID(v int64) *AreaCreate {
+	_c.mutation.SetID(v)
+	return _c
 }
 
 // Mutation returns the AreaMutation object of the builder.
-func (ac *AreaCreate) Mutation() *AreaMutation {
-	return ac.mutation
+func (_c *AreaCreate) Mutation() *AreaMutation {
+	return _c.mutation
 }
 
 // Save creates the Area in the database.
-func (ac *AreaCreate) Save(ctx context.Context) (*Area, error) {
-	ac.defaults()
-	return withHooks(ctx, ac.sqlSave, ac.mutation, ac.hooks)
+func (_c *AreaCreate) Save(ctx context.Context) (*Area, error) {
+	_c.defaults()
+	return withHooks(ctx, _c.sqlSave, _c.mutation, _c.hooks)
 }
 
 // SaveX calls Save and panics if Save returns an error.
-func (ac *AreaCreate) SaveX(ctx context.Context) *Area {
-	v, err := ac.Save(ctx)
+func (_c *AreaCreate) SaveX(ctx context.Context) *Area {
+	v, err := _c.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -284,53 +284,53 @@ func (ac *AreaCreate) SaveX(ctx context.Context) *Area {
 }
 
 // Exec executes the query.
-func (ac *AreaCreate) Exec(ctx context.Context) error {
-	_, err := ac.Save(ctx)
+func (_c *AreaCreate) Exec(ctx context.Context) error {
+	_, err := _c.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (ac *AreaCreate) ExecX(ctx context.Context) {
-	if err := ac.Exec(ctx); err != nil {
+func (_c *AreaCreate) ExecX(ctx context.Context) {
+	if err := _c.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (ac *AreaCreate) defaults() {
-	if _, ok := ac.mutation.CreatedAt(); !ok {
+func (_c *AreaCreate) defaults() {
+	if _, ok := _c.mutation.CreatedAt(); !ok {
 		v := area.DefaultCreatedAt()
-		ac.mutation.SetCreatedAt(v)
+		_c.mutation.SetCreatedAt(v)
 	}
-	if _, ok := ac.mutation.UpdatedAt(); !ok {
+	if _, ok := _c.mutation.UpdatedAt(); !ok {
 		v := area.DefaultUpdatedAt()
-		ac.mutation.SetUpdatedAt(v)
+		_c.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := ac.mutation.Delete(); !ok {
+	if _, ok := _c.mutation.Delete(); !ok {
 		v := area.DefaultDelete
-		ac.mutation.SetDelete(v)
+		_c.mutation.SetDelete(v)
 	}
-	if _, ok := ac.mutation.CreatedID(); !ok {
+	if _, ok := _c.mutation.CreatedID(); !ok {
 		v := area.DefaultCreatedID
-		ac.mutation.SetCreatedID(v)
+		_c.mutation.SetCreatedID(v)
 	}
-	if _, ok := ac.mutation.Status(); !ok {
+	if _, ok := _c.mutation.Status(); !ok {
 		v := area.DefaultStatus
-		ac.mutation.SetStatus(v)
+		_c.mutation.SetStatus(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
-func (ac *AreaCreate) check() error {
+func (_c *AreaCreate) check() error {
 	return nil
 }
 
-func (ac *AreaCreate) sqlSave(ctx context.Context) (*Area, error) {
-	if err := ac.check(); err != nil {
+func (_c *AreaCreate) sqlSave(ctx context.Context) (*Area, error) {
+	if err := _c.check(); err != nil {
 		return nil, err
 	}
-	_node, _spec := ac.createSpec()
-	if err := sqlgraph.CreateNode(ctx, ac.driver, _spec); err != nil {
+	_node, _spec := _c.createSpec()
+	if err := sqlgraph.CreateNode(ctx, _c.driver, _spec); err != nil {
 		if sqlgraph.IsConstraintError(err) {
 			err = &ConstraintError{msg: err.Error(), wrap: err}
 		}
@@ -340,85 +340,85 @@ func (ac *AreaCreate) sqlSave(ctx context.Context) (*Area, error) {
 		id := _spec.ID.Value.(int64)
 		_node.ID = int64(id)
 	}
-	ac.mutation.id = &_node.ID
-	ac.mutation.done = true
+	_c.mutation.id = &_node.ID
+	_c.mutation.done = true
 	return _node, nil
 }
 
-func (ac *AreaCreate) createSpec() (*Area, *sqlgraph.CreateSpec) {
+func (_c *AreaCreate) createSpec() (*Area, *sqlgraph.CreateSpec) {
 	var (
-		_node = &Area{config: ac.config}
+		_node = &Area{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(area.Table, sqlgraph.NewFieldSpec(area.FieldID, field.TypeInt64))
 	)
-	if id, ok := ac.mutation.ID(); ok {
+	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
 	}
-	if value, ok := ac.mutation.CreatedAt(); ok {
+	if value, ok := _c.mutation.CreatedAt(); ok {
 		_spec.SetField(area.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := ac.mutation.UpdatedAt(); ok {
+	if value, ok := _c.mutation.UpdatedAt(); ok {
 		_spec.SetField(area.FieldUpdatedAt, field.TypeTime, value)
 		_node.UpdatedAt = value
 	}
-	if value, ok := ac.mutation.Delete(); ok {
+	if value, ok := _c.mutation.Delete(); ok {
 		_spec.SetField(area.FieldDelete, field.TypeInt64, value)
 		_node.Delete = value
 	}
-	if value, ok := ac.mutation.CreatedID(); ok {
+	if value, ok := _c.mutation.CreatedID(); ok {
 		_spec.SetField(area.FieldCreatedID, field.TypeInt64, value)
 		_node.CreatedID = value
 	}
-	if value, ok := ac.mutation.Status(); ok {
+	if value, ok := _c.mutation.Status(); ok {
 		_spec.SetField(area.FieldStatus, field.TypeInt64, value)
 		_node.Status = value
 	}
-	if value, ok := ac.mutation.ParentID(); ok {
+	if value, ok := _c.mutation.ParentID(); ok {
 		_spec.SetField(area.FieldParentID, field.TypeInt64, value)
 		_node.ParentID = value
 	}
-	if value, ok := ac.mutation.Level(); ok {
+	if value, ok := _c.mutation.Level(); ok {
 		_spec.SetField(area.FieldLevel, field.TypeInt64, value)
 		_node.Level = value
 	}
-	if value, ok := ac.mutation.Name(); ok {
+	if value, ok := _c.mutation.Name(); ok {
 		_spec.SetField(area.FieldName, field.TypeString, value)
 		_node.Name = value
 	}
-	if value, ok := ac.mutation.WholeName(); ok {
+	if value, ok := _c.mutation.WholeName(); ok {
 		_spec.SetField(area.FieldWholeName, field.TypeString, value)
 		_node.WholeName = value
 	}
-	if value, ok := ac.mutation.Lon(); ok {
+	if value, ok := _c.mutation.Lon(); ok {
 		_spec.SetField(area.FieldLon, field.TypeString, value)
 		_node.Lon = value
 	}
-	if value, ok := ac.mutation.Lat(); ok {
+	if value, ok := _c.mutation.Lat(); ok {
 		_spec.SetField(area.FieldLat, field.TypeString, value)
 		_node.Lat = value
 	}
-	if value, ok := ac.mutation.CityCode(); ok {
+	if value, ok := _c.mutation.CityCode(); ok {
 		_spec.SetField(area.FieldCityCode, field.TypeString, value)
 		_node.CityCode = value
 	}
-	if value, ok := ac.mutation.ZipCode(); ok {
+	if value, ok := _c.mutation.ZipCode(); ok {
 		_spec.SetField(area.FieldZipCode, field.TypeString, value)
 		_node.ZipCode = value
 	}
-	if value, ok := ac.mutation.AreaCode(); ok {
+	if value, ok := _c.mutation.AreaCode(); ok {
 		_spec.SetField(area.FieldAreaCode, field.TypeString, value)
 		_node.AreaCode = value
 	}
-	if value, ok := ac.mutation.PinYin(); ok {
+	if value, ok := _c.mutation.PinYin(); ok {
 		_spec.SetField(area.FieldPinYin, field.TypeString, value)
 		_node.PinYin = value
 	}
-	if value, ok := ac.mutation.SimplePy(); ok {
+	if value, ok := _c.mutation.SimplePy(); ok {
 		_spec.SetField(area.FieldSimplePy, field.TypeString, value)
 		_node.SimplePy = value
 	}
-	if value, ok := ac.mutation.PerPinYin(); ok {
+	if value, ok := _c.mutation.PerPinYin(); ok {
 		_spec.SetField(area.FieldPerPinYin, field.TypeString, value)
 		_node.PerPinYin = value
 	}
@@ -433,16 +433,16 @@ type AreaCreateBulk struct {
 }
 
 // Save creates the Area entities in the database.
-func (acb *AreaCreateBulk) Save(ctx context.Context) ([]*Area, error) {
-	if acb.err != nil {
-		return nil, acb.err
+func (_c *AreaCreateBulk) Save(ctx context.Context) ([]*Area, error) {
+	if _c.err != nil {
+		return nil, _c.err
 	}
-	specs := make([]*sqlgraph.CreateSpec, len(acb.builders))
-	nodes := make([]*Area, len(acb.builders))
-	mutators := make([]Mutator, len(acb.builders))
-	for i := range acb.builders {
+	specs := make([]*sqlgraph.CreateSpec, len(_c.builders))
+	nodes := make([]*Area, len(_c.builders))
+	mutators := make([]Mutator, len(_c.builders))
+	for i := range _c.builders {
 		func(i int, root context.Context) {
-			builder := acb.builders[i]
+			builder := _c.builders[i]
 			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*AreaMutation)
@@ -456,11 +456,11 @@ func (acb *AreaCreateBulk) Save(ctx context.Context) ([]*Area, error) {
 				var err error
 				nodes[i], specs[i] = builder.createSpec()
 				if i < len(mutators)-1 {
-					_, err = mutators[i+1].Mutate(root, acb.builders[i+1].mutation)
+					_, err = mutators[i+1].Mutate(root, _c.builders[i+1].mutation)
 				} else {
 					spec := &sqlgraph.BatchCreateSpec{Nodes: specs}
 					// Invoke the actual operation on the latest mutation in the chain.
-					if err = sqlgraph.BatchCreate(ctx, acb.driver, spec); err != nil {
+					if err = sqlgraph.BatchCreate(ctx, _c.driver, spec); err != nil {
 						if sqlgraph.IsConstraintError(err) {
 							err = &ConstraintError{msg: err.Error(), wrap: err}
 						}
@@ -484,7 +484,7 @@ func (acb *AreaCreateBulk) Save(ctx context.Context) ([]*Area, error) {
 		}(i, ctx)
 	}
 	if len(mutators) > 0 {
-		if _, err := mutators[0].Mutate(ctx, acb.builders[0].mutation); err != nil {
+		if _, err := mutators[0].Mutate(ctx, _c.builders[0].mutation); err != nil {
 			return nil, err
 		}
 	}
@@ -492,8 +492,8 @@ func (acb *AreaCreateBulk) Save(ctx context.Context) ([]*Area, error) {
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (acb *AreaCreateBulk) SaveX(ctx context.Context) []*Area {
-	v, err := acb.Save(ctx)
+func (_c *AreaCreateBulk) SaveX(ctx context.Context) []*Area {
+	v, err := _c.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -501,14 +501,14 @@ func (acb *AreaCreateBulk) SaveX(ctx context.Context) []*Area {
 }
 
 // Exec executes the query.
-func (acb *AreaCreateBulk) Exec(ctx context.Context) error {
-	_, err := acb.Save(ctx)
+func (_c *AreaCreateBulk) Exec(ctx context.Context) error {
+	_, err := _c.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (acb *AreaCreateBulk) ExecX(ctx context.Context) {
-	if err := acb.Exec(ctx); err != nil {
+func (_c *AreaCreateBulk) ExecX(ctx context.Context) {
+	if err := _c.Exec(ctx); err != nil {
 		panic(err)
 	}
 }

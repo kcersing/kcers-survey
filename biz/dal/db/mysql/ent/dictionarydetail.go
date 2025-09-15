@@ -83,7 +83,7 @@ func (*DictionaryDetail) scanValues(columns []string) ([]any, error) {
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
 // to the DictionaryDetail fields.
-func (dd *DictionaryDetail) assignValues(columns []string, values []any) error {
+func (_m *DictionaryDetail) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
@@ -94,63 +94,63 @@ func (dd *DictionaryDetail) assignValues(columns []string, values []any) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			dd.ID = int64(value.Int64)
+			_m.ID = int64(value.Int64)
 		case dictionarydetail.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				dd.CreatedAt = value.Time
+				_m.CreatedAt = value.Time
 			}
 		case dictionarydetail.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				dd.UpdatedAt = value.Time
+				_m.UpdatedAt = value.Time
 			}
 		case dictionarydetail.FieldDelete:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field delete", values[i])
 			} else if value.Valid {
-				dd.Delete = value.Int64
+				_m.Delete = value.Int64
 			}
 		case dictionarydetail.FieldCreatedID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_id", values[i])
 			} else if value.Valid {
-				dd.CreatedID = value.Int64
+				_m.CreatedID = value.Int64
 			}
 		case dictionarydetail.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				dd.Status = value.Int64
+				_m.Status = value.Int64
 			}
 		case dictionarydetail.FieldTitle:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field title", values[i])
 			} else if value.Valid {
-				dd.Title = value.String
+				_m.Title = value.String
 			}
 		case dictionarydetail.FieldKey:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field key", values[i])
 			} else if value.Valid {
-				dd.Key = value.String
+				_m.Key = value.String
 			}
 		case dictionarydetail.FieldValue:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field value", values[i])
 			} else if value.Valid {
-				dd.Value = value.String
+				_m.Value = value.String
 			}
 		case dictionarydetail.FieldDictionaryID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field dictionary_id", values[i])
 			} else if value.Valid {
-				dd.DictionaryID = value.Int64
+				_m.DictionaryID = value.Int64
 			}
 		default:
-			dd.selectValues.Set(columns[i], values[i])
+			_m.selectValues.Set(columns[i], values[i])
 		}
 	}
 	return nil
@@ -158,64 +158,64 @@ func (dd *DictionaryDetail) assignValues(columns []string, values []any) error {
 
 // GetValue returns the ent.Value that was dynamically selected and assigned to the DictionaryDetail.
 // This includes values selected through modifiers, order, etc.
-func (dd *DictionaryDetail) GetValue(name string) (ent.Value, error) {
-	return dd.selectValues.Get(name)
+func (_m *DictionaryDetail) GetValue(name string) (ent.Value, error) {
+	return _m.selectValues.Get(name)
 }
 
 // QueryDictionary queries the "dictionary" edge of the DictionaryDetail entity.
-func (dd *DictionaryDetail) QueryDictionary() *DictionaryQuery {
-	return NewDictionaryDetailClient(dd.config).QueryDictionary(dd)
+func (_m *DictionaryDetail) QueryDictionary() *DictionaryQuery {
+	return NewDictionaryDetailClient(_m.config).QueryDictionary(_m)
 }
 
 // Update returns a builder for updating this DictionaryDetail.
 // Note that you need to call DictionaryDetail.Unwrap() before calling this method if this DictionaryDetail
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (dd *DictionaryDetail) Update() *DictionaryDetailUpdateOne {
-	return NewDictionaryDetailClient(dd.config).UpdateOne(dd)
+func (_m *DictionaryDetail) Update() *DictionaryDetailUpdateOne {
+	return NewDictionaryDetailClient(_m.config).UpdateOne(_m)
 }
 
 // Unwrap unwraps the DictionaryDetail entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (dd *DictionaryDetail) Unwrap() *DictionaryDetail {
-	_tx, ok := dd.config.driver.(*txDriver)
+func (_m *DictionaryDetail) Unwrap() *DictionaryDetail {
+	_tx, ok := _m.config.driver.(*txDriver)
 	if !ok {
 		panic("ent: DictionaryDetail is not a transactional entity")
 	}
-	dd.config.driver = _tx.drv
-	return dd
+	_m.config.driver = _tx.drv
+	return _m
 }
 
 // String implements the fmt.Stringer.
-func (dd *DictionaryDetail) String() string {
+func (_m *DictionaryDetail) String() string {
 	var builder strings.Builder
 	builder.WriteString("DictionaryDetail(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", dd.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
 	builder.WriteString("created_at=")
-	builder.WriteString(dd.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
-	builder.WriteString(dd.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("delete=")
-	builder.WriteString(fmt.Sprintf("%v", dd.Delete))
+	builder.WriteString(fmt.Sprintf("%v", _m.Delete))
 	builder.WriteString(", ")
 	builder.WriteString("created_id=")
-	builder.WriteString(fmt.Sprintf("%v", dd.CreatedID))
+	builder.WriteString(fmt.Sprintf("%v", _m.CreatedID))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
-	builder.WriteString(fmt.Sprintf("%v", dd.Status))
+	builder.WriteString(fmt.Sprintf("%v", _m.Status))
 	builder.WriteString(", ")
 	builder.WriteString("title=")
-	builder.WriteString(dd.Title)
+	builder.WriteString(_m.Title)
 	builder.WriteString(", ")
 	builder.WriteString("key=")
-	builder.WriteString(dd.Key)
+	builder.WriteString(_m.Key)
 	builder.WriteString(", ")
 	builder.WriteString("value=")
-	builder.WriteString(dd.Value)
+	builder.WriteString(_m.Value)
 	builder.WriteString(", ")
 	builder.WriteString("dictionary_id=")
-	builder.WriteString(fmt.Sprintf("%v", dd.DictionaryID))
+	builder.WriteString(fmt.Sprintf("%v", _m.DictionaryID))
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -22,195 +22,195 @@ type SurveyCreate struct {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (sc *SurveyCreate) SetCreatedAt(t time.Time) *SurveyCreate {
-	sc.mutation.SetCreatedAt(t)
-	return sc
+func (_c *SurveyCreate) SetCreatedAt(v time.Time) *SurveyCreate {
+	_c.mutation.SetCreatedAt(v)
+	return _c
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (sc *SurveyCreate) SetNillableCreatedAt(t *time.Time) *SurveyCreate {
-	if t != nil {
-		sc.SetCreatedAt(*t)
+func (_c *SurveyCreate) SetNillableCreatedAt(v *time.Time) *SurveyCreate {
+	if v != nil {
+		_c.SetCreatedAt(*v)
 	}
-	return sc
+	return _c
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (sc *SurveyCreate) SetUpdatedAt(t time.Time) *SurveyCreate {
-	sc.mutation.SetUpdatedAt(t)
-	return sc
+func (_c *SurveyCreate) SetUpdatedAt(v time.Time) *SurveyCreate {
+	_c.mutation.SetUpdatedAt(v)
+	return _c
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (sc *SurveyCreate) SetNillableUpdatedAt(t *time.Time) *SurveyCreate {
-	if t != nil {
-		sc.SetUpdatedAt(*t)
+func (_c *SurveyCreate) SetNillableUpdatedAt(v *time.Time) *SurveyCreate {
+	if v != nil {
+		_c.SetUpdatedAt(*v)
 	}
-	return sc
+	return _c
 }
 
 // SetDelete sets the "delete" field.
-func (sc *SurveyCreate) SetDelete(i int64) *SurveyCreate {
-	sc.mutation.SetDelete(i)
-	return sc
+func (_c *SurveyCreate) SetDelete(v int64) *SurveyCreate {
+	_c.mutation.SetDelete(v)
+	return _c
 }
 
 // SetNillableDelete sets the "delete" field if the given value is not nil.
-func (sc *SurveyCreate) SetNillableDelete(i *int64) *SurveyCreate {
-	if i != nil {
-		sc.SetDelete(*i)
+func (_c *SurveyCreate) SetNillableDelete(v *int64) *SurveyCreate {
+	if v != nil {
+		_c.SetDelete(*v)
 	}
-	return sc
+	return _c
 }
 
 // SetCreatedID sets the "created_id" field.
-func (sc *SurveyCreate) SetCreatedID(i int64) *SurveyCreate {
-	sc.mutation.SetCreatedID(i)
-	return sc
+func (_c *SurveyCreate) SetCreatedID(v int64) *SurveyCreate {
+	_c.mutation.SetCreatedID(v)
+	return _c
 }
 
 // SetNillableCreatedID sets the "created_id" field if the given value is not nil.
-func (sc *SurveyCreate) SetNillableCreatedID(i *int64) *SurveyCreate {
-	if i != nil {
-		sc.SetCreatedID(*i)
+func (_c *SurveyCreate) SetNillableCreatedID(v *int64) *SurveyCreate {
+	if v != nil {
+		_c.SetCreatedID(*v)
 	}
-	return sc
+	return _c
 }
 
 // SetStatus sets the "status" field.
-func (sc *SurveyCreate) SetStatus(i int64) *SurveyCreate {
-	sc.mutation.SetStatus(i)
-	return sc
+func (_c *SurveyCreate) SetStatus(v int64) *SurveyCreate {
+	_c.mutation.SetStatus(v)
+	return _c
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (sc *SurveyCreate) SetNillableStatus(i *int64) *SurveyCreate {
-	if i != nil {
-		sc.SetStatus(*i)
+func (_c *SurveyCreate) SetNillableStatus(v *int64) *SurveyCreate {
+	if v != nil {
+		_c.SetStatus(*v)
 	}
-	return sc
+	return _c
 }
 
 // SetTitle sets the "title" field.
-func (sc *SurveyCreate) SetTitle(s string) *SurveyCreate {
-	sc.mutation.SetTitle(s)
-	return sc
+func (_c *SurveyCreate) SetTitle(v string) *SurveyCreate {
+	_c.mutation.SetTitle(v)
+	return _c
 }
 
 // SetNillableTitle sets the "title" field if the given value is not nil.
-func (sc *SurveyCreate) SetNillableTitle(s *string) *SurveyCreate {
-	if s != nil {
-		sc.SetTitle(*s)
+func (_c *SurveyCreate) SetNillableTitle(v *string) *SurveyCreate {
+	if v != nil {
+		_c.SetTitle(*v)
 	}
-	return sc
+	return _c
 }
 
 // SetPic sets the "pic" field.
-func (sc *SurveyCreate) SetPic(s string) *SurveyCreate {
-	sc.mutation.SetPic(s)
-	return sc
+func (_c *SurveyCreate) SetPic(v string) *SurveyCreate {
+	_c.mutation.SetPic(v)
+	return _c
 }
 
 // SetNillablePic sets the "pic" field if the given value is not nil.
-func (sc *SurveyCreate) SetNillablePic(s *string) *SurveyCreate {
-	if s != nil {
-		sc.SetPic(*s)
+func (_c *SurveyCreate) SetNillablePic(v *string) *SurveyCreate {
+	if v != nil {
+		_c.SetPic(*v)
 	}
-	return sc
+	return _c
 }
 
 // SetDesc sets the "desc" field.
-func (sc *SurveyCreate) SetDesc(s string) *SurveyCreate {
-	sc.mutation.SetDesc(s)
-	return sc
+func (_c *SurveyCreate) SetDesc(v string) *SurveyCreate {
+	_c.mutation.SetDesc(v)
+	return _c
 }
 
 // SetNillableDesc sets the "desc" field if the given value is not nil.
-func (sc *SurveyCreate) SetNillableDesc(s *string) *SurveyCreate {
-	if s != nil {
-		sc.SetDesc(*s)
+func (_c *SurveyCreate) SetNillableDesc(v *string) *SurveyCreate {
+	if v != nil {
+		_c.SetDesc(*v)
 	}
-	return sc
+	return _c
 }
 
 // SetStartAt sets the "start_at" field.
-func (sc *SurveyCreate) SetStartAt(t time.Time) *SurveyCreate {
-	sc.mutation.SetStartAt(t)
-	return sc
+func (_c *SurveyCreate) SetStartAt(v time.Time) *SurveyCreate {
+	_c.mutation.SetStartAt(v)
+	return _c
 }
 
 // SetNillableStartAt sets the "start_at" field if the given value is not nil.
-func (sc *SurveyCreate) SetNillableStartAt(t *time.Time) *SurveyCreate {
-	if t != nil {
-		sc.SetStartAt(*t)
+func (_c *SurveyCreate) SetNillableStartAt(v *time.Time) *SurveyCreate {
+	if v != nil {
+		_c.SetStartAt(*v)
 	}
-	return sc
+	return _c
 }
 
 // SetEndAt sets the "end_at" field.
-func (sc *SurveyCreate) SetEndAt(t time.Time) *SurveyCreate {
-	sc.mutation.SetEndAt(t)
-	return sc
+func (_c *SurveyCreate) SetEndAt(v time.Time) *SurveyCreate {
+	_c.mutation.SetEndAt(v)
+	return _c
 }
 
 // SetNillableEndAt sets the "end_at" field if the given value is not nil.
-func (sc *SurveyCreate) SetNillableEndAt(t *time.Time) *SurveyCreate {
-	if t != nil {
-		sc.SetEndAt(*t)
+func (_c *SurveyCreate) SetNillableEndAt(v *time.Time) *SurveyCreate {
+	if v != nil {
+		_c.SetEndAt(*v)
 	}
-	return sc
+	return _c
 }
 
 // SetID sets the "id" field.
-func (sc *SurveyCreate) SetID(i int64) *SurveyCreate {
-	sc.mutation.SetID(i)
-	return sc
+func (_c *SurveyCreate) SetID(v int64) *SurveyCreate {
+	_c.mutation.SetID(v)
+	return _c
 }
 
 // AddQuestionIDs adds the "question" edge to the SurveyQuestion entity by IDs.
-func (sc *SurveyCreate) AddQuestionIDs(ids ...int64) *SurveyCreate {
-	sc.mutation.AddQuestionIDs(ids...)
-	return sc
+func (_c *SurveyCreate) AddQuestionIDs(ids ...int64) *SurveyCreate {
+	_c.mutation.AddQuestionIDs(ids...)
+	return _c
 }
 
 // AddQuestion adds the "question" edges to the SurveyQuestion entity.
-func (sc *SurveyCreate) AddQuestion(s ...*SurveyQuestion) *SurveyCreate {
-	ids := make([]int64, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
+func (_c *SurveyCreate) AddQuestion(v ...*SurveyQuestion) *SurveyCreate {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return sc.AddQuestionIDs(ids...)
+	return _c.AddQuestionIDs(ids...)
 }
 
 // AddResponseIDs adds the "response" edge to the SurveyResponse entity by IDs.
-func (sc *SurveyCreate) AddResponseIDs(ids ...int64) *SurveyCreate {
-	sc.mutation.AddResponseIDs(ids...)
-	return sc
+func (_c *SurveyCreate) AddResponseIDs(ids ...int64) *SurveyCreate {
+	_c.mutation.AddResponseIDs(ids...)
+	return _c
 }
 
 // AddResponse adds the "response" edges to the SurveyResponse entity.
-func (sc *SurveyCreate) AddResponse(s ...*SurveyResponse) *SurveyCreate {
-	ids := make([]int64, len(s))
-	for i := range s {
-		ids[i] = s[i].ID
+func (_c *SurveyCreate) AddResponse(v ...*SurveyResponse) *SurveyCreate {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
-	return sc.AddResponseIDs(ids...)
+	return _c.AddResponseIDs(ids...)
 }
 
 // Mutation returns the SurveyMutation object of the builder.
-func (sc *SurveyCreate) Mutation() *SurveyMutation {
-	return sc.mutation
+func (_c *SurveyCreate) Mutation() *SurveyMutation {
+	return _c.mutation
 }
 
 // Save creates the Survey in the database.
-func (sc *SurveyCreate) Save(ctx context.Context) (*Survey, error) {
-	sc.defaults()
-	return withHooks(ctx, sc.sqlSave, sc.mutation, sc.hooks)
+func (_c *SurveyCreate) Save(ctx context.Context) (*Survey, error) {
+	_c.defaults()
+	return withHooks(ctx, _c.sqlSave, _c.mutation, _c.hooks)
 }
 
 // SaveX calls Save and panics if Save returns an error.
-func (sc *SurveyCreate) SaveX(ctx context.Context) *Survey {
-	v, err := sc.Save(ctx)
+func (_c *SurveyCreate) SaveX(ctx context.Context) *Survey {
+	v, err := _c.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -218,65 +218,65 @@ func (sc *SurveyCreate) SaveX(ctx context.Context) *Survey {
 }
 
 // Exec executes the query.
-func (sc *SurveyCreate) Exec(ctx context.Context) error {
-	_, err := sc.Save(ctx)
+func (_c *SurveyCreate) Exec(ctx context.Context) error {
+	_, err := _c.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (sc *SurveyCreate) ExecX(ctx context.Context) {
-	if err := sc.Exec(ctx); err != nil {
+func (_c *SurveyCreate) ExecX(ctx context.Context) {
+	if err := _c.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (sc *SurveyCreate) defaults() {
-	if _, ok := sc.mutation.CreatedAt(); !ok {
+func (_c *SurveyCreate) defaults() {
+	if _, ok := _c.mutation.CreatedAt(); !ok {
 		v := survey.DefaultCreatedAt()
-		sc.mutation.SetCreatedAt(v)
+		_c.mutation.SetCreatedAt(v)
 	}
-	if _, ok := sc.mutation.UpdatedAt(); !ok {
+	if _, ok := _c.mutation.UpdatedAt(); !ok {
 		v := survey.DefaultUpdatedAt()
-		sc.mutation.SetUpdatedAt(v)
+		_c.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := sc.mutation.Delete(); !ok {
+	if _, ok := _c.mutation.Delete(); !ok {
 		v := survey.DefaultDelete
-		sc.mutation.SetDelete(v)
+		_c.mutation.SetDelete(v)
 	}
-	if _, ok := sc.mutation.CreatedID(); !ok {
+	if _, ok := _c.mutation.CreatedID(); !ok {
 		v := survey.DefaultCreatedID
-		sc.mutation.SetCreatedID(v)
+		_c.mutation.SetCreatedID(v)
 	}
-	if _, ok := sc.mutation.Status(); !ok {
+	if _, ok := _c.mutation.Status(); !ok {
 		v := survey.DefaultStatus
-		sc.mutation.SetStatus(v)
+		_c.mutation.SetStatus(v)
 	}
-	if _, ok := sc.mutation.Title(); !ok {
+	if _, ok := _c.mutation.Title(); !ok {
 		v := survey.DefaultTitle
-		sc.mutation.SetTitle(v)
+		_c.mutation.SetTitle(v)
 	}
-	if _, ok := sc.mutation.Pic(); !ok {
+	if _, ok := _c.mutation.Pic(); !ok {
 		v := survey.DefaultPic
-		sc.mutation.SetPic(v)
+		_c.mutation.SetPic(v)
 	}
-	if _, ok := sc.mutation.Desc(); !ok {
+	if _, ok := _c.mutation.Desc(); !ok {
 		v := survey.DefaultDesc
-		sc.mutation.SetDesc(v)
+		_c.mutation.SetDesc(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
-func (sc *SurveyCreate) check() error {
+func (_c *SurveyCreate) check() error {
 	return nil
 }
 
-func (sc *SurveyCreate) sqlSave(ctx context.Context) (*Survey, error) {
-	if err := sc.check(); err != nil {
+func (_c *SurveyCreate) sqlSave(ctx context.Context) (*Survey, error) {
+	if err := _c.check(); err != nil {
 		return nil, err
 	}
-	_node, _spec := sc.createSpec()
-	if err := sqlgraph.CreateNode(ctx, sc.driver, _spec); err != nil {
+	_node, _spec := _c.createSpec()
+	if err := sqlgraph.CreateNode(ctx, _c.driver, _spec); err != nil {
 		if sqlgraph.IsConstraintError(err) {
 			err = &ConstraintError{msg: err.Error(), wrap: err}
 		}
@@ -286,61 +286,61 @@ func (sc *SurveyCreate) sqlSave(ctx context.Context) (*Survey, error) {
 		id := _spec.ID.Value.(int64)
 		_node.ID = int64(id)
 	}
-	sc.mutation.id = &_node.ID
-	sc.mutation.done = true
+	_c.mutation.id = &_node.ID
+	_c.mutation.done = true
 	return _node, nil
 }
 
-func (sc *SurveyCreate) createSpec() (*Survey, *sqlgraph.CreateSpec) {
+func (_c *SurveyCreate) createSpec() (*Survey, *sqlgraph.CreateSpec) {
 	var (
-		_node = &Survey{config: sc.config}
+		_node = &Survey{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(survey.Table, sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64))
 	)
-	if id, ok := sc.mutation.ID(); ok {
+	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
 	}
-	if value, ok := sc.mutation.CreatedAt(); ok {
+	if value, ok := _c.mutation.CreatedAt(); ok {
 		_spec.SetField(survey.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := sc.mutation.UpdatedAt(); ok {
+	if value, ok := _c.mutation.UpdatedAt(); ok {
 		_spec.SetField(survey.FieldUpdatedAt, field.TypeTime, value)
 		_node.UpdatedAt = value
 	}
-	if value, ok := sc.mutation.Delete(); ok {
+	if value, ok := _c.mutation.Delete(); ok {
 		_spec.SetField(survey.FieldDelete, field.TypeInt64, value)
 		_node.Delete = value
 	}
-	if value, ok := sc.mutation.CreatedID(); ok {
+	if value, ok := _c.mutation.CreatedID(); ok {
 		_spec.SetField(survey.FieldCreatedID, field.TypeInt64, value)
 		_node.CreatedID = value
 	}
-	if value, ok := sc.mutation.Status(); ok {
+	if value, ok := _c.mutation.Status(); ok {
 		_spec.SetField(survey.FieldStatus, field.TypeInt64, value)
 		_node.Status = value
 	}
-	if value, ok := sc.mutation.Title(); ok {
+	if value, ok := _c.mutation.Title(); ok {
 		_spec.SetField(survey.FieldTitle, field.TypeString, value)
 		_node.Title = value
 	}
-	if value, ok := sc.mutation.Pic(); ok {
+	if value, ok := _c.mutation.Pic(); ok {
 		_spec.SetField(survey.FieldPic, field.TypeString, value)
 		_node.Pic = value
 	}
-	if value, ok := sc.mutation.Desc(); ok {
+	if value, ok := _c.mutation.Desc(); ok {
 		_spec.SetField(survey.FieldDesc, field.TypeString, value)
 		_node.Desc = value
 	}
-	if value, ok := sc.mutation.StartAt(); ok {
+	if value, ok := _c.mutation.StartAt(); ok {
 		_spec.SetField(survey.FieldStartAt, field.TypeTime, value)
 		_node.StartAt = value
 	}
-	if value, ok := sc.mutation.EndAt(); ok {
+	if value, ok := _c.mutation.EndAt(); ok {
 		_spec.SetField(survey.FieldEndAt, field.TypeTime, value)
 		_node.EndAt = value
 	}
-	if nodes := sc.mutation.QuestionIDs(); len(nodes) > 0 {
+	if nodes := _c.mutation.QuestionIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -356,7 +356,7 @@ func (sc *SurveyCreate) createSpec() (*Survey, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := sc.mutation.ResponseIDs(); len(nodes) > 0 {
+	if nodes := _c.mutation.ResponseIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -383,16 +383,16 @@ type SurveyCreateBulk struct {
 }
 
 // Save creates the Survey entities in the database.
-func (scb *SurveyCreateBulk) Save(ctx context.Context) ([]*Survey, error) {
-	if scb.err != nil {
-		return nil, scb.err
+func (_c *SurveyCreateBulk) Save(ctx context.Context) ([]*Survey, error) {
+	if _c.err != nil {
+		return nil, _c.err
 	}
-	specs := make([]*sqlgraph.CreateSpec, len(scb.builders))
-	nodes := make([]*Survey, len(scb.builders))
-	mutators := make([]Mutator, len(scb.builders))
-	for i := range scb.builders {
+	specs := make([]*sqlgraph.CreateSpec, len(_c.builders))
+	nodes := make([]*Survey, len(_c.builders))
+	mutators := make([]Mutator, len(_c.builders))
+	for i := range _c.builders {
 		func(i int, root context.Context) {
-			builder := scb.builders[i]
+			builder := _c.builders[i]
 			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*SurveyMutation)
@@ -406,11 +406,11 @@ func (scb *SurveyCreateBulk) Save(ctx context.Context) ([]*Survey, error) {
 				var err error
 				nodes[i], specs[i] = builder.createSpec()
 				if i < len(mutators)-1 {
-					_, err = mutators[i+1].Mutate(root, scb.builders[i+1].mutation)
+					_, err = mutators[i+1].Mutate(root, _c.builders[i+1].mutation)
 				} else {
 					spec := &sqlgraph.BatchCreateSpec{Nodes: specs}
 					// Invoke the actual operation on the latest mutation in the chain.
-					if err = sqlgraph.BatchCreate(ctx, scb.driver, spec); err != nil {
+					if err = sqlgraph.BatchCreate(ctx, _c.driver, spec); err != nil {
 						if sqlgraph.IsConstraintError(err) {
 							err = &ConstraintError{msg: err.Error(), wrap: err}
 						}
@@ -434,7 +434,7 @@ func (scb *SurveyCreateBulk) Save(ctx context.Context) ([]*Survey, error) {
 		}(i, ctx)
 	}
 	if len(mutators) > 0 {
-		if _, err := mutators[0].Mutate(ctx, scb.builders[0].mutation); err != nil {
+		if _, err := mutators[0].Mutate(ctx, _c.builders[0].mutation); err != nil {
 			return nil, err
 		}
 	}
@@ -442,8 +442,8 @@ func (scb *SurveyCreateBulk) Save(ctx context.Context) ([]*Survey, error) {
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (scb *SurveyCreateBulk) SaveX(ctx context.Context) []*Survey {
-	v, err := scb.Save(ctx)
+func (_c *SurveyCreateBulk) SaveX(ctx context.Context) []*Survey {
+	v, err := _c.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -451,14 +451,14 @@ func (scb *SurveyCreateBulk) SaveX(ctx context.Context) []*Survey {
 }
 
 // Exec executes the query.
-func (scb *SurveyCreateBulk) Exec(ctx context.Context) error {
-	_, err := scb.Save(ctx)
+func (_c *SurveyCreateBulk) Exec(ctx context.Context) error {
+	_, err := _c.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (scb *SurveyCreateBulk) ExecX(ctx context.Context) {
-	if err := scb.Exec(ctx); err != nil {
+func (_c *SurveyCreateBulk) ExecX(ctx context.Context) {
+	if err := _c.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
