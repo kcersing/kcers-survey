@@ -67,6 +67,7 @@ if (question.id===9 ||question.id===114) {
         onChange={onChange}
         layout="vertical"
         style={style}
+        rules={[{ required: (question.required === 1), message: '这是必填项' }]}
         options={question.options.map(option => ({
           disabled:disabled,
           value:option.content,

@@ -6,12 +6,12 @@ import { createRespondent, getSurvey, listQuestion,getNext } from '@/services/an
 
 import type { ProFormInstance } from '@ant-design/pro-components';
 import { ProCard, StepsForm } from '@ant-design/pro-components';
-import { Button, message,Typography } from 'antd';
+import { Button, message,Typography,Form } from 'antd';
 
 const { Paragraph, Text } = Typography;
 import './st.css';
 
-import Address from '@/pages/survey/respondent/components/Address';
+
 import QRespondent from '@/pages/survey/respondent/components/QRespondent';
 import QuestuinSun from '@/pages/survey/respondent/components/QuestuinSun';
 import SFUpload from "@/pages/survey/respondent/components/SFUpload";
@@ -26,8 +26,6 @@ const Respondent = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const formMapRef = useRef<React.MutableRefObject<ProFormInstance<any> | undefined>[]>([]);
-
 
   const location = useLocation();
   const urlParams = new URLSearchParams(location.search);
@@ -86,22 +84,22 @@ const Respondent = () => {
       setGenerateRandom(sn)
       getNext({sn:sn}).then((res)=>{
         console.log(res)
-if (res.data){
-        console.log(res.data)
-        if((surveyId===1) && (res.data.number>62) ){
-          setCurrent(62)
-        }else {
-          setCurrent(res.data.number+1)
+        if (res.data){
+          console.log(res.data)
+          if((surveyId===1) && (res.data.number>62) ){
+            setCurrent(62)
+          }else {
+            setCurrent(res.data.number+1)
+          }
+          if((surveyId===2) && (res.data.number> 35) ){
+            setCurrent(35)
+          }else {
+            setCurrent(res.data.number+1)
+          }
+          if(!res.data.number){
+            setCurrent(0)
+          }
         }
-        if((surveyId===2) && (res.data.number> 35) ){
-          setCurrent(35)
-        }else {
-          setCurrent(res.data.number+1)
-        }
-        if(!res.data.number){
-          setCurrent(0)
-        }
-    }
       })
     }else {
       setGenerateRandom(generateRandomString(18));
@@ -153,61 +151,17 @@ if (res.data){
 
   // 下一步
   const moveToNextQuestion = async () => {
-    // if (formRef.current) {
-    try {
-      // 验证当前问题
-      formRef.current.validateFields();
-      if (formRef.current) {
-        const values = await formRef.current.validateFields();
-        console.log(values)
-        // addRespondent(values)
-      }
 
-      // console.log(currentNum)
-      //         console.log(current)
-      //         console.log(currentNum)
-      // if (currentNum >0 ) {
-      //   setCurrent(currentNum);
-      //   setCurrentNum(0);
-      // }else{
-
+    // try {
       setCurrent(current + 1);
 
-      // }
-    } catch (error) {
-      console.error('当前问题校验失败', error);
-      message.error('请填写当前问题的所有必填项');
-    }
+    // } catch (error) {
+    //   console.error('当前问题校验失败', error);
+    //   message.error('请填写当前问题的所有必填项');
     // }
+
   };
 
-  // 提交问卷
-  const handleSubmit = async () => {
-    // console.log(formRef)
-    if (formRef.current) {
-      try {
-        const values = await formRef.current.validateFields();
-        console.log('表单提交值:', values);
-        formRef.current.submit();
-      } catch (error) {
-        console.error('表单验证失败', error);
-        message.error('请填写所有必填项');
-      }
-    }
-  };
-
-  function List({ items }) {
-    return (
-      <ul>
-        {items.map((item, index) => (
-          <li key={index}>
-            {item.content} - {item.type}
-            {item.children && <List items={item.children} />}
-          </li>
-        ))}
-      </ul>
-    );
-  }
 
   const rq = (question, parentname) => {
     if (question.show === 1) {
@@ -223,7 +177,10 @@ if (res.data){
         {question && question.children && question.children.length > 0 && (
           <>
             {question.children.map((child, index) => (
-              <>{rq(child, '')}</>
+              <>
+                {rq(child, '')}
+              </>
+
             ))}
           </>
         )}
@@ -305,24 +262,29 @@ if (res.data){
         <StepsForm
           // loading={loading}
           formRef={formRef}
-          formMapRef={formMapRef}
+
           stepsProps={{
             direction: 'vertical',
             size: 'small',
             current: 1,
-          }}
-          formProps={{
-            validateMessages: {
-              required: '此项为必填项',
-            },
           }}
           current={current}
           onFinish={(values) => {
             console.log(values);
             return Promise.resolve(true);
           }}
+
+          onCurrentChange={
+            console.log('current：')
+          }
+
           stepsRender={() => {
             return <></>;
+          }}
+          formProps={{
+            validateMessages: {
+              required: '此项为必填项',
+            },
           }}
           submitter={{
             render: () => {
@@ -344,19 +306,9 @@ if (res.data){
                 </>
               );
             },
+
           }}
         >
-
-          <>
-            <Address
-              surveyId={surveyId}
-              questions={questions}
-              generateRandom={generateRandom}
-              addRespondent={addRespondent}
-              setCurrentNum={setCurrentNum}
-              setCurrent={setCurrent}
-            />
-          </>
 
           {questions.map((question) => (
             <>
@@ -373,7 +325,12 @@ if (res.data){
                     console.log(values);
                   }}
                 >
+
+
+
                   {rq(que, question.content)}
+
+
                 </StepsForm.StepForm>
               ))}
             </>

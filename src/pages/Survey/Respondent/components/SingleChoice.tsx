@@ -63,8 +63,8 @@ if (!question ){return null}
       onChange={onChange}
       style={style}
       layout="vertical"
-      required
-      rules={[{ required: true, message: '这是必填项' }]}
+
+      rules={[{ required: (question.required == 1), message: '这是必填项' }]}
 
         options={question.options.map(option => ({
         value:option.content,

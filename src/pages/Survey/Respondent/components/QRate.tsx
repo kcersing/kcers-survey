@@ -33,14 +33,17 @@ const QRate = (props) => {
 
   };
 
-
+const character1 = ({ index = 0 }) => (index + 1);
   return (
     <Form.Item name={['question', "'"+question.id+"'"]}  required={question.required===1} >
       <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
     {/*<ProFormRate*/}
-      <Rate defaultValue={2} character={({ index = 0 }) => index + 1}
+      <ProFormRate style={{color: "rgba(150, 205 ,2050,06)"}}
+                   fieldProps={{character:character1  }}
       name={['question', question.id]}
       onChange={onChange}
+
+
       rules={[{required: question.required === 1, message: '必填项'}]}/>
 
 
