@@ -1,9 +1,10 @@
 
 
-import React, { useState } from 'react';
+import React, { type ReactElement, useState } from 'react';
 import type { RadioChangeEvent } from 'antd';
 import { Input, Form,Checkbox } from 'antd';
 import {ProFormText, ProFormTextArea, StepsForm} from "@ant-design/pro-components";
+import { RuleType, StoreValue } from 'rc-field-form/lib/interface';
 
 const style: React.CSSProperties = {
   display: 'flex',
@@ -31,7 +32,8 @@ const QRespondent = (props) => {
       sn:generateRandom,
     })
   }}
-  label="访谈人姓名" rules={[{ required: true, message: '必填项' }]} name={'respondent'} />
+  label="访谈人姓名" rules={[{ required: true }]} name={'respondent'}
+  />
   <ProFormText width="md"  onChange={(e)=>{
 
     addRespondent({
@@ -41,7 +43,10 @@ const QRespondent = (props) => {
       value:[e.target.value],
       sn:generateRandom,
     })}}
-  label="联系电话" rules={[{ required: true, message: '必填项' }]} name={'respondentPhone'} />
+               label="联系电话"
+               rules={[{ required: true,  len:11}]} name={'respondentPhone'}
+
+  />
   <ProFormText width="md"  onChange={(e)=>{
 
     addRespondent({
@@ -50,8 +55,9 @@ const QRespondent = (props) => {
       type:'researcher',
       value:[e.target.value],
       sn:generateRandom,
-    }) }} label="调研员姓名" rules={[{ required: true, message: '必填项' }]} name={'researcher'} />
-  <ProFormText width="md"  onChange={(e)=>{
+    }) }} label="调研员姓名" rules={[{ required: true }]} name={'researcher'}
+  />
+  <ProFormText length={11}  width="md"  onChange={(e)=>{
 
     addRespondent({
       surveyId:surveyId,
@@ -59,7 +65,8 @@ const QRespondent = (props) => {
       type:'researcherPhone',
       value:[e.target.value],
       sn:generateRandom,
-    })}} label="联系电话"   rules={[{ required: true, message: '必填项' }]} name={'researcherPhone'} />
+    })}} label="联系电话"  rules={[{ required: true, len:11 }]} name={'researcherPhone'}
+  />
   </StepsForm.StepForm>
 );
 };

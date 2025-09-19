@@ -1,10 +1,10 @@
-
-
 import React, { useState } from 'react';
 import type { RadioChangeEvent } from 'antd';
-import { Input, Form,Checkbox ,message} from 'antd';
+import { Input, Form,Checkbox ,message,Alert} from 'antd';
 import QJumpRules from '@/pages/survey/respondent/components/QJumpRules';
 import { ProFormCheckbox }from "@ant-design/pro-components";
+
+
 const style: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
@@ -15,19 +15,18 @@ const MultipleChoice = (props) => {
   const { surveyId, question, generateRandom, addRespondent, setCurrentNum,setCurrent } = props;
   const [value, setValue] = useState(0);
   const [disabled, setDisabled] = useState(false);
+
   if (!question ){return null}
   const onChange = (e: RadioChangeEvent) => {
 
 
-if (question.id===9 ||question.id===114) {
-    if(e.length > 3) {
-    message.error("最多选择三个选项");
-    // setDisabled(true);
-    }
-  }
-    // else {
-    //   setDisabled(false);
-    // }
+    //   if (question.id===467 ||question.id===468) {
+    //     if(e.length >= 3) {
+    //       setDisabled(true);
+    //     }
+    //   }
+
+
     setValue(e);
 
     addRespondent({
@@ -60,16 +59,34 @@ if (question.id===9 ||question.id===114) {
     })
   };
 
+
+    const disableds =(content)=>{
+        if (value.length >= 3){
+          if (question.id===467 ||question.id===468) {
+          console.log(content)
+          console.log()
+          if(value.includes(content)){
+            return false
+          }
+          return  true
+        }
+    }
+      return false
+  }
+
   return (
-    <Form.Item name={['question', "'"+question.id+"'"]}  required={question.required===1} >
-      <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
+<>
+    <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
+    <Form.Item name={['question', "'"+question.id+"'"]} rules={[{ required: (question.required === 1), message: '这是必填项' }]}>
+
       <ProFormCheckbox.Group
         onChange={onChange}
         layout="vertical"
         style={style}
-        rules={[{ required: (question.required === 1), message: '这是必填项' }]}
+
+        min={2}
         options={question.options.map(option => ({
-          disabled:disabled,
+          disabled:disableds(option.content) ,
           value:option.content,
           label: option.inputs!==2? option.content:
 
@@ -88,17 +105,19 @@ if (question.id===9 ||question.id===114) {
         }))}
       />
 
-      <QJumpRules
-        surveyId={surveyId}
-        question={question}
-        generateRandom={generateRandom}
-        addRespondent={addRespondent}
-        setCurrentNum={setCurrentNum}
-        setCurrent={setCurrent}
-        value={value}
-      />
+
     </Form.Item>
 
+  <QJumpRules
+    surveyId={surveyId}
+    question={question}
+    generateRandom={generateRandom}
+    addRespondent={addRespondent}
+    setCurrentNum={setCurrentNum}
+    setCurrent={setCurrent}
+    value={value}
+  />
+</>
   );
 };
 

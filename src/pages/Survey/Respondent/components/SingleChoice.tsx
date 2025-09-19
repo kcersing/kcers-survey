@@ -59,12 +59,11 @@ if (!question ){return null}
     <>
 
     <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
+      <Form.Item name={['question', "'"+question.id+"'"]} rules={[{ required: (question.required === 1), message: '这是必填项' }]} >
     <ProFormRadio.Group
       onChange={onChange}
       style={style}
       layout="vertical"
-
-      rules={[{ required: (question.required == 1), message: '这是必填项' }]}
 
         options={question.options.map(option => ({
         value:option.content,
@@ -84,11 +83,7 @@ if (!question ){return null}
       }))}
   />
 
-
-
-
-
-
+      </Form.Item>
 
       <QJumpRules
         surveyId={surveyId}

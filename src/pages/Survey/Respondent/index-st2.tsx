@@ -268,15 +268,15 @@ const Respondent = () => {
             size: 'small',
             current: 1,
           }}
-          current={current}
+          // current={current}
           onFinish={(values) => {
             console.log(values);
             return Promise.resolve(true);
           }}
 
-          onCurrentChange={
-            console.log('current：')
-          }
+          // onCurrentChange={
+          //   console.log('current：')
+          // }
 
           stepsRender={() => {
             return <></>;
@@ -287,26 +287,40 @@ const Respondent = () => {
             },
           }}
           submitter={{
-            render: () => {
-              return (
-                <>
-                  <ProCard style={{ marginBlockStart: 16 }}>
-                    <Button key="gotoTwo" onClick={moveToPreviousQuestion}>
-                      {'<'} 上一题
-                    </Button>
-                    <Button type="primary" onClick={moveToNextQuestion}>
-                      下一步 {'>'}
-                    </Button>
-                    {/*{current < questions.length  ? (*/}
-                    {/*    <Button type="primary" onClick={moveToNextQuestion}>下一步  {'>'}</Button>*/}
-                    {/*  ) : (*/}
-                    {/*    <Button type="primary" onClick={handleSubmit}>提交 √</Button>*/}
-                    {/*  )}*/}
-                  </ProCard>
-                </>
-              );
-            },
+            render: (props) => {
+              if (props.step === 0) {
+                return (
+                  <>
+                    <ProCard style={{ marginBlockStart: 16 }}>
 
+                      <Button style={{ left: 180 }} type="primary"  onClick={() => props.onSubmit?.()}>
+                        下一步 {'>'}
+                      </Button>
+
+                    </ProCard>
+                  </>
+                );
+
+
+              }
+
+              if (props.step < 46){
+                return (
+                  <>
+                    <ProCard style={{ marginBlockStart: 16 }}>
+
+                      <Button key="gotoTwo" onClick={() => props.onPre?.()}>
+                        {'<'} 上一题
+                      </Button>
+                      <Button style={{ left: 80 }} type="primary"  onClick={() => props.onSubmit?.()}>
+                        下一步 {'>'}
+                      </Button>
+
+                    </ProCard>
+                  </>
+                );
+              }
+            },
           }}
         >
 
@@ -318,14 +332,8 @@ const Respondent = () => {
                   name={que.id}
                   title={que.id}
                   key={que.id}
-                  onFinish={(values) => {
-                    console.log(values);
-                  }}
-                  onValuesChange={(values) => {
-                    console.log(values);
-                  }}
-                >
 
+                >
 
 
                   {rq(que, question.content)}

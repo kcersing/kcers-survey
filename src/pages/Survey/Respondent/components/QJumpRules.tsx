@@ -10,10 +10,16 @@ const QJumpRules = (props) => {
   const { surveyId, question, generateRandom, addRespondent, setCurrentNum ,setCurrent,value} = props;
 
 let dren=[];
-  if(question.jumpRules){
+
+
+
+
+  if(question.jumpRules && question.jumpRules.length>0 && value && value.length>0 ){
     for (const jumpRule of question.jumpRules) {
-      if (jumpRule.operators ==='sub' && String(value) === jumpRule.answer){
-        for (const child of    question.children) {
+
+      if ((jumpRule.operators ==='sub' && String(value) === jumpRule.answer) || (jumpRule.operators ==='sub' &&  value.includes(jumpRule.answer))){
+        for (const child of  question.children) {
+
           if ( jumpRule.nextQuestionId === child.id ){
             dren.push(   <QuestuinSun
               surveyId={surveyId}

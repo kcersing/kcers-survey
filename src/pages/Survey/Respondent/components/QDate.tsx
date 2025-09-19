@@ -37,7 +37,7 @@ const QDate = (props) => {
 
 
   return (
-    <Form.Item  name={['question', "'"+question.id+"'"]}   required={question.required===1} >
+    <Form.Item  name={['question', "'"+question.id+"'"]} >
       <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
        <DatePicker
            width="SM"
@@ -48,7 +48,9 @@ const QDate = (props) => {
       defaultPickerValue={dayjs('1965-01-01', 'YYYY-MM-DD')}
       onChange={onChange}
       format={"YYYY-MM-DD"}
-      rules={[{required: question.required === 1, message: '必填项'}]}/>
+      rules={[{required: question.required === 1, message: '必填项'}]}
+
+       />
 
       <QJumpRules
         surveyId={surveyId}

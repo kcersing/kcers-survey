@@ -33,30 +33,33 @@ const QRate = (props) => {
 
   };
 
-const character1 = ({ index = 0 }) => (index + 1);
-  return (
-    <Form.Item name={['question', "'"+question.id+"'"]}  required={question.required===1} >
+const character1 = ({ index = 0 }) => {return ( index + 1)};
+  return (<>
       <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
-    {/*<ProFormRate*/}
-      <ProFormRate style={{color: "rgba(150, 205 ,2050,06)"}}
-                   fieldProps={{character:character1  }}
-      name={['question', question.id]}
-      onChange={onChange}
+    <Form.Item name={['question', "'"+question.id+"'"]}   >
+      <ProFormRate
 
-
-      rules={[{required: question.required === 1, message: '必填项'}]}/>
-
-
-      <QJumpRules
-        surveyId={surveyId}
-        question={question}
-        generateRandom={generateRandom}
-        addRespondent={addRespondent}
-        setCurrentNum={setCurrentNum}
-        setCurrent={setCurrent}
-        value={value}
+        style={{color: "rgba(150, 205 ,2050,06)"}}
+        fieldProps={{character:character1,allowHalf: false }}
+        name={['question', question.id]}
+        onChange={onChange}
+        rules={[{required: question.required === 1, message: '必填项'}]}
       />
+
     </Form.Item>
+
+
+
+  <QJumpRules
+    surveyId={surveyId}
+    question={question}
+    generateRandom={generateRandom}
+    addRespondent={addRespondent}
+    setCurrentNum={setCurrentNum}
+    setCurrent={setCurrent}
+    value={value}
+  />
+</>
   );
 };
 

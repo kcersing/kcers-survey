@@ -41,7 +41,7 @@ const QText = (props) => {
   };
 
   return (
-    <Form.Item name={['question', "'"+question.id+"'"]}   required={question.required===1} >
+    <Form.Item name={['question', "'"+question.id+"'"]}>
       <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
       <ProFormTextArea
         width="md"
