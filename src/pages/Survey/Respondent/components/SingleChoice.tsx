@@ -65,6 +65,7 @@ if (!question ){return null}
       style={style}
       layout="vertical"
 
+      fieldProps={{style:{fontSize: '2em'}}}
         options={question.options.map(option => ({
         value:option.content,
         label: option.inputs!==2? option.content:

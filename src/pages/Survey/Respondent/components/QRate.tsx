@@ -38,9 +38,7 @@ const character1 = ({ index = 0 }) => {return ( index + 1)};
       <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
     <Form.Item name={['question', "'"+question.id+"'"]}   >
       <ProFormRate
-
-        style={{color: "rgba(150, 205 ,2050,06)"}}
-        fieldProps={{character:character1,allowHalf: false }}
+        fieldProps={{character:character1,allowHalf: false,style:{fontSize: '30px'} }}
         name={['question', question.id]}
         onChange={onChange}
         rules={[{required: question.required === 1, message: '必填项'}]}
