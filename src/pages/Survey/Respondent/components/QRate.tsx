@@ -46,9 +46,9 @@ const QRate = (props) => {
       <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
     <Form.Item name={['question', "'"+question.id+"'"]}   >
       <ProFormRate
-
         style={{color: "rgba(150, 205 ,2050,06)"}}
-        fieldProps={{character:character1,allowHalf: false ,count: question.options[0].inputs }}
+        fieldProps={{character:character1,allowHalf: false ,count: question.options[0].inputs,style:{fontSize: '30px'} }}
+
         name={['question', question.id]}
         onChange={onChange}
 
