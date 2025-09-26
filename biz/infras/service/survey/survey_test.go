@@ -3,7 +3,6 @@ package survey
 import (
 	"context"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
-	"github.com/redis/go-redis/v9"
 	db "kcers-survey/biz/dal/db/mysql"
 	"kcers-survey/biz/dal/db/mysql/ent"
 	surveyquestion2 "kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
@@ -117,10 +116,10 @@ func TestSurvey(t *testing.T) {
 
 	dbs := db.InItDB("root:kcer-913639@tcp(101.126.9.226:3306)/survey?charset=utf8mb4&parseTime=True&loc=Local", true)
 
-	rd := redis.NewClient(&redis.Options{
-		Addr: "127.0.0.1:6379",
-		DB:   1,
-	})
+	//rd := redis.NewClient(&redis.Options{
+	//	Addr: "127.0.0.1:6379",
+	//	DB:   1,
+	//})
 
 	ctx := context.Background()
 
@@ -147,7 +146,7 @@ func TestSurvey(t *testing.T) {
 	//print("")
 	//
 	sq, err := dbs.SurveyQuestion.Query().
-		Where(surveyquestion2.SurveyID(1), surveyquestion2.Delete(0)).
+		Where(surveyquestion2.SurveyID(3), surveyquestion2.Delete(0)).
 		Order(ent.Asc(surveyquestion2.FieldID, surveyquestion2.FieldParentID, surveyquestion2.FieldSort)).
 		All(ctx)
 	if err != nil {
@@ -174,11 +173,11 @@ func TestSurvey(t *testing.T) {
 	tale = append(tale, "调研员联系电话")
 	tale = append(tale, "填写问卷时间")
 	tale = append(tale, "完成度")
-	tale = append(tale, "省")
-	tale = append(tale, "市（州）")
-	tale = append(tale, "县（区、旗）")
-	tale = append(tale, "乡（镇）")
-	tale = append(tale, "详细地址")
+	//tale = append(tale, "省")
+	//tale = append(tale, "市（州）")
+	//tale = append(tale, "县（区、旗）")
+	//tale = append(tale, "乡（镇）")
+	//tale = append(tale, "详细地址")
 	for _, s := range treeMap {
 		tale = append(tale, s.Id+"-"+s.Title)
 		if s.Type == "multiple_choice" {
@@ -199,8 +198,8 @@ func TestSurvey(t *testing.T) {
 
 	sr, err := dbs.SurveyResponse.Query().
 		Where(
-			surveyresponse2.SurveyID(1), surveyresponse2.Delete(0),
-			surveyresponse2.AnswersCountGTE(100),
+			surveyresponse2.SurveyID(3), surveyresponse2.Delete(0),
+			surveyresponse2.AnswersCountGTE(60),
 			surveyresponse2.Or(surveyresponse2.ResearcherNEQ(""),
 				surveyresponse2.ResearcherPhoneNEQ(""),
 			),
@@ -214,25 +213,25 @@ func TestSurvey(t *testing.T) {
 	//var datas []*Data
 	for _, item := range sr {
 
-		area, _ := rd.Get(ctx, "area"+item.Area).Result()
-		city, _ := rd.Get(ctx, "area"+item.City).Result()
-		district, _ := rd.Get(ctx, "area"+item.District).Result()
-		village, _ := rd.Get(ctx, "area"+item.Village).Result()
+		//area, _ := rd.Get(ctx, "area"+item.Area).Result()
+		//city, _ := rd.Get(ctx, "area"+item.City).Result()
+		//district, _ := rd.Get(ctx, "area"+item.District).Result()
+		//village, _ := rd.Get(ctx, "area"+item.Village).Result()
 		li := map[int]interface{}{}
 
 		li = map[int]interface{}{
-			1:  item.Sn,
-			2:  item.Respondent,
-			3:  item.RespondentPhone,
-			4:  item.Researcher,
-			5:  item.ResearcherPhone,
-			6:  item.CreatedAt.Add(8 * time.Hour).Format(time.DateTime),
-			7:  item.AnswersCount,
-			8:  area,
-			9:  city,
-			10: district,
-			11: village,
-			12: item.Address,
+			1: item.Sn,
+			2: item.Respondent,
+			3: item.RespondentPhone,
+			4: item.Researcher,
+			5: item.ResearcherPhone,
+			6: item.CreatedAt.Add(8 * time.Hour).Format(time.DateTime),
+			7: item.AnswersCount,
+			//8:  area,
+			//9:  city,
+			//10: district,
+			//11: village,
+			//8: item.Address,
 		}
 		sra, err := dbs.SurveyResponseAnswers.
 			Query().
