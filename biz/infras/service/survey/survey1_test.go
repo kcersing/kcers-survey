@@ -62,8 +62,8 @@ func TestSurvey1(t *testing.T) {
 
 	sr, err := dbs.SurveyResponse.Query().
 		Where(
-			surveyresponse2.SurveyID(1), surveyresponse2.Delete(0),
-			surveyresponse2.AnswersCountGTE(100),
+			surveyresponse2.SurveyID(3), surveyresponse2.Delete(0),
+			surveyresponse2.AnswersCountGTE(60),
 			surveyresponse2.Or(surveyresponse2.ResearcherNEQ(""),
 				surveyresponse2.ResearcherPhoneNEQ(""),
 			),
@@ -76,7 +76,7 @@ func TestSurvey1(t *testing.T) {
 
 	sqarr, err := dbs.SurveyQuestion.Query().
 		Where(
-			surveyquestion2.SurveyID(1),
+			surveyquestion2.SurveyID(3),
 			surveyquestion2.Delete(0),
 			surveyquestion2.TypeIn("single_choice", "multiple_choice"),
 		).
@@ -89,8 +89,8 @@ func TestSurvey1(t *testing.T) {
 	var tale []interface{}
 	tale = append(tale, "问题")
 	tale = append(tale, "频次")
-	tale = append(tale, "合计")
-	tale = append(tale, "合计2")
+	tale = append(tale, "回答总数")
+	tale = append(tale, "选项总数")
 
 	var list []map[int]interface{}
 

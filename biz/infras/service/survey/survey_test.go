@@ -251,6 +251,17 @@ func TestSurvey(t *testing.T) {
 			//if b.Id == strconv.FormatInt(s.SurveyQuestionID, 10) {
 			bian := mun[strconv.FormatInt(s.SurveyQuestionID, 10)+"-"+sqArr[s.SurveyQuestionID].Content].(int) + 1
 
+			if s.SurveyQuestionID == 455 ||
+				s.SurveyQuestionID == 456 ||
+				s.SurveyQuestionID == 457 ||
+				s.SurveyQuestionID == 458 ||
+				s.SurveyQuestionID == 459 ||
+				s.SurveyQuestionID == 461 {
+				a, _ := strconv.Atoi(s.Answer[0])
+				s.Answer[0] = strconv.Itoa(a - 1)
+
+			}
+
 			ans := append(s.Answer, s.AnswerText)
 			li[bian] = strings.Join(ans, " ")
 
