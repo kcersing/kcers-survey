@@ -102,7 +102,7 @@ func answerCount2(sq *ent.SurveyQuestion, ids []int64, db *ent.Client, ctx conte
 	}
 
 	var bas []Basic
-	for _, o := range []int64{0, 1, 2, 3, 4, 5, 6} {
+	for _, o := range []int64{0, 1, 2, 3, 4, 5} {
 		bas = append(bas, Basic{
 			Name:  strconv.FormatInt(o, 10),
 			Value: 0,
@@ -125,6 +125,17 @@ func answerCount2(sq *ent.SurveyQuestion, ids []int64, db *ent.Client, ctx conte
 		hlog.Info(v.Answer)
 		if len(v.Answer) > 0 {
 			for _, an := range v.Answer {
+
+				if v.SurveyQuestionID == 455 ||
+					v.SurveyQuestionID == 456 ||
+					v.SurveyQuestionID == 457 ||
+					v.SurveyQuestionID == 458 ||
+					v.SurveyQuestionID == 459 ||
+					v.SurveyQuestionID == 461 {
+					a, _ := strconv.Atoi(v.Answer[0])
+					an = strconv.Itoa(a - 1)
+
+				}
 
 				str = append(str, an)
 
