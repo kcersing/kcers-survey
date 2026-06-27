@@ -5,6 +5,7 @@ import (
 	"entgo.io/ent/dialect/entsql"
 	_ "entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"kcers-survey/biz/dal/db/mysql/ent/schema/mixins"
 )
@@ -16,11 +17,11 @@ type SurveyResponseAnswers struct {
 
 func (SurveyResponseAnswers) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int64("survey_id").Default(0).Comment("survey_id"),
-		field.Int64("survey_response_id").Default(0).Comment("survey_response_id"),
-		field.Int64("survey_question_id").Default(0).Comment("survey_question_id"),
-		field.String("answer_text").Comment("回答文本"),
-		field.Int64("answer_value").Default(1).Comment("回答数值"),
+		field.Int64("survey_id").Optional().Default(0).Comment("survey_id"),
+		field.Int64("survey_response_id").Optional().Default(0).Comment("survey_response_id"),
+		field.Int64("survey_question_id").Optional().Default(0).Comment("survey_question_id"),
+		field.String("answer_text").Optional().Comment("回答文本"),
+		field.JSON("answer", []string{}).Optional().Comment("answer"),
 	}
 }
 
@@ -32,9 +33,12 @@ func (SurveyResponseAnswers) Mixin() []ent.Mixin {
 }
 
 func (SurveyResponseAnswers) Edges() []ent.Edge {
-	return []ent.Edge{}
-}
+	return []ent.Edge{
+		edge.From("response", SurveyResponse.Type).Ref("answers").Field("survey_response_id").Unique(),
+		edge.From("question", SurveyQuestion.Type).Ref("answers").Field("survey_question_id").Unique(),
+	}
 
+}
 func (SurveyResponseAnswers) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		entsql.Annotation{Table: "survey_response_answers"},

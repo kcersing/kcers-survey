@@ -34,10 +34,6 @@ const (
 	FieldUsername = "username"
 	// FieldPassword holds the string denoting the password field in the database.
 	FieldPassword = "password"
-	// FieldFunctions holds the string denoting the functions field in the database.
-	FieldFunctions = "functions"
-	// FieldJobTime holds the string denoting the job_time field in the database.
-	FieldJobTime = "job_time"
 	// FieldDetail holds the string denoting the detail field in the database.
 	FieldDetail = "detail"
 	// FieldSideMode holds the string denoting the side_mode field in the database.
@@ -50,18 +46,12 @@ const (
 	FieldEmail = "email"
 	// FieldWecom holds the string denoting the wecom field in the database.
 	FieldWecom = "wecom"
-	// FieldOrganization holds the string denoting the organization field in the database.
-	FieldOrganization = "organization"
-	// FieldDefaultVenueID holds the string denoting the default_venue_id field in the database.
-	FieldDefaultVenueID = "default_venue_id"
 	// FieldAvatar holds the string denoting the avatar field in the database.
 	FieldAvatar = "avatar"
 	// FieldBirthday holds the string denoting the birthday field in the database.
 	FieldBirthday = "birthday"
 	// EdgeToken holds the string denoting the token edge name in mutations.
 	EdgeToken = "token"
-	// EdgeTags holds the string denoting the tags edge name in mutations.
-	EdgeTags = "tags"
 	// EdgeRoles holds the string denoting the roles edge name in mutations.
 	EdgeRoles = "roles"
 	// Table holds the table name of the user in the database.
@@ -73,13 +63,6 @@ const (
 	TokenInverseTable = "sys_tokens"
 	// TokenColumn is the table column denoting the token relation/edge.
 	TokenColumn = "user_token"
-	// TagsTable is the table that holds the tags relation/edge.
-	TagsTable = "sys_dictionary_details"
-	// TagsInverseTable is the table name for the DictionaryDetail entity.
-	// It exists in this package in order to avoid circular dependency with the "dictionarydetail" package.
-	TagsInverseTable = "sys_dictionary_details"
-	// TagsColumn is the table column denoting the tags relation/edge.
-	TagsColumn = "user_tags"
 	// RolesTable is the table that holds the roles relation/edge. The primary key declared below.
 	RolesTable = "user_roles"
 	// RolesInverseTable is the table name for the Role entity.
@@ -100,16 +83,12 @@ var Columns = []string{
 	FieldGender,
 	FieldUsername,
 	FieldPassword,
-	FieldFunctions,
-	FieldJobTime,
 	FieldDetail,
 	FieldSideMode,
 	FieldBaseColor,
 	FieldActiveColor,
 	FieldEmail,
 	FieldWecom,
-	FieldOrganization,
-	FieldDefaultVenueID,
 	FieldAvatar,
 	FieldBirthday,
 }
@@ -145,8 +124,6 @@ var (
 	DefaultStatus int64
 	// DefaultGender holds the default value on creation for the "gender" field.
 	DefaultGender int64
-	// DefaultJobTime holds the default value on creation for the "job_time" field.
-	DefaultJobTime int64
 	// DefaultSideMode holds the default value on creation for the "side_mode" field.
 	DefaultSideMode string
 	// DefaultBaseColor holds the default value on creation for the "base_color" field.
@@ -213,11 +190,6 @@ func ByPassword(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPassword, opts...).ToFunc()
 }
 
-// ByJobTime orders the results by the job_time field.
-func ByJobTime(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldJobTime, opts...).ToFunc()
-}
-
 // ByDetail orders the results by the detail field.
 func ByDetail(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDetail, opts...).ToFunc()
@@ -248,16 +220,6 @@ func ByWecom(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldWecom, opts...).ToFunc()
 }
 
-// ByOrganization orders the results by the organization field.
-func ByOrganization(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldOrganization, opts...).ToFunc()
-}
-
-// ByDefaultVenueID orders the results by the default_venue_id field.
-func ByDefaultVenueID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDefaultVenueID, opts...).ToFunc()
-}
-
 // ByAvatar orders the results by the avatar field.
 func ByAvatar(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAvatar, opts...).ToFunc()
@@ -272,20 +234,6 @@ func ByBirthday(opts ...sql.OrderTermOption) OrderOption {
 func ByTokenField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
 		sqlgraph.OrderByNeighborTerms(s, newTokenStep(), sql.OrderByField(field, opts...))
-	}
-}
-
-// ByTagsCount orders the results by tags count.
-func ByTagsCount(opts ...sql.OrderTermOption) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newTagsStep(), opts...)
-	}
-}
-
-// ByTags orders the results by tags terms.
-func ByTags(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newTagsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
@@ -307,13 +255,6 @@ func newTokenStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(TokenInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2O, false, TokenTable, TokenColumn),
-	)
-}
-func newTagsStep() *sqlgraph.Step {
-	return sqlgraph.NewStep(
-		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(TagsInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, TagsTable, TagsColumn),
 	)
 }
 func newRolesStep() *sqlgraph.Step {

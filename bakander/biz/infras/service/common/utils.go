@@ -7,7 +7,6 @@ import (
 	"kcers-survey/biz/dal/config"
 	"kcers-survey/biz/dal/db/mysql/ent"
 	"kcers-survey/biz/dal/db/mysql/ent/user"
-	"kcers-survey/biz/pkg/consts"
 	"os"
 	"strconv"
 	"time"
@@ -58,7 +57,7 @@ func GetUser(db *ent.Client, id int64) (one *ent.User, err error) {
 
 func ExportFilePath(v string) (string, string) {
 	timePath := time.Now().Format(time.DateOnly) + "/"
-	exportFilePath := consts.ExportFilePath + timePath
+	exportFilePath := "./tmp/export/" + timePath
 	if err := os.MkdirAll(exportFilePath, 0o777); err != nil {
 		panic(err)
 	}

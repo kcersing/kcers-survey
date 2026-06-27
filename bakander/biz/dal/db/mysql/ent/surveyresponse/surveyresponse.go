@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -25,20 +26,60 @@ const (
 	FieldStatus = "status"
 	// FieldSurveyID holds the string denoting the survey_id field in the database.
 	FieldSurveyID = "survey_id"
+	// FieldSn holds the string denoting the sn field in the database.
+	FieldSn = "sn"
+	// FieldRespondent holds the string denoting the respondent field in the database.
+	FieldRespondent = "respondent"
+	// FieldRespondentPhone holds the string denoting the respondent_phone field in the database.
+	FieldRespondentPhone = "respondent_phone"
+	// FieldResearcher holds the string denoting the researcher field in the database.
+	FieldResearcher = "researcher"
+	// FieldResearcherPhone holds the string denoting the researcher_phone field in the database.
+	FieldResearcherPhone = "researcher_phone"
+	// FieldPic holds the string denoting the pic field in the database.
+	FieldPic = "pic"
 	// FieldIP holds the string denoting the ip field in the database.
 	FieldIP = "ip"
-	// FieldMap holds the string denoting the map field in the database.
-	FieldMap = "map"
+	// FieldLatitude holds the string denoting the latitude field in the database.
+	FieldLatitude = "latitude"
+	// FieldLongitude holds the string denoting the longitude field in the database.
+	FieldLongitude = "longitude"
 	// FieldDevice holds the string denoting the device field in the database.
 	FieldDevice = "device"
 	// FieldAudio holds the string denoting the audio field in the database.
 	FieldAudio = "audio"
-	// FieldStartedAt holds the string denoting the started_at field in the database.
-	FieldStartedAt = "started_at"
-	// FieldCompletedAt holds the string denoting the completed_at field in the database.
-	FieldCompletedAt = "completed_at"
+	// FieldArea holds the string denoting the area field in the database.
+	FieldArea = "area"
+	// FieldCity holds the string denoting the city field in the database.
+	FieldCity = "city"
+	// FieldDistrict holds the string denoting the district field in the database.
+	FieldDistrict = "district"
+	// FieldVillage holds the string denoting the village field in the database.
+	FieldVillage = "village"
+	// FieldAddress holds the string denoting the address field in the database.
+	FieldAddress = "address"
+	// FieldAnswersCount holds the string denoting the answers_count field in the database.
+	FieldAnswersCount = "answers_count"
+	// EdgeSurvey holds the string denoting the survey edge name in mutations.
+	EdgeSurvey = "survey"
+	// EdgeAnswers holds the string denoting the answers edge name in mutations.
+	EdgeAnswers = "answers"
 	// Table holds the table name of the surveyresponse in the database.
 	Table = "survey_response"
+	// SurveyTable is the table that holds the survey relation/edge.
+	SurveyTable = "survey_response"
+	// SurveyInverseTable is the table name for the Survey entity.
+	// It exists in this package in order to avoid circular dependency with the "survey" package.
+	SurveyInverseTable = "survey"
+	// SurveyColumn is the table column denoting the survey relation/edge.
+	SurveyColumn = "survey_id"
+	// AnswersTable is the table that holds the answers relation/edge.
+	AnswersTable = "survey_response_answers"
+	// AnswersInverseTable is the table name for the SurveyResponseAnswers entity.
+	// It exists in this package in order to avoid circular dependency with the "surveyresponseanswers" package.
+	AnswersInverseTable = "survey_response_answers"
+	// AnswersColumn is the table column denoting the answers relation/edge.
+	AnswersColumn = "survey_response_id"
 )
 
 // Columns holds all SQL columns for surveyresponse fields.
@@ -50,12 +91,23 @@ var Columns = []string{
 	FieldCreatedID,
 	FieldStatus,
 	FieldSurveyID,
+	FieldSn,
+	FieldRespondent,
+	FieldRespondentPhone,
+	FieldResearcher,
+	FieldResearcherPhone,
+	FieldPic,
 	FieldIP,
-	FieldMap,
+	FieldLatitude,
+	FieldLongitude,
 	FieldDevice,
 	FieldAudio,
-	FieldStartedAt,
-	FieldCompletedAt,
+	FieldArea,
+	FieldCity,
+	FieldDistrict,
+	FieldVillage,
+	FieldAddress,
+	FieldAnswersCount,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -83,14 +135,40 @@ var (
 	DefaultStatus int64
 	// DefaultSurveyID holds the default value on creation for the "survey_id" field.
 	DefaultSurveyID int64
+	// DefaultSn holds the default value on creation for the "sn" field.
+	DefaultSn string
+	// DefaultRespondent holds the default value on creation for the "respondent" field.
+	DefaultRespondent string
+	// DefaultRespondentPhone holds the default value on creation for the "respondent_phone" field.
+	DefaultRespondentPhone string
+	// DefaultResearcher holds the default value on creation for the "researcher" field.
+	DefaultResearcher string
+	// DefaultResearcherPhone holds the default value on creation for the "researcher_phone" field.
+	DefaultResearcherPhone string
+	// DefaultPic holds the default value on creation for the "pic" field.
+	DefaultPic []string
 	// DefaultIP holds the default value on creation for the "ip" field.
 	DefaultIP string
-	// DefaultMap holds the default value on creation for the "map" field.
-	DefaultMap string
+	// DefaultLatitude holds the default value on creation for the "latitude" field.
+	DefaultLatitude string
+	// DefaultLongitude holds the default value on creation for the "longitude" field.
+	DefaultLongitude string
 	// DefaultDevice holds the default value on creation for the "device" field.
 	DefaultDevice string
 	// DefaultAudio holds the default value on creation for the "audio" field.
-	DefaultAudio string
+	DefaultAudio []string
+	// DefaultArea holds the default value on creation for the "area" field.
+	DefaultArea string
+	// DefaultCity holds the default value on creation for the "city" field.
+	DefaultCity string
+	// DefaultDistrict holds the default value on creation for the "district" field.
+	DefaultDistrict string
+	// DefaultVillage holds the default value on creation for the "village" field.
+	DefaultVillage string
+	// DefaultAddress holds the default value on creation for the "address" field.
+	DefaultAddress string
+	// DefaultAnswersCount holds the default value on creation for the "answers_count" field.
+	DefaultAnswersCount int64
 )
 
 // OrderOption defines the ordering options for the SurveyResponse queries.
@@ -131,14 +209,44 @@ func BySurveyID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSurveyID, opts...).ToFunc()
 }
 
+// BySn orders the results by the sn field.
+func BySn(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSn, opts...).ToFunc()
+}
+
+// ByRespondent orders the results by the respondent field.
+func ByRespondent(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRespondent, opts...).ToFunc()
+}
+
+// ByRespondentPhone orders the results by the respondent_phone field.
+func ByRespondentPhone(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRespondentPhone, opts...).ToFunc()
+}
+
+// ByResearcher orders the results by the researcher field.
+func ByResearcher(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldResearcher, opts...).ToFunc()
+}
+
+// ByResearcherPhone orders the results by the researcher_phone field.
+func ByResearcherPhone(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldResearcherPhone, opts...).ToFunc()
+}
+
 // ByIP orders the results by the ip field.
 func ByIP(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIP, opts...).ToFunc()
 }
 
-// ByMap orders the results by the map field.
-func ByMap(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMap, opts...).ToFunc()
+// ByLatitude orders the results by the latitude field.
+func ByLatitude(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLatitude, opts...).ToFunc()
+}
+
+// ByLongitude orders the results by the longitude field.
+func ByLongitude(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLongitude, opts...).ToFunc()
 }
 
 // ByDevice orders the results by the device field.
@@ -146,17 +254,67 @@ func ByDevice(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDevice, opts...).ToFunc()
 }
 
-// ByAudio orders the results by the audio field.
-func ByAudio(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAudio, opts...).ToFunc()
+// ByArea orders the results by the area field.
+func ByArea(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldArea, opts...).ToFunc()
 }
 
-// ByStartedAt orders the results by the started_at field.
-func ByStartedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldStartedAt, opts...).ToFunc()
+// ByCity orders the results by the city field.
+func ByCity(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCity, opts...).ToFunc()
 }
 
-// ByCompletedAt orders the results by the completed_at field.
-func ByCompletedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCompletedAt, opts...).ToFunc()
+// ByDistrict orders the results by the district field.
+func ByDistrict(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDistrict, opts...).ToFunc()
+}
+
+// ByVillage orders the results by the village field.
+func ByVillage(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldVillage, opts...).ToFunc()
+}
+
+// ByAddress orders the results by the address field.
+func ByAddress(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAddress, opts...).ToFunc()
+}
+
+// ByAnswersCountField orders the results by the answers_count field.
+func ByAnswersCountField(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAnswersCount, opts...).ToFunc()
+}
+
+// BySurveyField orders the results by survey field.
+func BySurveyField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newSurveyStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByAnswersCount orders the results by answers count.
+func ByAnswersCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newAnswersStep(), opts...)
+	}
+}
+
+// ByAnswers orders the results by answers terms.
+func ByAnswers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newAnswersStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newSurveyStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(SurveyInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, SurveyTable, SurveyColumn),
+	)
+}
+func newAnswersStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(AnswersInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, AnswersTable, AnswersColumn),
+	)
 }

@@ -82,7 +82,7 @@ func (*MenuParam) scanValues(columns []string) ([]any, error) {
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
 // to the MenuParam fields.
-func (mp *MenuParam) assignValues(columns []string, values []any) error {
+func (_m *MenuParam) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
@@ -93,58 +93,58 @@ func (mp *MenuParam) assignValues(columns []string, values []any) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			mp.ID = int64(value.Int64)
+			_m.ID = int64(value.Int64)
 		case menuparam.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				mp.CreatedAt = value.Time
+				_m.CreatedAt = value.Time
 			}
 		case menuparam.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				mp.UpdatedAt = value.Time
+				_m.UpdatedAt = value.Time
 			}
 		case menuparam.FieldDelete:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field delete", values[i])
 			} else if value.Valid {
-				mp.Delete = value.Int64
+				_m.Delete = value.Int64
 			}
 		case menuparam.FieldCreatedID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_id", values[i])
 			} else if value.Valid {
-				mp.CreatedID = value.Int64
+				_m.CreatedID = value.Int64
 			}
 		case menuparam.FieldType:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field type", values[i])
 			} else if value.Valid {
-				mp.Type = value.String
+				_m.Type = value.String
 			}
 		case menuparam.FieldKey:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field key", values[i])
 			} else if value.Valid {
-				mp.Key = value.String
+				_m.Key = value.String
 			}
 		case menuparam.FieldValue:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field value", values[i])
 			} else if value.Valid {
-				mp.Value = value.String
+				_m.Value = value.String
 			}
 		case menuparam.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field menu_params", value)
 			} else if value.Valid {
-				mp.menu_params = new(int64)
-				*mp.menu_params = int64(value.Int64)
+				_m.menu_params = new(int64)
+				*_m.menu_params = int64(value.Int64)
 			}
 		default:
-			mp.selectValues.Set(columns[i], values[i])
+			_m.selectValues.Set(columns[i], values[i])
 		}
 	}
 	return nil
@@ -152,58 +152,58 @@ func (mp *MenuParam) assignValues(columns []string, values []any) error {
 
 // GetValue returns the ent.Value that was dynamically selected and assigned to the MenuParam.
 // This includes values selected through modifiers, order, etc.
-func (mp *MenuParam) GetValue(name string) (ent.Value, error) {
-	return mp.selectValues.Get(name)
+func (_m *MenuParam) GetValue(name string) (ent.Value, error) {
+	return _m.selectValues.Get(name)
 }
 
 // QueryMenus queries the "menus" edge of the MenuParam entity.
-func (mp *MenuParam) QueryMenus() *MenuQuery {
-	return NewMenuParamClient(mp.config).QueryMenus(mp)
+func (_m *MenuParam) QueryMenus() *MenuQuery {
+	return NewMenuParamClient(_m.config).QueryMenus(_m)
 }
 
 // Update returns a builder for updating this MenuParam.
 // Note that you need to call MenuParam.Unwrap() before calling this method if this MenuParam
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (mp *MenuParam) Update() *MenuParamUpdateOne {
-	return NewMenuParamClient(mp.config).UpdateOne(mp)
+func (_m *MenuParam) Update() *MenuParamUpdateOne {
+	return NewMenuParamClient(_m.config).UpdateOne(_m)
 }
 
 // Unwrap unwraps the MenuParam entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (mp *MenuParam) Unwrap() *MenuParam {
-	_tx, ok := mp.config.driver.(*txDriver)
+func (_m *MenuParam) Unwrap() *MenuParam {
+	_tx, ok := _m.config.driver.(*txDriver)
 	if !ok {
 		panic("ent: MenuParam is not a transactional entity")
 	}
-	mp.config.driver = _tx.drv
-	return mp
+	_m.config.driver = _tx.drv
+	return _m
 }
 
 // String implements the fmt.Stringer.
-func (mp *MenuParam) String() string {
+func (_m *MenuParam) String() string {
 	var builder strings.Builder
 	builder.WriteString("MenuParam(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", mp.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
 	builder.WriteString("created_at=")
-	builder.WriteString(mp.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
-	builder.WriteString(mp.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("delete=")
-	builder.WriteString(fmt.Sprintf("%v", mp.Delete))
+	builder.WriteString(fmt.Sprintf("%v", _m.Delete))
 	builder.WriteString(", ")
 	builder.WriteString("created_id=")
-	builder.WriteString(fmt.Sprintf("%v", mp.CreatedID))
+	builder.WriteString(fmt.Sprintf("%v", _m.CreatedID))
 	builder.WriteString(", ")
 	builder.WriteString("type=")
-	builder.WriteString(mp.Type)
+	builder.WriteString(_m.Type)
 	builder.WriteString(", ")
 	builder.WriteString("key=")
-	builder.WriteString(mp.Key)
+	builder.WriteString(_m.Key)
 	builder.WriteString(", ")
 	builder.WriteString("value=")
-	builder.WriteString(mp.Value)
+	builder.WriteString(_m.Value)
 	builder.WriteByte(')')
 	return builder.String()
 }

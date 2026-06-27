@@ -4,6 +4,7 @@ package ent
 
 import (
 	"kcers-survey/biz/dal/db/mysql/ent/api"
+	"kcers-survey/biz/dal/db/mysql/ent/area"
 	"kcers-survey/biz/dal/db/mysql/ent/dictionary"
 	"kcers-survey/biz/dal/db/mysql/ent/dictionarydetail"
 	"kcers-survey/biz/dal/db/mysql/ent/logs"
@@ -11,12 +12,15 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/menuparam"
 	"kcers-survey/biz/dal/db/mysql/ent/role"
 	"kcers-survey/biz/dal/db/mysql/ent/schema"
+	"kcers-survey/biz/dal/db/mysql/ent/sms"
+	"kcers-survey/biz/dal/db/mysql/ent/smslog"
 	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"kcers-survey/biz/dal/db/mysql/ent/token"
 	"kcers-survey/biz/dal/db/mysql/ent/user"
+	"kcers-survey/idl_gen/model/service"
 	"time"
 )
 
@@ -51,6 +55,35 @@ func init() {
 	apiDescMethod := apiFields[4].Descriptor()
 	// api.DefaultMethod holds the default value on creation for the method field.
 	api.DefaultMethod = apiDescMethod.Default.(string)
+	areaMixin := schema.Area{}.Mixin()
+	areaMixinFields0 := areaMixin[0].Fields()
+	_ = areaMixinFields0
+	areaMixinFields1 := areaMixin[1].Fields()
+	_ = areaMixinFields1
+	areaFields := schema.Area{}.Fields()
+	_ = areaFields
+	// areaDescCreatedAt is the schema descriptor for created_at field.
+	areaDescCreatedAt := areaMixinFields0[1].Descriptor()
+	// area.DefaultCreatedAt holds the default value on creation for the created_at field.
+	area.DefaultCreatedAt = areaDescCreatedAt.Default.(func() time.Time)
+	// areaDescUpdatedAt is the schema descriptor for updated_at field.
+	areaDescUpdatedAt := areaMixinFields0[2].Descriptor()
+	// area.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	area.DefaultUpdatedAt = areaDescUpdatedAt.Default.(func() time.Time)
+	// area.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	area.UpdateDefaultUpdatedAt = areaDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// areaDescDelete is the schema descriptor for delete field.
+	areaDescDelete := areaMixinFields0[3].Descriptor()
+	// area.DefaultDelete holds the default value on creation for the delete field.
+	area.DefaultDelete = areaDescDelete.Default.(int64)
+	// areaDescCreatedID is the schema descriptor for created_id field.
+	areaDescCreatedID := areaMixinFields0[4].Descriptor()
+	// area.DefaultCreatedID holds the default value on creation for the created_id field.
+	area.DefaultCreatedID = areaDescCreatedID.Default.(int64)
+	// areaDescStatus is the schema descriptor for status field.
+	areaDescStatus := areaMixinFields1[0].Descriptor()
+	// area.DefaultStatus holds the default value on creation for the status field.
+	area.DefaultStatus = areaDescStatus.Default.(int64)
 	dictionaryMixin := schema.Dictionary{}.Mixin()
 	dictionaryMixinFields0 := dictionaryMixin[0].Fields()
 	_ = dictionaryMixinFields0
@@ -159,18 +192,30 @@ func init() {
 	menuDescPath := menuFields[1].Descriptor()
 	// menu.DefaultPath holds the default value on creation for the path field.
 	menu.DefaultPath = menuDescPath.Default.(string)
+	// menuDescSort is the schema descriptor for sort field.
+	menuDescSort := menuFields[2].Descriptor()
+	// menu.DefaultSort holds the default value on creation for the sort field.
+	menu.DefaultSort = menuDescSort.Default.(int64)
 	// menuDescOrderNo is the schema descriptor for order_no field.
-	menuDescOrderNo := menuFields[3].Descriptor()
+	menuDescOrderNo := menuFields[4].Descriptor()
 	// menu.DefaultOrderNo holds the default value on creation for the order_no field.
 	menu.DefaultOrderNo = menuDescOrderNo.Default.(int64)
 	// menuDescDisabled is the schema descriptor for disabled field.
-	menuDescDisabled := menuFields[4].Descriptor()
+	menuDescDisabled := menuFields[5].Descriptor()
 	// menu.DefaultDisabled holds the default value on creation for the disabled field.
 	menu.DefaultDisabled = menuDescDisabled.Default.(int64)
 	// menuDescIgnore is the schema descriptor for ignore field.
-	menuDescIgnore := menuFields[5].Descriptor()
+	menuDescIgnore := menuFields[6].Descriptor()
 	// menu.DefaultIgnore holds the default value on creation for the ignore field.
 	menu.DefaultIgnore = menuDescIgnore.Default.(bool)
+	// menuDescRedirect is the schema descriptor for redirect field.
+	menuDescRedirect := menuFields[7].Descriptor()
+	// menu.DefaultRedirect holds the default value on creation for the redirect field.
+	menu.DefaultRedirect = menuDescRedirect.Default.(string)
+	// menuDescComponent is the schema descriptor for component field.
+	menuDescComponent := menuFields[8].Descriptor()
+	// menu.DefaultComponent holds the default value on creation for the component field.
+	menu.DefaultComponent = menuDescComponent.Default.(string)
 	menuparamMixin := schema.MenuParam{}.Mixin()
 	menuparamMixinFields0 := menuparamMixin[0].Fields()
 	_ = menuparamMixinFields0
@@ -243,6 +288,70 @@ func init() {
 	roleDescVenueID := roleFields[6].Descriptor()
 	// role.DefaultVenueID holds the default value on creation for the venue_id field.
 	role.DefaultVenueID = roleDescVenueID.Default.(int64)
+	smsMixin := schema.Sms{}.Mixin()
+	smsMixinFields0 := smsMixin[0].Fields()
+	_ = smsMixinFields0
+	smsFields := schema.Sms{}.Fields()
+	_ = smsFields
+	// smsDescCreatedAt is the schema descriptor for created_at field.
+	smsDescCreatedAt := smsMixinFields0[1].Descriptor()
+	// sms.DefaultCreatedAt holds the default value on creation for the created_at field.
+	sms.DefaultCreatedAt = smsDescCreatedAt.Default.(func() time.Time)
+	// smsDescUpdatedAt is the schema descriptor for updated_at field.
+	smsDescUpdatedAt := smsMixinFields0[2].Descriptor()
+	// sms.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	sms.DefaultUpdatedAt = smsDescUpdatedAt.Default.(func() time.Time)
+	// sms.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	sms.UpdateDefaultUpdatedAt = smsDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// smsDescDelete is the schema descriptor for delete field.
+	smsDescDelete := smsMixinFields0[3].Descriptor()
+	// sms.DefaultDelete holds the default value on creation for the delete field.
+	sms.DefaultDelete = smsDescDelete.Default.(int64)
+	// smsDescCreatedID is the schema descriptor for created_id field.
+	smsDescCreatedID := smsMixinFields0[4].Descriptor()
+	// sms.DefaultCreatedID holds the default value on creation for the created_id field.
+	sms.DefaultCreatedID = smsDescCreatedID.Default.(int64)
+	// smsDescNoticeCount is the schema descriptor for notice_count field.
+	smsDescNoticeCount := smsFields[0].Descriptor()
+	// sms.DefaultNoticeCount holds the default value on creation for the notice_count field.
+	sms.DefaultNoticeCount = smsDescNoticeCount.Default.(int64)
+	// smsDescUsedNotice is the schema descriptor for used_notice field.
+	smsDescUsedNotice := smsFields[1].Descriptor()
+	// sms.DefaultUsedNotice holds the default value on creation for the used_notice field.
+	sms.DefaultUsedNotice = smsDescUsedNotice.Default.(int64)
+	smslogMixin := schema.SmsLog{}.Mixin()
+	smslogMixinFields0 := smslogMixin[0].Fields()
+	_ = smslogMixinFields0
+	smslogMixinFields1 := smslogMixin[1].Fields()
+	_ = smslogMixinFields1
+	smslogFields := schema.SmsLog{}.Fields()
+	_ = smslogFields
+	// smslogDescCreatedAt is the schema descriptor for created_at field.
+	smslogDescCreatedAt := smslogMixinFields0[1].Descriptor()
+	// smslog.DefaultCreatedAt holds the default value on creation for the created_at field.
+	smslog.DefaultCreatedAt = smslogDescCreatedAt.Default.(func() time.Time)
+	// smslogDescUpdatedAt is the schema descriptor for updated_at field.
+	smslogDescUpdatedAt := smslogMixinFields0[2].Descriptor()
+	// smslog.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	smslog.DefaultUpdatedAt = smslogDescUpdatedAt.Default.(func() time.Time)
+	// smslog.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	smslog.UpdateDefaultUpdatedAt = smslogDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// smslogDescDelete is the schema descriptor for delete field.
+	smslogDescDelete := smslogMixinFields0[3].Descriptor()
+	// smslog.DefaultDelete holds the default value on creation for the delete field.
+	smslog.DefaultDelete = smslogDescDelete.Default.(int64)
+	// smslogDescCreatedID is the schema descriptor for created_id field.
+	smslogDescCreatedID := smslogMixinFields0[4].Descriptor()
+	// smslog.DefaultCreatedID holds the default value on creation for the created_id field.
+	smslog.DefaultCreatedID = smslogDescCreatedID.Default.(int64)
+	// smslogDescStatus is the schema descriptor for status field.
+	smslogDescStatus := smslogMixinFields1[0].Descriptor()
+	// smslog.DefaultStatus holds the default value on creation for the status field.
+	smslog.DefaultStatus = smslogDescStatus.Default.(int64)
+	// smslogDescContent is the schema descriptor for content field.
+	smslogDescContent := smslogFields[3].Descriptor()
+	// smslog.DefaultContent holds the default value on creation for the content field.
+	smslog.DefaultContent = smslogDescContent.Default.(string)
 	surveyMixin := schema.Survey{}.Mixin()
 	surveyMixinFields0 := surveyMixin[0].Fields()
 	_ = surveyMixinFields0
@@ -272,6 +381,18 @@ func init() {
 	surveyDescStatus := surveyMixinFields1[0].Descriptor()
 	// survey.DefaultStatus holds the default value on creation for the status field.
 	survey.DefaultStatus = surveyDescStatus.Default.(int64)
+	// surveyDescTitle is the schema descriptor for title field.
+	surveyDescTitle := surveyFields[0].Descriptor()
+	// survey.DefaultTitle holds the default value on creation for the title field.
+	survey.DefaultTitle = surveyDescTitle.Default.(string)
+	// surveyDescPic is the schema descriptor for pic field.
+	surveyDescPic := surveyFields[1].Descriptor()
+	// survey.DefaultPic holds the default value on creation for the pic field.
+	survey.DefaultPic = surveyDescPic.Default.(string)
+	// surveyDescDesc is the schema descriptor for desc field.
+	surveyDescDesc := surveyFields[2].Descriptor()
+	// survey.DefaultDesc holds the default value on creation for the desc field.
+	survey.DefaultDesc = surveyDescDesc.Default.(string)
 	surveyquestionMixin := schema.SurveyQuestion{}.Mixin()
 	surveyquestionMixinFields0 := surveyquestionMixin[0].Fields()
 	_ = surveyquestionMixinFields0
@@ -309,14 +430,46 @@ func init() {
 	surveyquestionDescParentID := surveyquestionFields[1].Descriptor()
 	// surveyquestion.DefaultParentID holds the default value on creation for the parent_id field.
 	surveyquestion.DefaultParentID = surveyquestionDescParentID.Default.(int64)
+	// surveyquestionDescSerial is the schema descriptor for serial field.
+	surveyquestionDescSerial := surveyquestionFields[2].Descriptor()
+	// surveyquestion.DefaultSerial holds the default value on creation for the serial field.
+	surveyquestion.DefaultSerial = surveyquestionDescSerial.Default.(string)
+	// surveyquestionDescContent is the schema descriptor for content field.
+	surveyquestionDescContent := surveyquestionFields[3].Descriptor()
+	// surveyquestion.DefaultContent holds the default value on creation for the content field.
+	surveyquestion.DefaultContent = surveyquestionDescContent.Default.(string)
+	// surveyquestionDescType is the schema descriptor for type field.
+	surveyquestionDescType := surveyquestionFields[4].Descriptor()
+	// surveyquestion.DefaultType holds the default value on creation for the type field.
+	surveyquestion.DefaultType = surveyquestionDescType.Default.(string)
+	// surveyquestionDescShow is the schema descriptor for show field.
+	surveyquestionDescShow := surveyquestionFields[6].Descriptor()
+	// surveyquestion.DefaultShow holds the default value on creation for the show field.
+	surveyquestion.DefaultShow = surveyquestionDescShow.Default.(int64)
 	// surveyquestionDescSort is the schema descriptor for sort field.
-	surveyquestionDescSort := surveyquestionFields[4].Descriptor()
+	surveyquestionDescSort := surveyquestionFields[7].Descriptor()
 	// surveyquestion.DefaultSort holds the default value on creation for the sort field.
 	surveyquestion.DefaultSort = surveyquestionDescSort.Default.(int64)
+	// surveyquestionDescJumpRules is the schema descriptor for jump_rules field.
+	surveyquestionDescJumpRules := surveyquestionFields[8].Descriptor()
+	// surveyquestion.DefaultJumpRules holds the default value on creation for the jump_rules field.
+	surveyquestion.DefaultJumpRules = surveyquestionDescJumpRules.Default.([]*service.JumpRules)
 	// surveyquestionDescRequired is the schema descriptor for required field.
-	surveyquestionDescRequired := surveyquestionFields[5].Descriptor()
+	surveyquestionDescRequired := surveyquestionFields[9].Descriptor()
 	// surveyquestion.DefaultRequired holds the default value on creation for the required field.
 	surveyquestion.DefaultRequired = surveyquestionDescRequired.Default.(int64)
+	// surveyquestionDescRemark is the schema descriptor for remark field.
+	surveyquestionDescRemark := surveyquestionFields[10].Descriptor()
+	// surveyquestion.DefaultRemark holds the default value on creation for the remark field.
+	surveyquestion.DefaultRemark = surveyquestionDescRemark.Default.(string)
+	// surveyquestionDescLevel is the schema descriptor for level field.
+	surveyquestionDescLevel := surveyquestionFields[11].Descriptor()
+	// surveyquestion.DefaultLevel holds the default value on creation for the level field.
+	surveyquestion.DefaultLevel = surveyquestionDescLevel.Default.(int64)
+	// surveyquestionDescTree is the schema descriptor for tree field.
+	surveyquestionDescTree := surveyquestionFields[12].Descriptor()
+	// surveyquestion.DefaultTree holds the default value on creation for the tree field.
+	surveyquestion.DefaultTree = surveyquestionDescTree.Default.(string)
 	surveyresponseMixin := schema.SurveyResponse{}.Mixin()
 	surveyresponseMixinFields0 := surveyresponseMixin[0].Fields()
 	_ = surveyresponseMixinFields0
@@ -350,22 +503,74 @@ func init() {
 	surveyresponseDescSurveyID := surveyresponseFields[0].Descriptor()
 	// surveyresponse.DefaultSurveyID holds the default value on creation for the survey_id field.
 	surveyresponse.DefaultSurveyID = surveyresponseDescSurveyID.Default.(int64)
+	// surveyresponseDescSn is the schema descriptor for sn field.
+	surveyresponseDescSn := surveyresponseFields[1].Descriptor()
+	// surveyresponse.DefaultSn holds the default value on creation for the sn field.
+	surveyresponse.DefaultSn = surveyresponseDescSn.Default.(string)
+	// surveyresponseDescRespondent is the schema descriptor for respondent field.
+	surveyresponseDescRespondent := surveyresponseFields[2].Descriptor()
+	// surveyresponse.DefaultRespondent holds the default value on creation for the respondent field.
+	surveyresponse.DefaultRespondent = surveyresponseDescRespondent.Default.(string)
+	// surveyresponseDescRespondentPhone is the schema descriptor for respondent_phone field.
+	surveyresponseDescRespondentPhone := surveyresponseFields[3].Descriptor()
+	// surveyresponse.DefaultRespondentPhone holds the default value on creation for the respondent_phone field.
+	surveyresponse.DefaultRespondentPhone = surveyresponseDescRespondentPhone.Default.(string)
+	// surveyresponseDescResearcher is the schema descriptor for researcher field.
+	surveyresponseDescResearcher := surveyresponseFields[4].Descriptor()
+	// surveyresponse.DefaultResearcher holds the default value on creation for the researcher field.
+	surveyresponse.DefaultResearcher = surveyresponseDescResearcher.Default.(string)
+	// surveyresponseDescResearcherPhone is the schema descriptor for researcher_phone field.
+	surveyresponseDescResearcherPhone := surveyresponseFields[5].Descriptor()
+	// surveyresponse.DefaultResearcherPhone holds the default value on creation for the researcher_phone field.
+	surveyresponse.DefaultResearcherPhone = surveyresponseDescResearcherPhone.Default.(string)
+	// surveyresponseDescPic is the schema descriptor for pic field.
+	surveyresponseDescPic := surveyresponseFields[6].Descriptor()
+	// surveyresponse.DefaultPic holds the default value on creation for the pic field.
+	surveyresponse.DefaultPic = surveyresponseDescPic.Default.([]string)
 	// surveyresponseDescIP is the schema descriptor for ip field.
-	surveyresponseDescIP := surveyresponseFields[1].Descriptor()
+	surveyresponseDescIP := surveyresponseFields[7].Descriptor()
 	// surveyresponse.DefaultIP holds the default value on creation for the ip field.
 	surveyresponse.DefaultIP = surveyresponseDescIP.Default.(string)
-	// surveyresponseDescMap is the schema descriptor for map field.
-	surveyresponseDescMap := surveyresponseFields[2].Descriptor()
-	// surveyresponse.DefaultMap holds the default value on creation for the map field.
-	surveyresponse.DefaultMap = surveyresponseDescMap.Default.(string)
+	// surveyresponseDescLatitude is the schema descriptor for latitude field.
+	surveyresponseDescLatitude := surveyresponseFields[8].Descriptor()
+	// surveyresponse.DefaultLatitude holds the default value on creation for the latitude field.
+	surveyresponse.DefaultLatitude = surveyresponseDescLatitude.Default.(string)
+	// surveyresponseDescLongitude is the schema descriptor for longitude field.
+	surveyresponseDescLongitude := surveyresponseFields[9].Descriptor()
+	// surveyresponse.DefaultLongitude holds the default value on creation for the longitude field.
+	surveyresponse.DefaultLongitude = surveyresponseDescLongitude.Default.(string)
 	// surveyresponseDescDevice is the schema descriptor for device field.
-	surveyresponseDescDevice := surveyresponseFields[3].Descriptor()
+	surveyresponseDescDevice := surveyresponseFields[10].Descriptor()
 	// surveyresponse.DefaultDevice holds the default value on creation for the device field.
 	surveyresponse.DefaultDevice = surveyresponseDescDevice.Default.(string)
 	// surveyresponseDescAudio is the schema descriptor for audio field.
-	surveyresponseDescAudio := surveyresponseFields[4].Descriptor()
+	surveyresponseDescAudio := surveyresponseFields[11].Descriptor()
 	// surveyresponse.DefaultAudio holds the default value on creation for the audio field.
-	surveyresponse.DefaultAudio = surveyresponseDescAudio.Default.(string)
+	surveyresponse.DefaultAudio = surveyresponseDescAudio.Default.([]string)
+	// surveyresponseDescArea is the schema descriptor for area field.
+	surveyresponseDescArea := surveyresponseFields[12].Descriptor()
+	// surveyresponse.DefaultArea holds the default value on creation for the area field.
+	surveyresponse.DefaultArea = surveyresponseDescArea.Default.(string)
+	// surveyresponseDescCity is the schema descriptor for city field.
+	surveyresponseDescCity := surveyresponseFields[13].Descriptor()
+	// surveyresponse.DefaultCity holds the default value on creation for the city field.
+	surveyresponse.DefaultCity = surveyresponseDescCity.Default.(string)
+	// surveyresponseDescDistrict is the schema descriptor for district field.
+	surveyresponseDescDistrict := surveyresponseFields[14].Descriptor()
+	// surveyresponse.DefaultDistrict holds the default value on creation for the district field.
+	surveyresponse.DefaultDistrict = surveyresponseDescDistrict.Default.(string)
+	// surveyresponseDescVillage is the schema descriptor for village field.
+	surveyresponseDescVillage := surveyresponseFields[15].Descriptor()
+	// surveyresponse.DefaultVillage holds the default value on creation for the village field.
+	surveyresponse.DefaultVillage = surveyresponseDescVillage.Default.(string)
+	// surveyresponseDescAddress is the schema descriptor for address field.
+	surveyresponseDescAddress := surveyresponseFields[16].Descriptor()
+	// surveyresponse.DefaultAddress holds the default value on creation for the address field.
+	surveyresponse.DefaultAddress = surveyresponseDescAddress.Default.(string)
+	// surveyresponseDescAnswersCount is the schema descriptor for answers_count field.
+	surveyresponseDescAnswersCount := surveyresponseFields[17].Descriptor()
+	// surveyresponse.DefaultAnswersCount holds the default value on creation for the answers_count field.
+	surveyresponse.DefaultAnswersCount = surveyresponseDescAnswersCount.Default.(int64)
 	surveyresponseanswersMixin := schema.SurveyResponseAnswers{}.Mixin()
 	surveyresponseanswersMixinFields0 := surveyresponseanswersMixin[0].Fields()
 	_ = surveyresponseanswersMixinFields0
@@ -407,10 +612,6 @@ func init() {
 	surveyresponseanswersDescSurveyQuestionID := surveyresponseanswersFields[2].Descriptor()
 	// surveyresponseanswers.DefaultSurveyQuestionID holds the default value on creation for the survey_question_id field.
 	surveyresponseanswers.DefaultSurveyQuestionID = surveyresponseanswersDescSurveyQuestionID.Default.(int64)
-	// surveyresponseanswersDescAnswerValue is the schema descriptor for answer_value field.
-	surveyresponseanswersDescAnswerValue := surveyresponseanswersFields[4].Descriptor()
-	// surveyresponseanswers.DefaultAnswerValue holds the default value on creation for the answer_value field.
-	surveyresponseanswers.DefaultAnswerValue = surveyresponseanswersDescAnswerValue.Default.(int64)
 	tokenMixin := schema.Token{}.Mixin()
 	tokenMixinFields0 := tokenMixin[0].Fields()
 	_ = tokenMixinFields0
@@ -467,20 +668,16 @@ func init() {
 	userDescGender := userFields[2].Descriptor()
 	// user.DefaultGender holds the default value on creation for the gender field.
 	user.DefaultGender = userDescGender.Default.(int64)
-	// userDescJobTime is the schema descriptor for job_time field.
-	userDescJobTime := userFields[6].Descriptor()
-	// user.DefaultJobTime holds the default value on creation for the job_time field.
-	user.DefaultJobTime = userDescJobTime.Default.(int64)
 	// userDescSideMode is the schema descriptor for side_mode field.
-	userDescSideMode := userFields[8].Descriptor()
+	userDescSideMode := userFields[6].Descriptor()
 	// user.DefaultSideMode holds the default value on creation for the side_mode field.
 	user.DefaultSideMode = userDescSideMode.Default.(string)
 	// userDescBaseColor is the schema descriptor for base_color field.
-	userDescBaseColor := userFields[9].Descriptor()
+	userDescBaseColor := userFields[7].Descriptor()
 	// user.DefaultBaseColor holds the default value on creation for the base_color field.
 	user.DefaultBaseColor = userDescBaseColor.Default.(string)
 	// userDescActiveColor is the schema descriptor for active_color field.
-	userDescActiveColor := userFields[10].Descriptor()
+	userDescActiveColor := userFields[8].Descriptor()
 	// user.DefaultActiveColor holds the default value on creation for the active_color field.
 	user.DefaultActiveColor = userDescActiveColor.Default.(string)
 }

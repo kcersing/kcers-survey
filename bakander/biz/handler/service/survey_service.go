@@ -4,217 +4,463 @@ package service
 
 import (
 	"context"
-
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	surveyService "kcers-survey/biz/infras/service/survey"
+	"kcers-survey/biz/pkg/errno"
+	"kcers-survey/biz/pkg/utils"
 	base "kcers-survey/idl_gen/model/base"
 	service "kcers-survey/idl_gen/model/service"
 )
 
 // CreateSurvey .
-// @router /service/survey/create [GET]
+// @router /service/survey/create [POST]
 func CreateSurvey(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req service.CreateOrUpdateSurveyReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
 
-	resp := new(base.NilResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	err = surveyService.NewSurvey(ctx, c).CreateSurvey(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, nil, 0, "")
+	return
 }
 
 // UpdateSurvey .
-// @router /service/survey/update [GET]
+// @router /service/survey/update [POST]
 func UpdateSurvey(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req service.CreateOrUpdateSurveyReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
 
-	resp := new(base.NilResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	err = surveyService.NewSurvey(ctx, c).UpdateSurvey(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, nil, 0, "")
+	return
 }
 
 // GetSurvey .
-// @router /service/survey/info [GET]
+// @router /service/survey/info [POST]
 func GetSurvey(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req base.IDReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
 
-	resp := new(base.NilResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	info, err := surveyService.NewSurvey(ctx, c).GetSurvey(req.ID)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, info, 0, "")
+	return
 }
 
 // ListSurvey .
-// @router /service/survey/list [GET]
+// @router /service/survey/list [POST]
 func ListSurvey(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req service.SurveyListReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
-
-	resp := new(base.NilResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	list, total, err := surveyService.NewSurvey(ctx, c).ListSurvey(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, list, int64(total), "")
+	return
 }
 
 // DeleteSurvey .
-// @router /service/survey/delete [GET]
+// @router /service/survey/delete [POST]
 func DeleteSurvey(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req base.IDReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
 
-	resp := new(base.NilResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	err = surveyService.NewSurvey(ctx, c).DeleteSurvey(req.ID)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, nil, 0, "")
+	return
 }
 
 // CreateQuestion .
-// @router /service/survey/question-create [GET]
+// @router /service/survey/question/create [POST]
 func CreateQuestion(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req service.CreateOrUpdateQuestionReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
 
-	resp := new(base.NilResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	err = surveyService.NewSurvey(ctx, c).CreateQuestion(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, nil, 0, "")
+	return
 }
 
 // UpdateQuestion .
-// @router /service/survey/question-update [GET]
+// @router /service/survey/question/update [POST]
 func UpdateQuestion(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req service.CreateOrUpdateQuestionReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
 
-	resp := new(base.NilResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	err = surveyService.NewSurvey(ctx, c).UpdateQuestion(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, nil, 0, "")
+	return
 }
 
 // DeleteQuestion .
-// @router /service/survey/question-delete [GET]
+// @router /service/survey/question/delete [POST]
 func DeleteQuestion(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req base.IDReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
 
-	resp := new(base.NilResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	err = surveyService.NewSurvey(ctx, c).DeleteQuestion(req.ID)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, nil, 0, "")
+	return
 }
 
 // CreateResponse .
-// @router /service/survey/response-create [GET]
+// @router /service/survey/response/create [POST]
 func CreateResponse(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req service.CreateOrUpdateResponseReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
 
-	resp := new(base.NilResponse)
+	err = surveyService.NewSurvey(ctx, c).CreateResponse(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
 
-	c.JSON(consts.StatusOK, resp)
+	utils.SendResponse(c, errno.Success, nil, 0, "")
+	return
 }
 
 // UpdateResponse .
-// @router /service/survey/response-update [GET]
+// @router /service/survey/response/update [POST]
 func UpdateResponse(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req service.CreateOrUpdateResponseReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
 
-	resp := new(base.NilResponse)
-
-	c.JSON(consts.StatusOK, resp)
-}
-
-// GetResponse .
-// @router /service/survey/response-info [GET]
-func GetResponse(ctx context.Context, c *app.RequestContext) {
-	var err error
-	var req base.IDReq
-	err = c.BindAndValidate(&req)
+	err = surveyService.NewSurvey(ctx, c).UpdateResponse(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
-
-	resp := new(base.NilResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	utils.SendResponse(c, errno.Success, nil, 0, "")
+	return
 }
 
 // ListResponse .
-// @router /service/survey/response-list [GET]
+// @router /service/survey/response/list [POST]
 func ListResponse(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req service.ResponseListReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
-
-	resp := new(base.NilResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	list, total, err := surveyService.NewSurvey(ctx, c).ListResponse(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, list, int64(total), "")
+	return
 }
 
 // DeleteResponse .
-// @router /service/survey/response-delete [GET]
+// @router /service/survey/response/delete [POST]
 func DeleteResponse(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req base.IDReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
 
-	resp := new(base.NilResponse)
+	err = surveyService.NewSurvey(ctx, c).DeleteResponse(req.ID)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, nil, 0, "")
+	return
+}
 
-	c.JSON(consts.StatusOK, resp)
+// GetQuestion .
+// @router /service/survey/question/info [POST]
+func GetQuestion(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req base.IDReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+
+	info, err := surveyService.NewSurvey(ctx, c).GetQuestion(req.ID)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, info, 0, "")
+	return
+}
+
+// ListQuestion .
+// @router /service/survey/question/list [POST]
+func ListQuestion(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req service.QuestionListReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	list, total, err := surveyService.NewSurvey(ctx, c).ListQuestion(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, list, int64(total), "")
+	return
+}
+
+// TreeQuestion .
+// @router /service/survey/question/tree [POST]
+func TreeQuestion(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req service.QuestionListReq
+	err = c.BindAndValidate(&req)
+
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	list, err := surveyService.NewSurvey(ctx, c).TreeQuestion(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, list, 0, "")
+	return
+}
+
+// GetNext .
+// @router /service/survey/response/getNext [POST]
+func GetNext(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req service.GetNextReq
+	err = c.BindAndValidate(&req)
+
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	num, err := surveyService.NewSurvey(ctx, c).GetNext(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success,
+		map[string]interface{}{
+			"number": num,
+		}, 0, "")
+	return
+}
+
+// GetResponse .
+// @router /service/survey/response/info [POST]
+func GetResponse(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req service.ResponseAnswersReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+
+	info, err := surveyService.NewSurvey(ctx, c).GetResponse(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, info, 0, "")
+	return
+}
+
+// GetResponseAnswers .
+// @router /service/survey/response/answers [POST]
+func GetResponseAnswers(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req service.ResponseAnswersReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	list, err := surveyService.NewSurvey(ctx, c).GetResponseAnswers(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, list, 0, "")
+	return
+}
+
+// GetQuestionStatisticsBasic .
+// @router /service/survey/question/basic [POST]
+func GetQuestionStatisticsBasic(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req base.IDReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	list, err := surveyService.NewSurvey(ctx, c).GetQuestionStatisticsBasic(req.ID)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, list, 0, "")
+	return
+}
+
+// GetSurveyResponseHeatmap .
+// @router /service/survey/response/heatmap [POST]
+func GetSurveyResponseHeatmap(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req base.IDReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	list, err := surveyService.NewSurvey(ctx, c).GetSurveyResponseHeatmap(req.ID)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, list, 0, "")
+	return
+}
+
+// GetQuestionAnswersList .
+// @router /service/survey/question/answers [POST]
+func GetQuestionAnswersList(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req service.GetQuestionAnswersListReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	list, total, err := surveyService.NewSurvey(ctx, c).GetQuestionAnswersList(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, list, int64(total), "")
+	return
+}
+
+// ListResponseExport .
+// @router /service/survey/response/list-export [POST]
+func ListResponseExport(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req service.ResponseListReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+
+	export, err := surveyService.NewSurvey(ctx, c).ListResponseExport(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, map[string]string{
+		"url": export,
+	}, 0, "")
+}
+
+// GetSurveyStatistics .
+// @router /service/survey/statistics [POST]
+func GetSurveyStatistics(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req base.IDReq
+	err = c.BindAndValidate(&req)
+	resp, err := surveyService.NewSurvey(ctx, c).GetSurveyStatistics(req.ID)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, resp, 0, "")
+	return
 }

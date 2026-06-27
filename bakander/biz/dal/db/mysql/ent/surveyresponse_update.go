@@ -7,11 +7,14 @@ import (
 	"errors"
 	"fmt"
 	"kcers-survey/biz/dal/db/mysql/ent/predicate"
+	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
+	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema/field"
 )
 
@@ -24,223 +27,528 @@ type SurveyResponseUpdate struct {
 }
 
 // Where appends a list predicates to the SurveyResponseUpdate builder.
-func (sru *SurveyResponseUpdate) Where(ps ...predicate.SurveyResponse) *SurveyResponseUpdate {
-	sru.mutation.Where(ps...)
-	return sru
+func (_u *SurveyResponseUpdate) Where(ps ...predicate.SurveyResponse) *SurveyResponseUpdate {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (sru *SurveyResponseUpdate) SetUpdatedAt(t time.Time) *SurveyResponseUpdate {
-	sru.mutation.SetUpdatedAt(t)
-	return sru
+func (_u *SurveyResponseUpdate) SetUpdatedAt(v time.Time) *SurveyResponseUpdate {
+	_u.mutation.SetUpdatedAt(v)
+	return _u
 }
 
 // ClearUpdatedAt clears the value of the "updated_at" field.
-func (sru *SurveyResponseUpdate) ClearUpdatedAt() *SurveyResponseUpdate {
-	sru.mutation.ClearUpdatedAt()
-	return sru
+func (_u *SurveyResponseUpdate) ClearUpdatedAt() *SurveyResponseUpdate {
+	_u.mutation.ClearUpdatedAt()
+	return _u
 }
 
 // SetDelete sets the "delete" field.
-func (sru *SurveyResponseUpdate) SetDelete(i int64) *SurveyResponseUpdate {
-	sru.mutation.ResetDelete()
-	sru.mutation.SetDelete(i)
-	return sru
+func (_u *SurveyResponseUpdate) SetDelete(v int64) *SurveyResponseUpdate {
+	_u.mutation.ResetDelete()
+	_u.mutation.SetDelete(v)
+	return _u
 }
 
 // SetNillableDelete sets the "delete" field if the given value is not nil.
-func (sru *SurveyResponseUpdate) SetNillableDelete(i *int64) *SurveyResponseUpdate {
-	if i != nil {
-		sru.SetDelete(*i)
+func (_u *SurveyResponseUpdate) SetNillableDelete(v *int64) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetDelete(*v)
 	}
-	return sru
+	return _u
 }
 
-// AddDelete adds i to the "delete" field.
-func (sru *SurveyResponseUpdate) AddDelete(i int64) *SurveyResponseUpdate {
-	sru.mutation.AddDelete(i)
-	return sru
+// AddDelete adds value to the "delete" field.
+func (_u *SurveyResponseUpdate) AddDelete(v int64) *SurveyResponseUpdate {
+	_u.mutation.AddDelete(v)
+	return _u
 }
 
 // ClearDelete clears the value of the "delete" field.
-func (sru *SurveyResponseUpdate) ClearDelete() *SurveyResponseUpdate {
-	sru.mutation.ClearDelete()
-	return sru
+func (_u *SurveyResponseUpdate) ClearDelete() *SurveyResponseUpdate {
+	_u.mutation.ClearDelete()
+	return _u
 }
 
 // SetCreatedID sets the "created_id" field.
-func (sru *SurveyResponseUpdate) SetCreatedID(i int64) *SurveyResponseUpdate {
-	sru.mutation.ResetCreatedID()
-	sru.mutation.SetCreatedID(i)
-	return sru
+func (_u *SurveyResponseUpdate) SetCreatedID(v int64) *SurveyResponseUpdate {
+	_u.mutation.ResetCreatedID()
+	_u.mutation.SetCreatedID(v)
+	return _u
 }
 
 // SetNillableCreatedID sets the "created_id" field if the given value is not nil.
-func (sru *SurveyResponseUpdate) SetNillableCreatedID(i *int64) *SurveyResponseUpdate {
-	if i != nil {
-		sru.SetCreatedID(*i)
+func (_u *SurveyResponseUpdate) SetNillableCreatedID(v *int64) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetCreatedID(*v)
 	}
-	return sru
+	return _u
 }
 
-// AddCreatedID adds i to the "created_id" field.
-func (sru *SurveyResponseUpdate) AddCreatedID(i int64) *SurveyResponseUpdate {
-	sru.mutation.AddCreatedID(i)
-	return sru
+// AddCreatedID adds value to the "created_id" field.
+func (_u *SurveyResponseUpdate) AddCreatedID(v int64) *SurveyResponseUpdate {
+	_u.mutation.AddCreatedID(v)
+	return _u
 }
 
 // ClearCreatedID clears the value of the "created_id" field.
-func (sru *SurveyResponseUpdate) ClearCreatedID() *SurveyResponseUpdate {
-	sru.mutation.ClearCreatedID()
-	return sru
+func (_u *SurveyResponseUpdate) ClearCreatedID() *SurveyResponseUpdate {
+	_u.mutation.ClearCreatedID()
+	return _u
 }
 
 // SetStatus sets the "status" field.
-func (sru *SurveyResponseUpdate) SetStatus(i int64) *SurveyResponseUpdate {
-	sru.mutation.ResetStatus()
-	sru.mutation.SetStatus(i)
-	return sru
+func (_u *SurveyResponseUpdate) SetStatus(v int64) *SurveyResponseUpdate {
+	_u.mutation.ResetStatus()
+	_u.mutation.SetStatus(v)
+	return _u
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (sru *SurveyResponseUpdate) SetNillableStatus(i *int64) *SurveyResponseUpdate {
-	if i != nil {
-		sru.SetStatus(*i)
+func (_u *SurveyResponseUpdate) SetNillableStatus(v *int64) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetStatus(*v)
 	}
-	return sru
+	return _u
 }
 
-// AddStatus adds i to the "status" field.
-func (sru *SurveyResponseUpdate) AddStatus(i int64) *SurveyResponseUpdate {
-	sru.mutation.AddStatus(i)
-	return sru
+// AddStatus adds value to the "status" field.
+func (_u *SurveyResponseUpdate) AddStatus(v int64) *SurveyResponseUpdate {
+	_u.mutation.AddStatus(v)
+	return _u
 }
 
 // ClearStatus clears the value of the "status" field.
-func (sru *SurveyResponseUpdate) ClearStatus() *SurveyResponseUpdate {
-	sru.mutation.ClearStatus()
-	return sru
+func (_u *SurveyResponseUpdate) ClearStatus() *SurveyResponseUpdate {
+	_u.mutation.ClearStatus()
+	return _u
 }
 
 // SetSurveyID sets the "survey_id" field.
-func (sru *SurveyResponseUpdate) SetSurveyID(i int64) *SurveyResponseUpdate {
-	sru.mutation.ResetSurveyID()
-	sru.mutation.SetSurveyID(i)
-	return sru
+func (_u *SurveyResponseUpdate) SetSurveyID(v int64) *SurveyResponseUpdate {
+	_u.mutation.SetSurveyID(v)
+	return _u
 }
 
 // SetNillableSurveyID sets the "survey_id" field if the given value is not nil.
-func (sru *SurveyResponseUpdate) SetNillableSurveyID(i *int64) *SurveyResponseUpdate {
-	if i != nil {
-		sru.SetSurveyID(*i)
+func (_u *SurveyResponseUpdate) SetNillableSurveyID(v *int64) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetSurveyID(*v)
 	}
-	return sru
+	return _u
 }
 
-// AddSurveyID adds i to the "survey_id" field.
-func (sru *SurveyResponseUpdate) AddSurveyID(i int64) *SurveyResponseUpdate {
-	sru.mutation.AddSurveyID(i)
-	return sru
+// ClearSurveyID clears the value of the "survey_id" field.
+func (_u *SurveyResponseUpdate) ClearSurveyID() *SurveyResponseUpdate {
+	_u.mutation.ClearSurveyID()
+	return _u
+}
+
+// SetSn sets the "sn" field.
+func (_u *SurveyResponseUpdate) SetSn(v string) *SurveyResponseUpdate {
+	_u.mutation.SetSn(v)
+	return _u
+}
+
+// SetNillableSn sets the "sn" field if the given value is not nil.
+func (_u *SurveyResponseUpdate) SetNillableSn(v *string) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetSn(*v)
+	}
+	return _u
+}
+
+// ClearSn clears the value of the "sn" field.
+func (_u *SurveyResponseUpdate) ClearSn() *SurveyResponseUpdate {
+	_u.mutation.ClearSn()
+	return _u
+}
+
+// SetRespondent sets the "respondent" field.
+func (_u *SurveyResponseUpdate) SetRespondent(v string) *SurveyResponseUpdate {
+	_u.mutation.SetRespondent(v)
+	return _u
+}
+
+// SetNillableRespondent sets the "respondent" field if the given value is not nil.
+func (_u *SurveyResponseUpdate) SetNillableRespondent(v *string) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetRespondent(*v)
+	}
+	return _u
+}
+
+// ClearRespondent clears the value of the "respondent" field.
+func (_u *SurveyResponseUpdate) ClearRespondent() *SurveyResponseUpdate {
+	_u.mutation.ClearRespondent()
+	return _u
+}
+
+// SetRespondentPhone sets the "respondent_phone" field.
+func (_u *SurveyResponseUpdate) SetRespondentPhone(v string) *SurveyResponseUpdate {
+	_u.mutation.SetRespondentPhone(v)
+	return _u
+}
+
+// SetNillableRespondentPhone sets the "respondent_phone" field if the given value is not nil.
+func (_u *SurveyResponseUpdate) SetNillableRespondentPhone(v *string) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetRespondentPhone(*v)
+	}
+	return _u
+}
+
+// ClearRespondentPhone clears the value of the "respondent_phone" field.
+func (_u *SurveyResponseUpdate) ClearRespondentPhone() *SurveyResponseUpdate {
+	_u.mutation.ClearRespondentPhone()
+	return _u
+}
+
+// SetResearcher sets the "researcher" field.
+func (_u *SurveyResponseUpdate) SetResearcher(v string) *SurveyResponseUpdate {
+	_u.mutation.SetResearcher(v)
+	return _u
+}
+
+// SetNillableResearcher sets the "researcher" field if the given value is not nil.
+func (_u *SurveyResponseUpdate) SetNillableResearcher(v *string) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetResearcher(*v)
+	}
+	return _u
+}
+
+// ClearResearcher clears the value of the "researcher" field.
+func (_u *SurveyResponseUpdate) ClearResearcher() *SurveyResponseUpdate {
+	_u.mutation.ClearResearcher()
+	return _u
+}
+
+// SetResearcherPhone sets the "researcher_phone" field.
+func (_u *SurveyResponseUpdate) SetResearcherPhone(v string) *SurveyResponseUpdate {
+	_u.mutation.SetResearcherPhone(v)
+	return _u
+}
+
+// SetNillableResearcherPhone sets the "researcher_phone" field if the given value is not nil.
+func (_u *SurveyResponseUpdate) SetNillableResearcherPhone(v *string) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetResearcherPhone(*v)
+	}
+	return _u
+}
+
+// ClearResearcherPhone clears the value of the "researcher_phone" field.
+func (_u *SurveyResponseUpdate) ClearResearcherPhone() *SurveyResponseUpdate {
+	_u.mutation.ClearResearcherPhone()
+	return _u
+}
+
+// SetPic sets the "pic" field.
+func (_u *SurveyResponseUpdate) SetPic(v []string) *SurveyResponseUpdate {
+	_u.mutation.SetPic(v)
+	return _u
+}
+
+// AppendPic appends value to the "pic" field.
+func (_u *SurveyResponseUpdate) AppendPic(v []string) *SurveyResponseUpdate {
+	_u.mutation.AppendPic(v)
+	return _u
+}
+
+// ClearPic clears the value of the "pic" field.
+func (_u *SurveyResponseUpdate) ClearPic() *SurveyResponseUpdate {
+	_u.mutation.ClearPic()
+	return _u
 }
 
 // SetIP sets the "ip" field.
-func (sru *SurveyResponseUpdate) SetIP(s string) *SurveyResponseUpdate {
-	sru.mutation.SetIP(s)
-	return sru
+func (_u *SurveyResponseUpdate) SetIP(v string) *SurveyResponseUpdate {
+	_u.mutation.SetIP(v)
+	return _u
 }
 
 // SetNillableIP sets the "ip" field if the given value is not nil.
-func (sru *SurveyResponseUpdate) SetNillableIP(s *string) *SurveyResponseUpdate {
-	if s != nil {
-		sru.SetIP(*s)
+func (_u *SurveyResponseUpdate) SetNillableIP(v *string) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetIP(*v)
 	}
-	return sru
+	return _u
 }
 
-// SetMap sets the "map" field.
-func (sru *SurveyResponseUpdate) SetMap(s string) *SurveyResponseUpdate {
-	sru.mutation.SetMap(s)
-	return sru
+// ClearIP clears the value of the "ip" field.
+func (_u *SurveyResponseUpdate) ClearIP() *SurveyResponseUpdate {
+	_u.mutation.ClearIP()
+	return _u
 }
 
-// SetNillableMap sets the "map" field if the given value is not nil.
-func (sru *SurveyResponseUpdate) SetNillableMap(s *string) *SurveyResponseUpdate {
-	if s != nil {
-		sru.SetMap(*s)
+// SetLatitude sets the "latitude" field.
+func (_u *SurveyResponseUpdate) SetLatitude(v string) *SurveyResponseUpdate {
+	_u.mutation.SetLatitude(v)
+	return _u
+}
+
+// SetNillableLatitude sets the "latitude" field if the given value is not nil.
+func (_u *SurveyResponseUpdate) SetNillableLatitude(v *string) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetLatitude(*v)
 	}
-	return sru
+	return _u
+}
+
+// ClearLatitude clears the value of the "latitude" field.
+func (_u *SurveyResponseUpdate) ClearLatitude() *SurveyResponseUpdate {
+	_u.mutation.ClearLatitude()
+	return _u
+}
+
+// SetLongitude sets the "longitude" field.
+func (_u *SurveyResponseUpdate) SetLongitude(v string) *SurveyResponseUpdate {
+	_u.mutation.SetLongitude(v)
+	return _u
+}
+
+// SetNillableLongitude sets the "longitude" field if the given value is not nil.
+func (_u *SurveyResponseUpdate) SetNillableLongitude(v *string) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetLongitude(*v)
+	}
+	return _u
+}
+
+// ClearLongitude clears the value of the "longitude" field.
+func (_u *SurveyResponseUpdate) ClearLongitude() *SurveyResponseUpdate {
+	_u.mutation.ClearLongitude()
+	return _u
 }
 
 // SetDevice sets the "device" field.
-func (sru *SurveyResponseUpdate) SetDevice(s string) *SurveyResponseUpdate {
-	sru.mutation.SetDevice(s)
-	return sru
+func (_u *SurveyResponseUpdate) SetDevice(v string) *SurveyResponseUpdate {
+	_u.mutation.SetDevice(v)
+	return _u
 }
 
 // SetNillableDevice sets the "device" field if the given value is not nil.
-func (sru *SurveyResponseUpdate) SetNillableDevice(s *string) *SurveyResponseUpdate {
-	if s != nil {
-		sru.SetDevice(*s)
+func (_u *SurveyResponseUpdate) SetNillableDevice(v *string) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetDevice(*v)
 	}
-	return sru
+	return _u
+}
+
+// ClearDevice clears the value of the "device" field.
+func (_u *SurveyResponseUpdate) ClearDevice() *SurveyResponseUpdate {
+	_u.mutation.ClearDevice()
+	return _u
 }
 
 // SetAudio sets the "audio" field.
-func (sru *SurveyResponseUpdate) SetAudio(s string) *SurveyResponseUpdate {
-	sru.mutation.SetAudio(s)
-	return sru
+func (_u *SurveyResponseUpdate) SetAudio(v []string) *SurveyResponseUpdate {
+	_u.mutation.SetAudio(v)
+	return _u
 }
 
-// SetNillableAudio sets the "audio" field if the given value is not nil.
-func (sru *SurveyResponseUpdate) SetNillableAudio(s *string) *SurveyResponseUpdate {
-	if s != nil {
-		sru.SetAudio(*s)
+// AppendAudio appends value to the "audio" field.
+func (_u *SurveyResponseUpdate) AppendAudio(v []string) *SurveyResponseUpdate {
+	_u.mutation.AppendAudio(v)
+	return _u
+}
+
+// ClearAudio clears the value of the "audio" field.
+func (_u *SurveyResponseUpdate) ClearAudio() *SurveyResponseUpdate {
+	_u.mutation.ClearAudio()
+	return _u
+}
+
+// SetArea sets the "area" field.
+func (_u *SurveyResponseUpdate) SetArea(v string) *SurveyResponseUpdate {
+	_u.mutation.SetArea(v)
+	return _u
+}
+
+// SetNillableArea sets the "area" field if the given value is not nil.
+func (_u *SurveyResponseUpdate) SetNillableArea(v *string) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetArea(*v)
 	}
-	return sru
+	return _u
 }
 
-// SetStartedAt sets the "started_at" field.
-func (sru *SurveyResponseUpdate) SetStartedAt(t time.Time) *SurveyResponseUpdate {
-	sru.mutation.SetStartedAt(t)
-	return sru
+// ClearArea clears the value of the "area" field.
+func (_u *SurveyResponseUpdate) ClearArea() *SurveyResponseUpdate {
+	_u.mutation.ClearArea()
+	return _u
 }
 
-// SetNillableStartedAt sets the "started_at" field if the given value is not nil.
-func (sru *SurveyResponseUpdate) SetNillableStartedAt(t *time.Time) *SurveyResponseUpdate {
-	if t != nil {
-		sru.SetStartedAt(*t)
+// SetCity sets the "city" field.
+func (_u *SurveyResponseUpdate) SetCity(v string) *SurveyResponseUpdate {
+	_u.mutation.SetCity(v)
+	return _u
+}
+
+// SetNillableCity sets the "city" field if the given value is not nil.
+func (_u *SurveyResponseUpdate) SetNillableCity(v *string) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetCity(*v)
 	}
-	return sru
+	return _u
 }
 
-// SetCompletedAt sets the "completed_at" field.
-func (sru *SurveyResponseUpdate) SetCompletedAt(t time.Time) *SurveyResponseUpdate {
-	sru.mutation.SetCompletedAt(t)
-	return sru
+// ClearCity clears the value of the "city" field.
+func (_u *SurveyResponseUpdate) ClearCity() *SurveyResponseUpdate {
+	_u.mutation.ClearCity()
+	return _u
 }
 
-// SetNillableCompletedAt sets the "completed_at" field if the given value is not nil.
-func (sru *SurveyResponseUpdate) SetNillableCompletedAt(t *time.Time) *SurveyResponseUpdate {
-	if t != nil {
-		sru.SetCompletedAt(*t)
+// SetDistrict sets the "district" field.
+func (_u *SurveyResponseUpdate) SetDistrict(v string) *SurveyResponseUpdate {
+	_u.mutation.SetDistrict(v)
+	return _u
+}
+
+// SetNillableDistrict sets the "district" field if the given value is not nil.
+func (_u *SurveyResponseUpdate) SetNillableDistrict(v *string) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetDistrict(*v)
 	}
-	return sru
+	return _u
+}
+
+// ClearDistrict clears the value of the "district" field.
+func (_u *SurveyResponseUpdate) ClearDistrict() *SurveyResponseUpdate {
+	_u.mutation.ClearDistrict()
+	return _u
+}
+
+// SetVillage sets the "village" field.
+func (_u *SurveyResponseUpdate) SetVillage(v string) *SurveyResponseUpdate {
+	_u.mutation.SetVillage(v)
+	return _u
+}
+
+// SetNillableVillage sets the "village" field if the given value is not nil.
+func (_u *SurveyResponseUpdate) SetNillableVillage(v *string) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetVillage(*v)
+	}
+	return _u
+}
+
+// ClearVillage clears the value of the "village" field.
+func (_u *SurveyResponseUpdate) ClearVillage() *SurveyResponseUpdate {
+	_u.mutation.ClearVillage()
+	return _u
+}
+
+// SetAddress sets the "address" field.
+func (_u *SurveyResponseUpdate) SetAddress(v string) *SurveyResponseUpdate {
+	_u.mutation.SetAddress(v)
+	return _u
+}
+
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (_u *SurveyResponseUpdate) SetNillableAddress(v *string) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetAddress(*v)
+	}
+	return _u
+}
+
+// ClearAddress clears the value of the "address" field.
+func (_u *SurveyResponseUpdate) ClearAddress() *SurveyResponseUpdate {
+	_u.mutation.ClearAddress()
+	return _u
+}
+
+// SetAnswersCount sets the "answers_count" field.
+func (_u *SurveyResponseUpdate) SetAnswersCount(v int64) *SurveyResponseUpdate {
+	_u.mutation.ResetAnswersCount()
+	_u.mutation.SetAnswersCount(v)
+	return _u
+}
+
+// SetNillableAnswersCount sets the "answers_count" field if the given value is not nil.
+func (_u *SurveyResponseUpdate) SetNillableAnswersCount(v *int64) *SurveyResponseUpdate {
+	if v != nil {
+		_u.SetAnswersCount(*v)
+	}
+	return _u
+}
+
+// AddAnswersCount adds value to the "answers_count" field.
+func (_u *SurveyResponseUpdate) AddAnswersCount(v int64) *SurveyResponseUpdate {
+	_u.mutation.AddAnswersCount(v)
+	return _u
+}
+
+// ClearAnswersCount clears the value of the "answers_count" field.
+func (_u *SurveyResponseUpdate) ClearAnswersCount() *SurveyResponseUpdate {
+	_u.mutation.ClearAnswersCount()
+	return _u
+}
+
+// SetSurvey sets the "survey" edge to the Survey entity.
+func (_u *SurveyResponseUpdate) SetSurvey(v *Survey) *SurveyResponseUpdate {
+	return _u.SetSurveyID(v.ID)
+}
+
+// AddAnswerIDs adds the "answers" edge to the SurveyResponseAnswers entity by IDs.
+func (_u *SurveyResponseUpdate) AddAnswerIDs(ids ...int64) *SurveyResponseUpdate {
+	_u.mutation.AddAnswerIDs(ids...)
+	return _u
+}
+
+// AddAnswers adds the "answers" edges to the SurveyResponseAnswers entity.
+func (_u *SurveyResponseUpdate) AddAnswers(v ...*SurveyResponseAnswers) *SurveyResponseUpdate {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.AddAnswerIDs(ids...)
 }
 
 // Mutation returns the SurveyResponseMutation object of the builder.
-func (sru *SurveyResponseUpdate) Mutation() *SurveyResponseMutation {
-	return sru.mutation
+func (_u *SurveyResponseUpdate) Mutation() *SurveyResponseMutation {
+	return _u.mutation
+}
+
+// ClearSurvey clears the "survey" edge to the Survey entity.
+func (_u *SurveyResponseUpdate) ClearSurvey() *SurveyResponseUpdate {
+	_u.mutation.ClearSurvey()
+	return _u
+}
+
+// ClearAnswers clears all "answers" edges to the SurveyResponseAnswers entity.
+func (_u *SurveyResponseUpdate) ClearAnswers() *SurveyResponseUpdate {
+	_u.mutation.ClearAnswers()
+	return _u
+}
+
+// RemoveAnswerIDs removes the "answers" edge to SurveyResponseAnswers entities by IDs.
+func (_u *SurveyResponseUpdate) RemoveAnswerIDs(ids ...int64) *SurveyResponseUpdate {
+	_u.mutation.RemoveAnswerIDs(ids...)
+	return _u
+}
+
+// RemoveAnswers removes "answers" edges to SurveyResponseAnswers entities.
+func (_u *SurveyResponseUpdate) RemoveAnswers(v ...*SurveyResponseAnswers) *SurveyResponseUpdate {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.RemoveAnswerIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
-func (sru *SurveyResponseUpdate) Save(ctx context.Context) (int, error) {
-	sru.defaults()
-	return withHooks(ctx, sru.sqlSave, sru.mutation, sru.hooks)
+func (_u *SurveyResponseUpdate) Save(ctx context.Context) (int, error) {
+	_u.defaults()
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (sru *SurveyResponseUpdate) SaveX(ctx context.Context) int {
-	affected, err := sru.Save(ctx)
+func (_u *SurveyResponseUpdate) SaveX(ctx context.Context) int {
+	affected, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -248,103 +556,268 @@ func (sru *SurveyResponseUpdate) SaveX(ctx context.Context) int {
 }
 
 // Exec executes the query.
-func (sru *SurveyResponseUpdate) Exec(ctx context.Context) error {
-	_, err := sru.Save(ctx)
+func (_u *SurveyResponseUpdate) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (sru *SurveyResponseUpdate) ExecX(ctx context.Context) {
-	if err := sru.Exec(ctx); err != nil {
+func (_u *SurveyResponseUpdate) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (sru *SurveyResponseUpdate) defaults() {
-	if _, ok := sru.mutation.UpdatedAt(); !ok && !sru.mutation.UpdatedAtCleared() {
+func (_u *SurveyResponseUpdate) defaults() {
+	if _, ok := _u.mutation.UpdatedAt(); !ok && !_u.mutation.UpdatedAtCleared() {
 		v := surveyresponse.UpdateDefaultUpdatedAt()
-		sru.mutation.SetUpdatedAt(v)
+		_u.mutation.SetUpdatedAt(v)
 	}
 }
 
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (sru *SurveyResponseUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SurveyResponseUpdate {
-	sru.modifiers = append(sru.modifiers, modifiers...)
-	return sru
+func (_u *SurveyResponseUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SurveyResponseUpdate {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
 }
 
-func (sru *SurveyResponseUpdate) sqlSave(ctx context.Context) (n int, err error) {
+func (_u *SurveyResponseUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(surveyresponse.Table, surveyresponse.Columns, sqlgraph.NewFieldSpec(surveyresponse.FieldID, field.TypeInt64))
-	if ps := sru.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if sru.mutation.CreatedAtCleared() {
+	if _u.mutation.CreatedAtCleared() {
 		_spec.ClearField(surveyresponse.FieldCreatedAt, field.TypeTime)
 	}
-	if value, ok := sru.mutation.UpdatedAt(); ok {
+	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(surveyresponse.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if sru.mutation.UpdatedAtCleared() {
+	if _u.mutation.UpdatedAtCleared() {
 		_spec.ClearField(surveyresponse.FieldUpdatedAt, field.TypeTime)
 	}
-	if value, ok := sru.mutation.Delete(); ok {
+	if value, ok := _u.mutation.Delete(); ok {
 		_spec.SetField(surveyresponse.FieldDelete, field.TypeInt64, value)
 	}
-	if value, ok := sru.mutation.AddedDelete(); ok {
+	if value, ok := _u.mutation.AddedDelete(); ok {
 		_spec.AddField(surveyresponse.FieldDelete, field.TypeInt64, value)
 	}
-	if sru.mutation.DeleteCleared() {
+	if _u.mutation.DeleteCleared() {
 		_spec.ClearField(surveyresponse.FieldDelete, field.TypeInt64)
 	}
-	if value, ok := sru.mutation.CreatedID(); ok {
+	if value, ok := _u.mutation.CreatedID(); ok {
 		_spec.SetField(surveyresponse.FieldCreatedID, field.TypeInt64, value)
 	}
-	if value, ok := sru.mutation.AddedCreatedID(); ok {
+	if value, ok := _u.mutation.AddedCreatedID(); ok {
 		_spec.AddField(surveyresponse.FieldCreatedID, field.TypeInt64, value)
 	}
-	if sru.mutation.CreatedIDCleared() {
+	if _u.mutation.CreatedIDCleared() {
 		_spec.ClearField(surveyresponse.FieldCreatedID, field.TypeInt64)
 	}
-	if value, ok := sru.mutation.Status(); ok {
+	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(surveyresponse.FieldStatus, field.TypeInt64, value)
 	}
-	if value, ok := sru.mutation.AddedStatus(); ok {
+	if value, ok := _u.mutation.AddedStatus(); ok {
 		_spec.AddField(surveyresponse.FieldStatus, field.TypeInt64, value)
 	}
-	if sru.mutation.StatusCleared() {
+	if _u.mutation.StatusCleared() {
 		_spec.ClearField(surveyresponse.FieldStatus, field.TypeInt64)
 	}
-	if value, ok := sru.mutation.SurveyID(); ok {
-		_spec.SetField(surveyresponse.FieldSurveyID, field.TypeInt64, value)
+	if value, ok := _u.mutation.Sn(); ok {
+		_spec.SetField(surveyresponse.FieldSn, field.TypeString, value)
 	}
-	if value, ok := sru.mutation.AddedSurveyID(); ok {
-		_spec.AddField(surveyresponse.FieldSurveyID, field.TypeInt64, value)
+	if _u.mutation.SnCleared() {
+		_spec.ClearField(surveyresponse.FieldSn, field.TypeString)
 	}
-	if value, ok := sru.mutation.IP(); ok {
+	if value, ok := _u.mutation.Respondent(); ok {
+		_spec.SetField(surveyresponse.FieldRespondent, field.TypeString, value)
+	}
+	if _u.mutation.RespondentCleared() {
+		_spec.ClearField(surveyresponse.FieldRespondent, field.TypeString)
+	}
+	if value, ok := _u.mutation.RespondentPhone(); ok {
+		_spec.SetField(surveyresponse.FieldRespondentPhone, field.TypeString, value)
+	}
+	if _u.mutation.RespondentPhoneCleared() {
+		_spec.ClearField(surveyresponse.FieldRespondentPhone, field.TypeString)
+	}
+	if value, ok := _u.mutation.Researcher(); ok {
+		_spec.SetField(surveyresponse.FieldResearcher, field.TypeString, value)
+	}
+	if _u.mutation.ResearcherCleared() {
+		_spec.ClearField(surveyresponse.FieldResearcher, field.TypeString)
+	}
+	if value, ok := _u.mutation.ResearcherPhone(); ok {
+		_spec.SetField(surveyresponse.FieldResearcherPhone, field.TypeString, value)
+	}
+	if _u.mutation.ResearcherPhoneCleared() {
+		_spec.ClearField(surveyresponse.FieldResearcherPhone, field.TypeString)
+	}
+	if value, ok := _u.mutation.Pic(); ok {
+		_spec.SetField(surveyresponse.FieldPic, field.TypeJSON, value)
+	}
+	if value, ok := _u.mutation.AppendedPic(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponse.FieldPic, value)
+		})
+	}
+	if _u.mutation.PicCleared() {
+		_spec.ClearField(surveyresponse.FieldPic, field.TypeJSON)
+	}
+	if value, ok := _u.mutation.IP(); ok {
 		_spec.SetField(surveyresponse.FieldIP, field.TypeString, value)
 	}
-	if value, ok := sru.mutation.Map(); ok {
-		_spec.SetField(surveyresponse.FieldMap, field.TypeString, value)
+	if _u.mutation.IPCleared() {
+		_spec.ClearField(surveyresponse.FieldIP, field.TypeString)
 	}
-	if value, ok := sru.mutation.Device(); ok {
+	if value, ok := _u.mutation.Latitude(); ok {
+		_spec.SetField(surveyresponse.FieldLatitude, field.TypeString, value)
+	}
+	if _u.mutation.LatitudeCleared() {
+		_spec.ClearField(surveyresponse.FieldLatitude, field.TypeString)
+	}
+	if value, ok := _u.mutation.Longitude(); ok {
+		_spec.SetField(surveyresponse.FieldLongitude, field.TypeString, value)
+	}
+	if _u.mutation.LongitudeCleared() {
+		_spec.ClearField(surveyresponse.FieldLongitude, field.TypeString)
+	}
+	if value, ok := _u.mutation.Device(); ok {
 		_spec.SetField(surveyresponse.FieldDevice, field.TypeString, value)
 	}
-	if value, ok := sru.mutation.Audio(); ok {
-		_spec.SetField(surveyresponse.FieldAudio, field.TypeString, value)
+	if _u.mutation.DeviceCleared() {
+		_spec.ClearField(surveyresponse.FieldDevice, field.TypeString)
 	}
-	if value, ok := sru.mutation.StartedAt(); ok {
-		_spec.SetField(surveyresponse.FieldStartedAt, field.TypeTime, value)
+	if value, ok := _u.mutation.Audio(); ok {
+		_spec.SetField(surveyresponse.FieldAudio, field.TypeJSON, value)
 	}
-	if value, ok := sru.mutation.CompletedAt(); ok {
-		_spec.SetField(surveyresponse.FieldCompletedAt, field.TypeTime, value)
+	if value, ok := _u.mutation.AppendedAudio(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponse.FieldAudio, value)
+		})
 	}
-	_spec.AddModifiers(sru.modifiers...)
-	if n, err = sqlgraph.UpdateNodes(ctx, sru.driver, _spec); err != nil {
+	if _u.mutation.AudioCleared() {
+		_spec.ClearField(surveyresponse.FieldAudio, field.TypeJSON)
+	}
+	if value, ok := _u.mutation.Area(); ok {
+		_spec.SetField(surveyresponse.FieldArea, field.TypeString, value)
+	}
+	if _u.mutation.AreaCleared() {
+		_spec.ClearField(surveyresponse.FieldArea, field.TypeString)
+	}
+	if value, ok := _u.mutation.City(); ok {
+		_spec.SetField(surveyresponse.FieldCity, field.TypeString, value)
+	}
+	if _u.mutation.CityCleared() {
+		_spec.ClearField(surveyresponse.FieldCity, field.TypeString)
+	}
+	if value, ok := _u.mutation.District(); ok {
+		_spec.SetField(surveyresponse.FieldDistrict, field.TypeString, value)
+	}
+	if _u.mutation.DistrictCleared() {
+		_spec.ClearField(surveyresponse.FieldDistrict, field.TypeString)
+	}
+	if value, ok := _u.mutation.Village(); ok {
+		_spec.SetField(surveyresponse.FieldVillage, field.TypeString, value)
+	}
+	if _u.mutation.VillageCleared() {
+		_spec.ClearField(surveyresponse.FieldVillage, field.TypeString)
+	}
+	if value, ok := _u.mutation.Address(); ok {
+		_spec.SetField(surveyresponse.FieldAddress, field.TypeString, value)
+	}
+	if _u.mutation.AddressCleared() {
+		_spec.ClearField(surveyresponse.FieldAddress, field.TypeString)
+	}
+	if value, ok := _u.mutation.AnswersCount(); ok {
+		_spec.SetField(surveyresponse.FieldAnswersCount, field.TypeInt64, value)
+	}
+	if value, ok := _u.mutation.AddedAnswersCount(); ok {
+		_spec.AddField(surveyresponse.FieldAnswersCount, field.TypeInt64, value)
+	}
+	if _u.mutation.AnswersCountCleared() {
+		_spec.ClearField(surveyresponse.FieldAnswersCount, field.TypeInt64)
+	}
+	if _u.mutation.SurveyCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponse.SurveyTable,
+			Columns: []string{surveyresponse.SurveyColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.SurveyIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponse.SurveyTable,
+			Columns: []string{surveyresponse.SurveyColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if _u.mutation.AnswersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyresponse.AnswersTable,
+			Columns: []string{surveyresponse.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.RemovedAnswersIDs(); len(nodes) > 0 && !_u.mutation.AnswersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyresponse.AnswersTable,
+			Columns: []string{surveyresponse.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.AnswersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyresponse.AnswersTable,
+			Columns: []string{surveyresponse.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	_spec.AddModifiers(_u.modifiers...)
+	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{surveyresponse.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -352,8 +825,8 @@ func (sru *SurveyResponseUpdate) sqlSave(ctx context.Context) (n int, err error)
 		}
 		return 0, err
 	}
-	sru.mutation.done = true
-	return n, nil
+	_u.mutation.done = true
+	return _node, nil
 }
 
 // SurveyResponseUpdateOne is the builder for updating a single SurveyResponse entity.
@@ -366,230 +839,535 @@ type SurveyResponseUpdateOne struct {
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (sruo *SurveyResponseUpdateOne) SetUpdatedAt(t time.Time) *SurveyResponseUpdateOne {
-	sruo.mutation.SetUpdatedAt(t)
-	return sruo
+func (_u *SurveyResponseUpdateOne) SetUpdatedAt(v time.Time) *SurveyResponseUpdateOne {
+	_u.mutation.SetUpdatedAt(v)
+	return _u
 }
 
 // ClearUpdatedAt clears the value of the "updated_at" field.
-func (sruo *SurveyResponseUpdateOne) ClearUpdatedAt() *SurveyResponseUpdateOne {
-	sruo.mutation.ClearUpdatedAt()
-	return sruo
+func (_u *SurveyResponseUpdateOne) ClearUpdatedAt() *SurveyResponseUpdateOne {
+	_u.mutation.ClearUpdatedAt()
+	return _u
 }
 
 // SetDelete sets the "delete" field.
-func (sruo *SurveyResponseUpdateOne) SetDelete(i int64) *SurveyResponseUpdateOne {
-	sruo.mutation.ResetDelete()
-	sruo.mutation.SetDelete(i)
-	return sruo
+func (_u *SurveyResponseUpdateOne) SetDelete(v int64) *SurveyResponseUpdateOne {
+	_u.mutation.ResetDelete()
+	_u.mutation.SetDelete(v)
+	return _u
 }
 
 // SetNillableDelete sets the "delete" field if the given value is not nil.
-func (sruo *SurveyResponseUpdateOne) SetNillableDelete(i *int64) *SurveyResponseUpdateOne {
-	if i != nil {
-		sruo.SetDelete(*i)
+func (_u *SurveyResponseUpdateOne) SetNillableDelete(v *int64) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetDelete(*v)
 	}
-	return sruo
+	return _u
 }
 
-// AddDelete adds i to the "delete" field.
-func (sruo *SurveyResponseUpdateOne) AddDelete(i int64) *SurveyResponseUpdateOne {
-	sruo.mutation.AddDelete(i)
-	return sruo
+// AddDelete adds value to the "delete" field.
+func (_u *SurveyResponseUpdateOne) AddDelete(v int64) *SurveyResponseUpdateOne {
+	_u.mutation.AddDelete(v)
+	return _u
 }
 
 // ClearDelete clears the value of the "delete" field.
-func (sruo *SurveyResponseUpdateOne) ClearDelete() *SurveyResponseUpdateOne {
-	sruo.mutation.ClearDelete()
-	return sruo
+func (_u *SurveyResponseUpdateOne) ClearDelete() *SurveyResponseUpdateOne {
+	_u.mutation.ClearDelete()
+	return _u
 }
 
 // SetCreatedID sets the "created_id" field.
-func (sruo *SurveyResponseUpdateOne) SetCreatedID(i int64) *SurveyResponseUpdateOne {
-	sruo.mutation.ResetCreatedID()
-	sruo.mutation.SetCreatedID(i)
-	return sruo
+func (_u *SurveyResponseUpdateOne) SetCreatedID(v int64) *SurveyResponseUpdateOne {
+	_u.mutation.ResetCreatedID()
+	_u.mutation.SetCreatedID(v)
+	return _u
 }
 
 // SetNillableCreatedID sets the "created_id" field if the given value is not nil.
-func (sruo *SurveyResponseUpdateOne) SetNillableCreatedID(i *int64) *SurveyResponseUpdateOne {
-	if i != nil {
-		sruo.SetCreatedID(*i)
+func (_u *SurveyResponseUpdateOne) SetNillableCreatedID(v *int64) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetCreatedID(*v)
 	}
-	return sruo
+	return _u
 }
 
-// AddCreatedID adds i to the "created_id" field.
-func (sruo *SurveyResponseUpdateOne) AddCreatedID(i int64) *SurveyResponseUpdateOne {
-	sruo.mutation.AddCreatedID(i)
-	return sruo
+// AddCreatedID adds value to the "created_id" field.
+func (_u *SurveyResponseUpdateOne) AddCreatedID(v int64) *SurveyResponseUpdateOne {
+	_u.mutation.AddCreatedID(v)
+	return _u
 }
 
 // ClearCreatedID clears the value of the "created_id" field.
-func (sruo *SurveyResponseUpdateOne) ClearCreatedID() *SurveyResponseUpdateOne {
-	sruo.mutation.ClearCreatedID()
-	return sruo
+func (_u *SurveyResponseUpdateOne) ClearCreatedID() *SurveyResponseUpdateOne {
+	_u.mutation.ClearCreatedID()
+	return _u
 }
 
 // SetStatus sets the "status" field.
-func (sruo *SurveyResponseUpdateOne) SetStatus(i int64) *SurveyResponseUpdateOne {
-	sruo.mutation.ResetStatus()
-	sruo.mutation.SetStatus(i)
-	return sruo
+func (_u *SurveyResponseUpdateOne) SetStatus(v int64) *SurveyResponseUpdateOne {
+	_u.mutation.ResetStatus()
+	_u.mutation.SetStatus(v)
+	return _u
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (sruo *SurveyResponseUpdateOne) SetNillableStatus(i *int64) *SurveyResponseUpdateOne {
-	if i != nil {
-		sruo.SetStatus(*i)
+func (_u *SurveyResponseUpdateOne) SetNillableStatus(v *int64) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetStatus(*v)
 	}
-	return sruo
+	return _u
 }
 
-// AddStatus adds i to the "status" field.
-func (sruo *SurveyResponseUpdateOne) AddStatus(i int64) *SurveyResponseUpdateOne {
-	sruo.mutation.AddStatus(i)
-	return sruo
+// AddStatus adds value to the "status" field.
+func (_u *SurveyResponseUpdateOne) AddStatus(v int64) *SurveyResponseUpdateOne {
+	_u.mutation.AddStatus(v)
+	return _u
 }
 
 // ClearStatus clears the value of the "status" field.
-func (sruo *SurveyResponseUpdateOne) ClearStatus() *SurveyResponseUpdateOne {
-	sruo.mutation.ClearStatus()
-	return sruo
+func (_u *SurveyResponseUpdateOne) ClearStatus() *SurveyResponseUpdateOne {
+	_u.mutation.ClearStatus()
+	return _u
 }
 
 // SetSurveyID sets the "survey_id" field.
-func (sruo *SurveyResponseUpdateOne) SetSurveyID(i int64) *SurveyResponseUpdateOne {
-	sruo.mutation.ResetSurveyID()
-	sruo.mutation.SetSurveyID(i)
-	return sruo
+func (_u *SurveyResponseUpdateOne) SetSurveyID(v int64) *SurveyResponseUpdateOne {
+	_u.mutation.SetSurveyID(v)
+	return _u
 }
 
 // SetNillableSurveyID sets the "survey_id" field if the given value is not nil.
-func (sruo *SurveyResponseUpdateOne) SetNillableSurveyID(i *int64) *SurveyResponseUpdateOne {
-	if i != nil {
-		sruo.SetSurveyID(*i)
+func (_u *SurveyResponseUpdateOne) SetNillableSurveyID(v *int64) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetSurveyID(*v)
 	}
-	return sruo
+	return _u
 }
 
-// AddSurveyID adds i to the "survey_id" field.
-func (sruo *SurveyResponseUpdateOne) AddSurveyID(i int64) *SurveyResponseUpdateOne {
-	sruo.mutation.AddSurveyID(i)
-	return sruo
+// ClearSurveyID clears the value of the "survey_id" field.
+func (_u *SurveyResponseUpdateOne) ClearSurveyID() *SurveyResponseUpdateOne {
+	_u.mutation.ClearSurveyID()
+	return _u
+}
+
+// SetSn sets the "sn" field.
+func (_u *SurveyResponseUpdateOne) SetSn(v string) *SurveyResponseUpdateOne {
+	_u.mutation.SetSn(v)
+	return _u
+}
+
+// SetNillableSn sets the "sn" field if the given value is not nil.
+func (_u *SurveyResponseUpdateOne) SetNillableSn(v *string) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetSn(*v)
+	}
+	return _u
+}
+
+// ClearSn clears the value of the "sn" field.
+func (_u *SurveyResponseUpdateOne) ClearSn() *SurveyResponseUpdateOne {
+	_u.mutation.ClearSn()
+	return _u
+}
+
+// SetRespondent sets the "respondent" field.
+func (_u *SurveyResponseUpdateOne) SetRespondent(v string) *SurveyResponseUpdateOne {
+	_u.mutation.SetRespondent(v)
+	return _u
+}
+
+// SetNillableRespondent sets the "respondent" field if the given value is not nil.
+func (_u *SurveyResponseUpdateOne) SetNillableRespondent(v *string) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetRespondent(*v)
+	}
+	return _u
+}
+
+// ClearRespondent clears the value of the "respondent" field.
+func (_u *SurveyResponseUpdateOne) ClearRespondent() *SurveyResponseUpdateOne {
+	_u.mutation.ClearRespondent()
+	return _u
+}
+
+// SetRespondentPhone sets the "respondent_phone" field.
+func (_u *SurveyResponseUpdateOne) SetRespondentPhone(v string) *SurveyResponseUpdateOne {
+	_u.mutation.SetRespondentPhone(v)
+	return _u
+}
+
+// SetNillableRespondentPhone sets the "respondent_phone" field if the given value is not nil.
+func (_u *SurveyResponseUpdateOne) SetNillableRespondentPhone(v *string) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetRespondentPhone(*v)
+	}
+	return _u
+}
+
+// ClearRespondentPhone clears the value of the "respondent_phone" field.
+func (_u *SurveyResponseUpdateOne) ClearRespondentPhone() *SurveyResponseUpdateOne {
+	_u.mutation.ClearRespondentPhone()
+	return _u
+}
+
+// SetResearcher sets the "researcher" field.
+func (_u *SurveyResponseUpdateOne) SetResearcher(v string) *SurveyResponseUpdateOne {
+	_u.mutation.SetResearcher(v)
+	return _u
+}
+
+// SetNillableResearcher sets the "researcher" field if the given value is not nil.
+func (_u *SurveyResponseUpdateOne) SetNillableResearcher(v *string) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetResearcher(*v)
+	}
+	return _u
+}
+
+// ClearResearcher clears the value of the "researcher" field.
+func (_u *SurveyResponseUpdateOne) ClearResearcher() *SurveyResponseUpdateOne {
+	_u.mutation.ClearResearcher()
+	return _u
+}
+
+// SetResearcherPhone sets the "researcher_phone" field.
+func (_u *SurveyResponseUpdateOne) SetResearcherPhone(v string) *SurveyResponseUpdateOne {
+	_u.mutation.SetResearcherPhone(v)
+	return _u
+}
+
+// SetNillableResearcherPhone sets the "researcher_phone" field if the given value is not nil.
+func (_u *SurveyResponseUpdateOne) SetNillableResearcherPhone(v *string) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetResearcherPhone(*v)
+	}
+	return _u
+}
+
+// ClearResearcherPhone clears the value of the "researcher_phone" field.
+func (_u *SurveyResponseUpdateOne) ClearResearcherPhone() *SurveyResponseUpdateOne {
+	_u.mutation.ClearResearcherPhone()
+	return _u
+}
+
+// SetPic sets the "pic" field.
+func (_u *SurveyResponseUpdateOne) SetPic(v []string) *SurveyResponseUpdateOne {
+	_u.mutation.SetPic(v)
+	return _u
+}
+
+// AppendPic appends value to the "pic" field.
+func (_u *SurveyResponseUpdateOne) AppendPic(v []string) *SurveyResponseUpdateOne {
+	_u.mutation.AppendPic(v)
+	return _u
+}
+
+// ClearPic clears the value of the "pic" field.
+func (_u *SurveyResponseUpdateOne) ClearPic() *SurveyResponseUpdateOne {
+	_u.mutation.ClearPic()
+	return _u
 }
 
 // SetIP sets the "ip" field.
-func (sruo *SurveyResponseUpdateOne) SetIP(s string) *SurveyResponseUpdateOne {
-	sruo.mutation.SetIP(s)
-	return sruo
+func (_u *SurveyResponseUpdateOne) SetIP(v string) *SurveyResponseUpdateOne {
+	_u.mutation.SetIP(v)
+	return _u
 }
 
 // SetNillableIP sets the "ip" field if the given value is not nil.
-func (sruo *SurveyResponseUpdateOne) SetNillableIP(s *string) *SurveyResponseUpdateOne {
-	if s != nil {
-		sruo.SetIP(*s)
+func (_u *SurveyResponseUpdateOne) SetNillableIP(v *string) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetIP(*v)
 	}
-	return sruo
+	return _u
 }
 
-// SetMap sets the "map" field.
-func (sruo *SurveyResponseUpdateOne) SetMap(s string) *SurveyResponseUpdateOne {
-	sruo.mutation.SetMap(s)
-	return sruo
+// ClearIP clears the value of the "ip" field.
+func (_u *SurveyResponseUpdateOne) ClearIP() *SurveyResponseUpdateOne {
+	_u.mutation.ClearIP()
+	return _u
 }
 
-// SetNillableMap sets the "map" field if the given value is not nil.
-func (sruo *SurveyResponseUpdateOne) SetNillableMap(s *string) *SurveyResponseUpdateOne {
-	if s != nil {
-		sruo.SetMap(*s)
+// SetLatitude sets the "latitude" field.
+func (_u *SurveyResponseUpdateOne) SetLatitude(v string) *SurveyResponseUpdateOne {
+	_u.mutation.SetLatitude(v)
+	return _u
+}
+
+// SetNillableLatitude sets the "latitude" field if the given value is not nil.
+func (_u *SurveyResponseUpdateOne) SetNillableLatitude(v *string) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetLatitude(*v)
 	}
-	return sruo
+	return _u
+}
+
+// ClearLatitude clears the value of the "latitude" field.
+func (_u *SurveyResponseUpdateOne) ClearLatitude() *SurveyResponseUpdateOne {
+	_u.mutation.ClearLatitude()
+	return _u
+}
+
+// SetLongitude sets the "longitude" field.
+func (_u *SurveyResponseUpdateOne) SetLongitude(v string) *SurveyResponseUpdateOne {
+	_u.mutation.SetLongitude(v)
+	return _u
+}
+
+// SetNillableLongitude sets the "longitude" field if the given value is not nil.
+func (_u *SurveyResponseUpdateOne) SetNillableLongitude(v *string) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetLongitude(*v)
+	}
+	return _u
+}
+
+// ClearLongitude clears the value of the "longitude" field.
+func (_u *SurveyResponseUpdateOne) ClearLongitude() *SurveyResponseUpdateOne {
+	_u.mutation.ClearLongitude()
+	return _u
 }
 
 // SetDevice sets the "device" field.
-func (sruo *SurveyResponseUpdateOne) SetDevice(s string) *SurveyResponseUpdateOne {
-	sruo.mutation.SetDevice(s)
-	return sruo
+func (_u *SurveyResponseUpdateOne) SetDevice(v string) *SurveyResponseUpdateOne {
+	_u.mutation.SetDevice(v)
+	return _u
 }
 
 // SetNillableDevice sets the "device" field if the given value is not nil.
-func (sruo *SurveyResponseUpdateOne) SetNillableDevice(s *string) *SurveyResponseUpdateOne {
-	if s != nil {
-		sruo.SetDevice(*s)
+func (_u *SurveyResponseUpdateOne) SetNillableDevice(v *string) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetDevice(*v)
 	}
-	return sruo
+	return _u
+}
+
+// ClearDevice clears the value of the "device" field.
+func (_u *SurveyResponseUpdateOne) ClearDevice() *SurveyResponseUpdateOne {
+	_u.mutation.ClearDevice()
+	return _u
 }
 
 // SetAudio sets the "audio" field.
-func (sruo *SurveyResponseUpdateOne) SetAudio(s string) *SurveyResponseUpdateOne {
-	sruo.mutation.SetAudio(s)
-	return sruo
+func (_u *SurveyResponseUpdateOne) SetAudio(v []string) *SurveyResponseUpdateOne {
+	_u.mutation.SetAudio(v)
+	return _u
 }
 
-// SetNillableAudio sets the "audio" field if the given value is not nil.
-func (sruo *SurveyResponseUpdateOne) SetNillableAudio(s *string) *SurveyResponseUpdateOne {
-	if s != nil {
-		sruo.SetAudio(*s)
+// AppendAudio appends value to the "audio" field.
+func (_u *SurveyResponseUpdateOne) AppendAudio(v []string) *SurveyResponseUpdateOne {
+	_u.mutation.AppendAudio(v)
+	return _u
+}
+
+// ClearAudio clears the value of the "audio" field.
+func (_u *SurveyResponseUpdateOne) ClearAudio() *SurveyResponseUpdateOne {
+	_u.mutation.ClearAudio()
+	return _u
+}
+
+// SetArea sets the "area" field.
+func (_u *SurveyResponseUpdateOne) SetArea(v string) *SurveyResponseUpdateOne {
+	_u.mutation.SetArea(v)
+	return _u
+}
+
+// SetNillableArea sets the "area" field if the given value is not nil.
+func (_u *SurveyResponseUpdateOne) SetNillableArea(v *string) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetArea(*v)
 	}
-	return sruo
+	return _u
 }
 
-// SetStartedAt sets the "started_at" field.
-func (sruo *SurveyResponseUpdateOne) SetStartedAt(t time.Time) *SurveyResponseUpdateOne {
-	sruo.mutation.SetStartedAt(t)
-	return sruo
+// ClearArea clears the value of the "area" field.
+func (_u *SurveyResponseUpdateOne) ClearArea() *SurveyResponseUpdateOne {
+	_u.mutation.ClearArea()
+	return _u
 }
 
-// SetNillableStartedAt sets the "started_at" field if the given value is not nil.
-func (sruo *SurveyResponseUpdateOne) SetNillableStartedAt(t *time.Time) *SurveyResponseUpdateOne {
-	if t != nil {
-		sruo.SetStartedAt(*t)
+// SetCity sets the "city" field.
+func (_u *SurveyResponseUpdateOne) SetCity(v string) *SurveyResponseUpdateOne {
+	_u.mutation.SetCity(v)
+	return _u
+}
+
+// SetNillableCity sets the "city" field if the given value is not nil.
+func (_u *SurveyResponseUpdateOne) SetNillableCity(v *string) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetCity(*v)
 	}
-	return sruo
+	return _u
 }
 
-// SetCompletedAt sets the "completed_at" field.
-func (sruo *SurveyResponseUpdateOne) SetCompletedAt(t time.Time) *SurveyResponseUpdateOne {
-	sruo.mutation.SetCompletedAt(t)
-	return sruo
+// ClearCity clears the value of the "city" field.
+func (_u *SurveyResponseUpdateOne) ClearCity() *SurveyResponseUpdateOne {
+	_u.mutation.ClearCity()
+	return _u
 }
 
-// SetNillableCompletedAt sets the "completed_at" field if the given value is not nil.
-func (sruo *SurveyResponseUpdateOne) SetNillableCompletedAt(t *time.Time) *SurveyResponseUpdateOne {
-	if t != nil {
-		sruo.SetCompletedAt(*t)
+// SetDistrict sets the "district" field.
+func (_u *SurveyResponseUpdateOne) SetDistrict(v string) *SurveyResponseUpdateOne {
+	_u.mutation.SetDistrict(v)
+	return _u
+}
+
+// SetNillableDistrict sets the "district" field if the given value is not nil.
+func (_u *SurveyResponseUpdateOne) SetNillableDistrict(v *string) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetDistrict(*v)
 	}
-	return sruo
+	return _u
+}
+
+// ClearDistrict clears the value of the "district" field.
+func (_u *SurveyResponseUpdateOne) ClearDistrict() *SurveyResponseUpdateOne {
+	_u.mutation.ClearDistrict()
+	return _u
+}
+
+// SetVillage sets the "village" field.
+func (_u *SurveyResponseUpdateOne) SetVillage(v string) *SurveyResponseUpdateOne {
+	_u.mutation.SetVillage(v)
+	return _u
+}
+
+// SetNillableVillage sets the "village" field if the given value is not nil.
+func (_u *SurveyResponseUpdateOne) SetNillableVillage(v *string) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetVillage(*v)
+	}
+	return _u
+}
+
+// ClearVillage clears the value of the "village" field.
+func (_u *SurveyResponseUpdateOne) ClearVillage() *SurveyResponseUpdateOne {
+	_u.mutation.ClearVillage()
+	return _u
+}
+
+// SetAddress sets the "address" field.
+func (_u *SurveyResponseUpdateOne) SetAddress(v string) *SurveyResponseUpdateOne {
+	_u.mutation.SetAddress(v)
+	return _u
+}
+
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (_u *SurveyResponseUpdateOne) SetNillableAddress(v *string) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetAddress(*v)
+	}
+	return _u
+}
+
+// ClearAddress clears the value of the "address" field.
+func (_u *SurveyResponseUpdateOne) ClearAddress() *SurveyResponseUpdateOne {
+	_u.mutation.ClearAddress()
+	return _u
+}
+
+// SetAnswersCount sets the "answers_count" field.
+func (_u *SurveyResponseUpdateOne) SetAnswersCount(v int64) *SurveyResponseUpdateOne {
+	_u.mutation.ResetAnswersCount()
+	_u.mutation.SetAnswersCount(v)
+	return _u
+}
+
+// SetNillableAnswersCount sets the "answers_count" field if the given value is not nil.
+func (_u *SurveyResponseUpdateOne) SetNillableAnswersCount(v *int64) *SurveyResponseUpdateOne {
+	if v != nil {
+		_u.SetAnswersCount(*v)
+	}
+	return _u
+}
+
+// AddAnswersCount adds value to the "answers_count" field.
+func (_u *SurveyResponseUpdateOne) AddAnswersCount(v int64) *SurveyResponseUpdateOne {
+	_u.mutation.AddAnswersCount(v)
+	return _u
+}
+
+// ClearAnswersCount clears the value of the "answers_count" field.
+func (_u *SurveyResponseUpdateOne) ClearAnswersCount() *SurveyResponseUpdateOne {
+	_u.mutation.ClearAnswersCount()
+	return _u
+}
+
+// SetSurvey sets the "survey" edge to the Survey entity.
+func (_u *SurveyResponseUpdateOne) SetSurvey(v *Survey) *SurveyResponseUpdateOne {
+	return _u.SetSurveyID(v.ID)
+}
+
+// AddAnswerIDs adds the "answers" edge to the SurveyResponseAnswers entity by IDs.
+func (_u *SurveyResponseUpdateOne) AddAnswerIDs(ids ...int64) *SurveyResponseUpdateOne {
+	_u.mutation.AddAnswerIDs(ids...)
+	return _u
+}
+
+// AddAnswers adds the "answers" edges to the SurveyResponseAnswers entity.
+func (_u *SurveyResponseUpdateOne) AddAnswers(v ...*SurveyResponseAnswers) *SurveyResponseUpdateOne {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.AddAnswerIDs(ids...)
 }
 
 // Mutation returns the SurveyResponseMutation object of the builder.
-func (sruo *SurveyResponseUpdateOne) Mutation() *SurveyResponseMutation {
-	return sruo.mutation
+func (_u *SurveyResponseUpdateOne) Mutation() *SurveyResponseMutation {
+	return _u.mutation
+}
+
+// ClearSurvey clears the "survey" edge to the Survey entity.
+func (_u *SurveyResponseUpdateOne) ClearSurvey() *SurveyResponseUpdateOne {
+	_u.mutation.ClearSurvey()
+	return _u
+}
+
+// ClearAnswers clears all "answers" edges to the SurveyResponseAnswers entity.
+func (_u *SurveyResponseUpdateOne) ClearAnswers() *SurveyResponseUpdateOne {
+	_u.mutation.ClearAnswers()
+	return _u
+}
+
+// RemoveAnswerIDs removes the "answers" edge to SurveyResponseAnswers entities by IDs.
+func (_u *SurveyResponseUpdateOne) RemoveAnswerIDs(ids ...int64) *SurveyResponseUpdateOne {
+	_u.mutation.RemoveAnswerIDs(ids...)
+	return _u
+}
+
+// RemoveAnswers removes "answers" edges to SurveyResponseAnswers entities.
+func (_u *SurveyResponseUpdateOne) RemoveAnswers(v ...*SurveyResponseAnswers) *SurveyResponseUpdateOne {
+	ids := make([]int64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.RemoveAnswerIDs(ids...)
 }
 
 // Where appends a list predicates to the SurveyResponseUpdate builder.
-func (sruo *SurveyResponseUpdateOne) Where(ps ...predicate.SurveyResponse) *SurveyResponseUpdateOne {
-	sruo.mutation.Where(ps...)
-	return sruo
+func (_u *SurveyResponseUpdateOne) Where(ps ...predicate.SurveyResponse) *SurveyResponseUpdateOne {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
 // The default is selecting all fields defined in the entity schema.
-func (sruo *SurveyResponseUpdateOne) Select(field string, fields ...string) *SurveyResponseUpdateOne {
-	sruo.fields = append([]string{field}, fields...)
-	return sruo
+func (_u *SurveyResponseUpdateOne) Select(field string, fields ...string) *SurveyResponseUpdateOne {
+	_u.fields = append([]string{field}, fields...)
+	return _u
 }
 
 // Save executes the query and returns the updated SurveyResponse entity.
-func (sruo *SurveyResponseUpdateOne) Save(ctx context.Context) (*SurveyResponse, error) {
-	sruo.defaults()
-	return withHooks(ctx, sruo.sqlSave, sruo.mutation, sruo.hooks)
+func (_u *SurveyResponseUpdateOne) Save(ctx context.Context) (*SurveyResponse, error) {
+	_u.defaults()
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (sruo *SurveyResponseUpdateOne) SaveX(ctx context.Context) *SurveyResponse {
-	node, err := sruo.Save(ctx)
+func (_u *SurveyResponseUpdateOne) SaveX(ctx context.Context) *SurveyResponse {
+	node, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -597,40 +1375,40 @@ func (sruo *SurveyResponseUpdateOne) SaveX(ctx context.Context) *SurveyResponse 
 }
 
 // Exec executes the query on the entity.
-func (sruo *SurveyResponseUpdateOne) Exec(ctx context.Context) error {
-	_, err := sruo.Save(ctx)
+func (_u *SurveyResponseUpdateOne) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (sruo *SurveyResponseUpdateOne) ExecX(ctx context.Context) {
-	if err := sruo.Exec(ctx); err != nil {
+func (_u *SurveyResponseUpdateOne) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (sruo *SurveyResponseUpdateOne) defaults() {
-	if _, ok := sruo.mutation.UpdatedAt(); !ok && !sruo.mutation.UpdatedAtCleared() {
+func (_u *SurveyResponseUpdateOne) defaults() {
+	if _, ok := _u.mutation.UpdatedAt(); !ok && !_u.mutation.UpdatedAtCleared() {
 		v := surveyresponse.UpdateDefaultUpdatedAt()
-		sruo.mutation.SetUpdatedAt(v)
+		_u.mutation.SetUpdatedAt(v)
 	}
 }
 
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (sruo *SurveyResponseUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SurveyResponseUpdateOne {
-	sruo.modifiers = append(sruo.modifiers, modifiers...)
-	return sruo
+func (_u *SurveyResponseUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SurveyResponseUpdateOne {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
 }
 
-func (sruo *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *SurveyResponse, err error) {
+func (_u *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *SurveyResponse, err error) {
 	_spec := sqlgraph.NewUpdateSpec(surveyresponse.Table, surveyresponse.Columns, sqlgraph.NewFieldSpec(surveyresponse.FieldID, field.TypeInt64))
-	id, ok := sruo.mutation.ID()
+	id, ok := _u.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "SurveyResponse.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
-	if fields := sruo.fields; len(fields) > 0 {
+	if fields := _u.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
 		_spec.Node.Columns = append(_spec.Node.Columns, surveyresponse.FieldID)
 		for _, f := range fields {
@@ -642,78 +1420,243 @@ func (sruo *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 			}
 		}
 	}
-	if ps := sruo.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if sruo.mutation.CreatedAtCleared() {
+	if _u.mutation.CreatedAtCleared() {
 		_spec.ClearField(surveyresponse.FieldCreatedAt, field.TypeTime)
 	}
-	if value, ok := sruo.mutation.UpdatedAt(); ok {
+	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(surveyresponse.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if sruo.mutation.UpdatedAtCleared() {
+	if _u.mutation.UpdatedAtCleared() {
 		_spec.ClearField(surveyresponse.FieldUpdatedAt, field.TypeTime)
 	}
-	if value, ok := sruo.mutation.Delete(); ok {
+	if value, ok := _u.mutation.Delete(); ok {
 		_spec.SetField(surveyresponse.FieldDelete, field.TypeInt64, value)
 	}
-	if value, ok := sruo.mutation.AddedDelete(); ok {
+	if value, ok := _u.mutation.AddedDelete(); ok {
 		_spec.AddField(surveyresponse.FieldDelete, field.TypeInt64, value)
 	}
-	if sruo.mutation.DeleteCleared() {
+	if _u.mutation.DeleteCleared() {
 		_spec.ClearField(surveyresponse.FieldDelete, field.TypeInt64)
 	}
-	if value, ok := sruo.mutation.CreatedID(); ok {
+	if value, ok := _u.mutation.CreatedID(); ok {
 		_spec.SetField(surveyresponse.FieldCreatedID, field.TypeInt64, value)
 	}
-	if value, ok := sruo.mutation.AddedCreatedID(); ok {
+	if value, ok := _u.mutation.AddedCreatedID(); ok {
 		_spec.AddField(surveyresponse.FieldCreatedID, field.TypeInt64, value)
 	}
-	if sruo.mutation.CreatedIDCleared() {
+	if _u.mutation.CreatedIDCleared() {
 		_spec.ClearField(surveyresponse.FieldCreatedID, field.TypeInt64)
 	}
-	if value, ok := sruo.mutation.Status(); ok {
+	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(surveyresponse.FieldStatus, field.TypeInt64, value)
 	}
-	if value, ok := sruo.mutation.AddedStatus(); ok {
+	if value, ok := _u.mutation.AddedStatus(); ok {
 		_spec.AddField(surveyresponse.FieldStatus, field.TypeInt64, value)
 	}
-	if sruo.mutation.StatusCleared() {
+	if _u.mutation.StatusCleared() {
 		_spec.ClearField(surveyresponse.FieldStatus, field.TypeInt64)
 	}
-	if value, ok := sruo.mutation.SurveyID(); ok {
-		_spec.SetField(surveyresponse.FieldSurveyID, field.TypeInt64, value)
+	if value, ok := _u.mutation.Sn(); ok {
+		_spec.SetField(surveyresponse.FieldSn, field.TypeString, value)
 	}
-	if value, ok := sruo.mutation.AddedSurveyID(); ok {
-		_spec.AddField(surveyresponse.FieldSurveyID, field.TypeInt64, value)
+	if _u.mutation.SnCleared() {
+		_spec.ClearField(surveyresponse.FieldSn, field.TypeString)
 	}
-	if value, ok := sruo.mutation.IP(); ok {
+	if value, ok := _u.mutation.Respondent(); ok {
+		_spec.SetField(surveyresponse.FieldRespondent, field.TypeString, value)
+	}
+	if _u.mutation.RespondentCleared() {
+		_spec.ClearField(surveyresponse.FieldRespondent, field.TypeString)
+	}
+	if value, ok := _u.mutation.RespondentPhone(); ok {
+		_spec.SetField(surveyresponse.FieldRespondentPhone, field.TypeString, value)
+	}
+	if _u.mutation.RespondentPhoneCleared() {
+		_spec.ClearField(surveyresponse.FieldRespondentPhone, field.TypeString)
+	}
+	if value, ok := _u.mutation.Researcher(); ok {
+		_spec.SetField(surveyresponse.FieldResearcher, field.TypeString, value)
+	}
+	if _u.mutation.ResearcherCleared() {
+		_spec.ClearField(surveyresponse.FieldResearcher, field.TypeString)
+	}
+	if value, ok := _u.mutation.ResearcherPhone(); ok {
+		_spec.SetField(surveyresponse.FieldResearcherPhone, field.TypeString, value)
+	}
+	if _u.mutation.ResearcherPhoneCleared() {
+		_spec.ClearField(surveyresponse.FieldResearcherPhone, field.TypeString)
+	}
+	if value, ok := _u.mutation.Pic(); ok {
+		_spec.SetField(surveyresponse.FieldPic, field.TypeJSON, value)
+	}
+	if value, ok := _u.mutation.AppendedPic(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponse.FieldPic, value)
+		})
+	}
+	if _u.mutation.PicCleared() {
+		_spec.ClearField(surveyresponse.FieldPic, field.TypeJSON)
+	}
+	if value, ok := _u.mutation.IP(); ok {
 		_spec.SetField(surveyresponse.FieldIP, field.TypeString, value)
 	}
-	if value, ok := sruo.mutation.Map(); ok {
-		_spec.SetField(surveyresponse.FieldMap, field.TypeString, value)
+	if _u.mutation.IPCleared() {
+		_spec.ClearField(surveyresponse.FieldIP, field.TypeString)
 	}
-	if value, ok := sruo.mutation.Device(); ok {
+	if value, ok := _u.mutation.Latitude(); ok {
+		_spec.SetField(surveyresponse.FieldLatitude, field.TypeString, value)
+	}
+	if _u.mutation.LatitudeCleared() {
+		_spec.ClearField(surveyresponse.FieldLatitude, field.TypeString)
+	}
+	if value, ok := _u.mutation.Longitude(); ok {
+		_spec.SetField(surveyresponse.FieldLongitude, field.TypeString, value)
+	}
+	if _u.mutation.LongitudeCleared() {
+		_spec.ClearField(surveyresponse.FieldLongitude, field.TypeString)
+	}
+	if value, ok := _u.mutation.Device(); ok {
 		_spec.SetField(surveyresponse.FieldDevice, field.TypeString, value)
 	}
-	if value, ok := sruo.mutation.Audio(); ok {
-		_spec.SetField(surveyresponse.FieldAudio, field.TypeString, value)
+	if _u.mutation.DeviceCleared() {
+		_spec.ClearField(surveyresponse.FieldDevice, field.TypeString)
 	}
-	if value, ok := sruo.mutation.StartedAt(); ok {
-		_spec.SetField(surveyresponse.FieldStartedAt, field.TypeTime, value)
+	if value, ok := _u.mutation.Audio(); ok {
+		_spec.SetField(surveyresponse.FieldAudio, field.TypeJSON, value)
 	}
-	if value, ok := sruo.mutation.CompletedAt(); ok {
-		_spec.SetField(surveyresponse.FieldCompletedAt, field.TypeTime, value)
+	if value, ok := _u.mutation.AppendedAudio(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponse.FieldAudio, value)
+		})
 	}
-	_spec.AddModifiers(sruo.modifiers...)
-	_node = &SurveyResponse{config: sruo.config}
+	if _u.mutation.AudioCleared() {
+		_spec.ClearField(surveyresponse.FieldAudio, field.TypeJSON)
+	}
+	if value, ok := _u.mutation.Area(); ok {
+		_spec.SetField(surveyresponse.FieldArea, field.TypeString, value)
+	}
+	if _u.mutation.AreaCleared() {
+		_spec.ClearField(surveyresponse.FieldArea, field.TypeString)
+	}
+	if value, ok := _u.mutation.City(); ok {
+		_spec.SetField(surveyresponse.FieldCity, field.TypeString, value)
+	}
+	if _u.mutation.CityCleared() {
+		_spec.ClearField(surveyresponse.FieldCity, field.TypeString)
+	}
+	if value, ok := _u.mutation.District(); ok {
+		_spec.SetField(surveyresponse.FieldDistrict, field.TypeString, value)
+	}
+	if _u.mutation.DistrictCleared() {
+		_spec.ClearField(surveyresponse.FieldDistrict, field.TypeString)
+	}
+	if value, ok := _u.mutation.Village(); ok {
+		_spec.SetField(surveyresponse.FieldVillage, field.TypeString, value)
+	}
+	if _u.mutation.VillageCleared() {
+		_spec.ClearField(surveyresponse.FieldVillage, field.TypeString)
+	}
+	if value, ok := _u.mutation.Address(); ok {
+		_spec.SetField(surveyresponse.FieldAddress, field.TypeString, value)
+	}
+	if _u.mutation.AddressCleared() {
+		_spec.ClearField(surveyresponse.FieldAddress, field.TypeString)
+	}
+	if value, ok := _u.mutation.AnswersCount(); ok {
+		_spec.SetField(surveyresponse.FieldAnswersCount, field.TypeInt64, value)
+	}
+	if value, ok := _u.mutation.AddedAnswersCount(); ok {
+		_spec.AddField(surveyresponse.FieldAnswersCount, field.TypeInt64, value)
+	}
+	if _u.mutation.AnswersCountCleared() {
+		_spec.ClearField(surveyresponse.FieldAnswersCount, field.TypeInt64)
+	}
+	if _u.mutation.SurveyCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponse.SurveyTable,
+			Columns: []string{surveyresponse.SurveyColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.SurveyIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   surveyresponse.SurveyTable,
+			Columns: []string{surveyresponse.SurveyColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if _u.mutation.AnswersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyresponse.AnswersTable,
+			Columns: []string{surveyresponse.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.RemovedAnswersIDs(); len(nodes) > 0 && !_u.mutation.AnswersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyresponse.AnswersTable,
+			Columns: []string{surveyresponse.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.AnswersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   surveyresponse.AnswersTable,
+			Columns: []string{surveyresponse.AnswersColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	_spec.AddModifiers(_u.modifiers...)
+	_node = &SurveyResponse{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues
-	if err = sqlgraph.UpdateNode(ctx, sruo.driver, _spec); err != nil {
+	if err = sqlgraph.UpdateNode(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{surveyresponse.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -721,6 +1664,6 @@ func (sruo *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *Survey
 		}
 		return nil, err
 	}
-	sruo.mutation.done = true
+	_u.mutation.done = true
 	return _node, nil
 }

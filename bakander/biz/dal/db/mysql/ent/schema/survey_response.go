@@ -5,6 +5,7 @@ import (
 	"entgo.io/ent/dialect/entsql"
 	_ "entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"kcers-survey/biz/dal/db/mysql/ent/schema/mixins"
 )
@@ -16,14 +17,28 @@ type SurveyResponse struct {
 
 func (SurveyResponse) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int64("survey_id").Default(0).Comment("survey_id"),
-		field.String("ip").Default("").Comment("用户IP地址"),
-		field.String("map").Default("").Comment("用户地图坐标"),
-		field.String("device").Default("").Comment("设备信息"),
-		field.String("audio").Default("").Comment("音频"),
+		field.Int64("survey_id").Optional().Default(0).Comment("survey_id"),
+		field.String("sn").Optional().Default("").Comment("sn"),
+		field.String("respondent").Optional().Default("").Comment("受访人"),
+		field.String("respondent_phone").Optional().Default("").Comment("受访人联系电话"),
 
-		field.Time("started_at").Default(nil).Comment("开始时间"),
-		field.Time("completed_at").Default(nil).Comment("完成时间"),
+		field.String("researcher").Optional().Default("").Comment("调研员"),
+		field.String("researcher_phone").Optional().Default("").Comment("调研员联系电话"),
+		field.JSON("pic", []string{}).Optional().Default([]string{}).Comment("合照照片"),
+		field.String("ip").Optional().Default("").Comment("用户IP地址"),
+		field.String("latitude").Optional().Default("").Comment("latitude"),
+		field.String("longitude").Optional().Default("").Comment("longitude"),
+
+		field.String("device").Optional().Default("").Comment("设备信息"),
+		field.JSON("audio", []string{}).Optional().Default([]string{}).Comment("音频"),
+
+		field.String("area").Optional().Default("").Comment("area"),
+		field.String("city").Optional().Default("").Comment("city"),
+		field.String("district").Optional().Default("").Comment("district"),
+		field.String("village").Optional().Default("").Comment("village"),
+		field.String("address").Optional().Default("").Comment("address"),
+
+		field.Int64("answers_count").Optional().Default(0).Comment("answers count"),
 	}
 }
 
@@ -36,7 +51,9 @@ func (SurveyResponse) Mixin() []ent.Mixin {
 
 func (SurveyResponse) Edges() []ent.Edge {
 	return []ent.Edge{
-		//edge.From("survey", Survey.Type).Ref("question").Field("survey_id"),
+		edge.From("survey", Survey.Type).Ref("response").Field("survey_id").Unique(),
+
+		edge.To("answers", SurveyResponseAnswers.Type),
 	}
 
 }

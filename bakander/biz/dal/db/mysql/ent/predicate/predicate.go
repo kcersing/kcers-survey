@@ -9,6 +9,9 @@ import (
 // API is the predicate function for api builders.
 type API func(*sql.Selector)
 
+// Area is the predicate function for area builders.
+type Area func(*sql.Selector)
+
 // Dictionary is the predicate function for dictionary builders.
 type Dictionary func(*sql.Selector)
 
@@ -26,6 +29,12 @@ type MenuParam func(*sql.Selector)
 
 // Role is the predicate function for role builders.
 type Role func(*sql.Selector)
+
+// Sms is the predicate function for sms builders.
+type Sms func(*sql.Selector)
+
+// SmsLog is the predicate function for smslog builders.
+type SmsLog func(*sql.Selector)
 
 // Survey is the predicate function for survey builders.
 type Survey func(*sql.Selector)

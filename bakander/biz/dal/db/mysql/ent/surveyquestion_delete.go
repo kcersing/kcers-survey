@@ -20,56 +20,56 @@ type SurveyQuestionDelete struct {
 }
 
 // Where appends a list predicates to the SurveyQuestionDelete builder.
-func (sqd *SurveyQuestionDelete) Where(ps ...predicate.SurveyQuestion) *SurveyQuestionDelete {
-	sqd.mutation.Where(ps...)
-	return sqd
+func (_d *SurveyQuestionDelete) Where(ps ...predicate.SurveyQuestion) *SurveyQuestionDelete {
+	_d.mutation.Where(ps...)
+	return _d
 }
 
 // Exec executes the deletion query and returns how many vertices were deleted.
-func (sqd *SurveyQuestionDelete) Exec(ctx context.Context) (int, error) {
-	return withHooks(ctx, sqd.sqlExec, sqd.mutation, sqd.hooks)
+func (_d *SurveyQuestionDelete) Exec(ctx context.Context) (int, error) {
+	return withHooks(ctx, _d.sqlExec, _d.mutation, _d.hooks)
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (sqd *SurveyQuestionDelete) ExecX(ctx context.Context) int {
-	n, err := sqd.Exec(ctx)
+func (_d *SurveyQuestionDelete) ExecX(ctx context.Context) int {
+	n, err := _d.Exec(ctx)
 	if err != nil {
 		panic(err)
 	}
 	return n
 }
 
-func (sqd *SurveyQuestionDelete) sqlExec(ctx context.Context) (int, error) {
+func (_d *SurveyQuestionDelete) sqlExec(ctx context.Context) (int, error) {
 	_spec := sqlgraph.NewDeleteSpec(surveyquestion.Table, sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64))
-	if ps := sqd.mutation.predicates; len(ps) > 0 {
+	if ps := _d.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	affected, err := sqlgraph.DeleteNodes(ctx, sqd.driver, _spec)
+	affected, err := sqlgraph.DeleteNodes(ctx, _d.driver, _spec)
 	if err != nil && sqlgraph.IsConstraintError(err) {
 		err = &ConstraintError{msg: err.Error(), wrap: err}
 	}
-	sqd.mutation.done = true
+	_d.mutation.done = true
 	return affected, err
 }
 
 // SurveyQuestionDeleteOne is the builder for deleting a single SurveyQuestion entity.
 type SurveyQuestionDeleteOne struct {
-	sqd *SurveyQuestionDelete
+	_d *SurveyQuestionDelete
 }
 
 // Where appends a list predicates to the SurveyQuestionDelete builder.
-func (sqdo *SurveyQuestionDeleteOne) Where(ps ...predicate.SurveyQuestion) *SurveyQuestionDeleteOne {
-	sqdo.sqd.mutation.Where(ps...)
-	return sqdo
+func (_d *SurveyQuestionDeleteOne) Where(ps ...predicate.SurveyQuestion) *SurveyQuestionDeleteOne {
+	_d._d.mutation.Where(ps...)
+	return _d
 }
 
 // Exec executes the deletion query.
-func (sqdo *SurveyQuestionDeleteOne) Exec(ctx context.Context) error {
-	n, err := sqdo.sqd.Exec(ctx)
+func (_d *SurveyQuestionDeleteOne) Exec(ctx context.Context) error {
+	n, err := _d._d.Exec(ctx)
 	switch {
 	case err != nil:
 		return err
@@ -81,8 +81,8 @@ func (sqdo *SurveyQuestionDeleteOne) Exec(ctx context.Context) error {
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (sqdo *SurveyQuestionDeleteOne) ExecX(ctx context.Context) {
-	if err := sqdo.Exec(ctx); err != nil {
+func (_d *SurveyQuestionDeleteOne) ExecX(ctx context.Context) {
+	if err := _d.Exec(ctx); err != nil {
 		panic(err)
 	}
 }

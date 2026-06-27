@@ -838,12 +838,12 @@ type MenuInfo struct {
 	Name     string `thrift:"name,2" form:"name" json:"name" query:"name"`
 	ParentId int64  `thrift:"parentId,3" form:"parentId" json:"parentId" query:"parentId"`
 	//       4: i64 level (api.raw = "level")
-	Path string `thrift:"path,5" form:"path" json:"path" query:"path"`
-	//        6: string redirect (api.raw = "redirect")
-	//        7: string component (api.raw = "component")
+	Path      string `thrift:"path,5" form:"path" json:"path" query:"path"`
+	Redirect  string `thrift:"redirect,6" form:"redirect" json:"redirect" query:"redirect"`
+	Component string `thrift:"component,7" form:"component" json:"component" query:"component"`
 	//        8: i64 menuType (api.raw = "menuType")
 	//        9: bool hidden (api.raw = "hidden")
-	//        10: i64 sort (api.raw = "sort")
+	Sort int64 `thrift:"sort,10" form:"sort" json:"sort" query:"sort"`
 	//        11: Meta meta (api.raw = "meta")
 	//        12: i64 status (api.raw = "status")
 	//        13: string url (api.raw = "url")
@@ -852,19 +852,23 @@ type MenuInfo struct {
 	//        16: string updatedAt (api.raw = "updatedAt")
 	//        17:  string title (api.raw = "title" )
 	//        19:optional string type="" (api.raw = "type")
-	Key      string `thrift:"key,20,optional" form:"key" json:"key" query:"key"`
-	OrderNo  int64  `thrift:"orderNo,21,optional" form:"orderNo" json:"orderNo" query:"orderNo"`
-	Disabled int64  `thrift:"disabled,22,optional" form:"disabled" json:"disabled" query:"disabled"`
-	Ignore   string `thrift:"ignore,23,optional" form:"ignore" json:"ignore" query:"ignore"`
+	Key       string `thrift:"key,20,optional" form:"key" json:"key" query:"key"`
+	OrderNo   int64  `thrift:"orderNo,21,optional" form:"orderNo" json:"orderNo" query:"orderNo"`
+	Disabled  int64  `thrift:"disabled,22,optional" form:"disabled" json:"disabled" query:"disabled"`
+	Ignore    string `thrift:"ignore,23,optional" form:"ignore" json:"ignore" query:"ignore"`
+	CreatedAt string `thrift:"createdAt,255,optional" form:"createdAt" json:"createdAt" query:"createdAt"`
+	UpdatedAt string `thrift:"updatedAt,256,optional" form:"updatedAt" json:"updatedAt" query:"updatedAt"`
 }
 
 func NewMenuInfo() *MenuInfo {
 	return &MenuInfo{
 
-		Key:      "",
-		OrderNo:  0,
-		Disabled: 0,
-		Ignore:   "",
+		Key:       "",
+		OrderNo:   0,
+		Disabled:  0,
+		Ignore:    "",
+		CreatedAt: "",
+		UpdatedAt: "",
 	}
 }
 
@@ -873,6 +877,8 @@ func (p *MenuInfo) InitDefault() {
 	p.OrderNo = 0
 	p.Disabled = 0
 	p.Ignore = ""
+	p.CreatedAt = ""
+	p.UpdatedAt = ""
 }
 
 func (p *MenuInfo) GetID() (v int64) {
@@ -889,6 +895,18 @@ func (p *MenuInfo) GetParentId() (v int64) {
 
 func (p *MenuInfo) GetPath() (v string) {
 	return p.Path
+}
+
+func (p *MenuInfo) GetRedirect() (v string) {
+	return p.Redirect
+}
+
+func (p *MenuInfo) GetComponent() (v string) {
+	return p.Component
+}
+
+func (p *MenuInfo) GetSort() (v int64) {
+	return p.Sort
 }
 
 func (p *MenuInfo) GetChildren() (v []*MenuInfo) {
@@ -931,16 +949,39 @@ func (p *MenuInfo) GetIgnore() (v string) {
 	return p.Ignore
 }
 
+var MenuInfo_CreatedAt_DEFAULT string = ""
+
+func (p *MenuInfo) GetCreatedAt() (v string) {
+	if !p.IsSetCreatedAt() {
+		return MenuInfo_CreatedAt_DEFAULT
+	}
+	return p.CreatedAt
+}
+
+var MenuInfo_UpdatedAt_DEFAULT string = ""
+
+func (p *MenuInfo) GetUpdatedAt() (v string) {
+	if !p.IsSetUpdatedAt() {
+		return MenuInfo_UpdatedAt_DEFAULT
+	}
+	return p.UpdatedAt
+}
+
 var fieldIDToName_MenuInfo = map[int16]string{
-	1:  "id",
-	2:  "name",
-	3:  "parentId",
-	5:  "path",
-	14: "children",
-	20: "key",
-	21: "orderNo",
-	22: "disabled",
-	23: "ignore",
+	1:   "id",
+	2:   "name",
+	3:   "parentId",
+	5:   "path",
+	6:   "redirect",
+	7:   "component",
+	10:  "sort",
+	14:  "children",
+	20:  "key",
+	21:  "orderNo",
+	22:  "disabled",
+	23:  "ignore",
+	255: "createdAt",
+	256: "updatedAt",
 }
 
 func (p *MenuInfo) IsSetKey() bool {
@@ -957,6 +998,14 @@ func (p *MenuInfo) IsSetDisabled() bool {
 
 func (p *MenuInfo) IsSetIgnore() bool {
 	return p.Ignore != MenuInfo_Ignore_DEFAULT
+}
+
+func (p *MenuInfo) IsSetCreatedAt() bool {
+	return p.CreatedAt != MenuInfo_CreatedAt_DEFAULT
+}
+
+func (p *MenuInfo) IsSetUpdatedAt() bool {
+	return p.UpdatedAt != MenuInfo_UpdatedAt_DEFAULT
 }
 
 func (p *MenuInfo) Read(iprot thrift.TProtocol) (err error) {
@@ -1010,6 +1059,30 @@ func (p *MenuInfo) Read(iprot thrift.TProtocol) (err error) {
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
+		case 6:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField6(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 7:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 10:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField10(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		case 14:
 			if fieldTypeId == thrift.LIST {
 				if err = p.ReadField14(iprot); err != nil {
@@ -1045,6 +1118,22 @@ func (p *MenuInfo) Read(iprot thrift.TProtocol) (err error) {
 		case 23:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField23(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 255:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField255(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 256:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField256(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1123,6 +1212,39 @@ func (p *MenuInfo) ReadField5(iprot thrift.TProtocol) error {
 	p.Path = _field
 	return nil
 }
+func (p *MenuInfo) ReadField6(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Redirect = _field
+	return nil
+}
+func (p *MenuInfo) ReadField7(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Component = _field
+	return nil
+}
+func (p *MenuInfo) ReadField10(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Sort = _field
+	return nil
+}
 func (p *MenuInfo) ReadField14(iprot thrift.TProtocol) error {
 	_, size, err := iprot.ReadListBegin()
 	if err != nil {
@@ -1190,6 +1312,28 @@ func (p *MenuInfo) ReadField23(iprot thrift.TProtocol) error {
 	p.Ignore = _field
 	return nil
 }
+func (p *MenuInfo) ReadField255(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.CreatedAt = _field
+	return nil
+}
+func (p *MenuInfo) ReadField256(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.UpdatedAt = _field
+	return nil
+}
 
 func (p *MenuInfo) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -1213,6 +1357,18 @@ func (p *MenuInfo) Write(oprot thrift.TProtocol) (err error) {
 			fieldId = 5
 			goto WriteFieldError
 		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
+			goto WriteFieldError
+		}
+		if err = p.writeField7(oprot); err != nil {
+			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField10(oprot); err != nil {
+			fieldId = 10
+			goto WriteFieldError
+		}
 		if err = p.writeField14(oprot); err != nil {
 			fieldId = 14
 			goto WriteFieldError
@@ -1231,6 +1387,14 @@ func (p *MenuInfo) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField23(oprot); err != nil {
 			fieldId = 23
+			goto WriteFieldError
+		}
+		if err = p.writeField255(oprot); err != nil {
+			fieldId = 255
+			goto WriteFieldError
+		}
+		if err = p.writeField256(oprot); err != nil {
+			fieldId = 256
 			goto WriteFieldError
 		}
 	}
@@ -1317,6 +1481,57 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
+func (p *MenuInfo) writeField6(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("redirect", thrift.STRING, 6); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Redirect); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
+}
+
+func (p *MenuInfo) writeField7(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("component", thrift.STRING, 7); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Component); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
+}
+
+func (p *MenuInfo) writeField10(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("sort", thrift.I64, 10); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Sort); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 10 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 10 end error: ", p), err)
 }
 
 func (p *MenuInfo) writeField14(oprot thrift.TProtocol) (err error) {
@@ -1420,6 +1635,44 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 23 end error: ", p), err)
 }
 
+func (p *MenuInfo) writeField255(oprot thrift.TProtocol) (err error) {
+	if p.IsSetCreatedAt() {
+		if err = oprot.WriteFieldBegin("createdAt", thrift.STRING, 255); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.CreatedAt); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 255 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 255 end error: ", p), err)
+}
+
+func (p *MenuInfo) writeField256(oprot thrift.TProtocol) (err error) {
+	if p.IsSetUpdatedAt() {
+		if err = oprot.WriteFieldBegin("updatedAt", thrift.STRING, 256); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.UpdatedAt); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 256 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 256 end error: ", p), err)
+}
+
 func (p *MenuInfo) String() string {
 	if p == nil {
 		return "<nil>"
@@ -1430,55 +1683,325 @@ func (p *MenuInfo) String() string {
 
 // 创建或更新菜单信息参数
 type CreateOrUpdateMenuReq struct {
-	ID       int64  `thrift:"id,1" form:"id" json:"id" query:"id"`
-	Name     string `thrift:"name,2" form:"name" json:"name" query:"name" vd:"len($) > 0 && len($) < 33>"`
-	ParentID int64  `thrift:"parent_id,3" form:"parent_id" json:"parent_id" query:"parent_id"`
-	//    4:  i64 level (api.raw = "level")
-	Path string `thrift:"path,5" form:"path" json:"path" query:"path"`
-	//    6:  string redirect (api.raw = "redirect")
-	//    7:  string component (api.raw = "component")
-	OrderNo  int64 `thrift:"orderNo,8" form:"orderNo" json:"orderNo" query:"orderNo"`
-	Disabled int64 `thrift:"disabled,9" form:"disabled" json:"disabled" query:"disabled"`
+	ID        int64  `thrift:"id,1,optional" form:"id" json:"id" query:"id"`
+	Name      string `thrift:"name,2,optional" form:"name" json:"name" query:"name" vd:"len($) > 0 && len($) < 33>"`
+	ParentId  int64  `thrift:"parentId,3,optional" form:"parentId" json:"parentId" query:"parentId"`
+	Level     int64  `thrift:"level,4,optional" form:"level" json:"level" query:"level"`
+	Path      string `thrift:"path,5,optional" form:"path" json:"path" query:"path"`
+	Redirect  string `thrift:"redirect,6,optional" form:"redirect" json:"redirect" query:"redirect"`
+	Component string `thrift:"component,7,optional" form:"component" json:"component" query:"component"`
+	MenuType  int64  `thrift:"menuType,8,optional" form:"menuType" json:"menuType" query:"menuType"`
+	Hidden    bool   `thrift:"hidden,9,optional" form:"hidden" json:"hidden" query:"hidden"`
+	Sort      int64  `thrift:"sort,10,optional" form:"sort" json:"sort" query:"sort"`
+	Status    int64  `thrift:"status,12,optional" form:"status" json:"status" query:"status"`
+	URL       string `thrift:"url,13,optional" form:"url" json:"url" query:"url"`
+	//meta
+	Title      string `thrift:"title,14,optional" form:"title" json:"title" query:"title"`
+	Icon       string `thrift:"icon,15,optional" form:"icon" json:"icon" query:"icon"`
+	ActiveMenu string `thrift:"activeMenu,16,optional" form:"activeMenu" json:"activeMenu" query:"activeMenu"`
+	Affix      bool   `thrift:"affix,17,optional" form:"affix" json:"affix" query:"affix"`
+	NoCache    bool   `thrift:"noCache,18,optional" form:"noCache" json:"noCache" query:"noCache"`
+	Type       string `thrift:"type,19,optional" form:"type" json:"type" query:"type"`
 }
 
 func NewCreateOrUpdateMenuReq() *CreateOrUpdateMenuReq {
-	return &CreateOrUpdateMenuReq{}
+	return &CreateOrUpdateMenuReq{
+
+		ID:         0,
+		Name:       "",
+		ParentId:   0,
+		Level:      0,
+		Path:       "",
+		Redirect:   "",
+		Component:  "",
+		MenuType:   0,
+		Hidden:     true,
+		Sort:       0,
+		Status:     1,
+		URL:        "",
+		Title:      "",
+		Icon:       "",
+		ActiveMenu: "",
+		Affix:      true,
+		NoCache:    true,
+		Type:       "",
+	}
 }
 
 func (p *CreateOrUpdateMenuReq) InitDefault() {
+	p.ID = 0
+	p.Name = ""
+	p.ParentId = 0
+	p.Level = 0
+	p.Path = ""
+	p.Redirect = ""
+	p.Component = ""
+	p.MenuType = 0
+	p.Hidden = true
+	p.Sort = 0
+	p.Status = 1
+	p.URL = ""
+	p.Title = ""
+	p.Icon = ""
+	p.ActiveMenu = ""
+	p.Affix = true
+	p.NoCache = true
+	p.Type = ""
 }
 
+var CreateOrUpdateMenuReq_ID_DEFAULT int64 = 0
+
 func (p *CreateOrUpdateMenuReq) GetID() (v int64) {
+	if !p.IsSetID() {
+		return CreateOrUpdateMenuReq_ID_DEFAULT
+	}
 	return p.ID
 }
 
+var CreateOrUpdateMenuReq_Name_DEFAULT string = ""
+
 func (p *CreateOrUpdateMenuReq) GetName() (v string) {
+	if !p.IsSetName() {
+		return CreateOrUpdateMenuReq_Name_DEFAULT
+	}
 	return p.Name
 }
 
-func (p *CreateOrUpdateMenuReq) GetParentID() (v int64) {
-	return p.ParentID
+var CreateOrUpdateMenuReq_ParentId_DEFAULT int64 = 0
+
+func (p *CreateOrUpdateMenuReq) GetParentId() (v int64) {
+	if !p.IsSetParentId() {
+		return CreateOrUpdateMenuReq_ParentId_DEFAULT
+	}
+	return p.ParentId
 }
 
+var CreateOrUpdateMenuReq_Level_DEFAULT int64 = 0
+
+func (p *CreateOrUpdateMenuReq) GetLevel() (v int64) {
+	if !p.IsSetLevel() {
+		return CreateOrUpdateMenuReq_Level_DEFAULT
+	}
+	return p.Level
+}
+
+var CreateOrUpdateMenuReq_Path_DEFAULT string = ""
+
 func (p *CreateOrUpdateMenuReq) GetPath() (v string) {
+	if !p.IsSetPath() {
+		return CreateOrUpdateMenuReq_Path_DEFAULT
+	}
 	return p.Path
 }
 
-func (p *CreateOrUpdateMenuReq) GetOrderNo() (v int64) {
-	return p.OrderNo
+var CreateOrUpdateMenuReq_Redirect_DEFAULT string = ""
+
+func (p *CreateOrUpdateMenuReq) GetRedirect() (v string) {
+	if !p.IsSetRedirect() {
+		return CreateOrUpdateMenuReq_Redirect_DEFAULT
+	}
+	return p.Redirect
 }
 
-func (p *CreateOrUpdateMenuReq) GetDisabled() (v int64) {
-	return p.Disabled
+var CreateOrUpdateMenuReq_Component_DEFAULT string = ""
+
+func (p *CreateOrUpdateMenuReq) GetComponent() (v string) {
+	if !p.IsSetComponent() {
+		return CreateOrUpdateMenuReq_Component_DEFAULT
+	}
+	return p.Component
+}
+
+var CreateOrUpdateMenuReq_MenuType_DEFAULT int64 = 0
+
+func (p *CreateOrUpdateMenuReq) GetMenuType() (v int64) {
+	if !p.IsSetMenuType() {
+		return CreateOrUpdateMenuReq_MenuType_DEFAULT
+	}
+	return p.MenuType
+}
+
+var CreateOrUpdateMenuReq_Hidden_DEFAULT bool = true
+
+func (p *CreateOrUpdateMenuReq) GetHidden() (v bool) {
+	if !p.IsSetHidden() {
+		return CreateOrUpdateMenuReq_Hidden_DEFAULT
+	}
+	return p.Hidden
+}
+
+var CreateOrUpdateMenuReq_Sort_DEFAULT int64 = 0
+
+func (p *CreateOrUpdateMenuReq) GetSort() (v int64) {
+	if !p.IsSetSort() {
+		return CreateOrUpdateMenuReq_Sort_DEFAULT
+	}
+	return p.Sort
+}
+
+var CreateOrUpdateMenuReq_Status_DEFAULT int64 = 1
+
+func (p *CreateOrUpdateMenuReq) GetStatus() (v int64) {
+	if !p.IsSetStatus() {
+		return CreateOrUpdateMenuReq_Status_DEFAULT
+	}
+	return p.Status
+}
+
+var CreateOrUpdateMenuReq_URL_DEFAULT string = ""
+
+func (p *CreateOrUpdateMenuReq) GetURL() (v string) {
+	if !p.IsSetURL() {
+		return CreateOrUpdateMenuReq_URL_DEFAULT
+	}
+	return p.URL
+}
+
+var CreateOrUpdateMenuReq_Title_DEFAULT string = ""
+
+func (p *CreateOrUpdateMenuReq) GetTitle() (v string) {
+	if !p.IsSetTitle() {
+		return CreateOrUpdateMenuReq_Title_DEFAULT
+	}
+	return p.Title
+}
+
+var CreateOrUpdateMenuReq_Icon_DEFAULT string = ""
+
+func (p *CreateOrUpdateMenuReq) GetIcon() (v string) {
+	if !p.IsSetIcon() {
+		return CreateOrUpdateMenuReq_Icon_DEFAULT
+	}
+	return p.Icon
+}
+
+var CreateOrUpdateMenuReq_ActiveMenu_DEFAULT string = ""
+
+func (p *CreateOrUpdateMenuReq) GetActiveMenu() (v string) {
+	if !p.IsSetActiveMenu() {
+		return CreateOrUpdateMenuReq_ActiveMenu_DEFAULT
+	}
+	return p.ActiveMenu
+}
+
+var CreateOrUpdateMenuReq_Affix_DEFAULT bool = true
+
+func (p *CreateOrUpdateMenuReq) GetAffix() (v bool) {
+	if !p.IsSetAffix() {
+		return CreateOrUpdateMenuReq_Affix_DEFAULT
+	}
+	return p.Affix
+}
+
+var CreateOrUpdateMenuReq_NoCache_DEFAULT bool = true
+
+func (p *CreateOrUpdateMenuReq) GetNoCache() (v bool) {
+	if !p.IsSetNoCache() {
+		return CreateOrUpdateMenuReq_NoCache_DEFAULT
+	}
+	return p.NoCache
+}
+
+var CreateOrUpdateMenuReq_Type_DEFAULT string = ""
+
+func (p *CreateOrUpdateMenuReq) GetType() (v string) {
+	if !p.IsSetType() {
+		return CreateOrUpdateMenuReq_Type_DEFAULT
+	}
+	return p.Type
 }
 
 var fieldIDToName_CreateOrUpdateMenuReq = map[int16]string{
-	1: "id",
-	2: "name",
-	3: "parent_id",
-	5: "path",
-	8: "orderNo",
-	9: "disabled",
+	1:  "id",
+	2:  "name",
+	3:  "parentId",
+	4:  "level",
+	5:  "path",
+	6:  "redirect",
+	7:  "component",
+	8:  "menuType",
+	9:  "hidden",
+	10: "sort",
+	12: "status",
+	13: "url",
+	14: "title",
+	15: "icon",
+	16: "activeMenu",
+	17: "affix",
+	18: "noCache",
+	19: "type",
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetID() bool {
+	return p.ID != CreateOrUpdateMenuReq_ID_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetName() bool {
+	return p.Name != CreateOrUpdateMenuReq_Name_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetParentId() bool {
+	return p.ParentId != CreateOrUpdateMenuReq_ParentId_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetLevel() bool {
+	return p.Level != CreateOrUpdateMenuReq_Level_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetPath() bool {
+	return p.Path != CreateOrUpdateMenuReq_Path_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetRedirect() bool {
+	return p.Redirect != CreateOrUpdateMenuReq_Redirect_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetComponent() bool {
+	return p.Component != CreateOrUpdateMenuReq_Component_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetMenuType() bool {
+	return p.MenuType != CreateOrUpdateMenuReq_MenuType_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetHidden() bool {
+	return p.Hidden != CreateOrUpdateMenuReq_Hidden_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetSort() bool {
+	return p.Sort != CreateOrUpdateMenuReq_Sort_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetStatus() bool {
+	return p.Status != CreateOrUpdateMenuReq_Status_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetURL() bool {
+	return p.URL != CreateOrUpdateMenuReq_URL_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetTitle() bool {
+	return p.Title != CreateOrUpdateMenuReq_Title_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetIcon() bool {
+	return p.Icon != CreateOrUpdateMenuReq_Icon_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetActiveMenu() bool {
+	return p.ActiveMenu != CreateOrUpdateMenuReq_ActiveMenu_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetAffix() bool {
+	return p.Affix != CreateOrUpdateMenuReq_Affix_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetNoCache() bool {
+	return p.NoCache != CreateOrUpdateMenuReq_NoCache_DEFAULT
+}
+
+func (p *CreateOrUpdateMenuReq) IsSetType() bool {
+	return p.Type != CreateOrUpdateMenuReq_Type_DEFAULT
 }
 
 func (p *CreateOrUpdateMenuReq) Read(iprot thrift.TProtocol) (err error) {
@@ -1524,9 +2047,33 @@ func (p *CreateOrUpdateMenuReq) Read(iprot thrift.TProtocol) (err error) {
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
+		case 4:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		case 5:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 6:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField6(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 7:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField7(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1541,8 +2088,80 @@ func (p *CreateOrUpdateMenuReq) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 9:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.BOOL {
 				if err = p.ReadField9(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 10:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField10(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 12:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField12(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 13:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField13(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 14:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField14(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 15:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField15(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 16:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField16(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 17:
+			if fieldTypeId == thrift.BOOL {
+				if err = p.ReadField17(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 18:
+			if fieldTypeId == thrift.BOOL {
+				if err = p.ReadField18(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 19:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField19(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1607,7 +2226,18 @@ func (p *CreateOrUpdateMenuReq) ReadField3(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.ParentID = _field
+	p.ParentId = _field
+	return nil
+}
+func (p *CreateOrUpdateMenuReq) ReadField4(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Level = _field
 	return nil
 }
 func (p *CreateOrUpdateMenuReq) ReadField5(iprot thrift.TProtocol) error {
@@ -1621,6 +2251,28 @@ func (p *CreateOrUpdateMenuReq) ReadField5(iprot thrift.TProtocol) error {
 	p.Path = _field
 	return nil
 }
+func (p *CreateOrUpdateMenuReq) ReadField6(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Redirect = _field
+	return nil
+}
+func (p *CreateOrUpdateMenuReq) ReadField7(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Component = _field
+	return nil
+}
 func (p *CreateOrUpdateMenuReq) ReadField8(iprot thrift.TProtocol) error {
 
 	var _field int64
@@ -1629,10 +2281,21 @@ func (p *CreateOrUpdateMenuReq) ReadField8(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.OrderNo = _field
+	p.MenuType = _field
 	return nil
 }
 func (p *CreateOrUpdateMenuReq) ReadField9(iprot thrift.TProtocol) error {
+
+	var _field bool
+	if v, err := iprot.ReadBool(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Hidden = _field
+	return nil
+}
+func (p *CreateOrUpdateMenuReq) ReadField10(iprot thrift.TProtocol) error {
 
 	var _field int64
 	if v, err := iprot.ReadI64(); err != nil {
@@ -1640,301 +2303,21 @@ func (p *CreateOrUpdateMenuReq) ReadField9(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.Disabled = _field
+	p.Sort = _field
 	return nil
 }
+func (p *CreateOrUpdateMenuReq) ReadField12(iprot thrift.TProtocol) error {
 
-func (p *CreateOrUpdateMenuReq) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("CreateOrUpdateMenuReq"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField1(oprot); err != nil {
-			fieldId = 1
-			goto WriteFieldError
-		}
-		if err = p.writeField2(oprot); err != nil {
-			fieldId = 2
-			goto WriteFieldError
-		}
-		if err = p.writeField3(oprot); err != nil {
-			fieldId = 3
-			goto WriteFieldError
-		}
-		if err = p.writeField5(oprot); err != nil {
-			fieldId = 5
-			goto WriteFieldError
-		}
-		if err = p.writeField8(oprot); err != nil {
-			fieldId = 8
-			goto WriteFieldError
-		}
-		if err = p.writeField9(oprot); err != nil {
-			fieldId = 9
-			goto WriteFieldError
-		}
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *CreateOrUpdateMenuReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.ID); err != nil {
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
+	} else {
+		_field = v
 	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
+	p.Status = _field
 	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
-
-func (p *CreateOrUpdateMenuReq) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("name", thrift.STRING, 2); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Name); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
-}
-
-func (p *CreateOrUpdateMenuReq) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("parent_id", thrift.I64, 3); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.ParentID); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
-}
-
-func (p *CreateOrUpdateMenuReq) writeField5(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("path", thrift.STRING, 5); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Path); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
-}
-
-func (p *CreateOrUpdateMenuReq) writeField8(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("orderNo", thrift.I64, 8); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.OrderNo); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
-}
-
-func (p *CreateOrUpdateMenuReq) writeField9(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("disabled", thrift.I64, 9); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.Disabled); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 9 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
-}
-
-func (p *CreateOrUpdateMenuReq) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("CreateOrUpdateMenuReq(%+v)", *p)
-
-}
-
-// 更新菜单额外参数
-type CreateOrUpdateMenuParamReq struct {
-	ID     string `thrift:"id,1" form:"id" json:"id" query:"id"`
-	MenuId string `thrift:"menuId,2" form:"menuId" json:"menuId" query:"menuId"`
-	Type   string `thrift:"type,3" form:"type" json:"type" query:"type"`
-	Key    string `thrift:"key,4" form:"key" json:"key" query:"key"`
-	Value  string `thrift:"value,5" form:"value" json:"value" query:"value"`
-}
-
-func NewCreateOrUpdateMenuParamReq() *CreateOrUpdateMenuParamReq {
-	return &CreateOrUpdateMenuParamReq{}
-}
-
-func (p *CreateOrUpdateMenuParamReq) InitDefault() {
-}
-
-func (p *CreateOrUpdateMenuParamReq) GetID() (v string) {
-	return p.ID
-}
-
-func (p *CreateOrUpdateMenuParamReq) GetMenuId() (v string) {
-	return p.MenuId
-}
-
-func (p *CreateOrUpdateMenuParamReq) GetType() (v string) {
-	return p.Type
-}
-
-func (p *CreateOrUpdateMenuParamReq) GetKey() (v string) {
-	return p.Key
-}
-
-func (p *CreateOrUpdateMenuParamReq) GetValue() (v string) {
-	return p.Value
-}
-
-var fieldIDToName_CreateOrUpdateMenuParamReq = map[int16]string{
-	1: "id",
-	2: "menuId",
-	3: "type",
-	4: "key",
-	5: "value",
-}
-
-func (p *CreateOrUpdateMenuParamReq) Read(iprot thrift.TProtocol) (err error) {
-
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 1:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 2:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField2(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 3:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField3(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 4:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField4(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 5:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField5(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CreateOrUpdateMenuParamReq[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *CreateOrUpdateMenuParamReq) ReadField1(iprot thrift.TProtocol) error {
+func (p *CreateOrUpdateMenuReq) ReadField13(iprot thrift.TProtocol) error {
 
 	var _field string
 	if v, err := iprot.ReadString(); err != nil {
@@ -1942,436 +2325,10 @@ func (p *CreateOrUpdateMenuParamReq) ReadField1(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.ID = _field
+	p.URL = _field
 	return nil
 }
-func (p *CreateOrUpdateMenuParamReq) ReadField2(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.MenuId = _field
-	return nil
-}
-func (p *CreateOrUpdateMenuParamReq) ReadField3(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.Type = _field
-	return nil
-}
-func (p *CreateOrUpdateMenuParamReq) ReadField4(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.Key = _field
-	return nil
-}
-func (p *CreateOrUpdateMenuParamReq) ReadField5(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.Value = _field
-	return nil
-}
-
-func (p *CreateOrUpdateMenuParamReq) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("CreateOrUpdateMenuParamReq"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField1(oprot); err != nil {
-			fieldId = 1
-			goto WriteFieldError
-		}
-		if err = p.writeField2(oprot); err != nil {
-			fieldId = 2
-			goto WriteFieldError
-		}
-		if err = p.writeField3(oprot); err != nil {
-			fieldId = 3
-			goto WriteFieldError
-		}
-		if err = p.writeField4(oprot); err != nil {
-			fieldId = 4
-			goto WriteFieldError
-		}
-		if err = p.writeField5(oprot); err != nil {
-			fieldId = 5
-			goto WriteFieldError
-		}
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *CreateOrUpdateMenuParamReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("id", thrift.STRING, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.ID); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
-}
-
-func (p *CreateOrUpdateMenuParamReq) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("menuId", thrift.STRING, 2); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.MenuId); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
-}
-
-func (p *CreateOrUpdateMenuParamReq) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("type", thrift.STRING, 3); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Type); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
-}
-
-func (p *CreateOrUpdateMenuParamReq) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("key", thrift.STRING, 4); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Key); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
-}
-
-func (p *CreateOrUpdateMenuParamReq) writeField5(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("value", thrift.STRING, 5); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Value); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
-}
-
-func (p *CreateOrUpdateMenuParamReq) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("CreateOrUpdateMenuParamReq(%+v)", *p)
-
-}
-
-// 菜单的meta数据
-type Meta struct {
-	Title              string `thrift:"title,1" form:"title" json:"title" query:"title"`
-	Icon               string `thrift:"icon,2" form:"icon" json:"icon" query:"icon"`
-	HideMenu           string `thrift:"hideMenu,3" form:"hideMenu" json:"hideMenu" query:"hideMenu"`
-	HideBreadcrumb     string `thrift:"hideBreadcrumb,4" form:"hideBreadcrumb" json:"hideBreadcrumb" query:"hideBreadcrumb"`
-	CurrentActiveMenu  string `thrift:"currentActiveMenu,5" form:"currentActiveMenu" json:"currentActiveMenu" query:"currentActiveMenu"`
-	IgnoreKeepAlive    string `thrift:"ignoreKeepAlive,6" form:"ignoreKeepAlive" json:"ignoreKeepAlive" query:"ignoreKeepAlive"`
-	HideTab            string `thrift:"hideTab,7" form:"hideTab" json:"hideTab" query:"hideTab"`
-	FrameSrc           string `thrift:"frameSrc,8" form:"frameSrc" json:"frameSrc" query:"frameSrc"`
-	CarryParam         string `thrift:"carryParam,9" form:"carryParam" json:"carryParam" query:"carryParam"`
-	HideChildrenInMenu string `thrift:"hideChildrenInMenu,10" form:"hideChildrenInMenu" json:"hideChildrenInMenu" query:"hideChildrenInMenu"`
-	Affix              string `thrift:"affix,11" form:"affix" json:"affix" query:"affix"`
-	DynamicLevel       string `thrift:"dynamicLevel,12" form:"dynamicLevel" json:"dynamicLevel" query:"dynamicLevel"`
-	RealPath           string `thrift:"realPath,13" form:"realPath" json:"realPath" query:"realPath"`
-}
-
-func NewMeta() *Meta {
-	return &Meta{}
-}
-
-func (p *Meta) InitDefault() {
-}
-
-func (p *Meta) GetTitle() (v string) {
-	return p.Title
-}
-
-func (p *Meta) GetIcon() (v string) {
-	return p.Icon
-}
-
-func (p *Meta) GetHideMenu() (v string) {
-	return p.HideMenu
-}
-
-func (p *Meta) GetHideBreadcrumb() (v string) {
-	return p.HideBreadcrumb
-}
-
-func (p *Meta) GetCurrentActiveMenu() (v string) {
-	return p.CurrentActiveMenu
-}
-
-func (p *Meta) GetIgnoreKeepAlive() (v string) {
-	return p.IgnoreKeepAlive
-}
-
-func (p *Meta) GetHideTab() (v string) {
-	return p.HideTab
-}
-
-func (p *Meta) GetFrameSrc() (v string) {
-	return p.FrameSrc
-}
-
-func (p *Meta) GetCarryParam() (v string) {
-	return p.CarryParam
-}
-
-func (p *Meta) GetHideChildrenInMenu() (v string) {
-	return p.HideChildrenInMenu
-}
-
-func (p *Meta) GetAffix() (v string) {
-	return p.Affix
-}
-
-func (p *Meta) GetDynamicLevel() (v string) {
-	return p.DynamicLevel
-}
-
-func (p *Meta) GetRealPath() (v string) {
-	return p.RealPath
-}
-
-var fieldIDToName_Meta = map[int16]string{
-	1:  "title",
-	2:  "icon",
-	3:  "hideMenu",
-	4:  "hideBreadcrumb",
-	5:  "currentActiveMenu",
-	6:  "ignoreKeepAlive",
-	7:  "hideTab",
-	8:  "frameSrc",
-	9:  "carryParam",
-	10: "hideChildrenInMenu",
-	11: "affix",
-	12: "dynamicLevel",
-	13: "realPath",
-}
-
-func (p *Meta) Read(iprot thrift.TProtocol) (err error) {
-
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 1:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 2:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField2(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 3:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField3(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 4:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField4(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 5:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField5(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 6:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField6(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 7:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField7(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 8:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField8(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 9:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField9(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 10:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField10(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 11:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField11(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 12:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField12(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 13:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField13(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_Meta[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *Meta) ReadField1(iprot thrift.TProtocol) error {
+func (p *CreateOrUpdateMenuReq) ReadField14(iprot thrift.TProtocol) error {
 
 	var _field string
 	if v, err := iprot.ReadString(); err != nil {
@@ -2382,7 +2339,7 @@ func (p *Meta) ReadField1(iprot thrift.TProtocol) error {
 	p.Title = _field
 	return nil
 }
-func (p *Meta) ReadField2(iprot thrift.TProtocol) error {
+func (p *CreateOrUpdateMenuReq) ReadField15(iprot thrift.TProtocol) error {
 
 	var _field string
 	if v, err := iprot.ReadString(); err != nil {
@@ -2393,7 +2350,7 @@ func (p *Meta) ReadField2(iprot thrift.TProtocol) error {
 	p.Icon = _field
 	return nil
 }
-func (p *Meta) ReadField3(iprot thrift.TProtocol) error {
+func (p *CreateOrUpdateMenuReq) ReadField16(iprot thrift.TProtocol) error {
 
 	var _field string
 	if v, err := iprot.ReadString(); err != nil {
@@ -2401,90 +2358,13 @@ func (p *Meta) ReadField3(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.HideMenu = _field
+	p.ActiveMenu = _field
 	return nil
 }
-func (p *Meta) ReadField4(iprot thrift.TProtocol) error {
+func (p *CreateOrUpdateMenuReq) ReadField17(iprot thrift.TProtocol) error {
 
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.HideBreadcrumb = _field
-	return nil
-}
-func (p *Meta) ReadField5(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.CurrentActiveMenu = _field
-	return nil
-}
-func (p *Meta) ReadField6(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.IgnoreKeepAlive = _field
-	return nil
-}
-func (p *Meta) ReadField7(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.HideTab = _field
-	return nil
-}
-func (p *Meta) ReadField8(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.FrameSrc = _field
-	return nil
-}
-func (p *Meta) ReadField9(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.CarryParam = _field
-	return nil
-}
-func (p *Meta) ReadField10(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.HideChildrenInMenu = _field
-	return nil
-}
-func (p *Meta) ReadField11(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
+	var _field bool
+	if v, err := iprot.ReadBool(); err != nil {
 		return err
 	} else {
 		_field = v
@@ -2492,7 +2372,18 @@ func (p *Meta) ReadField11(iprot thrift.TProtocol) error {
 	p.Affix = _field
 	return nil
 }
-func (p *Meta) ReadField12(iprot thrift.TProtocol) error {
+func (p *CreateOrUpdateMenuReq) ReadField18(iprot thrift.TProtocol) error {
+
+	var _field bool
+	if v, err := iprot.ReadBool(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.NoCache = _field
+	return nil
+}
+func (p *CreateOrUpdateMenuReq) ReadField19(iprot thrift.TProtocol) error {
 
 	var _field string
 	if v, err := iprot.ReadString(); err != nil {
@@ -2500,24 +2391,13 @@ func (p *Meta) ReadField12(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.DynamicLevel = _field
-	return nil
-}
-func (p *Meta) ReadField13(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.RealPath = _field
+	p.Type = _field
 	return nil
 }
 
-func (p *Meta) Write(oprot thrift.TProtocol) (err error) {
+func (p *CreateOrUpdateMenuReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("Meta"); err != nil {
+	if err = oprot.WriteStructBegin("CreateOrUpdateMenuReq"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -2561,16 +2441,36 @@ func (p *Meta) Write(oprot thrift.TProtocol) (err error) {
 			fieldId = 10
 			goto WriteFieldError
 		}
-		if err = p.writeField11(oprot); err != nil {
-			fieldId = 11
-			goto WriteFieldError
-		}
 		if err = p.writeField12(oprot); err != nil {
 			fieldId = 12
 			goto WriteFieldError
 		}
 		if err = p.writeField13(oprot); err != nil {
 			fieldId = 13
+			goto WriteFieldError
+		}
+		if err = p.writeField14(oprot); err != nil {
+			fieldId = 14
+			goto WriteFieldError
+		}
+		if err = p.writeField15(oprot); err != nil {
+			fieldId = 15
+			goto WriteFieldError
+		}
+		if err = p.writeField16(oprot); err != nil {
+			fieldId = 16
+			goto WriteFieldError
+		}
+		if err = p.writeField17(oprot); err != nil {
+			fieldId = 17
+			goto WriteFieldError
+		}
+		if err = p.writeField18(oprot); err != nil {
+			fieldId = 18
+			goto WriteFieldError
+		}
+		if err = p.writeField19(oprot); err != nil {
+			fieldId = 19
 			goto WriteFieldError
 		}
 	}
@@ -2591,15 +2491,17 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *Meta) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("title", thrift.STRING, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Title); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+func (p *CreateOrUpdateMenuReq) writeField1(oprot thrift.TProtocol) (err error) {
+	if p.IsSetID() {
+		if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.ID); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2608,15 +2510,17 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *Meta) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("icon", thrift.STRING, 2); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Icon); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+func (p *CreateOrUpdateMenuReq) writeField2(oprot thrift.TProtocol) (err error) {
+	if p.IsSetName() {
+		if err = oprot.WriteFieldBegin("name", thrift.STRING, 2); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Name); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2625,15 +2529,17 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
-func (p *Meta) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("hideMenu", thrift.STRING, 3); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.HideMenu); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+func (p *CreateOrUpdateMenuReq) writeField3(oprot thrift.TProtocol) (err error) {
+	if p.IsSetParentId() {
+		if err = oprot.WriteFieldBegin("parentId", thrift.I64, 3); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.ParentId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2642,15 +2548,17 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
-func (p *Meta) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("hideBreadcrumb", thrift.STRING, 4); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.HideBreadcrumb); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+func (p *CreateOrUpdateMenuReq) writeField4(oprot thrift.TProtocol) (err error) {
+	if p.IsSetLevel() {
+		if err = oprot.WriteFieldBegin("level", thrift.I64, 4); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.Level); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2659,15 +2567,17 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
-func (p *Meta) writeField5(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("currentActiveMenu", thrift.STRING, 5); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.CurrentActiveMenu); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+func (p *CreateOrUpdateMenuReq) writeField5(oprot thrift.TProtocol) (err error) {
+	if p.IsSetPath() {
+		if err = oprot.WriteFieldBegin("path", thrift.STRING, 5); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Path); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2676,15 +2586,17 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
 }
 
-func (p *Meta) writeField6(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("ignoreKeepAlive", thrift.STRING, 6); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.IgnoreKeepAlive); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+func (p *CreateOrUpdateMenuReq) writeField6(oprot thrift.TProtocol) (err error) {
+	if p.IsSetRedirect() {
+		if err = oprot.WriteFieldBegin("redirect", thrift.STRING, 6); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Redirect); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2693,15 +2605,17 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
 }
 
-func (p *Meta) writeField7(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("hideTab", thrift.STRING, 7); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.HideTab); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+func (p *CreateOrUpdateMenuReq) writeField7(oprot thrift.TProtocol) (err error) {
+	if p.IsSetComponent() {
+		if err = oprot.WriteFieldBegin("component", thrift.STRING, 7); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Component); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2710,15 +2624,17 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
 }
 
-func (p *Meta) writeField8(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("frameSrc", thrift.STRING, 8); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.FrameSrc); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+func (p *CreateOrUpdateMenuReq) writeField8(oprot thrift.TProtocol) (err error) {
+	if p.IsSetMenuType() {
+		if err = oprot.WriteFieldBegin("menuType", thrift.I64, 8); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.MenuType); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2727,15 +2643,17 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
 }
 
-func (p *Meta) writeField9(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("carryParam", thrift.STRING, 9); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.CarryParam); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+func (p *CreateOrUpdateMenuReq) writeField9(oprot thrift.TProtocol) (err error) {
+	if p.IsSetHidden() {
+		if err = oprot.WriteFieldBegin("hidden", thrift.BOOL, 9); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteBool(p.Hidden); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2744,15 +2662,17 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
 }
 
-func (p *Meta) writeField10(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("hideChildrenInMenu", thrift.STRING, 10); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.HideChildrenInMenu); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+func (p *CreateOrUpdateMenuReq) writeField10(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSort() {
+		if err = oprot.WriteFieldBegin("sort", thrift.I64, 10); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.Sort); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2761,32 +2681,17 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 10 end error: ", p), err)
 }
 
-func (p *Meta) writeField11(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("affix", thrift.STRING, 11); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Affix); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 11 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 11 end error: ", p), err)
-}
-
-func (p *Meta) writeField12(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("dynamicLevel", thrift.STRING, 12); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.DynamicLevel); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+func (p *CreateOrUpdateMenuReq) writeField12(oprot thrift.TProtocol) (err error) {
+	if p.IsSetStatus() {
+		if err = oprot.WriteFieldBegin("status", thrift.I64, 12); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(p.Status); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2795,15 +2700,17 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 12 end error: ", p), err)
 }
 
-func (p *Meta) writeField13(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("realPath", thrift.STRING, 13); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.RealPath); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+func (p *CreateOrUpdateMenuReq) writeField13(oprot thrift.TProtocol) (err error) {
+	if p.IsSetURL() {
+		if err = oprot.WriteFieldBegin("url", thrift.STRING, 13); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.URL); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -2812,14 +2719,155 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 13 end error: ", p), err)
 }
 
-func (p *Meta) String() string {
+func (p *CreateOrUpdateMenuReq) writeField14(oprot thrift.TProtocol) (err error) {
+	if p.IsSetTitle() {
+		if err = oprot.WriteFieldBegin("title", thrift.STRING, 14); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Title); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 14 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 14 end error: ", p), err)
+}
+
+func (p *CreateOrUpdateMenuReq) writeField15(oprot thrift.TProtocol) (err error) {
+	if p.IsSetIcon() {
+		if err = oprot.WriteFieldBegin("icon", thrift.STRING, 15); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Icon); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 15 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 15 end error: ", p), err)
+}
+
+func (p *CreateOrUpdateMenuReq) writeField16(oprot thrift.TProtocol) (err error) {
+	if p.IsSetActiveMenu() {
+		if err = oprot.WriteFieldBegin("activeMenu", thrift.STRING, 16); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.ActiveMenu); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 16 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 16 end error: ", p), err)
+}
+
+func (p *CreateOrUpdateMenuReq) writeField17(oprot thrift.TProtocol) (err error) {
+	if p.IsSetAffix() {
+		if err = oprot.WriteFieldBegin("affix", thrift.BOOL, 17); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteBool(p.Affix); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 17 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 17 end error: ", p), err)
+}
+
+func (p *CreateOrUpdateMenuReq) writeField18(oprot thrift.TProtocol) (err error) {
+	if p.IsSetNoCache() {
+		if err = oprot.WriteFieldBegin("noCache", thrift.BOOL, 18); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteBool(p.NoCache); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 18 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 18 end error: ", p), err)
+}
+
+func (p *CreateOrUpdateMenuReq) writeField19(oprot thrift.TProtocol) (err error) {
+	if p.IsSetType() {
+		if err = oprot.WriteFieldBegin("type", thrift.STRING, 19); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Type); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 19 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 19 end error: ", p), err)
+}
+
+func (p *CreateOrUpdateMenuReq) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("Meta(%+v)", *p)
+	return fmt.Sprintf("CreateOrUpdateMenuReq(%+v)", *p)
 
 }
 
+// 更新菜单额外参数
+//
+//	struct CreateOrUpdateMenuParamReq{
+//	   1:  string id (api.raw = "id")
+//	   2:  string menuId (api.raw = "menuId")
+//	   3:  string type (api.raw = "type")
+//	   4:  string key (api.raw = "key")
+//	   5:  string value (api.raw = "value")
+//	}
+//
+// 菜单的meta数据
+//
+//	struct Meta {
+//	   1:  string title (api.raw = "title" )
+//	   2:  string icon (api.raw = "icon" )
+//	   3:  string hideMenu (api.raw = "hideMenu" )
+//	   4:  string hideBreadcrumb (api.raw = "hideBreadcrumb" )
+//	   5:  string currentActiveMenu (api.raw = "currentActiveMenu" )
+//	   6:  string ignoreKeepAlive (api.raw = "ignoreKeepAlive" )
+//	   7:  string hideTab (api.raw = "hideTab" )
+//	   8:  string frameSrc (api.raw = "frameSrc" )
+//	   9:  string carryParam (api.raw = "carryParam" )
+//	   10:  string hideChildrenInMenu (api.raw = "hideChildrenInMenu" )
+//	   11:  string affix (api.raw = "affix" )
+//	   12:  string dynamicLevel (api.raw = "dynamicLevel" )
+//	   13:  string realPath (api.raw = "realPath" )
+//	}
 type MenuListReq struct {
 	Page     int64  `thrift:"page,1,optional" form:"page" json:"page" query:"page"`
 	PageSize int64  `thrift:"pageSize,2,optional" form:"pageSize" json:"pageSize" query:"pageSize"`
@@ -3842,428 +3890,23 @@ func (p *ListApiReq) String() string {
 }
 
 // MenuParam is the menu parameter structure.data stored at the table `sys_menu_params`
-type MenuParam struct {
-	ID        int64  `thrift:"id,1" form:"id" json:"id" query:"id"`
-	MenuId    int64  `thrift:"menuId,2" form:"menuId" json:"menuId" query:"menuId"`
-	Type      string `thrift:"type,3" form:"type" json:"type" query:"type"`
-	Key       string `thrift:"key,4" form:"key" json:"key" query:"key"`
-	Value     string `thrift:"value,5" form:"value" json:"value" query:"value"`
-	CreatedAt string `thrift:"createdAt,6" form:"createdAt" json:"createdAt" query:"createdAt"`
-	UpdatedAt string `thrift:"updatedAt,7" form:"updatedAt" json:"updatedAt" query:"updatedAt"`
-}
-
-func NewMenuParam() *MenuParam {
-	return &MenuParam{}
-}
-
-func (p *MenuParam) InitDefault() {
-}
-
-func (p *MenuParam) GetID() (v int64) {
-	return p.ID
-}
-
-func (p *MenuParam) GetMenuId() (v int64) {
-	return p.MenuId
-}
-
-func (p *MenuParam) GetType() (v string) {
-	return p.Type
-}
-
-func (p *MenuParam) GetKey() (v string) {
-	return p.Key
-}
-
-func (p *MenuParam) GetValue() (v string) {
-	return p.Value
-}
-
-func (p *MenuParam) GetCreatedAt() (v string) {
-	return p.CreatedAt
-}
-
-func (p *MenuParam) GetUpdatedAt() (v string) {
-	return p.UpdatedAt
-}
-
-var fieldIDToName_MenuParam = map[int16]string{
-	1: "id",
-	2: "menuId",
-	3: "type",
-	4: "key",
-	5: "value",
-	6: "createdAt",
-	7: "updatedAt",
-}
-
-func (p *MenuParam) Read(iprot thrift.TProtocol) (err error) {
-
-	var fieldTypeId thrift.TType
-	var fieldId int16
-
-	if _, err = iprot.ReadStructBegin(); err != nil {
-		goto ReadStructBeginError
-	}
-
-	for {
-		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
-		if err != nil {
-			goto ReadFieldBeginError
-		}
-		if fieldTypeId == thrift.STOP {
-			break
-		}
-
-		switch fieldId {
-		case 1:
-			if fieldTypeId == thrift.I64 {
-				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 2:
-			if fieldTypeId == thrift.I64 {
-				if err = p.ReadField2(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 3:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField3(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 4:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField4(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 5:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField5(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 6:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField6(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 7:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField7(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		default:
-			if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		}
-		if err = iprot.ReadFieldEnd(); err != nil {
-			goto ReadFieldEndError
-		}
-	}
-	if err = iprot.ReadStructEnd(); err != nil {
-		goto ReadStructEndError
-	}
-
-	return nil
-ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
-ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MenuParam[fieldId]), err)
-SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
-
-ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
-ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-}
-
-func (p *MenuParam) ReadField1(iprot thrift.TProtocol) error {
-
-	var _field int64
-	if v, err := iprot.ReadI64(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.ID = _field
-	return nil
-}
-func (p *MenuParam) ReadField2(iprot thrift.TProtocol) error {
-
-	var _field int64
-	if v, err := iprot.ReadI64(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.MenuId = _field
-	return nil
-}
-func (p *MenuParam) ReadField3(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.Type = _field
-	return nil
-}
-func (p *MenuParam) ReadField4(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.Key = _field
-	return nil
-}
-func (p *MenuParam) ReadField5(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.Value = _field
-	return nil
-}
-func (p *MenuParam) ReadField6(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.CreatedAt = _field
-	return nil
-}
-func (p *MenuParam) ReadField7(iprot thrift.TProtocol) error {
-
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = v
-	}
-	p.UpdatedAt = _field
-	return nil
-}
-
-func (p *MenuParam) Write(oprot thrift.TProtocol) (err error) {
-	var fieldId int16
-	if err = oprot.WriteStructBegin("MenuParam"); err != nil {
-		goto WriteStructBeginError
-	}
-	if p != nil {
-		if err = p.writeField1(oprot); err != nil {
-			fieldId = 1
-			goto WriteFieldError
-		}
-		if err = p.writeField2(oprot); err != nil {
-			fieldId = 2
-			goto WriteFieldError
-		}
-		if err = p.writeField3(oprot); err != nil {
-			fieldId = 3
-			goto WriteFieldError
-		}
-		if err = p.writeField4(oprot); err != nil {
-			fieldId = 4
-			goto WriteFieldError
-		}
-		if err = p.writeField5(oprot); err != nil {
-			fieldId = 5
-			goto WriteFieldError
-		}
-		if err = p.writeField6(oprot); err != nil {
-			fieldId = 6
-			goto WriteFieldError
-		}
-		if err = p.writeField7(oprot); err != nil {
-			fieldId = 7
-			goto WriteFieldError
-		}
-	}
-	if err = oprot.WriteFieldStop(); err != nil {
-		goto WriteFieldStopError
-	}
-	if err = oprot.WriteStructEnd(); err != nil {
-		goto WriteStructEndError
-	}
-	return nil
-WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
-WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
-WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
-WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
-}
-
-func (p *MenuParam) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.ID); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
-}
-
-func (p *MenuParam) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("menuId", thrift.I64, 2); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.MenuId); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
-}
-
-func (p *MenuParam) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("type", thrift.STRING, 3); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Type); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
-}
-
-func (p *MenuParam) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("key", thrift.STRING, 4); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Key); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
-}
-
-func (p *MenuParam) writeField5(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("value", thrift.STRING, 5); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Value); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
-}
-
-func (p *MenuParam) writeField6(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("createdAt", thrift.STRING, 6); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.CreatedAt); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
-}
-
-func (p *MenuParam) writeField7(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("updatedAt", thrift.STRING, 7); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.UpdatedAt); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
-}
-
-func (p *MenuParam) String() string {
-	if p == nil {
-		return "<nil>"
-	}
-	return fmt.Sprintf("MenuParam(%+v)", *p)
-
-}
-
+//
+//	struct MenuParam  {
+//		1: i64 id       (api.raw = "id")
+//		2: i64 menuId    (api.raw = "menuId")
+//	   3: string type   (api.raw = "type")
+//	   4: string key    (api.raw = "key")
+//	   5: string value   (api.raw = "value")
+//	   6: string createdAt (api.raw = "createdAt")
+//	   7: string updatedAt (api.raw = "updatedAt")
+//	}
+//
 // menu service
 type MenuService interface {
 	// 获取角色菜单权限列表
 	MenuAuth(ctx context.Context, req *base.IDReq) (r *base.NilResponse, err error)
 	//获取角色菜单列表
-	MenuRole(ctx context.Context) (r *base.NilResponse, err error)
+	MenuRole(ctx context.Context, req *base.Ids) (r *base.NilResponse, err error)
 	// 创建或API
 	CreateApi(ctx context.Context, req *ApiInfo) (r *base.NilResponse, err error)
 	// 更新API
@@ -4323,8 +3966,9 @@ func (p *MenuServiceClient) MenuAuth(ctx context.Context, req *base.IDReq) (r *b
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *MenuServiceClient) MenuRole(ctx context.Context) (r *base.NilResponse, err error) {
+func (p *MenuServiceClient) MenuRole(ctx context.Context, req *base.Ids) (r *base.NilResponse, err error) {
 	var _args MenuServiceMenuRoleArgs
+	_args.Req = req
 	var _result MenuServiceMenuRoleResult
 	if err = p.Client_().Call(ctx, "MenuRole", &_args, &_result); err != nil {
 		return
@@ -4552,7 +4196,7 @@ func (p *menuServiceProcessorMenuRole) Process(ctx context.Context, seqId int32,
 	var err2 error
 	result := MenuServiceMenuRoleResult{}
 	var retval *base.NilResponse
-	if retval, err2 = p.handler.MenuRole(ctx); err2 != nil {
+	if retval, err2 = p.handler.MenuRole(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing MenuRole: "+err2.Error())
 		oprot.WriteMessageBegin("MenuRole", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
@@ -5403,6 +5047,7 @@ func (p *MenuServiceMenuAuthResult) String() string {
 }
 
 type MenuServiceMenuRoleArgs struct {
+	Req *base.Ids `thrift:"req,1"`
 }
 
 func NewMenuServiceMenuRoleArgs() *MenuServiceMenuRoleArgs {
@@ -5412,7 +5057,22 @@ func NewMenuServiceMenuRoleArgs() *MenuServiceMenuRoleArgs {
 func (p *MenuServiceMenuRoleArgs) InitDefault() {
 }
 
-var fieldIDToName_MenuServiceMenuRoleArgs = map[int16]string{}
+var MenuServiceMenuRoleArgs_Req_DEFAULT *base.Ids
+
+func (p *MenuServiceMenuRoleArgs) GetReq() (v *base.Ids) {
+	if !p.IsSetReq() {
+		return MenuServiceMenuRoleArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+var fieldIDToName_MenuServiceMenuRoleArgs = map[int16]string{
+	1: "req",
+}
+
+func (p *MenuServiceMenuRoleArgs) IsSetReq() bool {
+	return p.Req != nil
+}
 
 func (p *MenuServiceMenuRoleArgs) Read(iprot thrift.TProtocol) (err error) {
 
@@ -5431,8 +5091,20 @@ func (p *MenuServiceMenuRoleArgs) Read(iprot thrift.TProtocol) (err error) {
 		if fieldTypeId == thrift.STOP {
 			break
 		}
-		if err = iprot.Skip(fieldTypeId); err != nil {
-			goto SkipFieldTypeError
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		}
 		if err = iprot.ReadFieldEnd(); err != nil {
 			goto ReadFieldEndError
@@ -5447,8 +5119,10 @@ ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
-SkipFieldTypeError:
-	return thrift.PrependError(fmt.Sprintf("%T skip field type %d error", p, fieldTypeId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MenuServiceMenuRoleArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
@@ -5456,11 +5130,25 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
+func (p *MenuServiceMenuRoleArgs) ReadField1(iprot thrift.TProtocol) error {
+	_field := base.NewIds()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Req = _field
+	return nil
+}
+
 func (p *MenuServiceMenuRoleArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
 	if err = oprot.WriteStructBegin("MenuRole_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
 	}
 	if err = oprot.WriteFieldStop(); err != nil {
 		goto WriteFieldStopError
@@ -5471,10 +5159,29 @@ func (p *MenuServiceMenuRoleArgs) Write(oprot thrift.TProtocol) (err error) {
 	return nil
 WriteStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
 	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *MenuServiceMenuRoleArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Req.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *MenuServiceMenuRoleArgs) String() string {

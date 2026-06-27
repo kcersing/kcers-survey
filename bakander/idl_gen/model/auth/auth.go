@@ -1972,9 +1972,9 @@ type AuthService interface {
 	// 更新菜单权限
 	UpdateMenuAuth(ctx context.Context, req *MenuAuthInfoReq) (r *base.NilResponse, err error)
 	// Get role list | 获取角色列表
-	RoleList(ctx context.Context, req *base.PageInfoReq) (r *base.NilResponse, err error)
+	RoleList(ctx context.Context, req *base.PageReq) (r *base.NilResponse, err error)
 
-	RoleTree(ctx context.Context, req *base.PageInfoReq) (r *base.NilResponse, err error)
+	RoleTree(ctx context.Context, req *base.PageReq) (r *base.NilResponse, err error)
 	// Set role status | 设置角色状态, 启用1/禁用0
 	UpdateRoleStatus(ctx context.Context, req *base.StatusCodeReq) (r *base.NilResponse, err error)
 	// 创建API权限
@@ -2065,7 +2065,7 @@ func (p *AuthServiceClient) UpdateMenuAuth(ctx context.Context, req *MenuAuthInf
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *AuthServiceClient) RoleList(ctx context.Context, req *base.PageInfoReq) (r *base.NilResponse, err error) {
+func (p *AuthServiceClient) RoleList(ctx context.Context, req *base.PageReq) (r *base.NilResponse, err error) {
 	var _args AuthServiceRoleListArgs
 	_args.Req = req
 	var _result AuthServiceRoleListResult
@@ -2074,7 +2074,7 @@ func (p *AuthServiceClient) RoleList(ctx context.Context, req *base.PageInfoReq)
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *AuthServiceClient) RoleTree(ctx context.Context, req *base.PageInfoReq) (r *base.NilResponse, err error) {
+func (p *AuthServiceClient) RoleTree(ctx context.Context, req *base.PageReq) (r *base.NilResponse, err error) {
 	var _args AuthServiceRoleTreeArgs
 	_args.Req = req
 	var _result AuthServiceRoleTreeResult
@@ -4513,7 +4513,7 @@ func (p *AuthServiceUpdateMenuAuthResult) String() string {
 }
 
 type AuthServiceRoleListArgs struct {
-	Req *base.PageInfoReq `thrift:"req,1"`
+	Req *base.PageReq `thrift:"req,1"`
 }
 
 func NewAuthServiceRoleListArgs() *AuthServiceRoleListArgs {
@@ -4523,9 +4523,9 @@ func NewAuthServiceRoleListArgs() *AuthServiceRoleListArgs {
 func (p *AuthServiceRoleListArgs) InitDefault() {
 }
 
-var AuthServiceRoleListArgs_Req_DEFAULT *base.PageInfoReq
+var AuthServiceRoleListArgs_Req_DEFAULT *base.PageReq
 
-func (p *AuthServiceRoleListArgs) GetReq() (v *base.PageInfoReq) {
+func (p *AuthServiceRoleListArgs) GetReq() (v *base.PageReq) {
 	if !p.IsSetReq() {
 		return AuthServiceRoleListArgs_Req_DEFAULT
 	}
@@ -4597,7 +4597,7 @@ ReadStructEndError:
 }
 
 func (p *AuthServiceRoleListArgs) ReadField1(iprot thrift.TProtocol) error {
-	_field := base.NewPageInfoReq()
+	_field := base.NewPageReq()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}
@@ -4807,7 +4807,7 @@ func (p *AuthServiceRoleListResult) String() string {
 }
 
 type AuthServiceRoleTreeArgs struct {
-	Req *base.PageInfoReq `thrift:"req,1"`
+	Req *base.PageReq `thrift:"req,1"`
 }
 
 func NewAuthServiceRoleTreeArgs() *AuthServiceRoleTreeArgs {
@@ -4817,9 +4817,9 @@ func NewAuthServiceRoleTreeArgs() *AuthServiceRoleTreeArgs {
 func (p *AuthServiceRoleTreeArgs) InitDefault() {
 }
 
-var AuthServiceRoleTreeArgs_Req_DEFAULT *base.PageInfoReq
+var AuthServiceRoleTreeArgs_Req_DEFAULT *base.PageReq
 
-func (p *AuthServiceRoleTreeArgs) GetReq() (v *base.PageInfoReq) {
+func (p *AuthServiceRoleTreeArgs) GetReq() (v *base.PageReq) {
 	if !p.IsSetReq() {
 		return AuthServiceRoleTreeArgs_Req_DEFAULT
 	}
@@ -4891,7 +4891,7 @@ ReadStructEndError:
 }
 
 func (p *AuthServiceRoleTreeArgs) ReadField1(iprot thrift.TProtocol) error {
-	_field := base.NewPageInfoReq()
+	_field := base.NewPageReq()
 	if err := _field.Read(iprot); err != nil {
 		return err
 	}

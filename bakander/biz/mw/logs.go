@@ -12,27 +12,20 @@ import (
 )
 
 func LogMw() app.HandlerFunc {
+
 	return func(ctx context.Context, c *app.RequestContext) {
 		start := time.Now()
 		c.Next(ctx)
-		var log *logs.LogsInfo
+		var log logs.LogsInfo
 		log.Type = "Interface"
 		log.Method = string(c.Request.Method())
 		log.API = string(c.Request.Path())
 		log.UserAgent = string(c.Request.Header.UserAgent())
 		log.IP = c.ClientIP()
 
-		reqBodyStr := string(c.Request.Body())
-		if len(reqBodyStr) > 200 {
-			reqBodyStr = reqBodyStr[:200]
-		}
-		log.ReqContent = reqBodyStr
+		log.ReqContent = string(c.Request.Body())
 
-		respBodyStr := string(c.Request.Body())
-		if len(respBodyStr) > 200 {
-			respBodyStr = respBodyStr[:200]
-		}
-
+		log.RespContent = string(c.Request.Body())
 		if c.Response.Header.StatusCode() == 200 {
 			log.Success = true
 		}
@@ -53,7 +46,7 @@ func LogMw() app.HandlerFunc {
 			log.Identity = 2
 		}
 
-		err := system.NewLogs(ctx, c).Create(log)
+		err := system.NewLogs(ctx, c).Create(&log)
 		if err != nil {
 			hlog.Error(err)
 		}

@@ -73,7 +73,7 @@ func (*Logs) scanValues(columns []string) ([]any, error) {
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
 // to the Logs fields.
-func (l *Logs) assignValues(columns []string, values []any) error {
+func (_m *Logs) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
@@ -84,99 +84,99 @@ func (l *Logs) assignValues(columns []string, values []any) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			l.ID = int64(value.Int64)
+			_m.ID = int64(value.Int64)
 		case logs.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				l.CreatedAt = value.Time
+				_m.CreatedAt = value.Time
 			}
 		case logs.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				l.UpdatedAt = value.Time
+				_m.UpdatedAt = value.Time
 			}
 		case logs.FieldDelete:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field delete", values[i])
 			} else if value.Valid {
-				l.Delete = value.Int64
+				_m.Delete = value.Int64
 			}
 		case logs.FieldCreatedID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_id", values[i])
 			} else if value.Valid {
-				l.CreatedID = value.Int64
+				_m.CreatedID = value.Int64
 			}
 		case logs.FieldType:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field type", values[i])
 			} else if value.Valid {
-				l.Type = value.String
+				_m.Type = value.String
 			}
 		case logs.FieldMethod:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field method", values[i])
 			} else if value.Valid {
-				l.Method = value.String
+				_m.Method = value.String
 			}
 		case logs.FieldAPI:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field api", values[i])
 			} else if value.Valid {
-				l.API = value.String
+				_m.API = value.String
 			}
 		case logs.FieldSuccess:
 			if value, ok := values[i].(*sql.NullBool); !ok {
 				return fmt.Errorf("unexpected type %T for field success", values[i])
 			} else if value.Valid {
-				l.Success = value.Bool
+				_m.Success = value.Bool
 			}
 		case logs.FieldReqContent:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field req_content", values[i])
 			} else if value.Valid {
-				l.ReqContent = value.String
+				_m.ReqContent = value.String
 			}
 		case logs.FieldRespContent:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field resp_content", values[i])
 			} else if value.Valid {
-				l.RespContent = value.String
+				_m.RespContent = value.String
 			}
 		case logs.FieldIP:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field ip", values[i])
 			} else if value.Valid {
-				l.IP = value.String
+				_m.IP = value.String
 			}
 		case logs.FieldUserAgent:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field user_agent", values[i])
 			} else if value.Valid {
-				l.UserAgent = value.String
+				_m.UserAgent = value.String
 			}
 		case logs.FieldOperatorsr:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field operatorsr", values[i])
 			} else if value.Valid {
-				l.Operatorsr = value.String
+				_m.Operatorsr = value.String
 			}
 		case logs.FieldTime:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field time", values[i])
 			} else if value.Valid {
-				l.Time = value.Int64
+				_m.Time = value.Int64
 			}
 		case logs.FieldIdentity:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field identity", values[i])
 			} else if value.Valid {
-				l.Identity = value.Int64
+				_m.Identity = value.Int64
 			}
 		default:
-			l.selectValues.Set(columns[i], values[i])
+			_m.selectValues.Set(columns[i], values[i])
 		}
 	}
 	return nil
@@ -184,77 +184,77 @@ func (l *Logs) assignValues(columns []string, values []any) error {
 
 // Value returns the ent.Value that was dynamically selected and assigned to the Logs.
 // This includes values selected through modifiers, order, etc.
-func (l *Logs) Value(name string) (ent.Value, error) {
-	return l.selectValues.Get(name)
+func (_m *Logs) Value(name string) (ent.Value, error) {
+	return _m.selectValues.Get(name)
 }
 
 // Update returns a builder for updating this Logs.
 // Note that you need to call Logs.Unwrap() before calling this method if this Logs
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (l *Logs) Update() *LogsUpdateOne {
-	return NewLogsClient(l.config).UpdateOne(l)
+func (_m *Logs) Update() *LogsUpdateOne {
+	return NewLogsClient(_m.config).UpdateOne(_m)
 }
 
 // Unwrap unwraps the Logs entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (l *Logs) Unwrap() *Logs {
-	_tx, ok := l.config.driver.(*txDriver)
+func (_m *Logs) Unwrap() *Logs {
+	_tx, ok := _m.config.driver.(*txDriver)
 	if !ok {
 		panic("ent: Logs is not a transactional entity")
 	}
-	l.config.driver = _tx.drv
-	return l
+	_m.config.driver = _tx.drv
+	return _m
 }
 
 // String implements the fmt.Stringer.
-func (l *Logs) String() string {
+func (_m *Logs) String() string {
 	var builder strings.Builder
 	builder.WriteString("Logs(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", l.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
 	builder.WriteString("created_at=")
-	builder.WriteString(l.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
-	builder.WriteString(l.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("delete=")
-	builder.WriteString(fmt.Sprintf("%v", l.Delete))
+	builder.WriteString(fmt.Sprintf("%v", _m.Delete))
 	builder.WriteString(", ")
 	builder.WriteString("created_id=")
-	builder.WriteString(fmt.Sprintf("%v", l.CreatedID))
+	builder.WriteString(fmt.Sprintf("%v", _m.CreatedID))
 	builder.WriteString(", ")
 	builder.WriteString("type=")
-	builder.WriteString(l.Type)
+	builder.WriteString(_m.Type)
 	builder.WriteString(", ")
 	builder.WriteString("method=")
-	builder.WriteString(l.Method)
+	builder.WriteString(_m.Method)
 	builder.WriteString(", ")
 	builder.WriteString("api=")
-	builder.WriteString(l.API)
+	builder.WriteString(_m.API)
 	builder.WriteString(", ")
 	builder.WriteString("success=")
-	builder.WriteString(fmt.Sprintf("%v", l.Success))
+	builder.WriteString(fmt.Sprintf("%v", _m.Success))
 	builder.WriteString(", ")
 	builder.WriteString("req_content=")
-	builder.WriteString(l.ReqContent)
+	builder.WriteString(_m.ReqContent)
 	builder.WriteString(", ")
 	builder.WriteString("resp_content=")
-	builder.WriteString(l.RespContent)
+	builder.WriteString(_m.RespContent)
 	builder.WriteString(", ")
 	builder.WriteString("ip=")
-	builder.WriteString(l.IP)
+	builder.WriteString(_m.IP)
 	builder.WriteString(", ")
 	builder.WriteString("user_agent=")
-	builder.WriteString(l.UserAgent)
+	builder.WriteString(_m.UserAgent)
 	builder.WriteString(", ")
 	builder.WriteString("operatorsr=")
-	builder.WriteString(l.Operatorsr)
+	builder.WriteString(_m.Operatorsr)
 	builder.WriteString(", ")
 	builder.WriteString("time=")
-	builder.WriteString(fmt.Sprintf("%v", l.Time))
+	builder.WriteString(fmt.Sprintf("%v", _m.Time))
 	builder.WriteString(", ")
 	builder.WriteString("identity=")
-	builder.WriteString(fmt.Sprintf("%v", l.Identity))
+	builder.WriteString(fmt.Sprintf("%v", _m.Identity))
 	builder.WriteByte(')')
 	return builder.String()
 }

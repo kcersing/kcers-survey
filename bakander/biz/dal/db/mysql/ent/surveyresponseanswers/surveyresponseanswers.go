@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -31,10 +32,28 @@ const (
 	FieldSurveyQuestionID = "survey_question_id"
 	// FieldAnswerText holds the string denoting the answer_text field in the database.
 	FieldAnswerText = "answer_text"
-	// FieldAnswerValue holds the string denoting the answer_value field in the database.
-	FieldAnswerValue = "answer_value"
+	// FieldAnswer holds the string denoting the answer field in the database.
+	FieldAnswer = "answer"
+	// EdgeResponse holds the string denoting the response edge name in mutations.
+	EdgeResponse = "response"
+	// EdgeQuestion holds the string denoting the question edge name in mutations.
+	EdgeQuestion = "question"
 	// Table holds the table name of the surveyresponseanswers in the database.
 	Table = "survey_response_answers"
+	// ResponseTable is the table that holds the response relation/edge.
+	ResponseTable = "survey_response_answers"
+	// ResponseInverseTable is the table name for the SurveyResponse entity.
+	// It exists in this package in order to avoid circular dependency with the "surveyresponse" package.
+	ResponseInverseTable = "survey_response"
+	// ResponseColumn is the table column denoting the response relation/edge.
+	ResponseColumn = "survey_response_id"
+	// QuestionTable is the table that holds the question relation/edge.
+	QuestionTable = "survey_response_answers"
+	// QuestionInverseTable is the table name for the SurveyQuestion entity.
+	// It exists in this package in order to avoid circular dependency with the "surveyquestion" package.
+	QuestionInverseTable = "survey_question"
+	// QuestionColumn is the table column denoting the question relation/edge.
+	QuestionColumn = "survey_question_id"
 )
 
 // Columns holds all SQL columns for surveyresponseanswers fields.
@@ -49,7 +68,7 @@ var Columns = []string{
 	FieldSurveyResponseID,
 	FieldSurveyQuestionID,
 	FieldAnswerText,
-	FieldAnswerValue,
+	FieldAnswer,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -81,8 +100,6 @@ var (
 	DefaultSurveyResponseID int64
 	// DefaultSurveyQuestionID holds the default value on creation for the "survey_question_id" field.
 	DefaultSurveyQuestionID int64
-	// DefaultAnswerValue holds the default value on creation for the "answer_value" field.
-	DefaultAnswerValue int64
 )
 
 // OrderOption defines the ordering options for the SurveyResponseAnswers queries.
@@ -138,7 +155,30 @@ func ByAnswerText(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAnswerText, opts...).ToFunc()
 }
 
-// ByAnswerValue orders the results by the answer_value field.
-func ByAnswerValue(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAnswerValue, opts...).ToFunc()
+// ByResponseField orders the results by response field.
+func ByResponseField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newResponseStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByQuestionField orders the results by question field.
+func ByQuestionField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newQuestionStep(), sql.OrderByField(field, opts...))
+	}
+}
+func newResponseStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ResponseInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, ResponseTable, ResponseColumn),
+	)
+}
+func newQuestionStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(QuestionInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, QuestionTable, QuestionColumn),
+	)
 }

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // ID filters vertices based on their ID field.
@@ -89,6 +90,11 @@ func ParentID(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldParentID, v))
 }
 
+// Serial applies equality check predicate on the "serial" field. It's identical to SerialEQ.
+func Serial(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldSerial, v))
+}
+
 // Content applies equality check predicate on the "content" field. It's identical to ContentEQ.
 func Content(v string) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldContent, v))
@@ -99,6 +105,11 @@ func Type(v string) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldType, v))
 }
 
+// Show applies equality check predicate on the "show" field. It's identical to ShowEQ.
+func Show(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldShow, v))
+}
+
 // Sort applies equality check predicate on the "sort" field. It's identical to SortEQ.
 func Sort(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldSort, v))
@@ -107,6 +118,21 @@ func Sort(v int64) predicate.SurveyQuestion {
 // Required applies equality check predicate on the "required" field. It's identical to RequiredEQ.
 func Required(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldRequired, v))
+}
+
+// Remark applies equality check predicate on the "remark" field. It's identical to RemarkEQ.
+func Remark(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldRemark, v))
+}
+
+// Level applies equality check predicate on the "level" field. It's identical to LevelEQ.
+func Level(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldLevel, v))
+}
+
+// Tree applies equality check predicate on the "tree" field. It's identical to TreeEQ.
+func Tree(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldTree, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -379,24 +405,14 @@ func SurveyIDNotIn(vs ...int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldNotIn(FieldSurveyID, vs...))
 }
 
-// SurveyIDGT applies the GT predicate on the "survey_id" field.
-func SurveyIDGT(v int64) predicate.SurveyQuestion {
-	return predicate.SurveyQuestion(sql.FieldGT(FieldSurveyID, v))
+// SurveyIDIsNil applies the IsNil predicate on the "survey_id" field.
+func SurveyIDIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldSurveyID))
 }
 
-// SurveyIDGTE applies the GTE predicate on the "survey_id" field.
-func SurveyIDGTE(v int64) predicate.SurveyQuestion {
-	return predicate.SurveyQuestion(sql.FieldGTE(FieldSurveyID, v))
-}
-
-// SurveyIDLT applies the LT predicate on the "survey_id" field.
-func SurveyIDLT(v int64) predicate.SurveyQuestion {
-	return predicate.SurveyQuestion(sql.FieldLT(FieldSurveyID, v))
-}
-
-// SurveyIDLTE applies the LTE predicate on the "survey_id" field.
-func SurveyIDLTE(v int64) predicate.SurveyQuestion {
-	return predicate.SurveyQuestion(sql.FieldLTE(FieldSurveyID, v))
+// SurveyIDNotNil applies the NotNil predicate on the "survey_id" field.
+func SurveyIDNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldSurveyID))
 }
 
 // ParentIDEQ applies the EQ predicate on the "parent_id" field.
@@ -437,6 +453,91 @@ func ParentIDLT(v int64) predicate.SurveyQuestion {
 // ParentIDLTE applies the LTE predicate on the "parent_id" field.
 func ParentIDLTE(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldLTE(FieldParentID, v))
+}
+
+// ParentIDIsNil applies the IsNil predicate on the "parent_id" field.
+func ParentIDIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldParentID))
+}
+
+// ParentIDNotNil applies the NotNil predicate on the "parent_id" field.
+func ParentIDNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldParentID))
+}
+
+// SerialEQ applies the EQ predicate on the "serial" field.
+func SerialEQ(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldSerial, v))
+}
+
+// SerialNEQ applies the NEQ predicate on the "serial" field.
+func SerialNEQ(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNEQ(FieldSerial, v))
+}
+
+// SerialIn applies the In predicate on the "serial" field.
+func SerialIn(vs ...string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIn(FieldSerial, vs...))
+}
+
+// SerialNotIn applies the NotIn predicate on the "serial" field.
+func SerialNotIn(vs ...string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotIn(FieldSerial, vs...))
+}
+
+// SerialGT applies the GT predicate on the "serial" field.
+func SerialGT(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGT(FieldSerial, v))
+}
+
+// SerialGTE applies the GTE predicate on the "serial" field.
+func SerialGTE(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGTE(FieldSerial, v))
+}
+
+// SerialLT applies the LT predicate on the "serial" field.
+func SerialLT(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLT(FieldSerial, v))
+}
+
+// SerialLTE applies the LTE predicate on the "serial" field.
+func SerialLTE(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLTE(FieldSerial, v))
+}
+
+// SerialContains applies the Contains predicate on the "serial" field.
+func SerialContains(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldContains(FieldSerial, v))
+}
+
+// SerialHasPrefix applies the HasPrefix predicate on the "serial" field.
+func SerialHasPrefix(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldHasPrefix(FieldSerial, v))
+}
+
+// SerialHasSuffix applies the HasSuffix predicate on the "serial" field.
+func SerialHasSuffix(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldHasSuffix(FieldSerial, v))
+}
+
+// SerialIsNil applies the IsNil predicate on the "serial" field.
+func SerialIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldSerial))
+}
+
+// SerialNotNil applies the NotNil predicate on the "serial" field.
+func SerialNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldSerial))
+}
+
+// SerialEqualFold applies the EqualFold predicate on the "serial" field.
+func SerialEqualFold(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEqualFold(FieldSerial, v))
+}
+
+// SerialContainsFold applies the ContainsFold predicate on the "serial" field.
+func SerialContainsFold(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldContainsFold(FieldSerial, v))
 }
 
 // ContentEQ applies the EQ predicate on the "content" field.
@@ -492,6 +593,16 @@ func ContentHasPrefix(v string) predicate.SurveyQuestion {
 // ContentHasSuffix applies the HasSuffix predicate on the "content" field.
 func ContentHasSuffix(v string) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldHasSuffix(FieldContent, v))
+}
+
+// ContentIsNil applies the IsNil predicate on the "content" field.
+func ContentIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldContent))
+}
+
+// ContentNotNil applies the NotNil predicate on the "content" field.
+func ContentNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldContent))
 }
 
 // ContentEqualFold applies the EqualFold predicate on the "content" field.
@@ -559,6 +670,16 @@ func TypeHasSuffix(v string) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldHasSuffix(FieldType, v))
 }
 
+// TypeIsNil applies the IsNil predicate on the "type" field.
+func TypeIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldType))
+}
+
+// TypeNotNil applies the NotNil predicate on the "type" field.
+func TypeNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldType))
+}
+
 // TypeEqualFold applies the EqualFold predicate on the "type" field.
 func TypeEqualFold(v string) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEqualFold(FieldType, v))
@@ -567,6 +688,66 @@ func TypeEqualFold(v string) predicate.SurveyQuestion {
 // TypeContainsFold applies the ContainsFold predicate on the "type" field.
 func TypeContainsFold(v string) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldContainsFold(FieldType, v))
+}
+
+// OptionsIsNil applies the IsNil predicate on the "options" field.
+func OptionsIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldOptions))
+}
+
+// OptionsNotNil applies the NotNil predicate on the "options" field.
+func OptionsNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldOptions))
+}
+
+// ShowEQ applies the EQ predicate on the "show" field.
+func ShowEQ(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldShow, v))
+}
+
+// ShowNEQ applies the NEQ predicate on the "show" field.
+func ShowNEQ(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNEQ(FieldShow, v))
+}
+
+// ShowIn applies the In predicate on the "show" field.
+func ShowIn(vs ...int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIn(FieldShow, vs...))
+}
+
+// ShowNotIn applies the NotIn predicate on the "show" field.
+func ShowNotIn(vs ...int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotIn(FieldShow, vs...))
+}
+
+// ShowGT applies the GT predicate on the "show" field.
+func ShowGT(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGT(FieldShow, v))
+}
+
+// ShowGTE applies the GTE predicate on the "show" field.
+func ShowGTE(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGTE(FieldShow, v))
+}
+
+// ShowLT applies the LT predicate on the "show" field.
+func ShowLT(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLT(FieldShow, v))
+}
+
+// ShowLTE applies the LTE predicate on the "show" field.
+func ShowLTE(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLTE(FieldShow, v))
+}
+
+// ShowIsNil applies the IsNil predicate on the "show" field.
+func ShowIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldShow))
+}
+
+// ShowNotNil applies the NotNil predicate on the "show" field.
+func ShowNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldShow))
 }
 
 // SortEQ applies the EQ predicate on the "sort" field.
@@ -609,6 +790,26 @@ func SortLTE(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldLTE(FieldSort, v))
 }
 
+// SortIsNil applies the IsNil predicate on the "sort" field.
+func SortIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldSort))
+}
+
+// SortNotNil applies the NotNil predicate on the "sort" field.
+func SortNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldSort))
+}
+
+// JumpRulesIsNil applies the IsNil predicate on the "jump_rules" field.
+func JumpRulesIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldJumpRules))
+}
+
+// JumpRulesNotNil applies the NotNil predicate on the "jump_rules" field.
+func JumpRulesNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldJumpRules))
+}
+
 // RequiredEQ applies the EQ predicate on the "required" field.
 func RequiredEQ(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldRequired, v))
@@ -647,6 +848,262 @@ func RequiredLT(v int64) predicate.SurveyQuestion {
 // RequiredLTE applies the LTE predicate on the "required" field.
 func RequiredLTE(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldLTE(FieldRequired, v))
+}
+
+// RequiredIsNil applies the IsNil predicate on the "required" field.
+func RequiredIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldRequired))
+}
+
+// RequiredNotNil applies the NotNil predicate on the "required" field.
+func RequiredNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldRequired))
+}
+
+// RemarkEQ applies the EQ predicate on the "remark" field.
+func RemarkEQ(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldRemark, v))
+}
+
+// RemarkNEQ applies the NEQ predicate on the "remark" field.
+func RemarkNEQ(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNEQ(FieldRemark, v))
+}
+
+// RemarkIn applies the In predicate on the "remark" field.
+func RemarkIn(vs ...string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIn(FieldRemark, vs...))
+}
+
+// RemarkNotIn applies the NotIn predicate on the "remark" field.
+func RemarkNotIn(vs ...string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotIn(FieldRemark, vs...))
+}
+
+// RemarkGT applies the GT predicate on the "remark" field.
+func RemarkGT(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGT(FieldRemark, v))
+}
+
+// RemarkGTE applies the GTE predicate on the "remark" field.
+func RemarkGTE(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGTE(FieldRemark, v))
+}
+
+// RemarkLT applies the LT predicate on the "remark" field.
+func RemarkLT(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLT(FieldRemark, v))
+}
+
+// RemarkLTE applies the LTE predicate on the "remark" field.
+func RemarkLTE(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLTE(FieldRemark, v))
+}
+
+// RemarkContains applies the Contains predicate on the "remark" field.
+func RemarkContains(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldContains(FieldRemark, v))
+}
+
+// RemarkHasPrefix applies the HasPrefix predicate on the "remark" field.
+func RemarkHasPrefix(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldHasPrefix(FieldRemark, v))
+}
+
+// RemarkHasSuffix applies the HasSuffix predicate on the "remark" field.
+func RemarkHasSuffix(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldHasSuffix(FieldRemark, v))
+}
+
+// RemarkIsNil applies the IsNil predicate on the "remark" field.
+func RemarkIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldRemark))
+}
+
+// RemarkNotNil applies the NotNil predicate on the "remark" field.
+func RemarkNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldRemark))
+}
+
+// RemarkEqualFold applies the EqualFold predicate on the "remark" field.
+func RemarkEqualFold(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEqualFold(FieldRemark, v))
+}
+
+// RemarkContainsFold applies the ContainsFold predicate on the "remark" field.
+func RemarkContainsFold(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldContainsFold(FieldRemark, v))
+}
+
+// LevelEQ applies the EQ predicate on the "level" field.
+func LevelEQ(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldLevel, v))
+}
+
+// LevelNEQ applies the NEQ predicate on the "level" field.
+func LevelNEQ(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNEQ(FieldLevel, v))
+}
+
+// LevelIn applies the In predicate on the "level" field.
+func LevelIn(vs ...int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIn(FieldLevel, vs...))
+}
+
+// LevelNotIn applies the NotIn predicate on the "level" field.
+func LevelNotIn(vs ...int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotIn(FieldLevel, vs...))
+}
+
+// LevelGT applies the GT predicate on the "level" field.
+func LevelGT(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGT(FieldLevel, v))
+}
+
+// LevelGTE applies the GTE predicate on the "level" field.
+func LevelGTE(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGTE(FieldLevel, v))
+}
+
+// LevelLT applies the LT predicate on the "level" field.
+func LevelLT(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLT(FieldLevel, v))
+}
+
+// LevelLTE applies the LTE predicate on the "level" field.
+func LevelLTE(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLTE(FieldLevel, v))
+}
+
+// LevelIsNil applies the IsNil predicate on the "level" field.
+func LevelIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldLevel))
+}
+
+// LevelNotNil applies the NotNil predicate on the "level" field.
+func LevelNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldLevel))
+}
+
+// TreeEQ applies the EQ predicate on the "tree" field.
+func TreeEQ(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldTree, v))
+}
+
+// TreeNEQ applies the NEQ predicate on the "tree" field.
+func TreeNEQ(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNEQ(FieldTree, v))
+}
+
+// TreeIn applies the In predicate on the "tree" field.
+func TreeIn(vs ...string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIn(FieldTree, vs...))
+}
+
+// TreeNotIn applies the NotIn predicate on the "tree" field.
+func TreeNotIn(vs ...string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotIn(FieldTree, vs...))
+}
+
+// TreeGT applies the GT predicate on the "tree" field.
+func TreeGT(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGT(FieldTree, v))
+}
+
+// TreeGTE applies the GTE predicate on the "tree" field.
+func TreeGTE(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGTE(FieldTree, v))
+}
+
+// TreeLT applies the LT predicate on the "tree" field.
+func TreeLT(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLT(FieldTree, v))
+}
+
+// TreeLTE applies the LTE predicate on the "tree" field.
+func TreeLTE(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLTE(FieldTree, v))
+}
+
+// TreeContains applies the Contains predicate on the "tree" field.
+func TreeContains(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldContains(FieldTree, v))
+}
+
+// TreeHasPrefix applies the HasPrefix predicate on the "tree" field.
+func TreeHasPrefix(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldHasPrefix(FieldTree, v))
+}
+
+// TreeHasSuffix applies the HasSuffix predicate on the "tree" field.
+func TreeHasSuffix(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldHasSuffix(FieldTree, v))
+}
+
+// TreeIsNil applies the IsNil predicate on the "tree" field.
+func TreeIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldTree))
+}
+
+// TreeNotNil applies the NotNil predicate on the "tree" field.
+func TreeNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldTree))
+}
+
+// TreeEqualFold applies the EqualFold predicate on the "tree" field.
+func TreeEqualFold(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEqualFold(FieldTree, v))
+}
+
+// TreeContainsFold applies the ContainsFold predicate on the "tree" field.
+func TreeContainsFold(v string) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldContainsFold(FieldTree, v))
+}
+
+// HasSurvey applies the HasEdge predicate on the "survey" edge.
+func HasSurvey() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, SurveyTable, SurveyColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasSurveyWith applies the HasEdge predicate on the "survey" edge with a given conditions (other predicates).
+func HasSurveyWith(preds ...predicate.Survey) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(func(s *sql.Selector) {
+		step := newSurveyStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasAnswers applies the HasEdge predicate on the "answers" edge.
+func HasAnswers() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, AnswersTable, AnswersColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasAnswersWith applies the HasEdge predicate on the "answers" edge with a given conditions (other predicates).
+func HasAnswersWith(preds ...predicate.SurveyResponseAnswers) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(func(s *sql.Selector) {
+		step := newAnswersStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

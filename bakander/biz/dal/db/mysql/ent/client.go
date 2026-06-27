@@ -12,12 +12,15 @@ import (
 	"kcers-survey/biz/dal/db/mysql/ent/migrate"
 
 	"kcers-survey/biz/dal/db/mysql/ent/api"
+	"kcers-survey/biz/dal/db/mysql/ent/area"
 	"kcers-survey/biz/dal/db/mysql/ent/dictionary"
 	"kcers-survey/biz/dal/db/mysql/ent/dictionarydetail"
 	"kcers-survey/biz/dal/db/mysql/ent/logs"
 	"kcers-survey/biz/dal/db/mysql/ent/menu"
 	"kcers-survey/biz/dal/db/mysql/ent/menuparam"
 	"kcers-survey/biz/dal/db/mysql/ent/role"
+	"kcers-survey/biz/dal/db/mysql/ent/sms"
+	"kcers-survey/biz/dal/db/mysql/ent/smslog"
 	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
@@ -38,6 +41,8 @@ type Client struct {
 	Schema *migrate.Schema
 	// API is the client for interacting with the API builders.
 	API *APIClient
+	// Area is the client for interacting with the Area builders.
+	Area *AreaClient
 	// Dictionary is the client for interacting with the Dictionary builders.
 	Dictionary *DictionaryClient
 	// DictionaryDetail is the client for interacting with the DictionaryDetail builders.
@@ -50,6 +55,10 @@ type Client struct {
 	MenuParam *MenuParamClient
 	// Role is the client for interacting with the Role builders.
 	Role *RoleClient
+	// Sms is the client for interacting with the Sms builders.
+	Sms *SmsClient
+	// SmsLog is the client for interacting with the SmsLog builders.
+	SmsLog *SmsLogClient
 	// Survey is the client for interacting with the Survey builders.
 	Survey *SurveyClient
 	// SurveyQuestion is the client for interacting with the SurveyQuestion builders.
@@ -74,12 +83,15 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.API = NewAPIClient(c.config)
+	c.Area = NewAreaClient(c.config)
 	c.Dictionary = NewDictionaryClient(c.config)
 	c.DictionaryDetail = NewDictionaryDetailClient(c.config)
 	c.Logs = NewLogsClient(c.config)
 	c.Menu = NewMenuClient(c.config)
 	c.MenuParam = NewMenuParamClient(c.config)
 	c.Role = NewRoleClient(c.config)
+	c.Sms = NewSmsClient(c.config)
+	c.SmsLog = NewSmsLogClient(c.config)
 	c.Survey = NewSurveyClient(c.config)
 	c.SurveyQuestion = NewSurveyQuestionClient(c.config)
 	c.SurveyResponse = NewSurveyResponseClient(c.config)
@@ -179,12 +191,15 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		ctx:                   ctx,
 		config:                cfg,
 		API:                   NewAPIClient(cfg),
+		Area:                  NewAreaClient(cfg),
 		Dictionary:            NewDictionaryClient(cfg),
 		DictionaryDetail:      NewDictionaryDetailClient(cfg),
 		Logs:                  NewLogsClient(cfg),
 		Menu:                  NewMenuClient(cfg),
 		MenuParam:             NewMenuParamClient(cfg),
 		Role:                  NewRoleClient(cfg),
+		Sms:                   NewSmsClient(cfg),
+		SmsLog:                NewSmsLogClient(cfg),
 		Survey:                NewSurveyClient(cfg),
 		SurveyQuestion:        NewSurveyQuestionClient(cfg),
 		SurveyResponse:        NewSurveyResponseClient(cfg),
@@ -211,12 +226,15 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		ctx:                   ctx,
 		config:                cfg,
 		API:                   NewAPIClient(cfg),
+		Area:                  NewAreaClient(cfg),
 		Dictionary:            NewDictionaryClient(cfg),
 		DictionaryDetail:      NewDictionaryDetailClient(cfg),
 		Logs:                  NewLogsClient(cfg),
 		Menu:                  NewMenuClient(cfg),
 		MenuParam:             NewMenuParamClient(cfg),
 		Role:                  NewRoleClient(cfg),
+		Sms:                   NewSmsClient(cfg),
+		SmsLog:                NewSmsLogClient(cfg),
 		Survey:                NewSurveyClient(cfg),
 		SurveyQuestion:        NewSurveyQuestionClient(cfg),
 		SurveyResponse:        NewSurveyResponseClient(cfg),
@@ -252,9 +270,9 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.API, c.Dictionary, c.DictionaryDetail, c.Logs, c.Menu, c.MenuParam, c.Role,
-		c.Survey, c.SurveyQuestion, c.SurveyResponse, c.SurveyResponseAnswers, c.Token,
-		c.User,
+		c.API, c.Area, c.Dictionary, c.DictionaryDetail, c.Logs, c.Menu, c.MenuParam,
+		c.Role, c.Sms, c.SmsLog, c.Survey, c.SurveyQuestion, c.SurveyResponse,
+		c.SurveyResponseAnswers, c.Token, c.User,
 	} {
 		n.Use(hooks...)
 	}
@@ -264,9 +282,9 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.API, c.Dictionary, c.DictionaryDetail, c.Logs, c.Menu, c.MenuParam, c.Role,
-		c.Survey, c.SurveyQuestion, c.SurveyResponse, c.SurveyResponseAnswers, c.Token,
-		c.User,
+		c.API, c.Area, c.Dictionary, c.DictionaryDetail, c.Logs, c.Menu, c.MenuParam,
+		c.Role, c.Sms, c.SmsLog, c.Survey, c.SurveyQuestion, c.SurveyResponse,
+		c.SurveyResponseAnswers, c.Token, c.User,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -277,6 +295,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
 	case *APIMutation:
 		return c.API.mutate(ctx, m)
+	case *AreaMutation:
+		return c.Area.mutate(ctx, m)
 	case *DictionaryMutation:
 		return c.Dictionary.mutate(ctx, m)
 	case *DictionaryDetailMutation:
@@ -289,6 +309,10 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.MenuParam.mutate(ctx, m)
 	case *RoleMutation:
 		return c.Role.mutate(ctx, m)
+	case *SmsMutation:
+		return c.Sms.mutate(ctx, m)
+	case *SmsLogMutation:
+		return c.SmsLog.mutate(ctx, m)
 	case *SurveyMutation:
 		return c.Survey.mutate(ctx, m)
 	case *SurveyQuestionMutation:
@@ -361,8 +385,8 @@ func (c *APIClient) Update() *APIUpdate {
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *APIClient) UpdateOne(a *API) *APIUpdateOne {
-	mutation := newAPIMutation(c.config, OpUpdateOne, withAPI(a))
+func (c *APIClient) UpdateOne(_m *API) *APIUpdateOne {
+	mutation := newAPIMutation(c.config, OpUpdateOne, withAPI(_m))
 	return &APIUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
@@ -379,8 +403,8 @@ func (c *APIClient) Delete() *APIDelete {
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *APIClient) DeleteOne(a *API) *APIDeleteOne {
-	return c.DeleteOneID(a.ID)
+func (c *APIClient) DeleteOne(_m *API) *APIDeleteOne {
+	return c.DeleteOneID(_m.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
@@ -439,6 +463,139 @@ func (c *APIClient) mutate(ctx context.Context, m *APIMutation) (Value, error) {
 	}
 }
 
+// AreaClient is a client for the Area schema.
+type AreaClient struct {
+	config
+}
+
+// NewAreaClient returns a client for the Area from the given config.
+func NewAreaClient(c config) *AreaClient {
+	return &AreaClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `area.Hooks(f(g(h())))`.
+func (c *AreaClient) Use(hooks ...Hook) {
+	c.hooks.Area = append(c.hooks.Area, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `area.Intercept(f(g(h())))`.
+func (c *AreaClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Area = append(c.inters.Area, interceptors...)
+}
+
+// Create returns a builder for creating a Area entity.
+func (c *AreaClient) Create() *AreaCreate {
+	mutation := newAreaMutation(c.config, OpCreate)
+	return &AreaCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Area entities.
+func (c *AreaClient) CreateBulk(builders ...*AreaCreate) *AreaCreateBulk {
+	return &AreaCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *AreaClient) MapCreateBulk(slice any, setFunc func(*AreaCreate, int)) *AreaCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &AreaCreateBulk{err: fmt.Errorf("calling to AreaClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*AreaCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &AreaCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Area.
+func (c *AreaClient) Update() *AreaUpdate {
+	mutation := newAreaMutation(c.config, OpUpdate)
+	return &AreaUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *AreaClient) UpdateOne(_m *Area) *AreaUpdateOne {
+	mutation := newAreaMutation(c.config, OpUpdateOne, withArea(_m))
+	return &AreaUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *AreaClient) UpdateOneID(id int64) *AreaUpdateOne {
+	mutation := newAreaMutation(c.config, OpUpdateOne, withAreaID(id))
+	return &AreaUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Area.
+func (c *AreaClient) Delete() *AreaDelete {
+	mutation := newAreaMutation(c.config, OpDelete)
+	return &AreaDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *AreaClient) DeleteOne(_m *Area) *AreaDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *AreaClient) DeleteOneID(id int64) *AreaDeleteOne {
+	builder := c.Delete().Where(area.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &AreaDeleteOne{builder}
+}
+
+// Query returns a query builder for Area.
+func (c *AreaClient) Query() *AreaQuery {
+	return &AreaQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeArea},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Area entity by its id.
+func (c *AreaClient) Get(ctx context.Context, id int64) (*Area, error) {
+	return c.Query().Where(area.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *AreaClient) GetX(ctx context.Context, id int64) *Area {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *AreaClient) Hooks() []Hook {
+	return c.hooks.Area
+}
+
+// Interceptors returns the client interceptors.
+func (c *AreaClient) Interceptors() []Interceptor {
+	return c.inters.Area
+}
+
+func (c *AreaClient) mutate(ctx context.Context, m *AreaMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&AreaCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&AreaUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&AreaUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&AreaDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Area mutation op: %q", m.Op())
+	}
+}
+
 // DictionaryClient is a client for the Dictionary schema.
 type DictionaryClient struct {
 	config
@@ -494,8 +651,8 @@ func (c *DictionaryClient) Update() *DictionaryUpdate {
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *DictionaryClient) UpdateOne(d *Dictionary) *DictionaryUpdateOne {
-	mutation := newDictionaryMutation(c.config, OpUpdateOne, withDictionary(d))
+func (c *DictionaryClient) UpdateOne(_m *Dictionary) *DictionaryUpdateOne {
+	mutation := newDictionaryMutation(c.config, OpUpdateOne, withDictionary(_m))
 	return &DictionaryUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
@@ -512,8 +669,8 @@ func (c *DictionaryClient) Delete() *DictionaryDelete {
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *DictionaryClient) DeleteOne(d *Dictionary) *DictionaryDeleteOne {
-	return c.DeleteOneID(d.ID)
+func (c *DictionaryClient) DeleteOne(_m *Dictionary) *DictionaryDeleteOne {
+	return c.DeleteOneID(_m.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
@@ -548,16 +705,16 @@ func (c *DictionaryClient) GetX(ctx context.Context, id int64) *Dictionary {
 }
 
 // QueryDictionaryDetails queries the dictionary_details edge of a Dictionary.
-func (c *DictionaryClient) QueryDictionaryDetails(d *Dictionary) *DictionaryDetailQuery {
+func (c *DictionaryClient) QueryDictionaryDetails(_m *Dictionary) *DictionaryDetailQuery {
 	query := (&DictionaryDetailClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := d.ID
+		id := _m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(dictionary.Table, dictionary.FieldID, id),
 			sqlgraph.To(dictionarydetail.Table, dictionarydetail.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, dictionary.DictionaryDetailsTable, dictionary.DictionaryDetailsColumn),
 		)
-		fromV = sqlgraph.Neighbors(d.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
@@ -643,8 +800,8 @@ func (c *DictionaryDetailClient) Update() *DictionaryDetailUpdate {
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *DictionaryDetailClient) UpdateOne(dd *DictionaryDetail) *DictionaryDetailUpdateOne {
-	mutation := newDictionaryDetailMutation(c.config, OpUpdateOne, withDictionaryDetail(dd))
+func (c *DictionaryDetailClient) UpdateOne(_m *DictionaryDetail) *DictionaryDetailUpdateOne {
+	mutation := newDictionaryDetailMutation(c.config, OpUpdateOne, withDictionaryDetail(_m))
 	return &DictionaryDetailUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
@@ -661,8 +818,8 @@ func (c *DictionaryDetailClient) Delete() *DictionaryDetailDelete {
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *DictionaryDetailClient) DeleteOne(dd *DictionaryDetail) *DictionaryDetailDeleteOne {
-	return c.DeleteOneID(dd.ID)
+func (c *DictionaryDetailClient) DeleteOne(_m *DictionaryDetail) *DictionaryDetailDeleteOne {
+	return c.DeleteOneID(_m.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
@@ -697,16 +854,16 @@ func (c *DictionaryDetailClient) GetX(ctx context.Context, id int64) *Dictionary
 }
 
 // QueryDictionary queries the dictionary edge of a DictionaryDetail.
-func (c *DictionaryDetailClient) QueryDictionary(dd *DictionaryDetail) *DictionaryQuery {
+func (c *DictionaryDetailClient) QueryDictionary(_m *DictionaryDetail) *DictionaryQuery {
 	query := (&DictionaryClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := dd.ID
+		id := _m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(dictionarydetail.Table, dictionarydetail.FieldID, id),
 			sqlgraph.To(dictionary.Table, dictionary.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, dictionarydetail.DictionaryTable, dictionarydetail.DictionaryColumn),
 		)
-		fromV = sqlgraph.Neighbors(dd.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
@@ -792,8 +949,8 @@ func (c *LogsClient) Update() *LogsUpdate {
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *LogsClient) UpdateOne(l *Logs) *LogsUpdateOne {
-	mutation := newLogsMutation(c.config, OpUpdateOne, withLogs(l))
+func (c *LogsClient) UpdateOne(_m *Logs) *LogsUpdateOne {
+	mutation := newLogsMutation(c.config, OpUpdateOne, withLogs(_m))
 	return &LogsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
@@ -810,8 +967,8 @@ func (c *LogsClient) Delete() *LogsDelete {
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *LogsClient) DeleteOne(l *Logs) *LogsDeleteOne {
-	return c.DeleteOneID(l.ID)
+func (c *LogsClient) DeleteOne(_m *Logs) *LogsDeleteOne {
+	return c.DeleteOneID(_m.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
@@ -925,8 +1082,8 @@ func (c *MenuClient) Update() *MenuUpdate {
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *MenuClient) UpdateOne(m *Menu) *MenuUpdateOne {
-	mutation := newMenuMutation(c.config, OpUpdateOne, withMenu(m))
+func (c *MenuClient) UpdateOne(_m *Menu) *MenuUpdateOne {
+	mutation := newMenuMutation(c.config, OpUpdateOne, withMenu(_m))
 	return &MenuUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
@@ -943,8 +1100,8 @@ func (c *MenuClient) Delete() *MenuDelete {
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *MenuClient) DeleteOne(m *Menu) *MenuDeleteOne {
-	return c.DeleteOneID(m.ID)
+func (c *MenuClient) DeleteOne(_m *Menu) *MenuDeleteOne {
+	return c.DeleteOneID(_m.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
@@ -979,64 +1136,64 @@ func (c *MenuClient) GetX(ctx context.Context, id int64) *Menu {
 }
 
 // QueryRoles queries the roles edge of a Menu.
-func (c *MenuClient) QueryRoles(m *Menu) *RoleQuery {
+func (c *MenuClient) QueryRoles(_m *Menu) *RoleQuery {
 	query := (&RoleClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := m.ID
+		id := _m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(menu.Table, menu.FieldID, id),
 			sqlgraph.To(role.Table, role.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, true, menu.RolesTable, menu.RolesPrimaryKey...),
 		)
-		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
 }
 
 // QueryParent queries the parent edge of a Menu.
-func (c *MenuClient) QueryParent(m *Menu) *MenuQuery {
+func (c *MenuClient) QueryParent(_m *Menu) *MenuQuery {
 	query := (&MenuClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := m.ID
+		id := _m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(menu.Table, menu.FieldID, id),
 			sqlgraph.To(menu.Table, menu.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, menu.ParentTable, menu.ParentColumn),
 		)
-		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
 }
 
 // QueryChildren queries the children edge of a Menu.
-func (c *MenuClient) QueryChildren(m *Menu) *MenuQuery {
+func (c *MenuClient) QueryChildren(_m *Menu) *MenuQuery {
 	query := (&MenuClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := m.ID
+		id := _m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(menu.Table, menu.FieldID, id),
 			sqlgraph.To(menu.Table, menu.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, menu.ChildrenTable, menu.ChildrenColumn),
 		)
-		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
 }
 
 // QueryParams queries the params edge of a Menu.
-func (c *MenuClient) QueryParams(m *Menu) *MenuParamQuery {
+func (c *MenuClient) QueryParams(_m *Menu) *MenuParamQuery {
 	query := (&MenuParamClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := m.ID
+		id := _m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(menu.Table, menu.FieldID, id),
 			sqlgraph.To(menuparam.Table, menuparam.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, menu.ParamsTable, menu.ParamsColumn),
 		)
-		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
@@ -1122,8 +1279,8 @@ func (c *MenuParamClient) Update() *MenuParamUpdate {
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *MenuParamClient) UpdateOne(mp *MenuParam) *MenuParamUpdateOne {
-	mutation := newMenuParamMutation(c.config, OpUpdateOne, withMenuParam(mp))
+func (c *MenuParamClient) UpdateOne(_m *MenuParam) *MenuParamUpdateOne {
+	mutation := newMenuParamMutation(c.config, OpUpdateOne, withMenuParam(_m))
 	return &MenuParamUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
@@ -1140,8 +1297,8 @@ func (c *MenuParamClient) Delete() *MenuParamDelete {
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *MenuParamClient) DeleteOne(mp *MenuParam) *MenuParamDeleteOne {
-	return c.DeleteOneID(mp.ID)
+func (c *MenuParamClient) DeleteOne(_m *MenuParam) *MenuParamDeleteOne {
+	return c.DeleteOneID(_m.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
@@ -1176,16 +1333,16 @@ func (c *MenuParamClient) GetX(ctx context.Context, id int64) *MenuParam {
 }
 
 // QueryMenus queries the menus edge of a MenuParam.
-func (c *MenuParamClient) QueryMenus(mp *MenuParam) *MenuQuery {
+func (c *MenuParamClient) QueryMenus(_m *MenuParam) *MenuQuery {
 	query := (&MenuClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := mp.ID
+		id := _m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(menuparam.Table, menuparam.FieldID, id),
 			sqlgraph.To(menu.Table, menu.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, menuparam.MenusTable, menuparam.MenusColumn),
 		)
-		fromV = sqlgraph.Neighbors(mp.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
@@ -1271,8 +1428,8 @@ func (c *RoleClient) Update() *RoleUpdate {
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *RoleClient) UpdateOne(r *Role) *RoleUpdateOne {
-	mutation := newRoleMutation(c.config, OpUpdateOne, withRole(r))
+func (c *RoleClient) UpdateOne(_m *Role) *RoleUpdateOne {
+	mutation := newRoleMutation(c.config, OpUpdateOne, withRole(_m))
 	return &RoleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
@@ -1289,8 +1446,8 @@ func (c *RoleClient) Delete() *RoleDelete {
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *RoleClient) DeleteOne(r *Role) *RoleDeleteOne {
-	return c.DeleteOneID(r.ID)
+func (c *RoleClient) DeleteOne(_m *Role) *RoleDeleteOne {
+	return c.DeleteOneID(_m.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
@@ -1325,32 +1482,32 @@ func (c *RoleClient) GetX(ctx context.Context, id int64) *Role {
 }
 
 // QueryMenus queries the menus edge of a Role.
-func (c *RoleClient) QueryMenus(r *Role) *MenuQuery {
+func (c *RoleClient) QueryMenus(_m *Role) *MenuQuery {
 	query := (&MenuClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := r.ID
+		id := _m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(role.Table, role.FieldID, id),
 			sqlgraph.To(menu.Table, menu.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, role.MenusTable, role.MenusPrimaryKey...),
 		)
-		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
 }
 
 // QueryUsers queries the users edge of a Role.
-func (c *RoleClient) QueryUsers(r *Role) *UserQuery {
+func (c *RoleClient) QueryUsers(_m *Role) *UserQuery {
 	query := (&UserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := r.ID
+		id := _m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(role.Table, role.FieldID, id),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, true, role.UsersTable, role.UsersPrimaryKey...),
 		)
-		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
@@ -1378,6 +1535,272 @@ func (c *RoleClient) mutate(ctx context.Context, m *RoleMutation) (Value, error)
 		return (&RoleDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown Role mutation op: %q", m.Op())
+	}
+}
+
+// SmsClient is a client for the Sms schema.
+type SmsClient struct {
+	config
+}
+
+// NewSmsClient returns a client for the Sms from the given config.
+func NewSmsClient(c config) *SmsClient {
+	return &SmsClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `sms.Hooks(f(g(h())))`.
+func (c *SmsClient) Use(hooks ...Hook) {
+	c.hooks.Sms = append(c.hooks.Sms, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `sms.Intercept(f(g(h())))`.
+func (c *SmsClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Sms = append(c.inters.Sms, interceptors...)
+}
+
+// Create returns a builder for creating a Sms entity.
+func (c *SmsClient) Create() *SmsCreate {
+	mutation := newSmsMutation(c.config, OpCreate)
+	return &SmsCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Sms entities.
+func (c *SmsClient) CreateBulk(builders ...*SmsCreate) *SmsCreateBulk {
+	return &SmsCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *SmsClient) MapCreateBulk(slice any, setFunc func(*SmsCreate, int)) *SmsCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &SmsCreateBulk{err: fmt.Errorf("calling to SmsClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*SmsCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &SmsCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Sms.
+func (c *SmsClient) Update() *SmsUpdate {
+	mutation := newSmsMutation(c.config, OpUpdate)
+	return &SmsUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SmsClient) UpdateOne(_m *Sms) *SmsUpdateOne {
+	mutation := newSmsMutation(c.config, OpUpdateOne, withSms(_m))
+	return &SmsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SmsClient) UpdateOneID(id int64) *SmsUpdateOne {
+	mutation := newSmsMutation(c.config, OpUpdateOne, withSmsID(id))
+	return &SmsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Sms.
+func (c *SmsClient) Delete() *SmsDelete {
+	mutation := newSmsMutation(c.config, OpDelete)
+	return &SmsDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SmsClient) DeleteOne(_m *Sms) *SmsDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SmsClient) DeleteOneID(id int64) *SmsDeleteOne {
+	builder := c.Delete().Where(sms.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SmsDeleteOne{builder}
+}
+
+// Query returns a query builder for Sms.
+func (c *SmsClient) Query() *SmsQuery {
+	return &SmsQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSms},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Sms entity by its id.
+func (c *SmsClient) Get(ctx context.Context, id int64) (*Sms, error) {
+	return c.Query().Where(sms.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SmsClient) GetX(ctx context.Context, id int64) *Sms {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *SmsClient) Hooks() []Hook {
+	return c.hooks.Sms
+}
+
+// Interceptors returns the client interceptors.
+func (c *SmsClient) Interceptors() []Interceptor {
+	return c.inters.Sms
+}
+
+func (c *SmsClient) mutate(ctx context.Context, m *SmsMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SmsCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SmsUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SmsUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SmsDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Sms mutation op: %q", m.Op())
+	}
+}
+
+// SmsLogClient is a client for the SmsLog schema.
+type SmsLogClient struct {
+	config
+}
+
+// NewSmsLogClient returns a client for the SmsLog from the given config.
+func NewSmsLogClient(c config) *SmsLogClient {
+	return &SmsLogClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `smslog.Hooks(f(g(h())))`.
+func (c *SmsLogClient) Use(hooks ...Hook) {
+	c.hooks.SmsLog = append(c.hooks.SmsLog, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `smslog.Intercept(f(g(h())))`.
+func (c *SmsLogClient) Intercept(interceptors ...Interceptor) {
+	c.inters.SmsLog = append(c.inters.SmsLog, interceptors...)
+}
+
+// Create returns a builder for creating a SmsLog entity.
+func (c *SmsLogClient) Create() *SmsLogCreate {
+	mutation := newSmsLogMutation(c.config, OpCreate)
+	return &SmsLogCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SmsLog entities.
+func (c *SmsLogClient) CreateBulk(builders ...*SmsLogCreate) *SmsLogCreateBulk {
+	return &SmsLogCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *SmsLogClient) MapCreateBulk(slice any, setFunc func(*SmsLogCreate, int)) *SmsLogCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &SmsLogCreateBulk{err: fmt.Errorf("calling to SmsLogClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*SmsLogCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &SmsLogCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SmsLog.
+func (c *SmsLogClient) Update() *SmsLogUpdate {
+	mutation := newSmsLogMutation(c.config, OpUpdate)
+	return &SmsLogUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SmsLogClient) UpdateOne(_m *SmsLog) *SmsLogUpdateOne {
+	mutation := newSmsLogMutation(c.config, OpUpdateOne, withSmsLog(_m))
+	return &SmsLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SmsLogClient) UpdateOneID(id int64) *SmsLogUpdateOne {
+	mutation := newSmsLogMutation(c.config, OpUpdateOne, withSmsLogID(id))
+	return &SmsLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SmsLog.
+func (c *SmsLogClient) Delete() *SmsLogDelete {
+	mutation := newSmsLogMutation(c.config, OpDelete)
+	return &SmsLogDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SmsLogClient) DeleteOne(_m *SmsLog) *SmsLogDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SmsLogClient) DeleteOneID(id int64) *SmsLogDeleteOne {
+	builder := c.Delete().Where(smslog.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SmsLogDeleteOne{builder}
+}
+
+// Query returns a query builder for SmsLog.
+func (c *SmsLogClient) Query() *SmsLogQuery {
+	return &SmsLogQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSmsLog},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a SmsLog entity by its id.
+func (c *SmsLogClient) Get(ctx context.Context, id int64) (*SmsLog, error) {
+	return c.Query().Where(smslog.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SmsLogClient) GetX(ctx context.Context, id int64) *SmsLog {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *SmsLogClient) Hooks() []Hook {
+	return c.hooks.SmsLog
+}
+
+// Interceptors returns the client interceptors.
+func (c *SmsLogClient) Interceptors() []Interceptor {
+	return c.inters.SmsLog
+}
+
+func (c *SmsLogClient) mutate(ctx context.Context, m *SmsLogMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SmsLogCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SmsLogUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SmsLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SmsLogDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown SmsLog mutation op: %q", m.Op())
 	}
 }
 
@@ -1436,8 +1859,8 @@ func (c *SurveyClient) Update() *SurveyUpdate {
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *SurveyClient) UpdateOne(s *Survey) *SurveyUpdateOne {
-	mutation := newSurveyMutation(c.config, OpUpdateOne, withSurvey(s))
+func (c *SurveyClient) UpdateOne(_m *Survey) *SurveyUpdateOne {
+	mutation := newSurveyMutation(c.config, OpUpdateOne, withSurvey(_m))
 	return &SurveyUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
@@ -1454,8 +1877,8 @@ func (c *SurveyClient) Delete() *SurveyDelete {
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *SurveyClient) DeleteOne(s *Survey) *SurveyDeleteOne {
-	return c.DeleteOneID(s.ID)
+func (c *SurveyClient) DeleteOne(_m *Survey) *SurveyDeleteOne {
+	return c.DeleteOneID(_m.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
@@ -1487,6 +1910,38 @@ func (c *SurveyClient) GetX(ctx context.Context, id int64) *Survey {
 		panic(err)
 	}
 	return obj
+}
+
+// QueryQuestion queries the question edge of a Survey.
+func (c *SurveyClient) QueryQuestion(_m *Survey) *SurveyQuestionQuery {
+	query := (&SurveyQuestionClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(survey.Table, survey.FieldID, id),
+			sqlgraph.To(surveyquestion.Table, surveyquestion.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, survey.QuestionTable, survey.QuestionColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryResponse queries the response edge of a Survey.
+func (c *SurveyClient) QueryResponse(_m *Survey) *SurveyResponseQuery {
+	query := (&SurveyResponseClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(survey.Table, survey.FieldID, id),
+			sqlgraph.To(surveyresponse.Table, surveyresponse.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, survey.ResponseTable, survey.ResponseColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -1569,8 +2024,8 @@ func (c *SurveyQuestionClient) Update() *SurveyQuestionUpdate {
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *SurveyQuestionClient) UpdateOne(sq *SurveyQuestion) *SurveyQuestionUpdateOne {
-	mutation := newSurveyQuestionMutation(c.config, OpUpdateOne, withSurveyQuestion(sq))
+func (c *SurveyQuestionClient) UpdateOne(_m *SurveyQuestion) *SurveyQuestionUpdateOne {
+	mutation := newSurveyQuestionMutation(c.config, OpUpdateOne, withSurveyQuestion(_m))
 	return &SurveyQuestionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
@@ -1587,8 +2042,8 @@ func (c *SurveyQuestionClient) Delete() *SurveyQuestionDelete {
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *SurveyQuestionClient) DeleteOne(sq *SurveyQuestion) *SurveyQuestionDeleteOne {
-	return c.DeleteOneID(sq.ID)
+func (c *SurveyQuestionClient) DeleteOne(_m *SurveyQuestion) *SurveyQuestionDeleteOne {
+	return c.DeleteOneID(_m.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
@@ -1620,6 +2075,38 @@ func (c *SurveyQuestionClient) GetX(ctx context.Context, id int64) *SurveyQuesti
 		panic(err)
 	}
 	return obj
+}
+
+// QuerySurvey queries the survey edge of a SurveyQuestion.
+func (c *SurveyQuestionClient) QuerySurvey(_m *SurveyQuestion) *SurveyQuery {
+	query := (&SurveyClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(surveyquestion.Table, surveyquestion.FieldID, id),
+			sqlgraph.To(survey.Table, survey.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, surveyquestion.SurveyTable, surveyquestion.SurveyColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryAnswers queries the answers edge of a SurveyQuestion.
+func (c *SurveyQuestionClient) QueryAnswers(_m *SurveyQuestion) *SurveyResponseAnswersQuery {
+	query := (&SurveyResponseAnswersClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(surveyquestion.Table, surveyquestion.FieldID, id),
+			sqlgraph.To(surveyresponseanswers.Table, surveyresponseanswers.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, surveyquestion.AnswersTable, surveyquestion.AnswersColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -1702,8 +2189,8 @@ func (c *SurveyResponseClient) Update() *SurveyResponseUpdate {
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *SurveyResponseClient) UpdateOne(sr *SurveyResponse) *SurveyResponseUpdateOne {
-	mutation := newSurveyResponseMutation(c.config, OpUpdateOne, withSurveyResponse(sr))
+func (c *SurveyResponseClient) UpdateOne(_m *SurveyResponse) *SurveyResponseUpdateOne {
+	mutation := newSurveyResponseMutation(c.config, OpUpdateOne, withSurveyResponse(_m))
 	return &SurveyResponseUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
@@ -1720,8 +2207,8 @@ func (c *SurveyResponseClient) Delete() *SurveyResponseDelete {
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *SurveyResponseClient) DeleteOne(sr *SurveyResponse) *SurveyResponseDeleteOne {
-	return c.DeleteOneID(sr.ID)
+func (c *SurveyResponseClient) DeleteOne(_m *SurveyResponse) *SurveyResponseDeleteOne {
+	return c.DeleteOneID(_m.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
@@ -1753,6 +2240,38 @@ func (c *SurveyResponseClient) GetX(ctx context.Context, id int64) *SurveyRespon
 		panic(err)
 	}
 	return obj
+}
+
+// QuerySurvey queries the survey edge of a SurveyResponse.
+func (c *SurveyResponseClient) QuerySurvey(_m *SurveyResponse) *SurveyQuery {
+	query := (&SurveyClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(surveyresponse.Table, surveyresponse.FieldID, id),
+			sqlgraph.To(survey.Table, survey.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, surveyresponse.SurveyTable, surveyresponse.SurveyColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryAnswers queries the answers edge of a SurveyResponse.
+func (c *SurveyResponseClient) QueryAnswers(_m *SurveyResponse) *SurveyResponseAnswersQuery {
+	query := (&SurveyResponseAnswersClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(surveyresponse.Table, surveyresponse.FieldID, id),
+			sqlgraph.To(surveyresponseanswers.Table, surveyresponseanswers.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, surveyresponse.AnswersTable, surveyresponse.AnswersColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -1835,8 +2354,8 @@ func (c *SurveyResponseAnswersClient) Update() *SurveyResponseAnswersUpdate {
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *SurveyResponseAnswersClient) UpdateOne(sra *SurveyResponseAnswers) *SurveyResponseAnswersUpdateOne {
-	mutation := newSurveyResponseAnswersMutation(c.config, OpUpdateOne, withSurveyResponseAnswers(sra))
+func (c *SurveyResponseAnswersClient) UpdateOne(_m *SurveyResponseAnswers) *SurveyResponseAnswersUpdateOne {
+	mutation := newSurveyResponseAnswersMutation(c.config, OpUpdateOne, withSurveyResponseAnswers(_m))
 	return &SurveyResponseAnswersUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
@@ -1853,8 +2372,8 @@ func (c *SurveyResponseAnswersClient) Delete() *SurveyResponseAnswersDelete {
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *SurveyResponseAnswersClient) DeleteOne(sra *SurveyResponseAnswers) *SurveyResponseAnswersDeleteOne {
-	return c.DeleteOneID(sra.ID)
+func (c *SurveyResponseAnswersClient) DeleteOne(_m *SurveyResponseAnswers) *SurveyResponseAnswersDeleteOne {
+	return c.DeleteOneID(_m.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
@@ -1886,6 +2405,38 @@ func (c *SurveyResponseAnswersClient) GetX(ctx context.Context, id int64) *Surve
 		panic(err)
 	}
 	return obj
+}
+
+// QueryResponse queries the response edge of a SurveyResponseAnswers.
+func (c *SurveyResponseAnswersClient) QueryResponse(_m *SurveyResponseAnswers) *SurveyResponseQuery {
+	query := (&SurveyResponseClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(surveyresponseanswers.Table, surveyresponseanswers.FieldID, id),
+			sqlgraph.To(surveyresponse.Table, surveyresponse.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, surveyresponseanswers.ResponseTable, surveyresponseanswers.ResponseColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryQuestion queries the question edge of a SurveyResponseAnswers.
+func (c *SurveyResponseAnswersClient) QueryQuestion(_m *SurveyResponseAnswers) *SurveyQuestionQuery {
+	query := (&SurveyQuestionClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(surveyresponseanswers.Table, surveyresponseanswers.FieldID, id),
+			sqlgraph.To(surveyquestion.Table, surveyquestion.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, surveyresponseanswers.QuestionTable, surveyresponseanswers.QuestionColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -1968,8 +2519,8 @@ func (c *TokenClient) Update() *TokenUpdate {
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *TokenClient) UpdateOne(t *Token) *TokenUpdateOne {
-	mutation := newTokenMutation(c.config, OpUpdateOne, withToken(t))
+func (c *TokenClient) UpdateOne(_m *Token) *TokenUpdateOne {
+	mutation := newTokenMutation(c.config, OpUpdateOne, withToken(_m))
 	return &TokenUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
@@ -1986,8 +2537,8 @@ func (c *TokenClient) Delete() *TokenDelete {
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *TokenClient) DeleteOne(t *Token) *TokenDeleteOne {
-	return c.DeleteOneID(t.ID)
+func (c *TokenClient) DeleteOne(_m *Token) *TokenDeleteOne {
+	return c.DeleteOneID(_m.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
@@ -2022,16 +2573,16 @@ func (c *TokenClient) GetX(ctx context.Context, id int64) *Token {
 }
 
 // QueryOwner queries the owner edge of a Token.
-func (c *TokenClient) QueryOwner(t *Token) *UserQuery {
+func (c *TokenClient) QueryOwner(_m *Token) *UserQuery {
 	query := (&UserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := t.ID
+		id := _m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(token.Table, token.FieldID, id),
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.O2O, true, token.OwnerTable, token.OwnerColumn),
 		)
-		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
@@ -2117,8 +2668,8 @@ func (c *UserClient) Update() *UserUpdate {
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *UserClient) UpdateOne(u *User) *UserUpdateOne {
-	mutation := newUserMutation(c.config, OpUpdateOne, withUser(u))
+func (c *UserClient) UpdateOne(_m *User) *UserUpdateOne {
+	mutation := newUserMutation(c.config, OpUpdateOne, withUser(_m))
 	return &UserUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
@@ -2135,8 +2686,8 @@ func (c *UserClient) Delete() *UserDelete {
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *UserClient) DeleteOne(u *User) *UserDeleteOne {
-	return c.DeleteOneID(u.ID)
+func (c *UserClient) DeleteOne(_m *User) *UserDeleteOne {
+	return c.DeleteOneID(_m.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
@@ -2171,48 +2722,32 @@ func (c *UserClient) GetX(ctx context.Context, id int64) *User {
 }
 
 // QueryToken queries the token edge of a User.
-func (c *UserClient) QueryToken(u *User) *TokenQuery {
+func (c *UserClient) QueryToken(_m *User) *TokenQuery {
 	query := (&TokenClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := u.ID
+		id := _m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(user.Table, user.FieldID, id),
 			sqlgraph.To(token.Table, token.FieldID),
 			sqlgraph.Edge(sqlgraph.O2O, false, user.TokenTable, user.TokenColumn),
 		)
-		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// QueryTags queries the tags edge of a User.
-func (c *UserClient) QueryTags(u *User) *DictionaryDetailQuery {
-	query := (&DictionaryDetailClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := u.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(user.Table, user.FieldID, id),
-			sqlgraph.To(dictionarydetail.Table, dictionarydetail.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, user.TagsTable, user.TagsColumn),
-		)
-		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
 }
 
 // QueryRoles queries the roles edge of a User.
-func (c *UserClient) QueryRoles(u *User) *RoleQuery {
+func (c *UserClient) QueryRoles(_m *User) *RoleQuery {
 	query := (&RoleClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := u.ID
+		id := _m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(user.Table, user.FieldID, id),
 			sqlgraph.To(role.Table, role.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, user.RolesTable, user.RolesPrimaryKey...),
 		)
-		fromV = sqlgraph.Neighbors(u.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
@@ -2246,12 +2781,13 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		API, Dictionary, DictionaryDetail, Logs, Menu, MenuParam, Role, Survey,
-		SurveyQuestion, SurveyResponse, SurveyResponseAnswers, Token, User []ent.Hook
+		API, Area, Dictionary, DictionaryDetail, Logs, Menu, MenuParam, Role, Sms,
+		SmsLog, Survey, SurveyQuestion, SurveyResponse, SurveyResponseAnswers, Token,
+		User []ent.Hook
 	}
 	inters struct {
-		API, Dictionary, DictionaryDetail, Logs, Menu, MenuParam, Role, Survey,
-		SurveyQuestion, SurveyResponse, SurveyResponseAnswers, Token,
+		API, Area, Dictionary, DictionaryDetail, Logs, Menu, MenuParam, Role, Sms,
+		SmsLog, Survey, SurveyQuestion, SurveyResponse, SurveyResponseAnswers, Token,
 		User []ent.Interceptor
 	}
 )

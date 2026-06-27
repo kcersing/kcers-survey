@@ -4,6 +4,7 @@ package service
 
 import (
 	"github.com/cloudwego/hertz/pkg/app"
+	"kcers-survey/biz/mw"
 )
 
 func rootMw() []app.HandlerFunc {
@@ -13,7 +14,9 @@ func rootMw() []app.HandlerFunc {
 
 func _serviceMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		mw.LogMw(),
+	}
 }
 
 func _surveyMw() []app.HandlerFunc {
@@ -82,6 +85,76 @@ func _updateresponseMw() []app.HandlerFunc {
 }
 
 func _updatesurveyMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _questionMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getquestionMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _listquestionMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _responseMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _treequestionMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getnextMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getresponseanswersMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getquestionstatisticsbasicMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getquestionmapMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getsurveyheatmapMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getsurveyresponseheatmapMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getquestionanswerslistMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _listresponseexportMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getsurveystatisticsMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }

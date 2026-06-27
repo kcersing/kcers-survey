@@ -14,6 +14,7 @@ import (
 	"kcers-survey/biz/infras/do"
 	"kcers-survey/biz/infras/enums"
 	"kcers-survey/biz/infras/service"
+	"kcers-survey/biz/infras/service/common"
 	"kcers-survey/biz/pkg/encrypt"
 	"kcers-survey/idl_gen/model/user"
 	"time"
@@ -28,15 +29,6 @@ type User struct {
 }
 
 func (u *User) SetDefaultVenue(id, venueId int64) error {
-	_, err := u.db.User.Update().
-		Where(user2.IDEQ(id)).
-		SetDefaultVenueID(venueId).
-		Save(u.ctx)
-
-	if err != nil {
-		err = errors.Wrap(err, "update DefaultVenue  ID   failed")
-		return err
-	}
 
 	return nil
 }
@@ -66,14 +58,16 @@ func (u *User) GetUserName(id int64) (name string) {
 	return ""
 }
 func (u *User) Info(id int64) (info *user.UserInfo, err error) {
-
-	userEnt, err := u.db.User.Query().Where(user2.IDEQ(id)).First(u.ctx)
+	var userEnt *ent.User
+	if id > 0 {
+		userEnt, err = common.GetUser(u.db, id)
+	} else {
+		userEnt, err = common.GetTokenUser(u.ctx, u.c, u.db)
+	}
 	if err != nil {
-		err = errors.Wrap(err, "get user failed")
 		return info, err
 	}
 	info = u.entUserInfo(*userEnt)
-
 	return
 }
 

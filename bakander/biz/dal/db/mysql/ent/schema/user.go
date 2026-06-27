@@ -24,9 +24,6 @@ func (User) Fields() []ent.Field {
 		field.String("username").Unique().Comment("user's login name | 登录名"),
 		field.String("password").Comment("password | 密码"),
 
-		field.JSON("functions", []string{}).Comment("functions | 职能"),
-		field.Int64("job_time").Default(1).Comment("job time | [1:全职;2:兼职;]").Optional(),
-
 		field.String("detail").Comment("详情").Optional(),
 
 		field.String("side_mode").Optional().Default("dark").Comment("template mode | 布局方式"),
@@ -35,10 +32,6 @@ func (User) Fields() []ent.Field {
 
 		field.String("email").Optional().Comment("email | 邮箱号"),
 		field.String("wecom").Optional().Comment("wecom | 微信号"),
-
-		field.String("organization").Optional().Comment("部门"),
-
-		field.Int64("default_venue_id").Optional().Comment("登陆后默认场馆ID"),
 
 		field.String("avatar").
 			SchemaType(map[string]string{dialect.MySQL: "varchar(512)"}).
@@ -60,7 +53,6 @@ func (User) Edges() []ent.Edge {
 	return []ent.Edge{
 
 		edge.To("token", Token.Type).Unique(),
-		edge.To("tags", DictionaryDetail.Type),
 
 		edge.To("roles", Role.Type),
 	}

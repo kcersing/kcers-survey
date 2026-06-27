@@ -35,6 +35,33 @@ var (
 			},
 		},
 	}
+	// SysAreaColumns holds the columns for the "sys_area" table.
+	SysAreaColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Increment: true, Comment: "primary key"},
+		{Name: "created_at", Type: field.TypeTime, Nullable: true, Comment: "created time"},
+		{Name: "updated_at", Type: field.TypeTime, Nullable: true, Comment: "last update time"},
+		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
+		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
+		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
+		{Name: "parent_id", Type: field.TypeInt64, Nullable: true, Comment: "上级区域ID"},
+		{Name: "level", Type: field.TypeInt64, Nullable: true, Comment: "行政区域等级 1-省 2-市 3-区县 4-街道镇"},
+		{Name: "name", Type: field.TypeString, Nullable: true, Comment: "名称"},
+		{Name: "whole_name", Type: field.TypeString, Unique: true, Nullable: true, Comment: "完整名称"},
+		{Name: "lon", Type: field.TypeString, Nullable: true, Comment: "本区域经度"},
+		{Name: "lat", Type: field.TypeString, Nullable: true, Comment: "本区域维度"},
+		{Name: "city_code", Type: field.TypeString, Nullable: true, Comment: "电话区号"},
+		{Name: "zip_code", Type: field.TypeString, Nullable: true, Comment: "邮政编码"},
+		{Name: "area_code", Type: field.TypeString, Nullable: true, Comment: "行政区划代码"},
+		{Name: "pin_yin", Type: field.TypeString, Nullable: true, Comment: "名称全拼"},
+		{Name: "simple_py", Type: field.TypeString, Nullable: true, Comment: "首字母简拼"},
+		{Name: "per_pin_yin", Type: field.TypeString, Nullable: true, Comment: "区域名称拼音的第一个字母"},
+	}
+	// SysAreaTable holds the schema information for the "sys_area" table.
+	SysAreaTable = &schema.Table{
+		Name:       "sys_area",
+		Columns:    SysAreaColumns,
+		PrimaryKey: []*schema.Column{SysAreaColumns[0]},
+	}
 	// SysDictionariesColumns holds the columns for the "sys_dictionaries" table.
 	SysDictionariesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true, Comment: "primary key"},
@@ -65,7 +92,6 @@ var (
 		{Name: "key", Type: field.TypeString, Comment: "key | 键"},
 		{Name: "value", Type: field.TypeString, Comment: "value | 值"},
 		{Name: "dictionary_id", Type: field.TypeInt64, Nullable: true, Comment: "Dictionary ID | 字典ID"},
-		{Name: "user_tags", Type: field.TypeInt64, Nullable: true},
 	}
 	// SysDictionaryDetailsTable holds the schema information for the "sys_dictionary_details" table.
 	SysDictionaryDetailsTable = &schema.Table{
@@ -77,12 +103,6 @@ var (
 				Symbol:     "sys_dictionary_details_sys_dictionaries_dictionary_details",
 				Columns:    []*schema.Column{SysDictionaryDetailsColumns[9]},
 				RefColumns: []*schema.Column{SysDictionariesColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-			{
-				Symbol:     "sys_dictionary_details_sys_users_tags",
-				Columns:    []*schema.Column{SysDictionaryDetailsColumns[10]},
-				RefColumns: []*schema.Column{SysUsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
@@ -108,7 +128,7 @@ var (
 		{Name: "req_content", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "content of request log | 日志请求内容"},
 		{Name: "resp_content", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "content of response log | 日志返回内容"},
 		{Name: "ip", Type: field.TypeString, Nullable: true, Comment: "ip of log | 日志IP"},
-		{Name: "user_agent", Type: field.TypeString, Nullable: true, Comment: "user_agent of log | 日志用户客户端"},
+		{Name: "user_agent", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "user_agent of log | 日志用户客户端"},
 		{Name: "operatorsr", Type: field.TypeString, Nullable: true, Comment: "operator of log | 日志操作者"},
 		{Name: "time", Type: field.TypeInt64, Nullable: true, Comment: "time of log(millisecond) | 日志时间(毫秒)"},
 		{Name: "identity", Type: field.TypeInt64, Nullable: true, Comment: "1会员2员工 | 身份"},
@@ -134,10 +154,14 @@ var (
 		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "path", Type: field.TypeString, Nullable: true, Comment: "index path | 菜单路由路径", Default: ""},
+		{Name: "sort", Type: field.TypeInt64, Nullable: true, Comment: "sort | 排序编号", Default: 0},
 		{Name: "name", Type: field.TypeString, Comment: "index name | 菜单名称"},
 		{Name: "order_no", Type: field.TypeInt64, Comment: "sorting numbers | 排序编号", Default: 0},
 		{Name: "disabled", Type: field.TypeInt64, Nullable: true, Comment: "disable status | 是否停用", Default: 0},
 		{Name: "ignore", Type: field.TypeBool, Nullable: true, Comment: "当前路由是否渲染菜单项，为 true 的话不会在菜单中显示，但可通过路由地址访问", Default: false},
+		{Name: "redirect", Type: field.TypeString, Nullable: true, Comment: "redirect path | 跳转路径 （外链）", Default: ""},
+		{Name: "component", Type: field.TypeString, Nullable: true, Comment: "the path of vue file | 组件路径", Default: ""},
+		{Name: "icon", Type: field.TypeString, Comment: "menu icon | 菜单图标"},
 		{Name: "parent_id", Type: field.TypeInt64, Nullable: true, Comment: "parent menu ID | 父菜单ID"},
 	}
 	// SysMenusTable holds the schema information for the "sys_menus" table.
@@ -148,7 +172,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "sys_menus_sys_menus_children",
-				Columns:    []*schema.Column{SysMenusColumns[10]},
+				Columns:    []*schema.Column{SysMenusColumns[14]},
 				RefColumns: []*schema.Column{SysMenusColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -193,7 +217,7 @@ var (
 		{Name: "default_router", Type: field.TypeString, Comment: "default menu : dashboard | 默认登录页面", Default: "dashboard"},
 		{Name: "remark", Type: field.TypeString, Comment: "remark | 备注", Default: ""},
 		{Name: "order_no", Type: field.TypeInt64, Comment: "order number | 排序编号", Default: 0},
-		{Name: "apis", Type: field.TypeJSON, Comment: "apis"},
+		{Name: "apis", Type: field.TypeJSON, Comment: "接口权限列表 | 接口权限列表"},
 		{Name: "venue_id", Type: field.TypeInt64, Comment: "场馆ID", Default: 0},
 	}
 	// SysRolesTable holds the schema information for the "sys_roles" table.
@@ -201,6 +225,43 @@ var (
 		Name:       "sys_roles",
 		Columns:    SysRolesColumns,
 		PrimaryKey: []*schema.Column{SysRolesColumns[0]},
+	}
+	// SysSmsColumns holds the columns for the "sys_sms" table.
+	SysSmsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Increment: true, Comment: "primary key"},
+		{Name: "created_at", Type: field.TypeTime, Nullable: true, Comment: "created time"},
+		{Name: "updated_at", Type: field.TypeTime, Nullable: true, Comment: "last update time"},
+		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
+		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
+		{Name: "notice_count", Type: field.TypeInt64, Comment: "通知短信数量", Default: 0},
+		{Name: "used_notice", Type: field.TypeInt64, Comment: "已用通知", Default: 0},
+	}
+	// SysSmsTable holds the schema information for the "sys_sms" table.
+	SysSmsTable = &schema.Table{
+		Name:       "sys_sms",
+		Columns:    SysSmsColumns,
+		PrimaryKey: []*schema.Column{SysSmsColumns[0]},
+	}
+	// SysSmsLogColumns holds the columns for the "sys_sms_log" table.
+	SysSmsLogColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Increment: true, Comment: "primary key"},
+		{Name: "created_at", Type: field.TypeTime, Nullable: true, Comment: "created time"},
+		{Name: "updated_at", Type: field.TypeTime, Nullable: true, Comment: "last update time"},
+		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
+		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
+		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
+		{Name: "mobile", Type: field.TypeString, Comment: "手机号"},
+		{Name: "biz_id", Type: field.TypeString, Comment: "BizId"},
+		{Name: "code", Type: field.TypeString, Comment: "验证码"},
+		{Name: "content", Type: field.TypeString, Comment: "内容", Default: ""},
+		{Name: "notify_type", Type: field.TypeInt64, Nullable: true, Comment: "通知类型[1会员;2员工]"},
+		{Name: "template", Type: field.TypeString, Comment: "短信模板"},
+	}
+	// SysSmsLogTable holds the schema information for the "sys_sms_log" table.
+	SysSmsLogTable = &schema.Table{
+		Name:       "sys_sms_log",
+		Columns:    SysSmsLogColumns,
+		PrimaryKey: []*schema.Column{SysSmsLogColumns[0]},
 	}
 	// SurveyColumns holds the columns for the "survey" table.
 	SurveyColumns = []*schema.Column{
@@ -210,11 +271,11 @@ var (
 		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
-		{Name: "title", Type: field.TypeString, Comment: "title"},
-		{Name: "pic", Type: field.TypeString, Comment: "pic"},
-		{Name: "desc", Type: field.TypeString, Size: 2147483647, Comment: "desc"},
-		{Name: "start_at", Type: field.TypeTime, Comment: "开始时间"},
-		{Name: "end_at", Type: field.TypeTime, Comment: "结束时间"},
+		{Name: "title", Type: field.TypeString, Nullable: true, Comment: "title", Default: ""},
+		{Name: "pic", Type: field.TypeString, Nullable: true, Comment: "pic", Default: ""},
+		{Name: "desc", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "desc", Default: ""},
+		{Name: "start_at", Type: field.TypeTime, Nullable: true, Comment: "开始时间"},
+		{Name: "end_at", Type: field.TypeTime, Nullable: true, Comment: "结束时间"},
 	}
 	// SurveyTable holds the schema information for the "survey" table.
 	SurveyTable = &schema.Table{
@@ -230,19 +291,33 @@ var (
 		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
-		{Name: "survey_id", Type: field.TypeInt64, Comment: "survey_id", Default: 0},
-		{Name: "parent_id", Type: field.TypeInt64, Comment: "parent_id", Default: 0},
-		{Name: "content", Type: field.TypeString, Size: 2147483647, Comment: "content"},
-		{Name: "type", Type: field.TypeString, Comment: "type"},
-		{Name: "sort", Type: field.TypeInt64, Comment: "sort", Default: 0},
-		{Name: "required", Type: field.TypeInt64, Comment: "是否必填 1必填 2选填", Default: 1},
-		{Name: "options", Type: field.TypeJSON, Comment: "存储选项"},
+		{Name: "parent_id", Type: field.TypeInt64, Nullable: true, Comment: "parent_id", Default: 0},
+		{Name: "serial", Type: field.TypeString, Nullable: true, Comment: "serial", Default: ""},
+		{Name: "content", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "content", Default: ""},
+		{Name: "type", Type: field.TypeString, Nullable: true, Comment: "type", Default: ""},
+		{Name: "options", Type: field.TypeJSON, Nullable: true, Comment: "options"},
+		{Name: "show", Type: field.TypeInt64, Nullable: true, Comment: "show", Default: 0},
+		{Name: "sort", Type: field.TypeInt64, Nullable: true, Comment: "sort", Default: 0},
+		{Name: "jump_rules", Type: field.TypeJSON, Nullable: true, Comment: "跳题规则"},
+		{Name: "required", Type: field.TypeInt64, Nullable: true, Comment: "是否必填 1必填 2选填", Default: 1},
+		{Name: "remark", Type: field.TypeString, Nullable: true, Comment: "remark", Default: ""},
+		{Name: "level", Type: field.TypeInt64, Nullable: true, Comment: "层级", Default: 0},
+		{Name: "tree", Type: field.TypeString, Nullable: true, Comment: "树", Default: ""},
+		{Name: "survey_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_id", Default: 0},
 	}
 	// SurveyQuestionTable holds the schema information for the "survey_question" table.
 	SurveyQuestionTable = &schema.Table{
 		Name:       "survey_question",
 		Columns:    SurveyQuestionColumns,
 		PrimaryKey: []*schema.Column{SurveyQuestionColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "survey_question_survey_question",
+				Columns:    []*schema.Column{SurveyQuestionColumns[18]},
+				RefColumns: []*schema.Column{SurveyColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// SurveyResponseColumns holds the columns for the "survey_response" table.
 	SurveyResponseColumns = []*schema.Column{
@@ -252,19 +327,38 @@ var (
 		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
-		{Name: "survey_id", Type: field.TypeInt64, Comment: "survey_id", Default: 0},
-		{Name: "ip", Type: field.TypeString, Comment: "用户IP地址", Default: ""},
-		{Name: "map", Type: field.TypeString, Comment: "用户地图坐标", Default: ""},
-		{Name: "device", Type: field.TypeString, Comment: "设备信息", Default: ""},
-		{Name: "audio", Type: field.TypeString, Comment: "音频", Default: ""},
-		{Name: "started_at", Type: field.TypeTime, Comment: "开始时间"},
-		{Name: "completed_at", Type: field.TypeTime, Comment: "完成时间"},
+		{Name: "sn", Type: field.TypeString, Nullable: true, Comment: "sn", Default: ""},
+		{Name: "respondent", Type: field.TypeString, Nullable: true, Comment: "受访人", Default: ""},
+		{Name: "respondent_phone", Type: field.TypeString, Nullable: true, Comment: "受访人联系电话", Default: ""},
+		{Name: "researcher", Type: field.TypeString, Nullable: true, Comment: "调研员", Default: ""},
+		{Name: "researcher_phone", Type: field.TypeString, Nullable: true, Comment: "调研员联系电话", Default: ""},
+		{Name: "pic", Type: field.TypeJSON, Nullable: true, Comment: "合照照片"},
+		{Name: "ip", Type: field.TypeString, Nullable: true, Comment: "用户IP地址", Default: ""},
+		{Name: "latitude", Type: field.TypeString, Nullable: true, Comment: "latitude", Default: ""},
+		{Name: "longitude", Type: field.TypeString, Nullable: true, Comment: "longitude", Default: ""},
+		{Name: "device", Type: field.TypeString, Nullable: true, Comment: "设备信息", Default: ""},
+		{Name: "audio", Type: field.TypeJSON, Nullable: true, Comment: "音频"},
+		{Name: "area", Type: field.TypeString, Nullable: true, Comment: "area", Default: ""},
+		{Name: "city", Type: field.TypeString, Nullable: true, Comment: "city", Default: ""},
+		{Name: "district", Type: field.TypeString, Nullable: true, Comment: "district", Default: ""},
+		{Name: "village", Type: field.TypeString, Nullable: true, Comment: "village", Default: ""},
+		{Name: "address", Type: field.TypeString, Nullable: true, Comment: "address", Default: ""},
+		{Name: "answers_count", Type: field.TypeInt64, Nullable: true, Comment: "answers count", Default: 0},
+		{Name: "survey_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_id", Default: 0},
 	}
 	// SurveyResponseTable holds the schema information for the "survey_response" table.
 	SurveyResponseTable = &schema.Table{
 		Name:       "survey_response",
 		Columns:    SurveyResponseColumns,
 		PrimaryKey: []*schema.Column{SurveyResponseColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "survey_response_survey_response",
+				Columns:    []*schema.Column{SurveyResponseColumns[23]},
+				RefColumns: []*schema.Column{SurveyColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// SurveyResponseAnswersColumns holds the columns for the "survey_response_answers" table.
 	SurveyResponseAnswersColumns = []*schema.Column{
@@ -274,17 +368,31 @@ var (
 		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "status", Type: field.TypeInt64, Nullable: true, Comment: "状态[0:禁用;1:正常]", Default: 1},
-		{Name: "survey_id", Type: field.TypeInt64, Comment: "survey_id", Default: 0},
-		{Name: "survey_response_id", Type: field.TypeInt64, Comment: "survey_response_id", Default: 0},
-		{Name: "survey_question_id", Type: field.TypeInt64, Comment: "survey_question_id", Default: 0},
-		{Name: "answer_text", Type: field.TypeString, Comment: "回答文本"},
-		{Name: "answer_value", Type: field.TypeInt64, Comment: "回答数值", Default: 1},
+		{Name: "survey_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_id", Default: 0},
+		{Name: "answer_text", Type: field.TypeString, Nullable: true, Comment: "回答文本"},
+		{Name: "answer", Type: field.TypeJSON, Nullable: true, Comment: "answer"},
+		{Name: "survey_question_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_question_id", Default: 0},
+		{Name: "survey_response_id", Type: field.TypeInt64, Nullable: true, Comment: "survey_response_id", Default: 0},
 	}
 	// SurveyResponseAnswersTable holds the schema information for the "survey_response_answers" table.
 	SurveyResponseAnswersTable = &schema.Table{
 		Name:       "survey_response_answers",
 		Columns:    SurveyResponseAnswersColumns,
 		PrimaryKey: []*schema.Column{SurveyResponseAnswersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "survey_response_answers_survey_question_answers",
+				Columns:    []*schema.Column{SurveyResponseAnswersColumns[9]},
+				RefColumns: []*schema.Column{SurveyQuestionColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "survey_response_answers_survey_response_answers",
+				Columns:    []*schema.Column{SurveyResponseAnswersColumns[10]},
+				RefColumns: []*schema.Column{SurveyResponseColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// SysTokensColumns holds the columns for the "sys_tokens" table.
 	SysTokensColumns = []*schema.Column{
@@ -294,8 +402,10 @@ var (
 		{Name: "delete", Type: field.TypeInt64, Nullable: true, Comment: "last delete  1:已删除", Default: 0},
 		{Name: "created_id", Type: field.TypeInt64, Nullable: true, Comment: "created", Default: 0},
 		{Name: "user_id", Type: field.TypeInt64, Unique: true, Comment: " User's ID | 用户的ID"},
-		{Name: "token", Type: field.TypeString, Comment: "Token string | Token 字符串"},
+		{Name: "token", Type: field.TypeString, Comment: "Token string | Token 字符串", SchemaType: map[string]string{"mysql": "varchar(5120)"}},
 		{Name: "type", Type: field.TypeInt64, Nullable: true, Comment: "类型[1会员;2员工]"},
+		{Name: "drive", Type: field.TypeString, Comment: "设备"},
+		{Name: "ip", Type: field.TypeString, Comment: "IP"},
 		{Name: "source", Type: field.TypeString, Comment: "Log in source such as GitHub | Token 来源 （本地为core, 第三方如github等）"},
 		{Name: "expired_at", Type: field.TypeTime, Comment: " Expire time | 过期时间"},
 		{Name: "user_token", Type: field.TypeInt64, Unique: true, Nullable: true},
@@ -308,7 +418,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "sys_tokens_sys_users_token",
-				Columns:    []*schema.Column{SysTokensColumns[10]},
+				Columns:    []*schema.Column{SysTokensColumns[12]},
 				RefColumns: []*schema.Column{SysUsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -322,7 +432,7 @@ var (
 			{
 				Name:    "token_expired_at",
 				Unique:  false,
-				Columns: []*schema.Column{SysTokensColumns[9]},
+				Columns: []*schema.Column{SysTokensColumns[11]},
 			},
 		},
 	}
@@ -339,16 +449,12 @@ var (
 		{Name: "gender", Type: field.TypeInt64, Nullable: true, Comment: "性别 | [0:女性;1:男性;3:保密]", Default: 3},
 		{Name: "username", Type: field.TypeString, Unique: true, Comment: "user's login name | 登录名"},
 		{Name: "password", Type: field.TypeString, Comment: "password | 密码"},
-		{Name: "functions", Type: field.TypeJSON, Comment: "functions | 职能"},
-		{Name: "job_time", Type: field.TypeInt64, Nullable: true, Comment: "job time | [1:全职;2:兼职;]", Default: 1},
 		{Name: "detail", Type: field.TypeString, Nullable: true, Comment: "详情"},
 		{Name: "side_mode", Type: field.TypeString, Nullable: true, Comment: "template mode | 布局方式", Default: "dark"},
 		{Name: "base_color", Type: field.TypeString, Nullable: true, Comment: "base color of template | 后台页面色调", Default: "#fff"},
 		{Name: "active_color", Type: field.TypeString, Nullable: true, Comment: "active color of template | 当前激活的颜色设定", Default: "#1890ff"},
 		{Name: "email", Type: field.TypeString, Nullable: true, Comment: "email | 邮箱号"},
 		{Name: "wecom", Type: field.TypeString, Nullable: true, Comment: "wecom | 微信号"},
-		{Name: "organization", Type: field.TypeString, Nullable: true, Comment: "部门"},
-		{Name: "default_venue_id", Type: field.TypeInt64, Nullable: true, Comment: "登陆后默认场馆ID"},
 		{Name: "avatar", Type: field.TypeString, Nullable: true, Comment: "avatar | 头像路径", SchemaType: map[string]string{"mysql": "varchar(512)"}},
 		{Name: "birthday", Type: field.TypeTime, Nullable: true, Comment: "出生日期"},
 	}
@@ -428,12 +534,15 @@ var (
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		SysApisTable,
+		SysAreaTable,
 		SysDictionariesTable,
 		SysDictionaryDetailsTable,
 		SysLogsTable,
 		SysMenusTable,
 		SysMenuParamsTable,
 		SysRolesTable,
+		SysSmsTable,
+		SysSmsLogTable,
 		SurveyTable,
 		SurveyQuestionTable,
 		SurveyResponseTable,
@@ -449,11 +558,13 @@ func init() {
 	SysApisTable.Annotation = &entsql.Annotation{
 		Table: "sys_apis",
 	}
+	SysAreaTable.Annotation = &entsql.Annotation{
+		Table: "sys_area",
+	}
 	SysDictionariesTable.Annotation = &entsql.Annotation{
 		Table: "sys_dictionaries",
 	}
 	SysDictionaryDetailsTable.ForeignKeys[0].RefTable = SysDictionariesTable
-	SysDictionaryDetailsTable.ForeignKeys[1].RefTable = SysUsersTable
 	SysDictionaryDetailsTable.Annotation = &entsql.Annotation{
 		Table: "sys_dictionary_details",
 	}
@@ -471,15 +582,25 @@ func init() {
 	SysRolesTable.Annotation = &entsql.Annotation{
 		Table: "sys_roles",
 	}
+	SysSmsTable.Annotation = &entsql.Annotation{
+		Table: "sys_sms",
+	}
+	SysSmsLogTable.Annotation = &entsql.Annotation{
+		Table: "sys_sms_log",
+	}
 	SurveyTable.Annotation = &entsql.Annotation{
 		Table: "survey",
 	}
+	SurveyQuestionTable.ForeignKeys[0].RefTable = SurveyTable
 	SurveyQuestionTable.Annotation = &entsql.Annotation{
 		Table: "survey_question",
 	}
+	SurveyResponseTable.ForeignKeys[0].RefTable = SurveyTable
 	SurveyResponseTable.Annotation = &entsql.Annotation{
 		Table: "survey_response",
 	}
+	SurveyResponseAnswersTable.ForeignKeys[0].RefTable = SurveyQuestionTable
+	SurveyResponseAnswersTable.ForeignKeys[1].RefTable = SurveyResponseTable
 	SurveyResponseAnswersTable.Annotation = &entsql.Annotation{
 		Table: "survey_response_answers",
 	}

@@ -74,7 +74,6 @@ struct CreateOrUpdateUserReq {
     10: optional i64 createId=0 (api.raw = "createId")
     12: optional string password="" (api.raw = "password")
     13:  optional string username="" (api.raw = "username")
-    14:  optional list<string> functions="" (api.raw = "functions")
     15:  optional string detail="" (api.raw = "detail")
 
 	24:string birthday="" (api.raw = "birthday")

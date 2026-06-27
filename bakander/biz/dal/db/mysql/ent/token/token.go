@@ -28,6 +28,10 @@ const (
 	FieldToken = "token"
 	// FieldType holds the string denoting the type field in the database.
 	FieldType = "type"
+	// FieldDrive holds the string denoting the drive field in the database.
+	FieldDrive = "drive"
+	// FieldIP holds the string denoting the ip field in the database.
+	FieldIP = "ip"
 	// FieldSource holds the string denoting the source field in the database.
 	FieldSource = "source"
 	// FieldExpiredAt holds the string denoting the expired_at field in the database.
@@ -55,6 +59,8 @@ var Columns = []string{
 	FieldUserID,
 	FieldToken,
 	FieldType,
+	FieldDrive,
+	FieldIP,
 	FieldSource,
 	FieldExpiredAt,
 }
@@ -134,6 +140,16 @@ func ByToken(opts ...sql.OrderTermOption) OrderOption {
 // ByType orders the results by the type field.
 func ByType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldType, opts...).ToFunc()
+}
+
+// ByDrive orders the results by the drive field.
+func ByDrive(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDrive, opts...).ToFunc()
+}
+
+// ByIP orders the results by the IP field.
+func ByIP(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIP, opts...).ToFunc()
 }
 
 // BySource orders the results by the source field.

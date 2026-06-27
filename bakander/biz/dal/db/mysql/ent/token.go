@@ -32,6 +32,10 @@ type Token struct {
 	Token string `json:"token,omitempty"`
 	// 类型[1会员;2员工]
 	Type int64 `json:"type,omitempty"`
+	// 设备
+	Drive string `json:"drive,omitempty"`
+	// IP
+	IP string `json:"IP,omitempty"`
 	// Log in source such as GitHub | Token 来源 （本地为core, 第三方如github等）
 	Source string `json:"source,omitempty"`
 	//  Expire time | 过期时间
@@ -70,7 +74,7 @@ func (*Token) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case token.FieldID, token.FieldDelete, token.FieldCreatedID, token.FieldUserID, token.FieldType:
 			values[i] = new(sql.NullInt64)
-		case token.FieldToken, token.FieldSource:
+		case token.FieldToken, token.FieldDrive, token.FieldIP, token.FieldSource:
 			values[i] = new(sql.NullString)
 		case token.FieldCreatedAt, token.FieldUpdatedAt, token.FieldExpiredAt:
 			values[i] = new(sql.NullTime)
@@ -85,7 +89,7 @@ func (*Token) scanValues(columns []string) ([]any, error) {
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
 // to the Token fields.
-func (t *Token) assignValues(columns []string, values []any) error {
+func (_m *Token) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
@@ -96,70 +100,82 @@ func (t *Token) assignValues(columns []string, values []any) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			t.ID = int64(value.Int64)
+			_m.ID = int64(value.Int64)
 		case token.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				t.CreatedAt = value.Time
+				_m.CreatedAt = value.Time
 			}
 		case token.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				t.UpdatedAt = value.Time
+				_m.UpdatedAt = value.Time
 			}
 		case token.FieldDelete:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field delete", values[i])
 			} else if value.Valid {
-				t.Delete = value.Int64
+				_m.Delete = value.Int64
 			}
 		case token.FieldCreatedID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_id", values[i])
 			} else if value.Valid {
-				t.CreatedID = value.Int64
+				_m.CreatedID = value.Int64
 			}
 		case token.FieldUserID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
 			} else if value.Valid {
-				t.UserID = value.Int64
+				_m.UserID = value.Int64
 			}
 		case token.FieldToken:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field token", values[i])
 			} else if value.Valid {
-				t.Token = value.String
+				_m.Token = value.String
 			}
 		case token.FieldType:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field type", values[i])
 			} else if value.Valid {
-				t.Type = value.Int64
+				_m.Type = value.Int64
+			}
+		case token.FieldDrive:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field drive", values[i])
+			} else if value.Valid {
+				_m.Drive = value.String
+			}
+		case token.FieldIP:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field IP", values[i])
+			} else if value.Valid {
+				_m.IP = value.String
 			}
 		case token.FieldSource:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field source", values[i])
 			} else if value.Valid {
-				t.Source = value.String
+				_m.Source = value.String
 			}
 		case token.FieldExpiredAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field expired_at", values[i])
 			} else if value.Valid {
-				t.ExpiredAt = value.Time
+				_m.ExpiredAt = value.Time
 			}
 		case token.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field user_token", value)
 			} else if value.Valid {
-				t.user_token = new(int64)
-				*t.user_token = int64(value.Int64)
+				_m.user_token = new(int64)
+				*_m.user_token = int64(value.Int64)
 			}
 		default:
-			t.selectValues.Set(columns[i], values[i])
+			_m.selectValues.Set(columns[i], values[i])
 		}
 	}
 	return nil
@@ -167,64 +183,70 @@ func (t *Token) assignValues(columns []string, values []any) error {
 
 // Value returns the ent.Value that was dynamically selected and assigned to the Token.
 // This includes values selected through modifiers, order, etc.
-func (t *Token) Value(name string) (ent.Value, error) {
-	return t.selectValues.Get(name)
+func (_m *Token) Value(name string) (ent.Value, error) {
+	return _m.selectValues.Get(name)
 }
 
 // QueryOwner queries the "owner" edge of the Token entity.
-func (t *Token) QueryOwner() *UserQuery {
-	return NewTokenClient(t.config).QueryOwner(t)
+func (_m *Token) QueryOwner() *UserQuery {
+	return NewTokenClient(_m.config).QueryOwner(_m)
 }
 
 // Update returns a builder for updating this Token.
 // Note that you need to call Token.Unwrap() before calling this method if this Token
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (t *Token) Update() *TokenUpdateOne {
-	return NewTokenClient(t.config).UpdateOne(t)
+func (_m *Token) Update() *TokenUpdateOne {
+	return NewTokenClient(_m.config).UpdateOne(_m)
 }
 
 // Unwrap unwraps the Token entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (t *Token) Unwrap() *Token {
-	_tx, ok := t.config.driver.(*txDriver)
+func (_m *Token) Unwrap() *Token {
+	_tx, ok := _m.config.driver.(*txDriver)
 	if !ok {
 		panic("ent: Token is not a transactional entity")
 	}
-	t.config.driver = _tx.drv
-	return t
+	_m.config.driver = _tx.drv
+	return _m
 }
 
 // String implements the fmt.Stringer.
-func (t *Token) String() string {
+func (_m *Token) String() string {
 	var builder strings.Builder
 	builder.WriteString("Token(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", t.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
 	builder.WriteString("created_at=")
-	builder.WriteString(t.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
-	builder.WriteString(t.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("delete=")
-	builder.WriteString(fmt.Sprintf("%v", t.Delete))
+	builder.WriteString(fmt.Sprintf("%v", _m.Delete))
 	builder.WriteString(", ")
 	builder.WriteString("created_id=")
-	builder.WriteString(fmt.Sprintf("%v", t.CreatedID))
+	builder.WriteString(fmt.Sprintf("%v", _m.CreatedID))
 	builder.WriteString(", ")
 	builder.WriteString("user_id=")
-	builder.WriteString(fmt.Sprintf("%v", t.UserID))
+	builder.WriteString(fmt.Sprintf("%v", _m.UserID))
 	builder.WriteString(", ")
 	builder.WriteString("token=")
-	builder.WriteString(t.Token)
+	builder.WriteString(_m.Token)
 	builder.WriteString(", ")
 	builder.WriteString("type=")
-	builder.WriteString(fmt.Sprintf("%v", t.Type))
+	builder.WriteString(fmt.Sprintf("%v", _m.Type))
+	builder.WriteString(", ")
+	builder.WriteString("drive=")
+	builder.WriteString(_m.Drive)
+	builder.WriteString(", ")
+	builder.WriteString("IP=")
+	builder.WriteString(_m.IP)
 	builder.WriteString(", ")
 	builder.WriteString("source=")
-	builder.WriteString(t.Source)
+	builder.WriteString(_m.Source)
 	builder.WriteString(", ")
 	builder.WriteString("expired_at=")
-	builder.WriteString(t.ExpiredAt.Format(time.ANSIC))
+	builder.WriteString(_m.ExpiredAt.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

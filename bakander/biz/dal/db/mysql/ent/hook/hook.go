@@ -20,6 +20,18 @@ func (f APIFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) 
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.APIMutation", m)
 }
 
+// The AreaFunc type is an adapter to allow the use of ordinary
+// function as Area mutator.
+type AreaFunc func(context.Context, *ent.AreaMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f AreaFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.AreaMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.AreaMutation", m)
+}
+
 // The DictionaryFunc type is an adapter to allow the use of ordinary
 // function as Dictionary mutator.
 type DictionaryFunc func(context.Context, *ent.DictionaryMutation) (ent.Value, error)
@@ -90,6 +102,30 @@ func (f RoleFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error)
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.RoleMutation", m)
+}
+
+// The SmsFunc type is an adapter to allow the use of ordinary
+// function as Sms mutator.
+type SmsFunc func(context.Context, *ent.SmsMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SmsFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.SmsMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SmsMutation", m)
+}
+
+// The SmsLogFunc type is an adapter to allow the use of ordinary
+// function as SmsLog mutator.
+type SmsLogFunc func(context.Context, *ent.SmsLogMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SmsLogFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.SmsLogMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.SmsLogMutation", m)
 }
 
 // The SurveyFunc type is an adapter to allow the use of ordinary

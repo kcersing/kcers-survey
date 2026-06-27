@@ -14,6 +14,8 @@ type Tx struct {
 	config
 	// API is the client for interacting with the API builders.
 	API *APIClient
+	// Area is the client for interacting with the Area builders.
+	Area *AreaClient
 	// Dictionary is the client for interacting with the Dictionary builders.
 	Dictionary *DictionaryClient
 	// DictionaryDetail is the client for interacting with the DictionaryDetail builders.
@@ -26,6 +28,10 @@ type Tx struct {
 	MenuParam *MenuParamClient
 	// Role is the client for interacting with the Role builders.
 	Role *RoleClient
+	// Sms is the client for interacting with the Sms builders.
+	Sms *SmsClient
+	// SmsLog is the client for interacting with the SmsLog builders.
+	SmsLog *SmsLogClient
 	// Survey is the client for interacting with the Survey builders.
 	Survey *SurveyClient
 	// SurveyQuestion is the client for interacting with the SurveyQuestion builders.
@@ -170,12 +176,15 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.API = NewAPIClient(tx.config)
+	tx.Area = NewAreaClient(tx.config)
 	tx.Dictionary = NewDictionaryClient(tx.config)
 	tx.DictionaryDetail = NewDictionaryDetailClient(tx.config)
 	tx.Logs = NewLogsClient(tx.config)
 	tx.Menu = NewMenuClient(tx.config)
 	tx.MenuParam = NewMenuParamClient(tx.config)
 	tx.Role = NewRoleClient(tx.config)
+	tx.Sms = NewSmsClient(tx.config)
+	tx.SmsLog = NewSmsLogClient(tx.config)
 	tx.Survey = NewSurveyClient(tx.config)
 	tx.SurveyQuestion = NewSurveyQuestionClient(tx.config)
 	tx.SurveyResponse = NewSurveyResponseClient(tx.config)

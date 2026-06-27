@@ -4,7 +4,7 @@ Host: 0.0.0.0
 Port: 9039
 Timeout: 30000
 Domain: http://127.0.0.1/
-PicHost: http://127.0.0.1
+PicHost: https://survey.367281.com/
 
 Captcha:
   KeyLong: 5
@@ -21,7 +21,8 @@ Redis:
   Password:
 
 MySQL:
-  Host: root:root@tcp(127.0.0.1:3306)/saas?parseTime=True
+  Host: root:kcer-913639@tcp(101.126.9.226:3306)/survey?parseTime=True
+  #Host: root:root@tcp(127.0.0.1:3306)/survey?parseTime=True
   Salt: root
 
 PostgreSQL:
@@ -57,13 +58,13 @@ Wechat:
   certificate_key_path: ./config/cert/wechat/wechatpay_platform.pem
 
 Minio:
-  EndPoint : 127.0.0.1:9000
-  AccessKeyID : 123987
-  SecretAccessKey : 987123
-  UseSSL : false
-  VideoBucketName : files
-  ImgBucketName : imagebucket
-  Url : http://127.0.0.1:9000
+  EndPoint: 101.126.9.226:9000
+  AccessKeyID: Yj123987
+  SecretAccessKey: Yj987123
+  UseSSL: false
+  VideoBucketName: videobucket
+  ImgBucketName: imagebucket
+  Url: http://101.126.9.226:9000
 
 Alipay: # 以下配置文件为新沙箱环境配置
   appid:
@@ -83,4 +84,4 @@ Aliyun:
       TemplateCode :
 
 Swagger:
-  url : http://182.92.143.234:9039/swagger/doc.json
+  url : http://127.0.0.1:9039/swagger/doc.json

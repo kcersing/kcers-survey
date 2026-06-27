@@ -23,27 +23,7 @@ api:
 .PHONY: idl-gen
 idl-gen:
 #	@cd ./app/admin && go hz update -idl idl_gen/admin/schedule.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/auth.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/banner.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/captcha.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/contract.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/dictionary.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/entry.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/logs.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/member.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/menu.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/order.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/payment.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/product.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/pub.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/schedule.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/service.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/sms.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/sys.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/token.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/user.thrift -model_dir idl_gen/model/  --unset_omitempty
-	hz update -idl idl_gen/idl/venue.thrift -model_dir idl_gen/model/  --unset_omitempty
-
+	hz update -idl idl_gen/idl/survey.thrift -model_dir idl_gen/model/  --unset_omitempty
 
 
 .PHONY: gen-ent

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -33,8 +34,26 @@ const (
 	FieldStartAt = "start_at"
 	// FieldEndAt holds the string denoting the end_at field in the database.
 	FieldEndAt = "end_at"
+	// EdgeQuestion holds the string denoting the question edge name in mutations.
+	EdgeQuestion = "question"
+	// EdgeResponse holds the string denoting the response edge name in mutations.
+	EdgeResponse = "response"
 	// Table holds the table name of the survey in the database.
 	Table = "survey"
+	// QuestionTable is the table that holds the question relation/edge.
+	QuestionTable = "survey_question"
+	// QuestionInverseTable is the table name for the SurveyQuestion entity.
+	// It exists in this package in order to avoid circular dependency with the "surveyquestion" package.
+	QuestionInverseTable = "survey_question"
+	// QuestionColumn is the table column denoting the question relation/edge.
+	QuestionColumn = "survey_id"
+	// ResponseTable is the table that holds the response relation/edge.
+	ResponseTable = "survey_response"
+	// ResponseInverseTable is the table name for the SurveyResponse entity.
+	// It exists in this package in order to avoid circular dependency with the "surveyresponse" package.
+	ResponseInverseTable = "survey_response"
+	// ResponseColumn is the table column denoting the response relation/edge.
+	ResponseColumn = "survey_id"
 )
 
 // Columns holds all SQL columns for survey fields.
@@ -75,6 +94,12 @@ var (
 	DefaultCreatedID int64
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int64
+	// DefaultTitle holds the default value on creation for the "title" field.
+	DefaultTitle string
+	// DefaultPic holds the default value on creation for the "pic" field.
+	DefaultPic string
+	// DefaultDesc holds the default value on creation for the "desc" field.
+	DefaultDesc string
 )
 
 // OrderOption defines the ordering options for the Survey queries.
@@ -133,4 +158,46 @@ func ByStartAt(opts ...sql.OrderTermOption) OrderOption {
 // ByEndAt orders the results by the end_at field.
 func ByEndAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEndAt, opts...).ToFunc()
+}
+
+// ByQuestionCount orders the results by question count.
+func ByQuestionCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newQuestionStep(), opts...)
+	}
+}
+
+// ByQuestion orders the results by question terms.
+func ByQuestion(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newQuestionStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByResponseCount orders the results by response count.
+func ByResponseCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newResponseStep(), opts...)
+	}
+}
+
+// ByResponse orders the results by response terms.
+func ByResponse(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newResponseStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newQuestionStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(QuestionInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, QuestionTable, QuestionColumn),
+	)
+}
+func newResponseStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ResponseInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, ResponseTable, ResponseColumn),
+	)
 }

@@ -5,7 +5,9 @@ package ent
 import (
 	"encoding/json"
 	"fmt"
+	"kcers-survey/biz/dal/db/mysql/ent/survey"
 	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
+	"kcers-survey/idl_gen/model/service"
 	"strings"
 	"time"
 
@@ -33,17 +35,63 @@ type SurveyQuestion struct {
 	SurveyID int64 `json:"survey_id,omitempty"`
 	// parent_id
 	ParentID int64 `json:"parent_id,omitempty"`
+	// serial
+	Serial string `json:"serial,omitempty"`
 	// content
 	Content string `json:"content,omitempty"`
 	// type
 	Type string `json:"type,omitempty"`
+	// options
+	Options []*service.Options `json:"options,omitempty"`
+	// show
+	Show int64 `json:"show,omitempty"`
 	// sort
 	Sort int64 `json:"sort,omitempty"`
+	// 跳题规则
+	JumpRules []*service.JumpRules `json:"jump_rules,omitempty"`
 	// 是否必填 1必填 2选填
 	Required int64 `json:"required,omitempty"`
-	// 存储选项
-	Options      map[string]string `json:"options,omitempty"`
+	// remark
+	Remark string `json:"remark,omitempty"`
+	// 层级
+	Level int64 `json:"level,omitempty"`
+	// 树
+	Tree string `json:"tree,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the SurveyQuestionQuery when eager-loading is set.
+	Edges        SurveyQuestionEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// SurveyQuestionEdges holds the relations/edges for other nodes in the graph.
+type SurveyQuestionEdges struct {
+	// Survey holds the value of the survey edge.
+	Survey *Survey `json:"survey,omitempty"`
+	// Answers holds the value of the answers edge.
+	Answers []*SurveyResponseAnswers `json:"answers,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [2]bool
+}
+
+// SurveyOrErr returns the Survey value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e SurveyQuestionEdges) SurveyOrErr() (*Survey, error) {
+	if e.Survey != nil {
+		return e.Survey, nil
+	} else if e.loadedTypes[0] {
+		return nil, &NotFoundError{label: survey.Label}
+	}
+	return nil, &NotLoadedError{edge: "survey"}
+}
+
+// AnswersOrErr returns the Answers value or an error if the edge
+// was not loaded in eager-loading.
+func (e SurveyQuestionEdges) AnswersOrErr() ([]*SurveyResponseAnswers, error) {
+	if e.loadedTypes[1] {
+		return e.Answers, nil
+	}
+	return nil, &NotLoadedError{edge: "answers"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -51,11 +99,11 @@ func (*SurveyQuestion) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case surveyquestion.FieldOptions:
+		case surveyquestion.FieldOptions, surveyquestion.FieldJumpRules:
 			values[i] = new([]byte)
-		case surveyquestion.FieldID, surveyquestion.FieldDelete, surveyquestion.FieldCreatedID, surveyquestion.FieldStatus, surveyquestion.FieldSurveyID, surveyquestion.FieldParentID, surveyquestion.FieldSort, surveyquestion.FieldRequired:
+		case surveyquestion.FieldID, surveyquestion.FieldDelete, surveyquestion.FieldCreatedID, surveyquestion.FieldStatus, surveyquestion.FieldSurveyID, surveyquestion.FieldParentID, surveyquestion.FieldShow, surveyquestion.FieldSort, surveyquestion.FieldRequired, surveyquestion.FieldLevel:
 			values[i] = new(sql.NullInt64)
-		case surveyquestion.FieldContent, surveyquestion.FieldType:
+		case surveyquestion.FieldSerial, surveyquestion.FieldContent, surveyquestion.FieldType, surveyquestion.FieldRemark, surveyquestion.FieldTree:
 			values[i] = new(sql.NullString)
 		case surveyquestion.FieldCreatedAt, surveyquestion.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -68,7 +116,7 @@ func (*SurveyQuestion) scanValues(columns []string) ([]any, error) {
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
 // to the SurveyQuestion fields.
-func (sq *SurveyQuestion) assignValues(columns []string, values []any) error {
+func (_m *SurveyQuestion) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
@@ -79,83 +127,121 @@ func (sq *SurveyQuestion) assignValues(columns []string, values []any) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			sq.ID = int64(value.Int64)
+			_m.ID = int64(value.Int64)
 		case surveyquestion.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				sq.CreatedAt = value.Time
+				_m.CreatedAt = value.Time
 			}
 		case surveyquestion.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				sq.UpdatedAt = value.Time
+				_m.UpdatedAt = value.Time
 			}
 		case surveyquestion.FieldDelete:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field delete", values[i])
 			} else if value.Valid {
-				sq.Delete = value.Int64
+				_m.Delete = value.Int64
 			}
 		case surveyquestion.FieldCreatedID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_id", values[i])
 			} else if value.Valid {
-				sq.CreatedID = value.Int64
+				_m.CreatedID = value.Int64
 			}
 		case surveyquestion.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				sq.Status = value.Int64
+				_m.Status = value.Int64
 			}
 		case surveyquestion.FieldSurveyID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field survey_id", values[i])
 			} else if value.Valid {
-				sq.SurveyID = value.Int64
+				_m.SurveyID = value.Int64
 			}
 		case surveyquestion.FieldParentID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field parent_id", values[i])
 			} else if value.Valid {
-				sq.ParentID = value.Int64
+				_m.ParentID = value.Int64
+			}
+		case surveyquestion.FieldSerial:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field serial", values[i])
+			} else if value.Valid {
+				_m.Serial = value.String
 			}
 		case surveyquestion.FieldContent:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field content", values[i])
 			} else if value.Valid {
-				sq.Content = value.String
+				_m.Content = value.String
 			}
 		case surveyquestion.FieldType:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field type", values[i])
 			} else if value.Valid {
-				sq.Type = value.String
-			}
-		case surveyquestion.FieldSort:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field sort", values[i])
-			} else if value.Valid {
-				sq.Sort = value.Int64
-			}
-		case surveyquestion.FieldRequired:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field required", values[i])
-			} else if value.Valid {
-				sq.Required = value.Int64
+				_m.Type = value.String
 			}
 		case surveyquestion.FieldOptions:
 			if value, ok := values[i].(*[]byte); !ok {
 				return fmt.Errorf("unexpected type %T for field options", values[i])
 			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &sq.Options); err != nil {
+				if err := json.Unmarshal(*value, &_m.Options); err != nil {
 					return fmt.Errorf("unmarshal field options: %w", err)
 				}
 			}
+		case surveyquestion.FieldShow:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field show", values[i])
+			} else if value.Valid {
+				_m.Show = value.Int64
+			}
+		case surveyquestion.FieldSort:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field sort", values[i])
+			} else if value.Valid {
+				_m.Sort = value.Int64
+			}
+		case surveyquestion.FieldJumpRules:
+			if value, ok := values[i].(*[]byte); !ok {
+				return fmt.Errorf("unexpected type %T for field jump_rules", values[i])
+			} else if value != nil && len(*value) > 0 {
+				if err := json.Unmarshal(*value, &_m.JumpRules); err != nil {
+					return fmt.Errorf("unmarshal field jump_rules: %w", err)
+				}
+			}
+		case surveyquestion.FieldRequired:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field required", values[i])
+			} else if value.Valid {
+				_m.Required = value.Int64
+			}
+		case surveyquestion.FieldRemark:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field remark", values[i])
+			} else if value.Valid {
+				_m.Remark = value.String
+			}
+		case surveyquestion.FieldLevel:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field level", values[i])
+			} else if value.Valid {
+				_m.Level = value.Int64
+			}
+		case surveyquestion.FieldTree:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field tree", values[i])
+			} else if value.Valid {
+				_m.Tree = value.String
+			}
 		default:
-			sq.selectValues.Set(columns[i], values[i])
+			_m.selectValues.Set(columns[i], values[i])
 		}
 	}
 	return nil
@@ -163,68 +249,96 @@ func (sq *SurveyQuestion) assignValues(columns []string, values []any) error {
 
 // Value returns the ent.Value that was dynamically selected and assigned to the SurveyQuestion.
 // This includes values selected through modifiers, order, etc.
-func (sq *SurveyQuestion) Value(name string) (ent.Value, error) {
-	return sq.selectValues.Get(name)
+func (_m *SurveyQuestion) Value(name string) (ent.Value, error) {
+	return _m.selectValues.Get(name)
+}
+
+// QuerySurvey queries the "survey" edge of the SurveyQuestion entity.
+func (_m *SurveyQuestion) QuerySurvey() *SurveyQuery {
+	return NewSurveyQuestionClient(_m.config).QuerySurvey(_m)
+}
+
+// QueryAnswers queries the "answers" edge of the SurveyQuestion entity.
+func (_m *SurveyQuestion) QueryAnswers() *SurveyResponseAnswersQuery {
+	return NewSurveyQuestionClient(_m.config).QueryAnswers(_m)
 }
 
 // Update returns a builder for updating this SurveyQuestion.
 // Note that you need to call SurveyQuestion.Unwrap() before calling this method if this SurveyQuestion
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (sq *SurveyQuestion) Update() *SurveyQuestionUpdateOne {
-	return NewSurveyQuestionClient(sq.config).UpdateOne(sq)
+func (_m *SurveyQuestion) Update() *SurveyQuestionUpdateOne {
+	return NewSurveyQuestionClient(_m.config).UpdateOne(_m)
 }
 
 // Unwrap unwraps the SurveyQuestion entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (sq *SurveyQuestion) Unwrap() *SurveyQuestion {
-	_tx, ok := sq.config.driver.(*txDriver)
+func (_m *SurveyQuestion) Unwrap() *SurveyQuestion {
+	_tx, ok := _m.config.driver.(*txDriver)
 	if !ok {
 		panic("ent: SurveyQuestion is not a transactional entity")
 	}
-	sq.config.driver = _tx.drv
-	return sq
+	_m.config.driver = _tx.drv
+	return _m
 }
 
 // String implements the fmt.Stringer.
-func (sq *SurveyQuestion) String() string {
+func (_m *SurveyQuestion) String() string {
 	var builder strings.Builder
 	builder.WriteString("SurveyQuestion(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", sq.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
 	builder.WriteString("created_at=")
-	builder.WriteString(sq.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
-	builder.WriteString(sq.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("delete=")
-	builder.WriteString(fmt.Sprintf("%v", sq.Delete))
+	builder.WriteString(fmt.Sprintf("%v", _m.Delete))
 	builder.WriteString(", ")
 	builder.WriteString("created_id=")
-	builder.WriteString(fmt.Sprintf("%v", sq.CreatedID))
+	builder.WriteString(fmt.Sprintf("%v", _m.CreatedID))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
-	builder.WriteString(fmt.Sprintf("%v", sq.Status))
+	builder.WriteString(fmt.Sprintf("%v", _m.Status))
 	builder.WriteString(", ")
 	builder.WriteString("survey_id=")
-	builder.WriteString(fmt.Sprintf("%v", sq.SurveyID))
+	builder.WriteString(fmt.Sprintf("%v", _m.SurveyID))
 	builder.WriteString(", ")
 	builder.WriteString("parent_id=")
-	builder.WriteString(fmt.Sprintf("%v", sq.ParentID))
+	builder.WriteString(fmt.Sprintf("%v", _m.ParentID))
+	builder.WriteString(", ")
+	builder.WriteString("serial=")
+	builder.WriteString(_m.Serial)
 	builder.WriteString(", ")
 	builder.WriteString("content=")
-	builder.WriteString(sq.Content)
+	builder.WriteString(_m.Content)
 	builder.WriteString(", ")
 	builder.WriteString("type=")
-	builder.WriteString(sq.Type)
-	builder.WriteString(", ")
-	builder.WriteString("sort=")
-	builder.WriteString(fmt.Sprintf("%v", sq.Sort))
-	builder.WriteString(", ")
-	builder.WriteString("required=")
-	builder.WriteString(fmt.Sprintf("%v", sq.Required))
+	builder.WriteString(_m.Type)
 	builder.WriteString(", ")
 	builder.WriteString("options=")
-	builder.WriteString(fmt.Sprintf("%v", sq.Options))
+	builder.WriteString(fmt.Sprintf("%v", _m.Options))
+	builder.WriteString(", ")
+	builder.WriteString("show=")
+	builder.WriteString(fmt.Sprintf("%v", _m.Show))
+	builder.WriteString(", ")
+	builder.WriteString("sort=")
+	builder.WriteString(fmt.Sprintf("%v", _m.Sort))
+	builder.WriteString(", ")
+	builder.WriteString("jump_rules=")
+	builder.WriteString(fmt.Sprintf("%v", _m.JumpRules))
+	builder.WriteString(", ")
+	builder.WriteString("required=")
+	builder.WriteString(fmt.Sprintf("%v", _m.Required))
+	builder.WriteString(", ")
+	builder.WriteString("remark=")
+	builder.WriteString(_m.Remark)
+	builder.WriteString(", ")
+	builder.WriteString("level=")
+	builder.WriteString(fmt.Sprintf("%v", _m.Level))
+	builder.WriteString(", ")
+	builder.WriteString("tree=")
+	builder.WriteString(_m.Tree)
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -21,19 +21,35 @@ func Register(r *server.Hertz) {
 		_service := root.Group("/service", _serviceMw()...)
 		{
 			_survey := _service.Group("/survey", _surveyMw()...)
-			_survey.GET("/create", append(_createsurveyMw(), service.CreateSurvey)...)
-			_survey.GET("/delete", append(_deletesurveyMw(), service.DeleteSurvey)...)
-			_survey.GET("/info", append(_getsurveyMw(), service.GetSurvey)...)
-			_survey.GET("/list", append(_listsurveyMw(), service.ListSurvey)...)
-			_survey.GET("/question-create", append(_createquestionMw(), service.CreateQuestion)...)
-			_survey.GET("/question-delete", append(_deletequestionMw(), service.DeleteQuestion)...)
-			_survey.GET("/question-update", append(_updatequestionMw(), service.UpdateQuestion)...)
-			_survey.GET("/response-create", append(_createresponseMw(), service.CreateResponse)...)
-			_survey.GET("/response-delete", append(_deleteresponseMw(), service.DeleteResponse)...)
-			_survey.GET("/response-info", append(_getresponseMw(), service.GetResponse)...)
-			_survey.GET("/response-list", append(_listresponseMw(), service.ListResponse)...)
-			_survey.GET("/response-update", append(_updateresponseMw(), service.UpdateResponse)...)
-			_survey.GET("/update", append(_updatesurveyMw(), service.UpdateSurvey)...)
+			_survey.POST("/create", append(_createsurveyMw(), service.CreateSurvey)...)
+			_survey.POST("/delete", append(_deletesurveyMw(), service.DeleteSurvey)...)
+			_survey.POST("/info", append(_getsurveyMw(), service.GetSurvey)...)
+			_survey.POST("/list", append(_listsurveyMw(), service.ListSurvey)...)
+			_survey.POST("/statistics", append(_getsurveystatisticsMw(), service.GetSurveyStatistics)...)
+			_survey.POST("/update", append(_updatesurveyMw(), service.UpdateSurvey)...)
+			{
+				_question := _survey.Group("/question", _questionMw()...)
+				_question.POST("/answers", append(_getquestionanswerslistMw(), service.GetQuestionAnswersList)...)
+				_question.POST("/basic", append(_getquestionstatisticsbasicMw(), service.GetQuestionStatisticsBasic)...)
+				_question.POST("/create", append(_createquestionMw(), service.CreateQuestion)...)
+				_question.POST("/delete", append(_deletequestionMw(), service.DeleteQuestion)...)
+				_question.POST("/info", append(_getquestionMw(), service.GetQuestion)...)
+				_question.POST("/list", append(_listquestionMw(), service.ListQuestion)...)
+				_question.POST("/tree", append(_treequestionMw(), service.TreeQuestion)...)
+				_question.POST("/update", append(_updatequestionMw(), service.UpdateQuestion)...)
+			}
+			{
+				_response := _survey.Group("/response", _responseMw()...)
+				_response.POST("/answers", append(_getresponseanswersMw(), service.GetResponseAnswers)...)
+				_response.POST("/create", append(_createresponseMw(), service.CreateResponse)...)
+				_response.POST("/delete", append(_deleteresponseMw(), service.DeleteResponse)...)
+				_response.POST("/getNext", append(_getnextMw(), service.GetNext)...)
+				_response.POST("/heatmap", append(_getsurveyresponseheatmapMw(), service.GetSurveyResponseHeatmap)...)
+				_response.POST("/info", append(_getresponseMw(), service.GetResponse)...)
+				_response.POST("/list", append(_listresponseMw(), service.ListResponse)...)
+				_response.POST("/list-export", append(_listresponseexportMw(), service.ListResponseExport)...)
+				_response.POST("/update", append(_updateresponseMw(), service.UpdateResponse)...)
+			}
 		}
 	}
 }

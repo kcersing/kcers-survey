@@ -2,7 +2,6 @@ package mw
 
 import (
 	"context"
-	"errors"
 	"github.com/casbin/casbin/v2"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -88,7 +87,7 @@ func newJWT(enforcer *casbin.Enforcer) (jwtMiddleware *jwt.HertzJWTMiddleware, e
 				Password: password,
 			})
 			if err != nil {
-				return nil, errors.New("账号或密码错误")
+				return nil, err
 			}
 
 			payLoadMap := make(map[string]interface{})
@@ -100,8 +99,10 @@ func newJWT(enforcer *casbin.Enforcer) (jwtMiddleware *jwt.HertzJWTMiddleware, e
 		},
 		// Authorizator is used to validate the authentication of the current request.
 		Authorizator: func(data interface{}, ctx context.Context, c *app.RequestContext) bool {
-			//obj := string(c.URI().Path())
-			//act := string(c.Method())
+			obj := string(c.URI().Path())
+			act := string(c.Method())
+
+			hlog.Info(obj, act)
 			payloadMap, ok := data.(map[string]interface{})
 
 			if !ok {
@@ -109,7 +110,7 @@ func newJWT(enforcer *casbin.Enforcer) (jwtMiddleware *jwt.HertzJWTMiddleware, e
 				return false
 			}
 			var userRoleIds []int64
-
+			hlog.Info(payloadMap)
 			userType, ok := payloadMap["userType"].(string)
 			if !ok {
 				hlog.Error("userType 解析错误", err)
@@ -150,6 +151,7 @@ func newJWT(enforcer *casbin.Enforcer) (jwtMiddleware *jwt.HertzJWTMiddleware, e
 			//	hlog.Error(err, "role is not exist")
 			//	return false
 			//}
+
 			//if roleInfo.Status != 1 {
 			//	hlog.Error("role cache is not a valid *ent.Role or the role is not active")
 			//	return false

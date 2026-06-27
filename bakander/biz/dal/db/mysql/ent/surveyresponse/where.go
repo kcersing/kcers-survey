@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // ID filters vertices based on their ID field.
@@ -84,14 +85,44 @@ func SurveyID(v int64) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldEQ(FieldSurveyID, v))
 }
 
+// Sn applies equality check predicate on the "sn" field. It's identical to SnEQ.
+func Sn(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldSn, v))
+}
+
+// Respondent applies equality check predicate on the "respondent" field. It's identical to RespondentEQ.
+func Respondent(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldRespondent, v))
+}
+
+// RespondentPhone applies equality check predicate on the "respondent_phone" field. It's identical to RespondentPhoneEQ.
+func RespondentPhone(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldRespondentPhone, v))
+}
+
+// Researcher applies equality check predicate on the "researcher" field. It's identical to ResearcherEQ.
+func Researcher(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldResearcher, v))
+}
+
+// ResearcherPhone applies equality check predicate on the "researcher_phone" field. It's identical to ResearcherPhoneEQ.
+func ResearcherPhone(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldResearcherPhone, v))
+}
+
 // IP applies equality check predicate on the "ip" field. It's identical to IPEQ.
 func IP(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldEQ(FieldIP, v))
 }
 
-// Map applies equality check predicate on the "map" field. It's identical to MapEQ.
-func Map(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEQ(FieldMap, v))
+// Latitude applies equality check predicate on the "latitude" field. It's identical to LatitudeEQ.
+func Latitude(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldLatitude, v))
+}
+
+// Longitude applies equality check predicate on the "longitude" field. It's identical to LongitudeEQ.
+func Longitude(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldLongitude, v))
 }
 
 // Device applies equality check predicate on the "device" field. It's identical to DeviceEQ.
@@ -99,19 +130,34 @@ func Device(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldEQ(FieldDevice, v))
 }
 
-// Audio applies equality check predicate on the "audio" field. It's identical to AudioEQ.
-func Audio(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEQ(FieldAudio, v))
+// Area applies equality check predicate on the "area" field. It's identical to AreaEQ.
+func Area(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldArea, v))
 }
 
-// StartedAt applies equality check predicate on the "started_at" field. It's identical to StartedAtEQ.
-func StartedAt(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEQ(FieldStartedAt, v))
+// City applies equality check predicate on the "city" field. It's identical to CityEQ.
+func City(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldCity, v))
 }
 
-// CompletedAt applies equality check predicate on the "completed_at" field. It's identical to CompletedAtEQ.
-func CompletedAt(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEQ(FieldCompletedAt, v))
+// District applies equality check predicate on the "district" field. It's identical to DistrictEQ.
+func District(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldDistrict, v))
+}
+
+// Village applies equality check predicate on the "village" field. It's identical to VillageEQ.
+func Village(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldVillage, v))
+}
+
+// Address applies equality check predicate on the "address" field. It's identical to AddressEQ.
+func Address(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldAddress, v))
+}
+
+// AnswersCount applies equality check predicate on the "answers_count" field. It's identical to AnswersCountEQ.
+func AnswersCount(v int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldAnswersCount, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -384,24 +430,399 @@ func SurveyIDNotIn(vs ...int64) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldNotIn(FieldSurveyID, vs...))
 }
 
-// SurveyIDGT applies the GT predicate on the "survey_id" field.
-func SurveyIDGT(v int64) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGT(FieldSurveyID, v))
+// SurveyIDIsNil applies the IsNil predicate on the "survey_id" field.
+func SurveyIDIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldSurveyID))
 }
 
-// SurveyIDGTE applies the GTE predicate on the "survey_id" field.
-func SurveyIDGTE(v int64) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGTE(FieldSurveyID, v))
+// SurveyIDNotNil applies the NotNil predicate on the "survey_id" field.
+func SurveyIDNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldSurveyID))
 }
 
-// SurveyIDLT applies the LT predicate on the "survey_id" field.
-func SurveyIDLT(v int64) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLT(FieldSurveyID, v))
+// SnEQ applies the EQ predicate on the "sn" field.
+func SnEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldSn, v))
 }
 
-// SurveyIDLTE applies the LTE predicate on the "survey_id" field.
-func SurveyIDLTE(v int64) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLTE(FieldSurveyID, v))
+// SnNEQ applies the NEQ predicate on the "sn" field.
+func SnNEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldSn, v))
+}
+
+// SnIn applies the In predicate on the "sn" field.
+func SnIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldSn, vs...))
+}
+
+// SnNotIn applies the NotIn predicate on the "sn" field.
+func SnNotIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldSn, vs...))
+}
+
+// SnGT applies the GT predicate on the "sn" field.
+func SnGT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldSn, v))
+}
+
+// SnGTE applies the GTE predicate on the "sn" field.
+func SnGTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldSn, v))
+}
+
+// SnLT applies the LT predicate on the "sn" field.
+func SnLT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldSn, v))
+}
+
+// SnLTE applies the LTE predicate on the "sn" field.
+func SnLTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldSn, v))
+}
+
+// SnContains applies the Contains predicate on the "sn" field.
+func SnContains(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContains(FieldSn, v))
+}
+
+// SnHasPrefix applies the HasPrefix predicate on the "sn" field.
+func SnHasPrefix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldSn, v))
+}
+
+// SnHasSuffix applies the HasSuffix predicate on the "sn" field.
+func SnHasSuffix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldSn, v))
+}
+
+// SnIsNil applies the IsNil predicate on the "sn" field.
+func SnIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldSn))
+}
+
+// SnNotNil applies the NotNil predicate on the "sn" field.
+func SnNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldSn))
+}
+
+// SnEqualFold applies the EqualFold predicate on the "sn" field.
+func SnEqualFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEqualFold(FieldSn, v))
+}
+
+// SnContainsFold applies the ContainsFold predicate on the "sn" field.
+func SnContainsFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContainsFold(FieldSn, v))
+}
+
+// RespondentEQ applies the EQ predicate on the "respondent" field.
+func RespondentEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldRespondent, v))
+}
+
+// RespondentNEQ applies the NEQ predicate on the "respondent" field.
+func RespondentNEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldRespondent, v))
+}
+
+// RespondentIn applies the In predicate on the "respondent" field.
+func RespondentIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldRespondent, vs...))
+}
+
+// RespondentNotIn applies the NotIn predicate on the "respondent" field.
+func RespondentNotIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldRespondent, vs...))
+}
+
+// RespondentGT applies the GT predicate on the "respondent" field.
+func RespondentGT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldRespondent, v))
+}
+
+// RespondentGTE applies the GTE predicate on the "respondent" field.
+func RespondentGTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldRespondent, v))
+}
+
+// RespondentLT applies the LT predicate on the "respondent" field.
+func RespondentLT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldRespondent, v))
+}
+
+// RespondentLTE applies the LTE predicate on the "respondent" field.
+func RespondentLTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldRespondent, v))
+}
+
+// RespondentContains applies the Contains predicate on the "respondent" field.
+func RespondentContains(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContains(FieldRespondent, v))
+}
+
+// RespondentHasPrefix applies the HasPrefix predicate on the "respondent" field.
+func RespondentHasPrefix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldRespondent, v))
+}
+
+// RespondentHasSuffix applies the HasSuffix predicate on the "respondent" field.
+func RespondentHasSuffix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldRespondent, v))
+}
+
+// RespondentIsNil applies the IsNil predicate on the "respondent" field.
+func RespondentIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldRespondent))
+}
+
+// RespondentNotNil applies the NotNil predicate on the "respondent" field.
+func RespondentNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldRespondent))
+}
+
+// RespondentEqualFold applies the EqualFold predicate on the "respondent" field.
+func RespondentEqualFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEqualFold(FieldRespondent, v))
+}
+
+// RespondentContainsFold applies the ContainsFold predicate on the "respondent" field.
+func RespondentContainsFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContainsFold(FieldRespondent, v))
+}
+
+// RespondentPhoneEQ applies the EQ predicate on the "respondent_phone" field.
+func RespondentPhoneEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldRespondentPhone, v))
+}
+
+// RespondentPhoneNEQ applies the NEQ predicate on the "respondent_phone" field.
+func RespondentPhoneNEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldRespondentPhone, v))
+}
+
+// RespondentPhoneIn applies the In predicate on the "respondent_phone" field.
+func RespondentPhoneIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldRespondentPhone, vs...))
+}
+
+// RespondentPhoneNotIn applies the NotIn predicate on the "respondent_phone" field.
+func RespondentPhoneNotIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldRespondentPhone, vs...))
+}
+
+// RespondentPhoneGT applies the GT predicate on the "respondent_phone" field.
+func RespondentPhoneGT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldRespondentPhone, v))
+}
+
+// RespondentPhoneGTE applies the GTE predicate on the "respondent_phone" field.
+func RespondentPhoneGTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldRespondentPhone, v))
+}
+
+// RespondentPhoneLT applies the LT predicate on the "respondent_phone" field.
+func RespondentPhoneLT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldRespondentPhone, v))
+}
+
+// RespondentPhoneLTE applies the LTE predicate on the "respondent_phone" field.
+func RespondentPhoneLTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldRespondentPhone, v))
+}
+
+// RespondentPhoneContains applies the Contains predicate on the "respondent_phone" field.
+func RespondentPhoneContains(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContains(FieldRespondentPhone, v))
+}
+
+// RespondentPhoneHasPrefix applies the HasPrefix predicate on the "respondent_phone" field.
+func RespondentPhoneHasPrefix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldRespondentPhone, v))
+}
+
+// RespondentPhoneHasSuffix applies the HasSuffix predicate on the "respondent_phone" field.
+func RespondentPhoneHasSuffix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldRespondentPhone, v))
+}
+
+// RespondentPhoneIsNil applies the IsNil predicate on the "respondent_phone" field.
+func RespondentPhoneIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldRespondentPhone))
+}
+
+// RespondentPhoneNotNil applies the NotNil predicate on the "respondent_phone" field.
+func RespondentPhoneNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldRespondentPhone))
+}
+
+// RespondentPhoneEqualFold applies the EqualFold predicate on the "respondent_phone" field.
+func RespondentPhoneEqualFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEqualFold(FieldRespondentPhone, v))
+}
+
+// RespondentPhoneContainsFold applies the ContainsFold predicate on the "respondent_phone" field.
+func RespondentPhoneContainsFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContainsFold(FieldRespondentPhone, v))
+}
+
+// ResearcherEQ applies the EQ predicate on the "researcher" field.
+func ResearcherEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldResearcher, v))
+}
+
+// ResearcherNEQ applies the NEQ predicate on the "researcher" field.
+func ResearcherNEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldResearcher, v))
+}
+
+// ResearcherIn applies the In predicate on the "researcher" field.
+func ResearcherIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldResearcher, vs...))
+}
+
+// ResearcherNotIn applies the NotIn predicate on the "researcher" field.
+func ResearcherNotIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldResearcher, vs...))
+}
+
+// ResearcherGT applies the GT predicate on the "researcher" field.
+func ResearcherGT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldResearcher, v))
+}
+
+// ResearcherGTE applies the GTE predicate on the "researcher" field.
+func ResearcherGTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldResearcher, v))
+}
+
+// ResearcherLT applies the LT predicate on the "researcher" field.
+func ResearcherLT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldResearcher, v))
+}
+
+// ResearcherLTE applies the LTE predicate on the "researcher" field.
+func ResearcherLTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldResearcher, v))
+}
+
+// ResearcherContains applies the Contains predicate on the "researcher" field.
+func ResearcherContains(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContains(FieldResearcher, v))
+}
+
+// ResearcherHasPrefix applies the HasPrefix predicate on the "researcher" field.
+func ResearcherHasPrefix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldResearcher, v))
+}
+
+// ResearcherHasSuffix applies the HasSuffix predicate on the "researcher" field.
+func ResearcherHasSuffix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldResearcher, v))
+}
+
+// ResearcherIsNil applies the IsNil predicate on the "researcher" field.
+func ResearcherIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldResearcher))
+}
+
+// ResearcherNotNil applies the NotNil predicate on the "researcher" field.
+func ResearcherNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldResearcher))
+}
+
+// ResearcherEqualFold applies the EqualFold predicate on the "researcher" field.
+func ResearcherEqualFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEqualFold(FieldResearcher, v))
+}
+
+// ResearcherContainsFold applies the ContainsFold predicate on the "researcher" field.
+func ResearcherContainsFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContainsFold(FieldResearcher, v))
+}
+
+// ResearcherPhoneEQ applies the EQ predicate on the "researcher_phone" field.
+func ResearcherPhoneEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldResearcherPhone, v))
+}
+
+// ResearcherPhoneNEQ applies the NEQ predicate on the "researcher_phone" field.
+func ResearcherPhoneNEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldResearcherPhone, v))
+}
+
+// ResearcherPhoneIn applies the In predicate on the "researcher_phone" field.
+func ResearcherPhoneIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldResearcherPhone, vs...))
+}
+
+// ResearcherPhoneNotIn applies the NotIn predicate on the "researcher_phone" field.
+func ResearcherPhoneNotIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldResearcherPhone, vs...))
+}
+
+// ResearcherPhoneGT applies the GT predicate on the "researcher_phone" field.
+func ResearcherPhoneGT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldResearcherPhone, v))
+}
+
+// ResearcherPhoneGTE applies the GTE predicate on the "researcher_phone" field.
+func ResearcherPhoneGTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldResearcherPhone, v))
+}
+
+// ResearcherPhoneLT applies the LT predicate on the "researcher_phone" field.
+func ResearcherPhoneLT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldResearcherPhone, v))
+}
+
+// ResearcherPhoneLTE applies the LTE predicate on the "researcher_phone" field.
+func ResearcherPhoneLTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldResearcherPhone, v))
+}
+
+// ResearcherPhoneContains applies the Contains predicate on the "researcher_phone" field.
+func ResearcherPhoneContains(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContains(FieldResearcherPhone, v))
+}
+
+// ResearcherPhoneHasPrefix applies the HasPrefix predicate on the "researcher_phone" field.
+func ResearcherPhoneHasPrefix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldResearcherPhone, v))
+}
+
+// ResearcherPhoneHasSuffix applies the HasSuffix predicate on the "researcher_phone" field.
+func ResearcherPhoneHasSuffix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldResearcherPhone, v))
+}
+
+// ResearcherPhoneIsNil applies the IsNil predicate on the "researcher_phone" field.
+func ResearcherPhoneIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldResearcherPhone))
+}
+
+// ResearcherPhoneNotNil applies the NotNil predicate on the "researcher_phone" field.
+func ResearcherPhoneNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldResearcherPhone))
+}
+
+// ResearcherPhoneEqualFold applies the EqualFold predicate on the "researcher_phone" field.
+func ResearcherPhoneEqualFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEqualFold(FieldResearcherPhone, v))
+}
+
+// ResearcherPhoneContainsFold applies the ContainsFold predicate on the "researcher_phone" field.
+func ResearcherPhoneContainsFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContainsFold(FieldResearcherPhone, v))
+}
+
+// PicIsNil applies the IsNil predicate on the "pic" field.
+func PicIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldPic))
+}
+
+// PicNotNil applies the NotNil predicate on the "pic" field.
+func PicNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldPic))
 }
 
 // IPEQ applies the EQ predicate on the "ip" field.
@@ -459,6 +880,16 @@ func IPHasSuffix(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldIP, v))
 }
 
+// IPIsNil applies the IsNil predicate on the "ip" field.
+func IPIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldIP))
+}
+
+// IPNotNil applies the NotNil predicate on the "ip" field.
+func IPNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldIP))
+}
+
 // IPEqualFold applies the EqualFold predicate on the "ip" field.
 func IPEqualFold(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldEqualFold(FieldIP, v))
@@ -469,69 +900,154 @@ func IPContainsFold(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldContainsFold(FieldIP, v))
 }
 
-// MapEQ applies the EQ predicate on the "map" field.
-func MapEQ(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEQ(FieldMap, v))
+// LatitudeEQ applies the EQ predicate on the "latitude" field.
+func LatitudeEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldLatitude, v))
 }
 
-// MapNEQ applies the NEQ predicate on the "map" field.
-func MapNEQ(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNEQ(FieldMap, v))
+// LatitudeNEQ applies the NEQ predicate on the "latitude" field.
+func LatitudeNEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldLatitude, v))
 }
 
-// MapIn applies the In predicate on the "map" field.
-func MapIn(vs ...string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldIn(FieldMap, vs...))
+// LatitudeIn applies the In predicate on the "latitude" field.
+func LatitudeIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldLatitude, vs...))
 }
 
-// MapNotIn applies the NotIn predicate on the "map" field.
-func MapNotIn(vs ...string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNotIn(FieldMap, vs...))
+// LatitudeNotIn applies the NotIn predicate on the "latitude" field.
+func LatitudeNotIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldLatitude, vs...))
 }
 
-// MapGT applies the GT predicate on the "map" field.
-func MapGT(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGT(FieldMap, v))
+// LatitudeGT applies the GT predicate on the "latitude" field.
+func LatitudeGT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldLatitude, v))
 }
 
-// MapGTE applies the GTE predicate on the "map" field.
-func MapGTE(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGTE(FieldMap, v))
+// LatitudeGTE applies the GTE predicate on the "latitude" field.
+func LatitudeGTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldLatitude, v))
 }
 
-// MapLT applies the LT predicate on the "map" field.
-func MapLT(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLT(FieldMap, v))
+// LatitudeLT applies the LT predicate on the "latitude" field.
+func LatitudeLT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldLatitude, v))
 }
 
-// MapLTE applies the LTE predicate on the "map" field.
-func MapLTE(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLTE(FieldMap, v))
+// LatitudeLTE applies the LTE predicate on the "latitude" field.
+func LatitudeLTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldLatitude, v))
 }
 
-// MapContains applies the Contains predicate on the "map" field.
-func MapContains(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldContains(FieldMap, v))
+// LatitudeContains applies the Contains predicate on the "latitude" field.
+func LatitudeContains(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContains(FieldLatitude, v))
 }
 
-// MapHasPrefix applies the HasPrefix predicate on the "map" field.
-func MapHasPrefix(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldMap, v))
+// LatitudeHasPrefix applies the HasPrefix predicate on the "latitude" field.
+func LatitudeHasPrefix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldLatitude, v))
 }
 
-// MapHasSuffix applies the HasSuffix predicate on the "map" field.
-func MapHasSuffix(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldMap, v))
+// LatitudeHasSuffix applies the HasSuffix predicate on the "latitude" field.
+func LatitudeHasSuffix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldLatitude, v))
 }
 
-// MapEqualFold applies the EqualFold predicate on the "map" field.
-func MapEqualFold(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEqualFold(FieldMap, v))
+// LatitudeIsNil applies the IsNil predicate on the "latitude" field.
+func LatitudeIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldLatitude))
 }
 
-// MapContainsFold applies the ContainsFold predicate on the "map" field.
-func MapContainsFold(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldContainsFold(FieldMap, v))
+// LatitudeNotNil applies the NotNil predicate on the "latitude" field.
+func LatitudeNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldLatitude))
+}
+
+// LatitudeEqualFold applies the EqualFold predicate on the "latitude" field.
+func LatitudeEqualFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEqualFold(FieldLatitude, v))
+}
+
+// LatitudeContainsFold applies the ContainsFold predicate on the "latitude" field.
+func LatitudeContainsFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContainsFold(FieldLatitude, v))
+}
+
+// LongitudeEQ applies the EQ predicate on the "longitude" field.
+func LongitudeEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldLongitude, v))
+}
+
+// LongitudeNEQ applies the NEQ predicate on the "longitude" field.
+func LongitudeNEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldLongitude, v))
+}
+
+// LongitudeIn applies the In predicate on the "longitude" field.
+func LongitudeIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldLongitude, vs...))
+}
+
+// LongitudeNotIn applies the NotIn predicate on the "longitude" field.
+func LongitudeNotIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldLongitude, vs...))
+}
+
+// LongitudeGT applies the GT predicate on the "longitude" field.
+func LongitudeGT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldLongitude, v))
+}
+
+// LongitudeGTE applies the GTE predicate on the "longitude" field.
+func LongitudeGTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldLongitude, v))
+}
+
+// LongitudeLT applies the LT predicate on the "longitude" field.
+func LongitudeLT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldLongitude, v))
+}
+
+// LongitudeLTE applies the LTE predicate on the "longitude" field.
+func LongitudeLTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldLongitude, v))
+}
+
+// LongitudeContains applies the Contains predicate on the "longitude" field.
+func LongitudeContains(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContains(FieldLongitude, v))
+}
+
+// LongitudeHasPrefix applies the HasPrefix predicate on the "longitude" field.
+func LongitudeHasPrefix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldLongitude, v))
+}
+
+// LongitudeHasSuffix applies the HasSuffix predicate on the "longitude" field.
+func LongitudeHasSuffix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldLongitude, v))
+}
+
+// LongitudeIsNil applies the IsNil predicate on the "longitude" field.
+func LongitudeIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldLongitude))
+}
+
+// LongitudeNotNil applies the NotNil predicate on the "longitude" field.
+func LongitudeNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldLongitude))
+}
+
+// LongitudeEqualFold applies the EqualFold predicate on the "longitude" field.
+func LongitudeEqualFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEqualFold(FieldLongitude, v))
+}
+
+// LongitudeContainsFold applies the ContainsFold predicate on the "longitude" field.
+func LongitudeContainsFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContainsFold(FieldLongitude, v))
 }
 
 // DeviceEQ applies the EQ predicate on the "device" field.
@@ -589,6 +1105,16 @@ func DeviceHasSuffix(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldDevice, v))
 }
 
+// DeviceIsNil applies the IsNil predicate on the "device" field.
+func DeviceIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldDevice))
+}
+
+// DeviceNotNil applies the NotNil predicate on the "device" field.
+func DeviceNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldDevice))
+}
+
 // DeviceEqualFold applies the EqualFold predicate on the "device" field.
 func DeviceEqualFold(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldEqualFold(FieldDevice, v))
@@ -599,149 +1125,485 @@ func DeviceContainsFold(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldContainsFold(FieldDevice, v))
 }
 
-// AudioEQ applies the EQ predicate on the "audio" field.
-func AudioEQ(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEQ(FieldAudio, v))
+// AudioIsNil applies the IsNil predicate on the "audio" field.
+func AudioIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldAudio))
 }
 
-// AudioNEQ applies the NEQ predicate on the "audio" field.
-func AudioNEQ(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNEQ(FieldAudio, v))
+// AudioNotNil applies the NotNil predicate on the "audio" field.
+func AudioNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldAudio))
 }
 
-// AudioIn applies the In predicate on the "audio" field.
-func AudioIn(vs ...string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldIn(FieldAudio, vs...))
+// AreaEQ applies the EQ predicate on the "area" field.
+func AreaEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldArea, v))
 }
 
-// AudioNotIn applies the NotIn predicate on the "audio" field.
-func AudioNotIn(vs ...string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNotIn(FieldAudio, vs...))
+// AreaNEQ applies the NEQ predicate on the "area" field.
+func AreaNEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldArea, v))
 }
 
-// AudioGT applies the GT predicate on the "audio" field.
-func AudioGT(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGT(FieldAudio, v))
+// AreaIn applies the In predicate on the "area" field.
+func AreaIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldArea, vs...))
 }
 
-// AudioGTE applies the GTE predicate on the "audio" field.
-func AudioGTE(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGTE(FieldAudio, v))
+// AreaNotIn applies the NotIn predicate on the "area" field.
+func AreaNotIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldArea, vs...))
 }
 
-// AudioLT applies the LT predicate on the "audio" field.
-func AudioLT(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLT(FieldAudio, v))
+// AreaGT applies the GT predicate on the "area" field.
+func AreaGT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldArea, v))
 }
 
-// AudioLTE applies the LTE predicate on the "audio" field.
-func AudioLTE(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLTE(FieldAudio, v))
+// AreaGTE applies the GTE predicate on the "area" field.
+func AreaGTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldArea, v))
 }
 
-// AudioContains applies the Contains predicate on the "audio" field.
-func AudioContains(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldContains(FieldAudio, v))
+// AreaLT applies the LT predicate on the "area" field.
+func AreaLT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldArea, v))
 }
 
-// AudioHasPrefix applies the HasPrefix predicate on the "audio" field.
-func AudioHasPrefix(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldAudio, v))
+// AreaLTE applies the LTE predicate on the "area" field.
+func AreaLTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldArea, v))
 }
 
-// AudioHasSuffix applies the HasSuffix predicate on the "audio" field.
-func AudioHasSuffix(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldAudio, v))
+// AreaContains applies the Contains predicate on the "area" field.
+func AreaContains(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContains(FieldArea, v))
 }
 
-// AudioEqualFold applies the EqualFold predicate on the "audio" field.
-func AudioEqualFold(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEqualFold(FieldAudio, v))
+// AreaHasPrefix applies the HasPrefix predicate on the "area" field.
+func AreaHasPrefix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldArea, v))
 }
 
-// AudioContainsFold applies the ContainsFold predicate on the "audio" field.
-func AudioContainsFold(v string) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldContainsFold(FieldAudio, v))
+// AreaHasSuffix applies the HasSuffix predicate on the "area" field.
+func AreaHasSuffix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldArea, v))
 }
 
-// StartedAtEQ applies the EQ predicate on the "started_at" field.
-func StartedAtEQ(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEQ(FieldStartedAt, v))
+// AreaIsNil applies the IsNil predicate on the "area" field.
+func AreaIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldArea))
 }
 
-// StartedAtNEQ applies the NEQ predicate on the "started_at" field.
-func StartedAtNEQ(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNEQ(FieldStartedAt, v))
+// AreaNotNil applies the NotNil predicate on the "area" field.
+func AreaNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldArea))
 }
 
-// StartedAtIn applies the In predicate on the "started_at" field.
-func StartedAtIn(vs ...time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldIn(FieldStartedAt, vs...))
+// AreaEqualFold applies the EqualFold predicate on the "area" field.
+func AreaEqualFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEqualFold(FieldArea, v))
 }
 
-// StartedAtNotIn applies the NotIn predicate on the "started_at" field.
-func StartedAtNotIn(vs ...time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNotIn(FieldStartedAt, vs...))
+// AreaContainsFold applies the ContainsFold predicate on the "area" field.
+func AreaContainsFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContainsFold(FieldArea, v))
 }
 
-// StartedAtGT applies the GT predicate on the "started_at" field.
-func StartedAtGT(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGT(FieldStartedAt, v))
+// CityEQ applies the EQ predicate on the "city" field.
+func CityEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldCity, v))
 }
 
-// StartedAtGTE applies the GTE predicate on the "started_at" field.
-func StartedAtGTE(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGTE(FieldStartedAt, v))
+// CityNEQ applies the NEQ predicate on the "city" field.
+func CityNEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldCity, v))
 }
 
-// StartedAtLT applies the LT predicate on the "started_at" field.
-func StartedAtLT(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLT(FieldStartedAt, v))
+// CityIn applies the In predicate on the "city" field.
+func CityIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldCity, vs...))
 }
 
-// StartedAtLTE applies the LTE predicate on the "started_at" field.
-func StartedAtLTE(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLTE(FieldStartedAt, v))
+// CityNotIn applies the NotIn predicate on the "city" field.
+func CityNotIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldCity, vs...))
 }
 
-// CompletedAtEQ applies the EQ predicate on the "completed_at" field.
-func CompletedAtEQ(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldEQ(FieldCompletedAt, v))
+// CityGT applies the GT predicate on the "city" field.
+func CityGT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldCity, v))
 }
 
-// CompletedAtNEQ applies the NEQ predicate on the "completed_at" field.
-func CompletedAtNEQ(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNEQ(FieldCompletedAt, v))
+// CityGTE applies the GTE predicate on the "city" field.
+func CityGTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldCity, v))
 }
 
-// CompletedAtIn applies the In predicate on the "completed_at" field.
-func CompletedAtIn(vs ...time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldIn(FieldCompletedAt, vs...))
+// CityLT applies the LT predicate on the "city" field.
+func CityLT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldCity, v))
 }
 
-// CompletedAtNotIn applies the NotIn predicate on the "completed_at" field.
-func CompletedAtNotIn(vs ...time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldNotIn(FieldCompletedAt, vs...))
+// CityLTE applies the LTE predicate on the "city" field.
+func CityLTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldCity, v))
 }
 
-// CompletedAtGT applies the GT predicate on the "completed_at" field.
-func CompletedAtGT(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGT(FieldCompletedAt, v))
+// CityContains applies the Contains predicate on the "city" field.
+func CityContains(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContains(FieldCity, v))
 }
 
-// CompletedAtGTE applies the GTE predicate on the "completed_at" field.
-func CompletedAtGTE(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldGTE(FieldCompletedAt, v))
+// CityHasPrefix applies the HasPrefix predicate on the "city" field.
+func CityHasPrefix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldCity, v))
 }
 
-// CompletedAtLT applies the LT predicate on the "completed_at" field.
-func CompletedAtLT(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLT(FieldCompletedAt, v))
+// CityHasSuffix applies the HasSuffix predicate on the "city" field.
+func CityHasSuffix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldCity, v))
 }
 
-// CompletedAtLTE applies the LTE predicate on the "completed_at" field.
-func CompletedAtLTE(v time.Time) predicate.SurveyResponse {
-	return predicate.SurveyResponse(sql.FieldLTE(FieldCompletedAt, v))
+// CityIsNil applies the IsNil predicate on the "city" field.
+func CityIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldCity))
+}
+
+// CityNotNil applies the NotNil predicate on the "city" field.
+func CityNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldCity))
+}
+
+// CityEqualFold applies the EqualFold predicate on the "city" field.
+func CityEqualFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEqualFold(FieldCity, v))
+}
+
+// CityContainsFold applies the ContainsFold predicate on the "city" field.
+func CityContainsFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContainsFold(FieldCity, v))
+}
+
+// DistrictEQ applies the EQ predicate on the "district" field.
+func DistrictEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldDistrict, v))
+}
+
+// DistrictNEQ applies the NEQ predicate on the "district" field.
+func DistrictNEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldDistrict, v))
+}
+
+// DistrictIn applies the In predicate on the "district" field.
+func DistrictIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldDistrict, vs...))
+}
+
+// DistrictNotIn applies the NotIn predicate on the "district" field.
+func DistrictNotIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldDistrict, vs...))
+}
+
+// DistrictGT applies the GT predicate on the "district" field.
+func DistrictGT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldDistrict, v))
+}
+
+// DistrictGTE applies the GTE predicate on the "district" field.
+func DistrictGTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldDistrict, v))
+}
+
+// DistrictLT applies the LT predicate on the "district" field.
+func DistrictLT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldDistrict, v))
+}
+
+// DistrictLTE applies the LTE predicate on the "district" field.
+func DistrictLTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldDistrict, v))
+}
+
+// DistrictContains applies the Contains predicate on the "district" field.
+func DistrictContains(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContains(FieldDistrict, v))
+}
+
+// DistrictHasPrefix applies the HasPrefix predicate on the "district" field.
+func DistrictHasPrefix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldDistrict, v))
+}
+
+// DistrictHasSuffix applies the HasSuffix predicate on the "district" field.
+func DistrictHasSuffix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldDistrict, v))
+}
+
+// DistrictIsNil applies the IsNil predicate on the "district" field.
+func DistrictIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldDistrict))
+}
+
+// DistrictNotNil applies the NotNil predicate on the "district" field.
+func DistrictNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldDistrict))
+}
+
+// DistrictEqualFold applies the EqualFold predicate on the "district" field.
+func DistrictEqualFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEqualFold(FieldDistrict, v))
+}
+
+// DistrictContainsFold applies the ContainsFold predicate on the "district" field.
+func DistrictContainsFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContainsFold(FieldDistrict, v))
+}
+
+// VillageEQ applies the EQ predicate on the "village" field.
+func VillageEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldVillage, v))
+}
+
+// VillageNEQ applies the NEQ predicate on the "village" field.
+func VillageNEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldVillage, v))
+}
+
+// VillageIn applies the In predicate on the "village" field.
+func VillageIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldVillage, vs...))
+}
+
+// VillageNotIn applies the NotIn predicate on the "village" field.
+func VillageNotIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldVillage, vs...))
+}
+
+// VillageGT applies the GT predicate on the "village" field.
+func VillageGT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldVillage, v))
+}
+
+// VillageGTE applies the GTE predicate on the "village" field.
+func VillageGTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldVillage, v))
+}
+
+// VillageLT applies the LT predicate on the "village" field.
+func VillageLT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldVillage, v))
+}
+
+// VillageLTE applies the LTE predicate on the "village" field.
+func VillageLTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldVillage, v))
+}
+
+// VillageContains applies the Contains predicate on the "village" field.
+func VillageContains(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContains(FieldVillage, v))
+}
+
+// VillageHasPrefix applies the HasPrefix predicate on the "village" field.
+func VillageHasPrefix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldVillage, v))
+}
+
+// VillageHasSuffix applies the HasSuffix predicate on the "village" field.
+func VillageHasSuffix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldVillage, v))
+}
+
+// VillageIsNil applies the IsNil predicate on the "village" field.
+func VillageIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldVillage))
+}
+
+// VillageNotNil applies the NotNil predicate on the "village" field.
+func VillageNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldVillage))
+}
+
+// VillageEqualFold applies the EqualFold predicate on the "village" field.
+func VillageEqualFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEqualFold(FieldVillage, v))
+}
+
+// VillageContainsFold applies the ContainsFold predicate on the "village" field.
+func VillageContainsFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContainsFold(FieldVillage, v))
+}
+
+// AddressEQ applies the EQ predicate on the "address" field.
+func AddressEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldAddress, v))
+}
+
+// AddressNEQ applies the NEQ predicate on the "address" field.
+func AddressNEQ(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldAddress, v))
+}
+
+// AddressIn applies the In predicate on the "address" field.
+func AddressIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldAddress, vs...))
+}
+
+// AddressNotIn applies the NotIn predicate on the "address" field.
+func AddressNotIn(vs ...string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldAddress, vs...))
+}
+
+// AddressGT applies the GT predicate on the "address" field.
+func AddressGT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldAddress, v))
+}
+
+// AddressGTE applies the GTE predicate on the "address" field.
+func AddressGTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldAddress, v))
+}
+
+// AddressLT applies the LT predicate on the "address" field.
+func AddressLT(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldAddress, v))
+}
+
+// AddressLTE applies the LTE predicate on the "address" field.
+func AddressLTE(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldAddress, v))
+}
+
+// AddressContains applies the Contains predicate on the "address" field.
+func AddressContains(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContains(FieldAddress, v))
+}
+
+// AddressHasPrefix applies the HasPrefix predicate on the "address" field.
+func AddressHasPrefix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasPrefix(FieldAddress, v))
+}
+
+// AddressHasSuffix applies the HasSuffix predicate on the "address" field.
+func AddressHasSuffix(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldHasSuffix(FieldAddress, v))
+}
+
+// AddressIsNil applies the IsNil predicate on the "address" field.
+func AddressIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldAddress))
+}
+
+// AddressNotNil applies the NotNil predicate on the "address" field.
+func AddressNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldAddress))
+}
+
+// AddressEqualFold applies the EqualFold predicate on the "address" field.
+func AddressEqualFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEqualFold(FieldAddress, v))
+}
+
+// AddressContainsFold applies the ContainsFold predicate on the "address" field.
+func AddressContainsFold(v string) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldContainsFold(FieldAddress, v))
+}
+
+// AnswersCountEQ applies the EQ predicate on the "answers_count" field.
+func AnswersCountEQ(v int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldEQ(FieldAnswersCount, v))
+}
+
+// AnswersCountNEQ applies the NEQ predicate on the "answers_count" field.
+func AnswersCountNEQ(v int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNEQ(FieldAnswersCount, v))
+}
+
+// AnswersCountIn applies the In predicate on the "answers_count" field.
+func AnswersCountIn(vs ...int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIn(FieldAnswersCount, vs...))
+}
+
+// AnswersCountNotIn applies the NotIn predicate on the "answers_count" field.
+func AnswersCountNotIn(vs ...int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotIn(FieldAnswersCount, vs...))
+}
+
+// AnswersCountGT applies the GT predicate on the "answers_count" field.
+func AnswersCountGT(v int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGT(FieldAnswersCount, v))
+}
+
+// AnswersCountGTE applies the GTE predicate on the "answers_count" field.
+func AnswersCountGTE(v int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldGTE(FieldAnswersCount, v))
+}
+
+// AnswersCountLT applies the LT predicate on the "answers_count" field.
+func AnswersCountLT(v int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLT(FieldAnswersCount, v))
+}
+
+// AnswersCountLTE applies the LTE predicate on the "answers_count" field.
+func AnswersCountLTE(v int64) predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldLTE(FieldAnswersCount, v))
+}
+
+// AnswersCountIsNil applies the IsNil predicate on the "answers_count" field.
+func AnswersCountIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldAnswersCount))
+}
+
+// AnswersCountNotNil applies the NotNil predicate on the "answers_count" field.
+func AnswersCountNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldAnswersCount))
+}
+
+// HasSurvey applies the HasEdge predicate on the "survey" edge.
+func HasSurvey() predicate.SurveyResponse {
+	return predicate.SurveyResponse(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, SurveyTable, SurveyColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasSurveyWith applies the HasEdge predicate on the "survey" edge with a given conditions (other predicates).
+func HasSurveyWith(preds ...predicate.Survey) predicate.SurveyResponse {
+	return predicate.SurveyResponse(func(s *sql.Selector) {
+		step := newSurveyStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasAnswers applies the HasEdge predicate on the "answers" edge.
+func HasAnswers() predicate.SurveyResponse {
+	return predicate.SurveyResponse(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, AnswersTable, AnswersColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasAnswersWith applies the HasEdge predicate on the "answers" edge with a given conditions (other predicates).
+func HasAnswersWith(preds ...predicate.SurveyResponseAnswers) predicate.SurveyResponse {
+	return predicate.SurveyResponse(func(s *sql.Selector) {
+		step := newAnswersStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

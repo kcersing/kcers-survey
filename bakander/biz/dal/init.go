@@ -9,6 +9,7 @@ import (
 	db "kcers-survey/biz/dal/db/mysql"
 	"kcers-survey/biz/dal/logger"
 	"kcers-survey/biz/dal/minio"
+	"kcers-survey/biz/infras/cron"
 )
 
 func Init() {
@@ -31,5 +32,6 @@ func Init() {
 	//	wechat.InitMiniProgramApp()
 	//}()
 	hlog.Info("Init ok!")
+	cron.InitCron()
 
 }

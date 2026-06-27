@@ -3,9 +3,11 @@
 package surveyquestion
 
 import (
+	"kcers-survey/idl_gen/model/service"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -27,18 +29,48 @@ const (
 	FieldSurveyID = "survey_id"
 	// FieldParentID holds the string denoting the parent_id field in the database.
 	FieldParentID = "parent_id"
+	// FieldSerial holds the string denoting the serial field in the database.
+	FieldSerial = "serial"
 	// FieldContent holds the string denoting the content field in the database.
 	FieldContent = "content"
 	// FieldType holds the string denoting the type field in the database.
 	FieldType = "type"
-	// FieldSort holds the string denoting the sort field in the database.
-	FieldSort = "sort"
-	// FieldRequired holds the string denoting the required field in the database.
-	FieldRequired = "required"
 	// FieldOptions holds the string denoting the options field in the database.
 	FieldOptions = "options"
+	// FieldShow holds the string denoting the show field in the database.
+	FieldShow = "show"
+	// FieldSort holds the string denoting the sort field in the database.
+	FieldSort = "sort"
+	// FieldJumpRules holds the string denoting the jump_rules field in the database.
+	FieldJumpRules = "jump_rules"
+	// FieldRequired holds the string denoting the required field in the database.
+	FieldRequired = "required"
+	// FieldRemark holds the string denoting the remark field in the database.
+	FieldRemark = "remark"
+	// FieldLevel holds the string denoting the level field in the database.
+	FieldLevel = "level"
+	// FieldTree holds the string denoting the tree field in the database.
+	FieldTree = "tree"
+	// EdgeSurvey holds the string denoting the survey edge name in mutations.
+	EdgeSurvey = "survey"
+	// EdgeAnswers holds the string denoting the answers edge name in mutations.
+	EdgeAnswers = "answers"
 	// Table holds the table name of the surveyquestion in the database.
 	Table = "survey_question"
+	// SurveyTable is the table that holds the survey relation/edge.
+	SurveyTable = "survey_question"
+	// SurveyInverseTable is the table name for the Survey entity.
+	// It exists in this package in order to avoid circular dependency with the "survey" package.
+	SurveyInverseTable = "survey"
+	// SurveyColumn is the table column denoting the survey relation/edge.
+	SurveyColumn = "survey_id"
+	// AnswersTable is the table that holds the answers relation/edge.
+	AnswersTable = "survey_response_answers"
+	// AnswersInverseTable is the table name for the SurveyResponseAnswers entity.
+	// It exists in this package in order to avoid circular dependency with the "surveyresponseanswers" package.
+	AnswersInverseTable = "survey_response_answers"
+	// AnswersColumn is the table column denoting the answers relation/edge.
+	AnswersColumn = "survey_question_id"
 )
 
 // Columns holds all SQL columns for surveyquestion fields.
@@ -51,11 +83,17 @@ var Columns = []string{
 	FieldStatus,
 	FieldSurveyID,
 	FieldParentID,
+	FieldSerial,
 	FieldContent,
 	FieldType,
-	FieldSort,
-	FieldRequired,
 	FieldOptions,
+	FieldShow,
+	FieldSort,
+	FieldJumpRules,
+	FieldRequired,
+	FieldRemark,
+	FieldLevel,
+	FieldTree,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -85,10 +123,26 @@ var (
 	DefaultSurveyID int64
 	// DefaultParentID holds the default value on creation for the "parent_id" field.
 	DefaultParentID int64
+	// DefaultSerial holds the default value on creation for the "serial" field.
+	DefaultSerial string
+	// DefaultContent holds the default value on creation for the "content" field.
+	DefaultContent string
+	// DefaultType holds the default value on creation for the "type" field.
+	DefaultType string
+	// DefaultShow holds the default value on creation for the "show" field.
+	DefaultShow int64
 	// DefaultSort holds the default value on creation for the "sort" field.
 	DefaultSort int64
+	// DefaultJumpRules holds the default value on creation for the "jump_rules" field.
+	DefaultJumpRules []*service.JumpRules
 	// DefaultRequired holds the default value on creation for the "required" field.
 	DefaultRequired int64
+	// DefaultRemark holds the default value on creation for the "remark" field.
+	DefaultRemark string
+	// DefaultLevel holds the default value on creation for the "level" field.
+	DefaultLevel int64
+	// DefaultTree holds the default value on creation for the "tree" field.
+	DefaultTree string
 )
 
 // OrderOption defines the ordering options for the SurveyQuestion queries.
@@ -134,6 +188,11 @@ func ByParentID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldParentID, opts...).ToFunc()
 }
 
+// BySerial orders the results by the serial field.
+func BySerial(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSerial, opts...).ToFunc()
+}
+
 // ByContent orders the results by the content field.
 func ByContent(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldContent, opts...).ToFunc()
@@ -144,6 +203,11 @@ func ByType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldType, opts...).ToFunc()
 }
 
+// ByShow orders the results by the show field.
+func ByShow(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldShow, opts...).ToFunc()
+}
+
 // BySort orders the results by the sort field.
 func BySort(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSort, opts...).ToFunc()
@@ -152,4 +216,54 @@ func BySort(opts ...sql.OrderTermOption) OrderOption {
 // ByRequired orders the results by the required field.
 func ByRequired(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRequired, opts...).ToFunc()
+}
+
+// ByRemark orders the results by the remark field.
+func ByRemark(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRemark, opts...).ToFunc()
+}
+
+// ByLevel orders the results by the level field.
+func ByLevel(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLevel, opts...).ToFunc()
+}
+
+// ByTree orders the results by the tree field.
+func ByTree(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTree, opts...).ToFunc()
+}
+
+// BySurveyField orders the results by survey field.
+func BySurveyField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newSurveyStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByAnswersCount orders the results by answers count.
+func ByAnswersCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newAnswersStep(), opts...)
+	}
+}
+
+// ByAnswers orders the results by answers terms.
+func ByAnswers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newAnswersStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newSurveyStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(SurveyInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, SurveyTable, SurveyColumn),
+	)
+}
+func newAnswersStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(AnswersInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, AnswersTable, AnswersColumn),
+	)
 }
