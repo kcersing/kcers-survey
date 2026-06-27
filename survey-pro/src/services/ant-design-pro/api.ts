@@ -1,34 +1,37 @@
 // @ts-ignore
 /* eslint-disable */
+import { Urls } from '@/services/ant-design-pro/url';
 import { request } from '@umijs/max';
 
 /** 获取当前的用户 GET /api/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
   return request<{
     data: API.CurrentUser;
-  }>('/api/currentUser', {
+  }>(Urls.UserInfo, {
     method: 'GET',
+    headers: {
+      Authorization:'Bearer ' + sessionStorage.getItem('token') || '',
+    },
     ...(options || {}),
   });
 }
 
 /** 退出登录接口 POST /api/login/outLogin */
 export async function outLogin(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api/login/outLogin', {
+  return request<Record<string, any>>(Urls.OutLogin, {
     method: 'POST',
     ...(options || {}),
   });
 }
 
 /** 登录接口 POST /api/login/account */
-export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>('/api/login/account', {
+export async function login(body: API.LoginParams) {
+  return request<API.LoginResult>(Urls.Login, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     data: body,
-    ...(options || {}),
   });
 }
 
@@ -45,7 +48,7 @@ export async function rule(
   params: {
     // query
     /** 当前的页码 */
-    current?: number;
+    page?: number;
     /** 页面的容量 */
     pageSize?: number;
   },
@@ -90,5 +93,49 @@ export async function removeRule(options?: { [key: string]: any }) {
       method: 'delete',
       ...(options || {}),
     },
+  });
+}
+
+
+export type AreaItemType = {
+  name: string;
+  id: string;
+};
+
+export async function queryProvince(): Promise<{ data: AreaItemType[] }> {
+  return request('/service/sys/area');
+}
+
+export async function queryCity(area: string): Promise<{ data: AreaItemType[] }> {
+  return request(`/service/sys/city?id=${area}`);
+}
+
+type PubUploadOptions = {
+  file: File; // 假设需要上传文件
+  // 可以添加其他可选参数
+  [key: string]: any;
+};
+
+export async function pubUpload(options?: PubUploadOptions) {
+  const formData = new FormData();
+  if (options?.file) {
+    formData.append('files', options.file);
+  }
+  // 添加其他参数
+  if (options) {
+    Object.keys(options).forEach(key => {
+      if (key !== 'file') {
+        formData.append(key, options[key]);
+      }
+    });
+  }
+
+  return request<Record<string, any>>('/service/pub/upload/', {
+    method: 'POST',
+    data: formData,
+    // headers: {
+    //   // 若需要认证，添加认证信息
+    //   Authorization: 'Bearer ' + sessionStorage.getItem('token') || '',
+    // },
   });
 }

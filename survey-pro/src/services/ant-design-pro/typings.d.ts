@@ -3,34 +3,53 @@
 
 declare namespace API {
   type CurrentUser = {
-    name?: string;
+    // name?: string;
+    // avatar?: string;
+    // userid?: string;
+    // email?: string;
+    // signature?: string;
+    // title?: string;
+    // group?: string;
+    // tags?: { key?: string; label?: string }[];
+    // notifyCount?: number;
+    // unreadCount?: number;
+    // country?: string;
+    // access?: string;
+    // geographic?: {
+    //   province?: { label?: string; key?: string };
+    //   city?: { label?: string; key?: string };
+    // };
+    // address?: string;
+    // phone?: string;
+
     avatar?: string;
-    userid?: string;
+    birthday?: string;
+    createdAt?: string;
+    detail?: string;
     email?: string;
-    signature?: string;
-    title?: string;
-    group?: string;
-    tags?: { key?: string; label?: string }[];
-    notifyCount?: number;
-    unreadCount?: number;
-    country?: string;
-    access?: string;
-    geographic?: {
-      province?: { label?: string; key?: string };
-      city?: { label?: string; key?: string };
-    };
-    address?: string;
-    phone?: string;
+    gender?: string;
+    id?: number;
+    mobile?: string;
+    name?: string;
+    status?: number;
+    updatedAt?: string;
+    username?: string;
+    wecom?: string;
+
+    userRole?: { id?: number; name?: string;value?: string; }[];
+    userRoleIds?: number[];
+
   };
 
+
   type LoginResult = {
-    status?: string;
-    type?: string;
+    code?: number;
+    data?: { token?: string; expire?: string };
     currentAuthority?: string;
   };
 
   type PageParams = {
-    current?: number;
+    page?: number;
     pageSize?: number;
   };
 
@@ -66,15 +85,15 @@ declare namespace API {
     password?: string;
     autoLogin?: boolean;
     type?: string;
+    captcha?: string;
+    captchaId?: string;
   };
 
   type ErrorResponse = {
     /** 业务约定的错误码 */
-    errorCode: string;
+    code: number;
     /** 业务上的错误信息 */
-    errorMessage?: string;
-    /** 业务上的请求是否成功 */
-    success?: boolean;
+    message?: string;
   };
 
   type NoticeIconList = {
@@ -98,4 +117,94 @@ declare namespace API {
     description?: string;
     type?: NoticeIconItemType;
   };
+
+
+
+
+
+  type Survey = {
+    id?: number;
+    title?: string;
+    desc?: string;
+    status?: number;
+    startAt?: string;
+    endAt?: string;
+    questions?: Questions[];
+    questionCount?: number;
+    responseCount?: number;
+    pic?: string;
+  };
+
+  type Questions = {
+    id?: number;
+    sort?: number;
+    type?: string;
+    content?: string;
+    required?: number;
+    options?: Options[];
+    children?: Questions[];
+    surveyId?: number;
+    parentId?: number;
+    jumpRules?: JumpRules[];
+    matrixRows?: string;
+    matrixColumns?: string;
+    show?:number;
+
+  };
+  type JumpRules = {
+    answer?: string;// 触发条件的回答
+    nextQuestionId?: number;// 跳转的目标问题ID
+    operators?: string;
+  };
+  type Options = {
+    inputs?: number;
+    serial?: string;
+    content?: string;
+  };
+  type Response = {
+    id?: number;
+    surveyId?: number;
+    sn?: string;
+    respondent?: string;
+    respondentPhone?: string;
+    researcher?: string;
+    researcherPhone?: string;
+
+
+    area?: string;
+    city?: string;
+    district?: string;
+    address?: string;
+    village?: string;
+
+    pic?: string[];
+    ip?: string;
+
+    createdAt?: string;
+    latitude?: string;
+    longitude?: string;
+    answerCount?: number;
+  };
+  type ResponseAnswers  = {
+    id?: number;
+    surveyId?: number;
+    surveyResponseId?: number;
+    surveyQuestionId?: number;
+    answer?: string[];
+    answerText?: string;
+    createdAt?: string;
+    content?: string;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 }
