@@ -2,7 +2,7 @@ package db
 
 import (
 	"kcers-survey/biz/dal/config"
-	"kcers-survey/biz/dal/db/mysql/ent"
+	"kcers-survey/biz/dal/db/ent"
 	"sync"
 )
 
