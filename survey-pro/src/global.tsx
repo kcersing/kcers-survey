@@ -1,4 +1,3 @@
-import { useIntl } from '@umijs/max';
 import { Button, message, notification } from 'antd';
 import defaultSettings from '../config/defaultSettings';
 
@@ -6,7 +5,6 @@ const { pwa } = defaultSettings;
 const isHttps = document.location.protocol === 'https:';
 
 const clearCache = () => {
-  // remove all caches
   if (window.caches) {
     caches
       .keys()
@@ -15,28 +13,23 @@ const clearCache = () => {
           caches.delete(key);
         });
       })
-      .catch((e) => console.log(e));
+      .catch(() => {});
   }
 };
 
 // if pwa is true
 if (pwa) {
-  // Notify user if offline now
   window.addEventListener('sw.offline', () => {
-    message.warning(useIntl().formatMessage({ id: 'app.pwa.offline' }));
+    message.warning('当前处于离线状态');
   });
 
-  // Pop up a prompt on the page asking the user if they want to use the latest version
   window.addEventListener('sw.updated', (event: Event) => {
     const e = event as CustomEvent;
     const reloadSW = async () => {
-      // Check if there is sw whose state is waiting in ServiceWorkerRegistration
-      // https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration
       const worker = e.detail && e.detail.waiting;
       if (!worker) {
         return true;
       }
-      // Send skip-waiting event to waiting SW with MessageChannel
       await new Promise((resolve, reject) => {
         const channel = new MessageChannel();
         channel.port1.onmessage = (msgEvent) => {
@@ -62,12 +55,12 @@ if (pwa) {
           reloadSW();
         }}
       >
-        {useIntl().formatMessage({ id: 'app.pwa.serviceworker.updated.ok' })}
+        更新
       </Button>
     );
     notification.open({
-      message: useIntl().formatMessage({ id: 'app.pwa.serviceworker.updated' }),
-      description: useIntl().formatMessage({ id: 'app.pwa.serviceworker.updated.hint' }),
+      message: '有新版本可用',
+      description: '点击更新按钮获取最新版本',
       btn,
       key,
       onClose: async () => null,

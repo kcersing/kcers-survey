@@ -95,7 +95,6 @@ export async function createQuestion(options?: { [key: string]: any }) {
   });
 }
 export async function updateQuestion(options?: { [key: string]: any }) {
-  console.log(options)
   return request<Record<string, any>>(Urls.UpdateQuestion, {
     method: 'POST',
     data: {
@@ -167,7 +166,7 @@ export async function deleteQuestion(options?: { [key: string]: any }) {
 }
 
 export async function createResponse(options?: { [key: string]: any }) {
-  return request<Record<string, any>>(Urls.DeleteQuestion, {
+  return request<Record<string, any>>(Urls.CreateRespondent, {
     method: 'POST',
     data: {
       method: 'post',
@@ -176,7 +175,7 @@ export async function createResponse(options?: { [key: string]: any }) {
   });
 }
 export async function getNext(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/service/survey/response/getNext', {
+  return request<Record<string, any>>(Urls.GetNext, {
     method: 'POST',
     data: {
       method: 'post',
@@ -186,7 +185,7 @@ export async function getNext(options?: { [key: string]: any }) {
 }
 
 export async function getResponse(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/service/survey/response/info', {
+  return request<Record<string, any>>(Urls.GetResponse, {
     method: 'POST',
     data: {
       method: 'post',
@@ -195,7 +194,7 @@ export async function getResponse(options?: { [key: string]: any }) {
   });
 }
 export async function getResponseAnswers(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/service/survey/response/answers', {
+  return request<Record<string, any>>(Urls.GetResponseAnswers, {
     method: 'POST',
     data: {
       method: 'post',
@@ -220,7 +219,7 @@ export async function listResponse(
   options?: { [key: string]: any },
 ) {
 
-  return request<Record<string, any>>("/service/survey/response/list", {
+  return request<Record<string, any>>(Urls.ListResponse, {
     method: 'POST',
     params: {
       page: params.current,
@@ -237,7 +236,7 @@ export async function listResponseExport(
   options?: { [key: string]: any },
 ) {
 
-  return request<Record<string, any>>("/service/survey/response/list-export", {
+  return request<Record<string, any>>(Urls.ListResponseExport, {
     method: 'POST',
     params: {
       ...params,
@@ -259,7 +258,7 @@ export async function getQuestionAnswersList(
   options?: { [key: string]: any },
 ) {
 
-  return request<Record<string, any>>("/service/survey/question/answers", {
+  return request<Record<string, any>>(Urls.QuestionAnswersList, {
     method: 'POST',
     params: {
       page: params.current,
@@ -270,7 +269,7 @@ export async function getQuestionAnswersList(
 }
 
 export async function getHeatmap(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/service/survey/response/heatmap', {
+  return request<Record<string, any>>(Urls.Heatmap, {
     method: 'POST',
     data: {
       method: 'post',
@@ -280,7 +279,7 @@ export async function getHeatmap(options?: { [key: string]: any }) {
 }
 
 export async function questionBasicData(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/service/survey/question/basic', {
+  return request<Record<string, any>>(Urls.QuestionBasic, {
     method: 'POST',
     data: {
       method: 'post',
@@ -289,7 +288,7 @@ export async function questionBasicData(options?: { [key: string]: any }) {
   });
 }
 export async function getSurveyStatistics(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/service/survey/statistics', {
+  return request<Record<string, any>>(Urls.SurveyStatistics, {
     method: 'POST',
     data: {
       method: 'post',

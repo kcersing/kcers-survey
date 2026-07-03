@@ -76,7 +76,6 @@ export default () => {
       try {
         const response = await treeQuestion({ surveyId: surveyId }); // 根据实际情况传入参数
         const items = convertToMenuItems(response.data);
-        console.log(response.data);
         setMenuItems(items);
       } catch (error) {
         console.error('获取菜单数据失败:', error);
@@ -109,8 +108,6 @@ export default () => {
 
     setOpenheatmap(true);
   };
-
-console.log(surveyData)
 
   return (
     <>
@@ -174,9 +171,6 @@ console.log(surveyData)
             key,
           }}
           request={async () => {
-            console.log(key);
-
-
               const getQuestionBasicData = await questionBasicData({id: parseInt(key)})
 
               setQuestionBasic(getQuestionBasicData.data.data);

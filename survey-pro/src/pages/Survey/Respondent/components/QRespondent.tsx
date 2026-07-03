@@ -1,74 +1,65 @@
+import React, { useEffect, useRef } from 'react';
+import { ProFormText, StepsForm } from '@ant-design/pro-components';
+import type { QuestionComponentProps } from '@/pages/survey/respondent/types';
 
+const DEBOUNCE_MS = 400;
 
-import React, { type ReactElement, useState } from 'react';
-import type { RadioChangeEvent } from 'antd';
-import { Input, Form,Checkbox } from 'antd';
-import {ProFormText, ProFormTextArea, StepsForm} from "@ant-design/pro-components";
-import { RuleType, StoreValue } from 'rc-field-form/lib/interface';
+const QRespondent = (props: QuestionComponentProps) => {
+  const { surveyId, questions, generateRandom, addRespondent, setCurrentNum, setCurrent } = props;
+  const timers = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
 
-const style: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 8,
-};
+  useEffect(() => {
+    setCurrentNum(0);
+  }, []);
 
-const QRespondent = (props) => {
+  const debouncedAdd = (type: string, val: string) => {
+    if (timers.current[type]) clearTimeout(timers.current[type]);
+    timers.current[type] = setTimeout(() => {
+      addRespondent({
+        surveyId,
+        questionId: 0,
+        type,
+        value: [val],
+        sn: generateRandom,
+      });
+    }, DEBOUNCE_MS);
+  };
 
-  const { surveyId,questions, generateRandom, addRespondent, setCurrentNum ,setCurrent} = props;
-  setCurrentNum(0)
   return (
     <StepsForm.StepForm
-      name={`key_${questions.length+1}`}
-      key={`key_${questions.length+1}`}
-  // onBlur={e => {   console.log(e.target.value)}}
->
-  <ProFormText width="md"
-  onChange={(e)=>{
-    addRespondent({
-      surveyId:surveyId,
-      questionId:0,
-      type:'respondent',
-      value:[e.target.value],
-      sn:generateRandom,
-    })
-  }}
-  label="访谈人姓名" rules={[{ required: true }]} name={'respondent'}
-  />
-  <ProFormText width="md"  onChange={(e)=>{
-
-    addRespondent({
-      surveyId:surveyId,
-      questionId:0,
-      type:'respondentPhone',
-      value:[e.target.value],
-      sn:generateRandom,
-    })}}
-               label="联系电话"
-               rules={[{ required: true,  len:11}]} name={'respondentPhone'}
-
-  />
-  <ProFormText width="md"  onChange={(e)=>{
-
-    addRespondent({
-      surveyId:surveyId,
-      questionId:0,
-      type:'researcher',
-      value:[e.target.value],
-      sn:generateRandom,
-    }) }} label="调研员姓名" rules={[{ required: true }]} name={'researcher'}
-  />
-  <ProFormText length={11}  width="md"  onChange={(e)=>{
-
-    addRespondent({
-      surveyId:surveyId,
-      questionId:0,
-      type:'researcherPhone',
-      value:[e.target.value],
-      sn:generateRandom,
-    })}} label="联系电话"  rules={[{ required: true, len:11 }]} name={'researcherPhone'}
-  />
-  </StepsForm.StepForm>
-);
+      name={`key_${questions.length + 1}`}
+      key={`key_${questions.length + 1}`}
+    >
+      <ProFormText
+        width="md"
+        onChange={(e) => debouncedAdd('respondent', e.target.value)}
+        label="访谈人姓名"
+        rules={[{ required: true }]}
+        name="respondent"
+      />
+      <ProFormText
+        width="md"
+        onChange={(e) => debouncedAdd('respondentPhone', e.target.value)}
+        label="联系电话"
+        rules={[{ required: true, len: 11 }]}
+        name="respondentPhone"
+      />
+      <ProFormText
+        width="md"
+        onChange={(e) => debouncedAdd('researcher', e.target.value)}
+        label="调研员姓名"
+        rules={[{ required: true }]}
+        name="researcher"
+      />
+      <ProFormText
+        width="md"
+        onChange={(e) => debouncedAdd('researcherPhone', e.target.value)}
+        label="联系电话"
+        rules={[{ required: true, len: 11 }]}
+        name="researcherPhone"
+      />
+    </StepsForm.StepForm>
+  );
 };
 
 export default QRespondent;

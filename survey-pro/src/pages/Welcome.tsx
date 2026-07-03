@@ -93,7 +93,6 @@ const Welcome: React.FC = () => {
 
   const urlParams = new URL(window.location.href).searchParams;
   const usertoken= sessionStorage.getItem('token')
-  console.log(usertoken)
   if (!usertoken){
     history.push(urlParams.get('redirect') || '/user/login');
   }

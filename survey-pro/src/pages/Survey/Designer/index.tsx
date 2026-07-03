@@ -27,7 +27,7 @@ import {
 
 import { PlusOutlined , SnippetsOutlined,CloseOutlined} from '@ant-design/icons';
 
-type QuestionType = 'h2' | 'page' | 'rate' | 'single_choice' | 'multiple_choice' | 'text' | 'number' | 'date' | 'matrix_single';
+type QuestionType = 'h2' | 'h3' | 'page' | 'single_choice' | 'multiple_choice' | 'dropdown' | 'text' | 'number' | 'slider' | 'date' | 'datetime' | 'rate' | 'nps' | 'ranking' | 'matrix' | 'image' | 'file' | 'video' | 'audio' | 'signature';
 
 
 const Designer =  () => {
@@ -40,8 +40,6 @@ const Designer =  () => {
   const [editingQuestion, setEditingQuestion] = useState<API.Questions | null>(null);
   const [questionType, setQuestionType] = useState<QuestionType>('single_choice');
   const [options, setOptions] = useState<API.Options[]>([]);
-  // const [matrixRows, setMatrixRows] = useState<string[]>([]);
-  // const [matrixColumns, setMatrixColumns] = useState<string[]>([]);
   const [form] = ProForm.useForm();
 
 
@@ -72,13 +70,6 @@ const Designer =  () => {
   };
 
 
-  // const dragHandleRender = (rowData: any, idx: any) => (
-  //   <>
-  //     <MenuOutlined style={{ cursor: 'grab', color: 'gold' }} />
-  //     &nbsp;{idx + 1} - {rowData.name}
-  //   </>
-  // );
-
   const columns: ProColumns<API.Questions>[] = [
     {
       title: '排序',
@@ -104,15 +95,26 @@ const Designer =  () => {
       title: '问题类型',
       dataIndex: 'type',
       valueEnum: {
-        h2:'标题',
+        h2:'标题1',
+        h3:'标题2',
         page:'单页',
         single_choice: '单选题',
         multiple_choice: '多选题',
+        dropdown: '下拉题',
         text: '文本题',
         number: '数字题',
+        slider: '滑动条',
         date: '日期题',
+        datetime: '日期时间',
         rate:'评分',
-        // matrix_single: '矩阵题',
+        nps:'NPS评分',
+        ranking: '排序题',
+        matrix: '矩阵题',
+        image: '图片上传',
+        file: '文件上传',
+        video: '视频上传',
+        audio: '音频上传',
+        signature: '签名',
       },
     },
     {
@@ -137,29 +139,21 @@ const Designer =  () => {
 
 
   const handleChange = (value: string[]) => {
-    console.log(`selected ${value}`);
   };
 
   const handleAddQuestion = () => {
     // 重置表单和状态
     form.resetFields();
 
-    // form.setFieldValue('options',[]);
-
-
     setEditingQuestion(null);
     setQuestionType('single_choice');
     setOptions([]);
-    // setMatrixRows([]);
-    // setMatrixColumns([]);
     setVisible(true);
   };
 
   const handleSaveQuestion = async () => {
     try {
       const values = await form.validateFields();
-
-      console.log(values);
 
       let questionData = {
         ...values,
@@ -173,10 +167,6 @@ const Designer =  () => {
       if (questionType === 'single_choice' || questionType === 'multiple_choice') {
         questionData.options = values.options;
       }
-      // else if (questionType === 'matrix_single') {
-        // questionData.matrix_rows = matrixRows.filter(row => row.trim()).join(',');
-        // questionData.matrix_columns = matrixColumns.filter(column => column.trim()).join(',');
-      // }
 
       if (editingQuestion) {
         // 更新问题
@@ -192,7 +182,6 @@ const Designer =  () => {
       loadSurveyAndQuestions();
       setVisible(false);
     } catch (errorInfo) {
-      console.log('表单验证失败:', errorInfo);
       message.error('表单验证失败，请检查输入');
     }
   };
@@ -214,12 +203,7 @@ const Designer =  () => {
 
     if (question.type === 'single_choice' || question.type === 'multiple_choice') {
        setOptions(question.options);
-
     }
-    // else if (question.type === 'matrix_single') {
-      // setMatrixRows(question.matrixRows?.split(',') || []);
-      // setMatrixColumns(question.matrixColumns?.split(',') || []);
-    // }
 
     setVisible(true);
   };
@@ -257,7 +241,6 @@ const Designer =  () => {
 
           columnWidth={12}
           defaultExpandAllRows={true}
-          // request={request}
         />
       </ProCard>
 
@@ -290,8 +273,6 @@ const Designer =  () => {
 
             // 完全自定义整个区域
             render: (props, doms) => {
-              console.log(props);
-              console.log(doms);
               return (
                 <div className="flex justify-end mt-4">
                   <Button onClick={() => setVisible(false)} style={{ marginRight: 8 }}>
@@ -316,7 +297,7 @@ const Designer =  () => {
               return questionAll.data;
 
             }}
-            fieldNames ={ [{label: 'title', value: 'value', children: 'children'}] }
+            fieldNames={{ label: 'title', value: 'value', children: 'children' }}
 
             style={{ width: '100%' }}
             placeholder="Please select"
@@ -342,14 +323,24 @@ const Designer =  () => {
             options={[
               { label: '标题1', value: 'h2' },
               { label: '标题2', value: 'h3' },
+              { label: '单页', value: 'page' },
               { label: '单选题', value: 'single_choice' },
               { label: '多选题', value: 'multiple_choice' },
+              { label: '下拉题', value: 'dropdown' },
               { label: '文本题', value: 'text' },
               { label: '数字题', value: 'number' },
+              { label: '滑动条', value: 'slider' },
               { label: '日期题', value: 'date' },
+              { label: '日期时间', value: 'datetime' },
               { label: '评分', value: 'rate' },
-
-              // { label: '矩阵单选题', value: 'matrix_single' },
+              { label: 'NPS评分', value: 'nps' },
+              { label: '排序题', value: 'ranking' },
+              { label: '矩阵题', value: 'matrix' },
+              { label: '图片上传', value: 'image' },
+              { label: '文件上传', value: 'file' },
+              { label: '视频上传', value: 'video' },
+              { label: '音频上传', value: 'audio' },
+              { label: '签名', value: 'signature' },
             ]}
           />
 
@@ -433,38 +424,6 @@ const Designer =  () => {
 
 
 
-
-          {/* 矩阵设置（针对矩阵单选题） */}
-          {/*{questionType === 'matrix_single' && (*/}
-          {/*  <div>*/}
-          {/*    <h3 className="font-medium mb-3">矩阵设置</h3>*/}
-
-          {/*    <div className="mb-6">*/}
-          {/*      <h4 className="font-medium mb-2">行设置</h4>*/}
-          {/*      <ProFormList*/}
-          {/*        copyIconProps={{ Icon: SnippetsOutlined, }}*/}
-          {/*        // initialValue={options.option}*/}
-          {/*        deleteIconProps={{ Icon: CloseOutlined, }}*/}
-          {/*        name="rows"*/}
-          {/*      >*/}
-          {/*        <ProFormText hidden={true}   name="serial" label="序号" />*/}
-          {/*        <ProFormText name="content" label="行" />*/}
-          {/*      </ProFormList>*/}
-          {/*    </div>*/}
-          {/*    <div>*/}
-          {/*      <h4 className="font-medium mb-2">列设置</h4>*/}
-          {/*      <ProFormList*/}
-          {/*        copyIconProps={{ Icon: SnippetsOutlined, }}*/}
-          {/*        // initialValue={options.option}*/}
-          {/*        deleteIconProps={{ Icon: CloseOutlined, }}*/}
-          {/*        name="columns"*/}
-          {/*      >*/}
-          {/*        <ProFormText hidden={true}   name="serial" label="序号" />*/}
-          {/*        <ProFormText name="content" label="列" />*/}
-          {/*      </ProFormList>*/}
-          {/*    </div>*/}
-          {/*  </div>*/}
-          {/*)}*/}
 
           <Divider />
         </ProForm>

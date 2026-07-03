@@ -34,8 +34,6 @@ export const HeatMap = (props: { data: any }) => {
     loadHeat().then(() => {
     loadHeatmap().then(() => {
 
-      console.log('地图初始化');
-
     const T = window.T;
     // const map = new T.Map('mapDiv');
     const map = new T.Map(mapRef.current);

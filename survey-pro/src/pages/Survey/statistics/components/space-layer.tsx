@@ -3,7 +3,6 @@ import React from 'react';
 
 
 export const Demobase = (props: { data: any }) => {
-  console.log("Demobase")
   const { data } = props;
   if (!data){
     return null;

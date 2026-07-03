@@ -1,60 +1,70 @@
-import React, { useState } from 'react';
-import type { RadioChangeEvent } from 'antd';
-import { Input, Form,Checkbox } from 'antd';
-import {ProFormDigit, ProFormTextArea} from "@ant-design/pro-components";
+import React, { useState, useRef } from 'react';
+import { Form } from 'antd';
+import { ProFormDigit } from '@ant-design/pro-components';
 import QJumpRules from '@/pages/survey/respondent/components/QJumpRules';
+import type { QuestionComponentProps } from '@/pages/survey/respondent/types';
+import { handleJump } from './jumpRules';
 
-const QNumber = (props) => {
+const QNumber = (props: QuestionComponentProps) => {
+  const { surveyId, question, generateRandom, addRespondent, setCurrentNum, setCurrent } = props;
+  const [value, setValue] = useState<number | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  if (!question) return null;
 
-  const { surveyId, question, generateRandom, addRespondent,setCurrentNum, setCurrent } = props;
-  const [value, setValue] = useState(0);
-  if (!question ){return null}
-  const onChange = (e: RadioChangeEvent) => {
-    console.log(e)
+  const onChange = (e: number | null) => {
+    if (e == null) return;
     setValue(e);
-    addRespondent({
-      surveyId:surveyId,
-      questionId:question.id,
-      type:question.type,
-      value:[e.toString()],
-      sn:generateRandom,
-    })
-    if (question.jumpRules) {
-      for (const jumpRule of question.jumpRules) {
-        console.log(String(e))
-        console.log(jumpRule.operators === 'equals' && String(e) === jumpRule.answer)
-        if (jumpRule.operators === 'equals' && String(e) === jumpRule.answer) {
-          console.log(jumpRule.nextQuestionId)
-          // setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
-          setCurrent(parseInt(jumpRule.nextQuestionId));
 
-        }
-      }
-    }
+    // debounce 500ms — 数字输入稍长 debounce
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
+      addRespondent({
+        surveyId,
+        questionId: question.id,
+        type: question.type,
+        value: [e.toString()],
+        sn: generateRandom,
+      });
+    }, 500);
   };
 
-  return(
-  <Form.Item name={['question', "'"+question.id+"'"]} >
-    <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
-  <ProFormDigit
-    width="md"
-    placeholder="请输入..."
-    name={['question', question.id]}
-    style={{Width: 60}}
-    onChange={onChange}
-    rules={[{required: question.required === 1, message: '必填项'}]}
-  />
+  const onBlur = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    if (value != null) {
+      addRespondent({
+        surveyId,
+        questionId: question.id,
+        type: question.type,
+        value: [value.toString()],
+        sn: generateRandom,
+      });
+    }
+    handleJump(question, value ?? '', setCurrent);
+  };
 
-    <QJumpRules
-      surveyId={surveyId}
-      question={question}
-      generateRandom={generateRandom}
-      addRespondent={addRespondent}
-      setCurrentNum={setCurrentNum}
-      setCurrent={setCurrent}
-      value={value}
-    />
-  </Form.Item>);
+  return (
+    <Form.Item name={['question', "'" + question.id + "'"]}>
+      <h3>{question.serial ? question.serial + '-' : ''}{question.content}</h3>
+      <ProFormDigit
+        width="md"
+        placeholder="请输入..."
+        name={['question', question.id]}
+        style={{ width: 60 }}
+        onChange={onChange}
+        onBlur={onBlur}
+        rules={[{ required: question.required === 1, message: '必填项' }]}
+      />
+      <QJumpRules
+        surveyId={surveyId}
+        question={question}
+        generateRandom={generateRandom}
+        addRespondent={addRespondent}
+        setCurrentNum={setCurrentNum}
+        setCurrent={setCurrent}
+        value={value}
+      />
+    </Form.Item>
+  );
 };
 
 export default QNumber;

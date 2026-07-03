@@ -1,54 +1,56 @@
-
-
-import React, { useState } from 'react';
-import type { RadioChangeEvent } from 'antd';
-import { Input, Form,Checkbox } from 'antd';
-import {ProFormTextArea} from "@ant-design/pro-components";
+import React, { useState, useRef } from 'react';
+import { Form } from 'antd';
+import { ProFormTextArea } from '@ant-design/pro-components';
 import QJumpRules from '@/pages/survey/respondent/components/QJumpRules';
+import type { QuestionComponentProps } from '@/pages/survey/respondent/types';
+import { handleJump } from './jumpRules';
 
-const style: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 8,
-};
+const QText = (props: QuestionComponentProps) => {
+  const { surveyId, question, generateRandom, addRespondent, setCurrentNum, setCurrent } = props;
+  const [value, setValue] = useState('');
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  if (!question) return null;
 
-const QText = (props) => {
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const val = e.target.value;
+    setValue(val);
 
-  const { surveyId, question, generateRandom, addRespondent, setCurrentNum ,setCurrent} = props;
-  const [value, setValue] = useState(0);
-  if (!question ){return null}
-  const onChange = (e: RadioChangeEvent) => {
+    // debounce 300ms — 输入停止后才提交
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
+      addRespondent({
+        surveyId,
+        type: question.type,
+        questionId: question.id,
+        value: [val],
+        sn: generateRandom,
+      });
+    }, 300);
+  };
 
-    console.log(e)
-    setValue(e.target.value);
-
+  const onBlur = () => {
+    // 失焦时立即提交最新值
+    if (timerRef.current) clearTimeout(timerRef.current);
     addRespondent({
-      surveyId:surveyId,
-      type:question.type,
-      questionId:question.id,
-      value:[e.target.value.toString()],
-      sn:generateRandom,
-    })
-    if (question.jumpRules) {
-      for (const jumpRule of question.jumpRules) {
-        if (jumpRule.operators === 'equals' && String(e) === jumpRule.answer) {
-          // setCurrentNum(parseInt(jumpRule.nextQuestionId)-1);
-          setCurrent(parseInt(jumpRule.nextQuestionId));
-        }
-      }
-    }
-
+      surveyId,
+      type: question.type,
+      questionId: question.id,
+      value: [value],
+      sn: generateRandom,
+    });
+    handleJump(question, value, setCurrent);
   };
 
   return (
-    <Form.Item name={['question', "'"+question.id+"'"]}>
-      <h3>{question.serial?question.serial+"-":""}{question.content}</h3>
+    <Form.Item name={['question', "'" + question.id + "'"]}>
+      <h3>{question.serial ? question.serial + '-' : ''}{question.content}</h3>
       <ProFormTextArea
         width="md"
         name={['question', question.id]}
         onChange={onChange}
+        onBlur={onBlur}
         placeholder={question.remark}
-        rules={[{required: question.required === 1, message: '必填项'}]}
+        rules={[{ required: question.required === 1, message: '必填项' }]}
       />
       <QJumpRules
         surveyId={surveyId}

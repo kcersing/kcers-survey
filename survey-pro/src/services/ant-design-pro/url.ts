@@ -20,5 +20,13 @@ export enum Urls {
 
 
   CreateRespondent='/service/survey/response/create',
-
+  GetNext='/service/survey/response/getNext',
+  GetResponse='/service/survey/response/info',
+  GetResponseAnswers='/service/survey/response/answers',
+  ListResponse='/service/survey/response/list',
+  ListResponseExport='/service/survey/response/list-export',
+  QuestionAnswersList='/service/survey/question/answers',
+  Heatmap='/service/survey/response/heatmap',
+  QuestionBasic='/service/survey/question/basic',
+  SurveyStatistics='/service/survey/statistics',
 }

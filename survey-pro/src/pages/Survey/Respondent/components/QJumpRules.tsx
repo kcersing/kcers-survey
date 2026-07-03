@@ -1,40 +1,42 @@
-
-
 import React from 'react';
-
-
 import QuestuinSun from '@/pages/survey/respondent/components/QuestuinSun';
+import type { QuestionWithValueProps } from '@/pages/survey/respondent/types';
 
+const QJumpRules = (props: QuestionWithValueProps) => {
+  const { surveyId, question, generateRandom, addRespondent, setCurrentNum, setCurrent, value } = props;
 
-const QJumpRules = (props) => {
-  const { surveyId, question, generateRandom, addRespondent, setCurrentNum ,setCurrent,value} = props;
+  if (!question.jumpRules?.length || !value) return null;
 
-let dren=[];
-
-
-
-
-  if(question.jumpRules && question.jumpRules.length>0 && value && value.length>0 ){
-    for (const jumpRule of question.jumpRules) {
-
-      if ((jumpRule.operators ==='sub' && String(value) === jumpRule.answer) || (jumpRule.operators ==='sub' &&  value.includes(jumpRule.answer))){
-        for (const child of  question.children) {
-
-          if ( jumpRule.nextQuestionId === child.id ){
-            dren.push(   <QuestuinSun
-              surveyId={surveyId}
-              question={child}
-              generateRandom={generateRandom}
-              addRespondent={addRespondent}
-              setCurrentNum={setCurrentNum}
-              setCurrent={setCurrent}
-            />)
-          }
-        }
-      }}
+  if (typeof value === 'undefined' || (typeof value === 'string' && value.length === 0) || (Array.isArray(value) && value.length === 0)) {
+    return null;
   }
 
-return dren;
+  const matchedRules = question.jumpRules.filter((rule) => {
+    if (rule.operators !== 'sub') return false;
+    if (Array.isArray(value)) return value.includes(rule.answer);
+    return String(value) === rule.answer;
+  });
+
+  if (!matchedRules.length) return null;
+
+  const nextIds = new Set(matchedRules.map((r) => r.nextQuestionId));
+  const matchedChildren = question.children?.filter((child) => nextIds.has(child.id)) ?? [];
+
+  return (
+    <>
+      {matchedChildren.map((child) => (
+        <QuestuinSun
+          key={child.id}
+          surveyId={surveyId}
+          question={child}
+          generateRandom={generateRandom}
+          addRespondent={addRespondent}
+          setCurrentNum={setCurrentNum}
+          setCurrent={setCurrent}
+        />
+      ))}
+    </>
+  );
 };
 
 export default QJumpRules;

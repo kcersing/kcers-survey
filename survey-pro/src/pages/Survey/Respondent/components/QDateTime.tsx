@@ -5,22 +5,22 @@ import QJumpRules from '@/pages/survey/respondent/components/QJumpRules';
 import type { QuestionComponentProps } from '@/pages/survey/respondent/types';
 import { handleJump } from './jumpRules';
 
-const QDate = (props: QuestionComponentProps) => {
+const QDateTime = (props: QuestionComponentProps) => {
   const { surveyId, question, generateRandom, addRespondent, setCurrentNum, setCurrent } = props;
   const [value, setValue] = useState('');
   if (!question) return null;
 
   const onChange = (date: dayjs.Dayjs | null) => {
-    const formattedDate = date?.format('YYYY-MM-DD') || '';
-    setValue(formattedDate);
+    const formatted = date?.format('YYYY-MM-DD HH:mm:ss') || '';
+    setValue(formatted);
     addRespondent({
       surveyId,
       questionId: question.id,
       type: question.type,
-      value: [formattedDate],
+      value: [formatted],
       sn: generateRandom,
     });
-    handleJump(question, formattedDate, setCurrent);
+    handleJump(question, formatted, setCurrent);
   };
 
   return (
@@ -30,9 +30,10 @@ const QDate = (props: QuestionComponentProps) => {
     >
       <h3>{question.serial ? question.serial + '-' : ''}{question.content}</h3>
       <DatePicker
-        placeholder="请选择日期"
+        showTime
+        placeholder="请选择日期和时间"
         onChange={onChange}
-        format="YYYY-MM-DD"
+        format="YYYY-MM-DD HH:mm:ss"
       />
       <QJumpRules
         surveyId={surveyId}
@@ -47,4 +48,4 @@ const QDate = (props: QuestionComponentProps) => {
   );
 };
 
-export default QDate;
+export default QDateTime;

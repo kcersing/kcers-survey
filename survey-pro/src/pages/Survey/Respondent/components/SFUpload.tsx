@@ -25,7 +25,6 @@ const SFUpload = (props) => {
           max={10}
           action={(file)=>{
             pubUpload({file}).then((res)=>{
-              console.log(res)
               if (res.code === 0) {
                 message.success(`上传成功`);
                 addRespondent({

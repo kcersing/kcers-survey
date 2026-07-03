@@ -1,39 +1,43 @@
 import React, { useState } from 'react';
-import { DatePicker, Form } from 'antd';
-import dayjs from 'dayjs';
+import { Form, Select } from 'antd';
 import QJumpRules from '@/pages/survey/respondent/components/QJumpRules';
 import type { QuestionComponentProps } from '@/pages/survey/respondent/types';
 import { handleJump } from './jumpRules';
 
-const QDate = (props: QuestionComponentProps) => {
+const QDropdown = (props: QuestionComponentProps) => {
   const { surveyId, question, generateRandom, addRespondent, setCurrentNum, setCurrent } = props;
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState<string>('');
   if (!question) return null;
 
-  const onChange = (date: dayjs.Dayjs | null) => {
-    const formattedDate = date?.format('YYYY-MM-DD') || '';
-    setValue(formattedDate);
+  const onChange = (val: string) => {
+    setValue(val);
     addRespondent({
       surveyId,
-      questionId: question.id,
       type: question.type,
-      value: [formattedDate],
+      questionId: question.id,
+      value: [val],
       sn: generateRandom,
     });
-    handleJump(question, formattedDate, setCurrent);
+    handleJump(question, val, setCurrent);
   };
 
   return (
-    <Form.Item
-      name={['question', "'" + question.id + "'"]}
-      rules={[{ required: question.required === 1, message: '必填项' }]}
-    >
+    <>
       <h3>{question.serial ? question.serial + '-' : ''}{question.content}</h3>
-      <DatePicker
-        placeholder="请选择日期"
-        onChange={onChange}
-        format="YYYY-MM-DD"
-      />
+      <Form.Item
+        name={['question', "'" + question.id + "'"]}
+        rules={[{ required: question.required === 1, message: '请选择一个选项' }]}
+      >
+        <Select
+          placeholder="请选择..."
+          onChange={onChange}
+          style={{ width: '100%', maxWidth: 400 }}
+          options={question.options?.map((o) => ({
+            label: o.content,
+            value: o.content,
+          })) ?? []}
+        />
+      </Form.Item>
       <QJumpRules
         surveyId={surveyId}
         question={question}
@@ -43,8 +47,8 @@ const QDate = (props: QuestionComponentProps) => {
         setCurrent={setCurrent}
         value={value}
       />
-    </Form.Item>
+    </>
   );
 };
 
-export default QDate;
+export default QDropdown;

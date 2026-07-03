@@ -89,8 +89,6 @@ export default () => {
 
   const [paramsData, setParamsData] = useState<[]>([]);
 
-  console.log(surveyId)
-
   const actionRef = useRef<ActionType>();
   return (
     <ProTable<API.Response>
@@ -102,7 +100,6 @@ export default () => {
        if(sort && sort.createdAt ==="ascend"){
          params.sorter = "createdAt-ascend";
        }
-        console.log(params,sort, filter);
         params.surveyId = surveyId;
         setParamsData(params)
         return  listResponse({...params})
@@ -116,7 +113,6 @@ export default () => {
       //     option: { fixed: 'right', disable: true },
       //   },
       //   onChange(value) {
-      //     console.log('value: ', value);
       //   },
       // }}
       rowKey="id"
@@ -142,7 +138,6 @@ export default () => {
       // }}
       // pagination={{
       //   pageSize: 10,
-      //   onChange: (page) => console.log(page),
       // }}
       dateFormatter="string"
       headerTitle="已填写问卷列表"
@@ -152,7 +147,6 @@ export default () => {
           onClick={() => {
             paramsData.pageSize=99999
             listResponseExport({...paramsData}).then((res) => {
-              console.log(res);
               const link = document.createElement('a');
               link.href = res.data.url;
               link.click();

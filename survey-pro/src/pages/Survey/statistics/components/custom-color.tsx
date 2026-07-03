@@ -2,7 +2,6 @@ import { Column } from '@ant-design/plots';
 import React from 'react';
 
 export const DemoCustomColor = (props: { data: any }) => {
- console.log("DemoCustomColor")
   const { data } = props;
   if (!data){
     return null;

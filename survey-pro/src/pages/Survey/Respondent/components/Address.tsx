@@ -22,9 +22,6 @@ const Address = (props) => {
     })
   };
   const onChangeCity = (e) => {
-
-    console.log(e)
-    // setValue(e);
     addRespondent({
       surveyId:surveyId,
       type:"city",
@@ -33,7 +30,6 @@ const Address = (props) => {
     })
   };
   const onChangeDistrict = (e: RadioChangeEvent) => {
-    console.log(e)
     addRespondent({
       surveyId:surveyId,
       type:"district",
@@ -43,7 +39,6 @@ const Address = (props) => {
   };
 
   const onChangeAddress = (e) => {
-    console.log(e)
     addRespondent({
       surveyId:surveyId,
       type:"address",
@@ -54,7 +49,6 @@ const Address = (props) => {
   };
 
   const onChangeVillage = (e: RadioChangeEvent) => {
-    console.log(e)
     addRespondent({
       surveyId:surveyId,
       type:"village",
@@ -122,7 +116,6 @@ const Address = (props) => {
                   if (!province?.value) {
                     return [];
                   }
-                  console.log(province)
                   return queryCity(province.value || '').then(({ data }) => {
                     return data.map((item) => {
                       return {
