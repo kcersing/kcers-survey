@@ -547,28 +547,36 @@ func init() {
 	surveyresponseDescAudio := surveyresponseFields[11].Descriptor()
 	// surveyresponse.DefaultAudio holds the default value on creation for the audio field.
 	surveyresponse.DefaultAudio = surveyresponseDescAudio.Default.([]string)
+	// surveyresponseDescVideo is the schema descriptor for video field.
+	surveyresponseDescVideo := surveyresponseFields[12].Descriptor()
+	// surveyresponse.DefaultVideo holds the default value on creation for the video field.
+	surveyresponse.DefaultVideo = surveyresponseDescVideo.Default.([]string)
+	// surveyresponseDescFile is the schema descriptor for file field.
+	surveyresponseDescFile := surveyresponseFields[13].Descriptor()
+	// surveyresponse.DefaultFile holds the default value on creation for the file field.
+	surveyresponse.DefaultFile = surveyresponseDescFile.Default.([]string)
 	// surveyresponseDescArea is the schema descriptor for area field.
-	surveyresponseDescArea := surveyresponseFields[12].Descriptor()
+	surveyresponseDescArea := surveyresponseFields[14].Descriptor()
 	// surveyresponse.DefaultArea holds the default value on creation for the area field.
 	surveyresponse.DefaultArea = surveyresponseDescArea.Default.(string)
 	// surveyresponseDescCity is the schema descriptor for city field.
-	surveyresponseDescCity := surveyresponseFields[13].Descriptor()
+	surveyresponseDescCity := surveyresponseFields[15].Descriptor()
 	// surveyresponse.DefaultCity holds the default value on creation for the city field.
 	surveyresponse.DefaultCity = surveyresponseDescCity.Default.(string)
 	// surveyresponseDescDistrict is the schema descriptor for district field.
-	surveyresponseDescDistrict := surveyresponseFields[14].Descriptor()
+	surveyresponseDescDistrict := surveyresponseFields[16].Descriptor()
 	// surveyresponse.DefaultDistrict holds the default value on creation for the district field.
 	surveyresponse.DefaultDistrict = surveyresponseDescDistrict.Default.(string)
 	// surveyresponseDescVillage is the schema descriptor for village field.
-	surveyresponseDescVillage := surveyresponseFields[15].Descriptor()
+	surveyresponseDescVillage := surveyresponseFields[17].Descriptor()
 	// surveyresponse.DefaultVillage holds the default value on creation for the village field.
 	surveyresponse.DefaultVillage = surveyresponseDescVillage.Default.(string)
 	// surveyresponseDescAddress is the schema descriptor for address field.
-	surveyresponseDescAddress := surveyresponseFields[16].Descriptor()
+	surveyresponseDescAddress := surveyresponseFields[18].Descriptor()
 	// surveyresponse.DefaultAddress holds the default value on creation for the address field.
 	surveyresponse.DefaultAddress = surveyresponseDescAddress.Default.(string)
 	// surveyresponseDescAnswersCount is the schema descriptor for answers_count field.
-	surveyresponseDescAnswersCount := surveyresponseFields[17].Descriptor()
+	surveyresponseDescAnswersCount := surveyresponseFields[19].Descriptor()
 	// surveyresponse.DefaultAnswersCount holds the default value on creation for the answers_count field.
 	surveyresponse.DefaultAnswersCount = surveyresponseDescAnswersCount.Default.(int64)
 	surveyresponseanswersMixin := schema.SurveyResponseAnswers{}.Mixin()

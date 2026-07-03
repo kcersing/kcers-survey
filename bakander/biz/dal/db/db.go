@@ -12,6 +12,6 @@ var DB *ent.Client
 
 func InitDB() {
 	onceClient.Do(func() {
-		DB = InItDB(config.GlobalServerConfig.MySQLInfo.Host, config.GlobalServerConfig.IsProd)
+		DB = InItDB(config.GlobalServerConfig.PostgreSQLInfo.Host, config.GlobalServerConfig.IsProd)
 	})
 }

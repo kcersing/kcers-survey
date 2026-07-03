@@ -15443,6 +15443,10 @@ type SurveyResponseMutation struct {
 	device           *string
 	audio            *[]string
 	appendaudio      []string
+	video            *[]string
+	appendvideo      []string
+	file             *[]string
+	appendfile       []string
 	area             *string
 	city             *string
 	district         *string
@@ -16493,6 +16497,136 @@ func (m *SurveyResponseMutation) ResetAudio() {
 	delete(m.clearedFields, surveyresponse.FieldAudio)
 }
 
+// SetVideo sets the "video" field.
+func (m *SurveyResponseMutation) SetVideo(s []string) {
+	m.video = &s
+	m.appendvideo = nil
+}
+
+// Video returns the value of the "video" field in the mutation.
+func (m *SurveyResponseMutation) Video() (r []string, exists bool) {
+	v := m.video
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldVideo returns the old "video" field's value of the SurveyResponse entity.
+// If the SurveyResponse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurveyResponseMutation) OldVideo(ctx context.Context) (v []string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldVideo is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldVideo requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldVideo: %w", err)
+	}
+	return oldValue.Video, nil
+}
+
+// AppendVideo adds s to the "video" field.
+func (m *SurveyResponseMutation) AppendVideo(s []string) {
+	m.appendvideo = append(m.appendvideo, s...)
+}
+
+// AppendedVideo returns the list of values that were appended to the "video" field in this mutation.
+func (m *SurveyResponseMutation) AppendedVideo() ([]string, bool) {
+	if len(m.appendvideo) == 0 {
+		return nil, false
+	}
+	return m.appendvideo, true
+}
+
+// ClearVideo clears the value of the "video" field.
+func (m *SurveyResponseMutation) ClearVideo() {
+	m.video = nil
+	m.appendvideo = nil
+	m.clearedFields[surveyresponse.FieldVideo] = struct{}{}
+}
+
+// VideoCleared returns if the "video" field was cleared in this mutation.
+func (m *SurveyResponseMutation) VideoCleared() bool {
+	_, ok := m.clearedFields[surveyresponse.FieldVideo]
+	return ok
+}
+
+// ResetVideo resets all changes to the "video" field.
+func (m *SurveyResponseMutation) ResetVideo() {
+	m.video = nil
+	m.appendvideo = nil
+	delete(m.clearedFields, surveyresponse.FieldVideo)
+}
+
+// SetFile sets the "file" field.
+func (m *SurveyResponseMutation) SetFile(s []string) {
+	m.file = &s
+	m.appendfile = nil
+}
+
+// File returns the value of the "file" field in the mutation.
+func (m *SurveyResponseMutation) File() (r []string, exists bool) {
+	v := m.file
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldFile returns the old "file" field's value of the SurveyResponse entity.
+// If the SurveyResponse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurveyResponseMutation) OldFile(ctx context.Context) (v []string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldFile is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldFile requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldFile: %w", err)
+	}
+	return oldValue.File, nil
+}
+
+// AppendFile adds s to the "file" field.
+func (m *SurveyResponseMutation) AppendFile(s []string) {
+	m.appendfile = append(m.appendfile, s...)
+}
+
+// AppendedFile returns the list of values that were appended to the "file" field in this mutation.
+func (m *SurveyResponseMutation) AppendedFile() ([]string, bool) {
+	if len(m.appendfile) == 0 {
+		return nil, false
+	}
+	return m.appendfile, true
+}
+
+// ClearFile clears the value of the "file" field.
+func (m *SurveyResponseMutation) ClearFile() {
+	m.file = nil
+	m.appendfile = nil
+	m.clearedFields[surveyresponse.FieldFile] = struct{}{}
+}
+
+// FileCleared returns if the "file" field was cleared in this mutation.
+func (m *SurveyResponseMutation) FileCleared() bool {
+	_, ok := m.clearedFields[surveyresponse.FieldFile]
+	return ok
+}
+
+// ResetFile resets all changes to the "file" field.
+func (m *SurveyResponseMutation) ResetFile() {
+	m.file = nil
+	m.appendfile = nil
+	delete(m.clearedFields, surveyresponse.FieldFile)
+}
+
 // SetArea sets the "area" field.
 func (m *SurveyResponseMutation) SetArea(s string) {
 	m.area = &s
@@ -16923,7 +17057,7 @@ func (m *SurveyResponseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SurveyResponseMutation) Fields() []string {
-	fields := make([]string, 0, 23)
+	fields := make([]string, 0, 25)
 	if m.created_at != nil {
 		fields = append(fields, surveyresponse.FieldCreatedAt)
 	}
@@ -16974,6 +17108,12 @@ func (m *SurveyResponseMutation) Fields() []string {
 	}
 	if m.audio != nil {
 		fields = append(fields, surveyresponse.FieldAudio)
+	}
+	if m.video != nil {
+		fields = append(fields, surveyresponse.FieldVideo)
+	}
+	if m.file != nil {
+		fields = append(fields, surveyresponse.FieldFile)
 	}
 	if m.area != nil {
 		fields = append(fields, surveyresponse.FieldArea)
@@ -17035,6 +17175,10 @@ func (m *SurveyResponseMutation) Field(name string) (ent.Value, bool) {
 		return m.Device()
 	case surveyresponse.FieldAudio:
 		return m.Audio()
+	case surveyresponse.FieldVideo:
+		return m.Video()
+	case surveyresponse.FieldFile:
+		return m.File()
 	case surveyresponse.FieldArea:
 		return m.Area()
 	case surveyresponse.FieldCity:
@@ -17090,6 +17234,10 @@ func (m *SurveyResponseMutation) OldField(ctx context.Context, name string) (ent
 		return m.OldDevice(ctx)
 	case surveyresponse.FieldAudio:
 		return m.OldAudio(ctx)
+	case surveyresponse.FieldVideo:
+		return m.OldVideo(ctx)
+	case surveyresponse.FieldFile:
+		return m.OldFile(ctx)
 	case surveyresponse.FieldArea:
 		return m.OldArea(ctx)
 	case surveyresponse.FieldCity:
@@ -17229,6 +17377,20 @@ func (m *SurveyResponseMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetAudio(v)
+		return nil
+	case surveyresponse.FieldVideo:
+		v, ok := value.([]string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetVideo(v)
+		return nil
+	case surveyresponse.FieldFile:
+		v, ok := value.([]string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetFile(v)
 		return nil
 	case surveyresponse.FieldArea:
 		v, ok := value.(string)
@@ -17404,6 +17566,12 @@ func (m *SurveyResponseMutation) ClearedFields() []string {
 	if m.FieldCleared(surveyresponse.FieldAudio) {
 		fields = append(fields, surveyresponse.FieldAudio)
 	}
+	if m.FieldCleared(surveyresponse.FieldVideo) {
+		fields = append(fields, surveyresponse.FieldVideo)
+	}
+	if m.FieldCleared(surveyresponse.FieldFile) {
+		fields = append(fields, surveyresponse.FieldFile)
+	}
 	if m.FieldCleared(surveyresponse.FieldArea) {
 		fields = append(fields, surveyresponse.FieldArea)
 	}
@@ -17487,6 +17655,12 @@ func (m *SurveyResponseMutation) ClearField(name string) error {
 	case surveyresponse.FieldAudio:
 		m.ClearAudio()
 		return nil
+	case surveyresponse.FieldVideo:
+		m.ClearVideo()
+		return nil
+	case surveyresponse.FieldFile:
+		m.ClearFile()
+		return nil
 	case surveyresponse.FieldArea:
 		m.ClearArea()
 		return nil
@@ -17563,6 +17737,12 @@ func (m *SurveyResponseMutation) ResetField(name string) error {
 		return nil
 	case surveyresponse.FieldAudio:
 		m.ResetAudio()
+		return nil
+	case surveyresponse.FieldVideo:
+		m.ResetVideo()
+		return nil
+	case surveyresponse.FieldFile:
+		m.ResetFile()
 		return nil
 	case surveyresponse.FieldArea:
 		m.ResetArea()

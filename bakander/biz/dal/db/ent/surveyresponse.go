@@ -42,7 +42,7 @@ type SurveyResponse struct {
 	Researcher string `json:"researcher,omitempty"`
 	// 调研员联系电话
 	ResearcherPhone string `json:"researcher_phone,omitempty"`
-	// 合照照片
+	// 照片/图片
 	Pic []string `json:"pic,omitempty"`
 	// 用户IP地址
 	IP string `json:"ip,omitempty"`
@@ -54,6 +54,10 @@ type SurveyResponse struct {
 	Device string `json:"device,omitempty"`
 	// 音频
 	Audio []string `json:"audio,omitempty"`
+	// 视频
+	Video []string `json:"video,omitempty"`
+	// 文件
+	File []string `json:"file,omitempty"`
 	// area
 	Area string `json:"area,omitempty"`
 	// city
@@ -108,7 +112,7 @@ func (*SurveyResponse) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case surveyresponse.FieldPic, surveyresponse.FieldAudio:
+		case surveyresponse.FieldPic, surveyresponse.FieldAudio, surveyresponse.FieldVideo, surveyresponse.FieldFile:
 			values[i] = new([]byte)
 		case surveyresponse.FieldID, surveyresponse.FieldDelete, surveyresponse.FieldCreatedID, surveyresponse.FieldStatus, surveyresponse.FieldSurveyID, surveyresponse.FieldAnswersCount:
 			values[i] = new(sql.NullInt64)
@@ -243,6 +247,22 @@ func (_m *SurveyResponse) assignValues(columns []string, values []any) error {
 					return fmt.Errorf("unmarshal field audio: %w", err)
 				}
 			}
+		case surveyresponse.FieldVideo:
+			if value, ok := values[i].(*[]byte); !ok {
+				return fmt.Errorf("unexpected type %T for field video", values[i])
+			} else if value != nil && len(*value) > 0 {
+				if err := json.Unmarshal(*value, &_m.Video); err != nil {
+					return fmt.Errorf("unmarshal field video: %w", err)
+				}
+			}
+		case surveyresponse.FieldFile:
+			if value, ok := values[i].(*[]byte); !ok {
+				return fmt.Errorf("unexpected type %T for field file", values[i])
+			} else if value != nil && len(*value) > 0 {
+				if err := json.Unmarshal(*value, &_m.File); err != nil {
+					return fmt.Errorf("unmarshal field file: %w", err)
+				}
+			}
 		case surveyresponse.FieldArea:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field area", values[i])
@@ -375,6 +395,12 @@ func (_m *SurveyResponse) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("audio=")
 	builder.WriteString(fmt.Sprintf("%v", _m.Audio))
+	builder.WriteString(", ")
+	builder.WriteString("video=")
+	builder.WriteString(fmt.Sprintf("%v", _m.Video))
+	builder.WriteString(", ")
+	builder.WriteString("file=")
+	builder.WriteString(fmt.Sprintf("%v", _m.File))
 	builder.WriteString(", ")
 	builder.WriteString("area=")
 	builder.WriteString(_m.Area)

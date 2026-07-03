@@ -48,6 +48,10 @@ const (
 	FieldDevice = "device"
 	// FieldAudio holds the string denoting the audio field in the database.
 	FieldAudio = "audio"
+	// FieldVideo holds the string denoting the video field in the database.
+	FieldVideo = "video"
+	// FieldFile holds the string denoting the file field in the database.
+	FieldFile = "file"
 	// FieldArea holds the string denoting the area field in the database.
 	FieldArea = "area"
 	// FieldCity holds the string denoting the city field in the database.
@@ -102,6 +106,8 @@ var Columns = []string{
 	FieldLongitude,
 	FieldDevice,
 	FieldAudio,
+	FieldVideo,
+	FieldFile,
 	FieldArea,
 	FieldCity,
 	FieldDistrict,
@@ -157,6 +163,10 @@ var (
 	DefaultDevice string
 	// DefaultAudio holds the default value on creation for the "audio" field.
 	DefaultAudio []string
+	// DefaultVideo holds the default value on creation for the "video" field.
+	DefaultVideo []string
+	// DefaultFile holds the default value on creation for the "file" field.
+	DefaultFile []string
 	// DefaultArea holds the default value on creation for the "area" field.
 	DefaultArea string
 	// DefaultCity holds the default value on creation for the "city" field.

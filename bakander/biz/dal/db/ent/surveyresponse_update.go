@@ -361,6 +361,42 @@ func (_u *SurveyResponseUpdate) ClearAudio() *SurveyResponseUpdate {
 	return _u
 }
 
+// SetVideo sets the "video" field.
+func (_u *SurveyResponseUpdate) SetVideo(v []string) *SurveyResponseUpdate {
+	_u.mutation.SetVideo(v)
+	return _u
+}
+
+// AppendVideo appends value to the "video" field.
+func (_u *SurveyResponseUpdate) AppendVideo(v []string) *SurveyResponseUpdate {
+	_u.mutation.AppendVideo(v)
+	return _u
+}
+
+// ClearVideo clears the value of the "video" field.
+func (_u *SurveyResponseUpdate) ClearVideo() *SurveyResponseUpdate {
+	_u.mutation.ClearVideo()
+	return _u
+}
+
+// SetFile sets the "file" field.
+func (_u *SurveyResponseUpdate) SetFile(v []string) *SurveyResponseUpdate {
+	_u.mutation.SetFile(v)
+	return _u
+}
+
+// AppendFile appends value to the "file" field.
+func (_u *SurveyResponseUpdate) AppendFile(v []string) *SurveyResponseUpdate {
+	_u.mutation.AppendFile(v)
+	return _u
+}
+
+// ClearFile clears the value of the "file" field.
+func (_u *SurveyResponseUpdate) ClearFile() *SurveyResponseUpdate {
+	_u.mutation.ClearFile()
+	return _u
+}
+
 // SetArea sets the "area" field.
 func (_u *SurveyResponseUpdate) SetArea(v string) *SurveyResponseUpdate {
 	_u.mutation.SetArea(v)
@@ -702,6 +738,28 @@ func (_u *SurveyResponseUpdate) sqlSave(ctx context.Context) (_node int, err err
 	}
 	if _u.mutation.AudioCleared() {
 		_spec.ClearField(surveyresponse.FieldAudio, field.TypeJSON)
+	}
+	if value, ok := _u.mutation.Video(); ok {
+		_spec.SetField(surveyresponse.FieldVideo, field.TypeJSON, value)
+	}
+	if value, ok := _u.mutation.AppendedVideo(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponse.FieldVideo, value)
+		})
+	}
+	if _u.mutation.VideoCleared() {
+		_spec.ClearField(surveyresponse.FieldVideo, field.TypeJSON)
+	}
+	if value, ok := _u.mutation.File(); ok {
+		_spec.SetField(surveyresponse.FieldFile, field.TypeJSON, value)
+	}
+	if value, ok := _u.mutation.AppendedFile(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponse.FieldFile, value)
+		})
+	}
+	if _u.mutation.FileCleared() {
+		_spec.ClearField(surveyresponse.FieldFile, field.TypeJSON)
 	}
 	if value, ok := _u.mutation.Area(); ok {
 		_spec.SetField(surveyresponse.FieldArea, field.TypeString, value)
@@ -1167,6 +1225,42 @@ func (_u *SurveyResponseUpdateOne) ClearAudio() *SurveyResponseUpdateOne {
 	return _u
 }
 
+// SetVideo sets the "video" field.
+func (_u *SurveyResponseUpdateOne) SetVideo(v []string) *SurveyResponseUpdateOne {
+	_u.mutation.SetVideo(v)
+	return _u
+}
+
+// AppendVideo appends value to the "video" field.
+func (_u *SurveyResponseUpdateOne) AppendVideo(v []string) *SurveyResponseUpdateOne {
+	_u.mutation.AppendVideo(v)
+	return _u
+}
+
+// ClearVideo clears the value of the "video" field.
+func (_u *SurveyResponseUpdateOne) ClearVideo() *SurveyResponseUpdateOne {
+	_u.mutation.ClearVideo()
+	return _u
+}
+
+// SetFile sets the "file" field.
+func (_u *SurveyResponseUpdateOne) SetFile(v []string) *SurveyResponseUpdateOne {
+	_u.mutation.SetFile(v)
+	return _u
+}
+
+// AppendFile appends value to the "file" field.
+func (_u *SurveyResponseUpdateOne) AppendFile(v []string) *SurveyResponseUpdateOne {
+	_u.mutation.AppendFile(v)
+	return _u
+}
+
+// ClearFile clears the value of the "file" field.
+func (_u *SurveyResponseUpdateOne) ClearFile() *SurveyResponseUpdateOne {
+	_u.mutation.ClearFile()
+	return _u
+}
+
 // SetArea sets the "area" field.
 func (_u *SurveyResponseUpdateOne) SetArea(v string) *SurveyResponseUpdateOne {
 	_u.mutation.SetArea(v)
@@ -1538,6 +1632,28 @@ func (_u *SurveyResponseUpdateOne) sqlSave(ctx context.Context) (_node *SurveyRe
 	}
 	if _u.mutation.AudioCleared() {
 		_spec.ClearField(surveyresponse.FieldAudio, field.TypeJSON)
+	}
+	if value, ok := _u.mutation.Video(); ok {
+		_spec.SetField(surveyresponse.FieldVideo, field.TypeJSON, value)
+	}
+	if value, ok := _u.mutation.AppendedVideo(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponse.FieldVideo, value)
+		})
+	}
+	if _u.mutation.VideoCleared() {
+		_spec.ClearField(surveyresponse.FieldVideo, field.TypeJSON)
+	}
+	if value, ok := _u.mutation.File(); ok {
+		_spec.SetField(surveyresponse.FieldFile, field.TypeJSON, value)
+	}
+	if value, ok := _u.mutation.AppendedFile(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, surveyresponse.FieldFile, value)
+		})
+	}
+	if _u.mutation.FileCleared() {
+		_spec.ClearField(surveyresponse.FieldFile, field.TypeJSON)
 	}
 	if value, ok := _u.mutation.Area(); ok {
 		_spec.SetField(surveyresponse.FieldArea, field.TypeString, value)

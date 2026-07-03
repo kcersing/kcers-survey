@@ -1135,6 +1135,26 @@ func AudioNotNil() predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldNotNull(FieldAudio))
 }
 
+// VideoIsNil applies the IsNil predicate on the "video" field.
+func VideoIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldVideo))
+}
+
+// VideoNotNil applies the NotNil predicate on the "video" field.
+func VideoNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldVideo))
+}
+
+// FileIsNil applies the IsNil predicate on the "file" field.
+func FileIsNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldIsNull(FieldFile))
+}
+
+// FileNotNil applies the NotNil predicate on the "file" field.
+func FileNotNil() predicate.SurveyResponse {
+	return predicate.SurveyResponse(sql.FieldNotNull(FieldFile))
+}
+
 // AreaEQ applies the EQ predicate on the "area" field.
 func AreaEQ(v string) predicate.SurveyResponse {
 	return predicate.SurveyResponse(sql.FieldEQ(FieldArea, v))

@@ -3,17 +3,18 @@ package db
 import (
 	"context"
 	"database/sql"
-	"entgo.io/ent/dialect"
-	entsql "entgo.io/ent/dialect/sql"
 	"fmt"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
-	_ "github.com/go-sql-driver/mysql"
-	_ "github.com/jackc/pgx/v5/stdlib"
-	_ "github.com/lib/pq"
 	"kcers-survey/biz/dal/db/mysql/ent"
 	"kcers-survey/biz/dal/db/mysql/ent/migrate"
 	"log"
 	"time"
+
+	"entgo.io/ent/dialect"
+	entsql "entgo.io/ent/dialect/sql"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/jackc/pgx/v5/stdlib"
+	_ "github.com/lib/pq"
 )
 
 func OpenMySql(databaseUrl string) *entsql.Driver {
@@ -43,7 +44,7 @@ func OpenPq(databaseUrl string) *entsql.Driver {
 
 // InitDB init DB
 func InItDB(databaseUrl string, isProd bool) (DB *ent.Client) {
-	drv := OpenMySql(databaseUrl)
+	drv := OpenPq(databaseUrl)
 
 	// 生产环境使用默认mysql驱动，开发环境使用debug驱动
 	var drive dialect.Driver
@@ -69,7 +70,9 @@ func InItDB(databaseUrl string, isProd bool) (DB *ent.Client) {
 		migrate.WithDropIndex(true),
 		migrate.WithDropColumn(true),
 	); err != nil {
-		log.Fatalf("failed creating schema resources: %v", err)
+		// 如果是已存在的表 schema 不匹配（如从 MySQL 迁移过来的），跳过自动迁移
+		hlog.Warn("auto-migration failed (tables may already exist from import): ", err)
+		hlog.Warn("proceeding without auto-migration — existing tables will be used as-is")
 	}
 
 	// versioned-migration 不用

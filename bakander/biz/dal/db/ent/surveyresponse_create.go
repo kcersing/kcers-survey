@@ -243,6 +243,18 @@ func (_c *SurveyResponseCreate) SetAudio(v []string) *SurveyResponseCreate {
 	return _c
 }
 
+// SetVideo sets the "video" field.
+func (_c *SurveyResponseCreate) SetVideo(v []string) *SurveyResponseCreate {
+	_c.mutation.SetVideo(v)
+	return _c
+}
+
+// SetFile sets the "file" field.
+func (_c *SurveyResponseCreate) SetFile(v []string) *SurveyResponseCreate {
+	_c.mutation.SetFile(v)
+	return _c
+}
+
 // SetArea sets the "area" field.
 func (_c *SurveyResponseCreate) SetArea(v string) *SurveyResponseCreate {
 	_c.mutation.SetArea(v)
@@ -456,6 +468,14 @@ func (_c *SurveyResponseCreate) defaults() {
 		v := surveyresponse.DefaultAudio
 		_c.mutation.SetAudio(v)
 	}
+	if _, ok := _c.mutation.Video(); !ok {
+		v := surveyresponse.DefaultVideo
+		_c.mutation.SetVideo(v)
+	}
+	if _, ok := _c.mutation.File(); !ok {
+		v := surveyresponse.DefaultFile
+		_c.mutation.SetFile(v)
+	}
 	if _, ok := _c.mutation.Area(); !ok {
 		v := surveyresponse.DefaultArea
 		_c.mutation.SetArea(v)
@@ -579,6 +599,14 @@ func (_c *SurveyResponseCreate) createSpec() (*SurveyResponse, *sqlgraph.CreateS
 	if value, ok := _c.mutation.Audio(); ok {
 		_spec.SetField(surveyresponse.FieldAudio, field.TypeJSON, value)
 		_node.Audio = value
+	}
+	if value, ok := _c.mutation.Video(); ok {
+		_spec.SetField(surveyresponse.FieldVideo, field.TypeJSON, value)
+		_node.Video = value
+	}
+	if value, ok := _c.mutation.File(); ok {
+		_spec.SetField(surveyresponse.FieldFile, field.TypeJSON, value)
+		_node.File = value
 	}
 	if value, ok := _c.mutation.Area(); ok {
 		_spec.SetField(surveyresponse.FieldArea, field.TypeString, value)
