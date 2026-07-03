@@ -1,11 +1,12 @@
 package casbin
 
 import (
-	"github.com/casbin/casbin/v2"
-	"github.com/casbin/casbin/v2/model"
+	"kcers-survey/biz/dal/config"
+
+	"github.com/casbin/casbin/v3"
+	"github.com/casbin/casbin/v3/model"
 	entAdapter "github.com/casbin/ent-adapter"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
-	"kcers-survey/biz/dal/config"
 )
 
 var casbinEnforcer *casbin.Enforcer
@@ -24,8 +25,8 @@ func CasbinEnforcer() *casbin.Enforcer {
 }
 
 func newCasbin() (enforcer *casbin.Enforcer, err error) {
-	adapter, err := entAdapter.NewAdapter("mysql", config.GlobalServerConfig.MySQLInfo.Host)
 
+	adapter, err := entAdapter.NewAdapter("pgx", config.GlobalServerConfig.PostgreSQLInfo.Host)
 	//adapter, err := entAdapter.NewAdapter("pgx", config.GlobalServerConfig.PostgreSQLInfo.Host)
 
 	if err != nil {

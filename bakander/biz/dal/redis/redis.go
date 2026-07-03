@@ -2,9 +2,10 @@ package redis
 
 import (
 	"context"
-	"github.com/redis/go-redis/v9"
 	"kcers-survey/biz/dal/config"
 	"time"
+
+	"github.com/redis/go-redis/v9"
 )
 
 var (

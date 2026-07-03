@@ -1,9 +1,10 @@
 package redis
 
 import (
-	"github.com/redis/go-redis/v9"
 	"strconv"
 	"time"
+
+	"github.com/redis/go-redis/v9"
 )
 
 // add k & v to redis
