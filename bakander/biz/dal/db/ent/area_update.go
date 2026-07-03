@@ -6,8 +6,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/area"
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
+	"kcers-survey/biz/dal/db/ent/area"
+	"kcers-survey/biz/dal/db/ent/internal"
+	"kcers-survey/biz/dal/db/ent/predicate"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -18,9 +19,8 @@ import (
 // AreaUpdate is the builder for updating Area entities.
 type AreaUpdate struct {
 	config
-	hooks     []Hook
-	mutation  *AreaMutation
-	modifiers []func(*sql.UpdateBuilder)
+	hooks    []Hook
+	mutation *AreaMutation
 }
 
 // Where appends a list predicates to the AreaUpdate builder.
@@ -417,12 +417,6 @@ func (_u *AreaUpdate) defaults() {
 	}
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (_u *AreaUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *AreaUpdate {
-	_u.modifiers = append(_u.modifiers, modifiers...)
-	return _u
-}
-
 func (_u *AreaUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(area.Table, area.Columns, sqlgraph.NewFieldSpec(area.FieldID, field.TypeInt64))
 	if ps := _u.mutation.predicates; len(ps) > 0 {
@@ -546,7 +540,8 @@ func (_u *AreaUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if _u.mutation.PerPinYinCleared() {
 		_spec.ClearField(area.FieldPerPinYin, field.TypeString)
 	}
-	_spec.AddModifiers(_u.modifiers...)
+	_spec.Node.Schema = _u.schemaConfig.Area
+	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
 	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{area.Label}
@@ -562,10 +557,9 @@ func (_u *AreaUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 // AreaUpdateOne is the builder for updating a single Area entity.
 type AreaUpdateOne struct {
 	config
-	fields    []string
-	hooks     []Hook
-	mutation  *AreaMutation
-	modifiers []func(*sql.UpdateBuilder)
+	fields   []string
+	hooks    []Hook
+	mutation *AreaMutation
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -969,12 +963,6 @@ func (_u *AreaUpdateOne) defaults() {
 	}
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (_u *AreaUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *AreaUpdateOne {
-	_u.modifiers = append(_u.modifiers, modifiers...)
-	return _u
-}
-
 func (_u *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) {
 	_spec := sqlgraph.NewUpdateSpec(area.Table, area.Columns, sqlgraph.NewFieldSpec(area.FieldID, field.TypeInt64))
 	id, ok := _u.mutation.ID()
@@ -1115,7 +1103,8 @@ func (_u *AreaUpdateOne) sqlSave(ctx context.Context) (_node *Area, err error) {
 	if _u.mutation.PerPinYinCleared() {
 		_spec.ClearField(area.FieldPerPinYin, field.TypeString)
 	}
-	_spec.AddModifiers(_u.modifiers...)
+	_spec.Node.Schema = _u.schemaConfig.Area
+	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
 	_node = &Area{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

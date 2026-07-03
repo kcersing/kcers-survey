@@ -2,10 +2,6 @@ package mw
 
 import (
 	"context"
-	"github.com/casbin/casbin/v2"
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
-	"github.com/hertz-contrib/jwt"
 	"kcers-survey/biz/dal/config"
 	"kcers-survey/biz/infras/service/common"
 	userService "kcers-survey/biz/infras/service/user"
@@ -15,6 +11,11 @@ import (
 	user3 "kcers-survey/idl_gen/model/user"
 	"strconv"
 	"time"
+
+	"github.com/casbin/casbin/v3"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"github.com/hertz-contrib/jwt"
 )
 
 type jwtLogin struct {

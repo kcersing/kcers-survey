@@ -5,9 +5,9 @@ package ent
 import (
 	"context"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
+	"kcers-survey/biz/dal/db/ent/surveyquestion"
+	"kcers-survey/biz/dal/db/ent/surveyresponse"
+	"kcers-survey/biz/dal/db/ent/surveyresponseanswers"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -296,6 +296,7 @@ func (_c *SurveyResponseAnswersCreate) createSpec() (*SurveyResponseAnswers, *sq
 		_node = &SurveyResponseAnswers{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(surveyresponseanswers.Table, sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64))
 	)
+	_spec.Schema = _c.schemaConfig.SurveyResponseAnswers
 	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
@@ -343,6 +344,7 @@ func (_c *SurveyResponseAnswersCreate) createSpec() (*SurveyResponseAnswers, *sq
 				IDSpec: sqlgraph.NewFieldSpec(surveyresponse.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _c.schemaConfig.SurveyResponseAnswers
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
@@ -360,6 +362,7 @@ func (_c *SurveyResponseAnswersCreate) createSpec() (*SurveyResponseAnswers, *sq
 				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _c.schemaConfig.SurveyResponseAnswers
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}

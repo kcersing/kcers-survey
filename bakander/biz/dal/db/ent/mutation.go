@@ -6,23 +6,23 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/api"
-	"kcers-survey/biz/dal/db/mysql/ent/area"
-	"kcers-survey/biz/dal/db/mysql/ent/dictionary"
-	"kcers-survey/biz/dal/db/mysql/ent/dictionarydetail"
-	"kcers-survey/biz/dal/db/mysql/ent/logs"
-	"kcers-survey/biz/dal/db/mysql/ent/menu"
-	"kcers-survey/biz/dal/db/mysql/ent/menuparam"
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
-	"kcers-survey/biz/dal/db/mysql/ent/role"
-	"kcers-survey/biz/dal/db/mysql/ent/sms"
-	"kcers-survey/biz/dal/db/mysql/ent/smslog"
-	"kcers-survey/biz/dal/db/mysql/ent/survey"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
-	"kcers-survey/biz/dal/db/mysql/ent/token"
-	"kcers-survey/biz/dal/db/mysql/ent/user"
+	"kcers-survey/biz/dal/db/ent/api"
+	"kcers-survey/biz/dal/db/ent/area"
+	"kcers-survey/biz/dal/db/ent/dictionary"
+	"kcers-survey/biz/dal/db/ent/dictionarydetail"
+	"kcers-survey/biz/dal/db/ent/logs"
+	"kcers-survey/biz/dal/db/ent/menu"
+	"kcers-survey/biz/dal/db/ent/menuparam"
+	"kcers-survey/biz/dal/db/ent/predicate"
+	"kcers-survey/biz/dal/db/ent/role"
+	"kcers-survey/biz/dal/db/ent/sms"
+	"kcers-survey/biz/dal/db/ent/smslog"
+	"kcers-survey/biz/dal/db/ent/survey"
+	"kcers-survey/biz/dal/db/ent/surveyquestion"
+	"kcers-survey/biz/dal/db/ent/surveyresponse"
+	"kcers-survey/biz/dal/db/ent/surveyresponseanswers"
+	"kcers-survey/biz/dal/db/ent/token"
+	"kcers-survey/biz/dal/db/ent/user"
 	"kcers-survey/idl_gen/model/service"
 	"sync"
 	"time"
@@ -7043,9 +7043,22 @@ func (m *MenuMutation) OldIcon(ctx context.Context) (v string, err error) {
 	return oldValue.Icon, nil
 }
 
+// ClearIcon clears the value of the "icon" field.
+func (m *MenuMutation) ClearIcon() {
+	m.icon = nil
+	m.clearedFields[menu.FieldIcon] = struct{}{}
+}
+
+// IconCleared returns if the "icon" field was cleared in this mutation.
+func (m *MenuMutation) IconCleared() bool {
+	_, ok := m.clearedFields[menu.FieldIcon]
+	return ok
+}
+
 // ResetIcon resets all changes to the "icon" field.
 func (m *MenuMutation) ResetIcon() {
 	m.icon = nil
+	delete(m.clearedFields, menu.FieldIcon)
 }
 
 // AddRoleIDs adds the "roles" edge to the Role entity by ids.
@@ -7620,6 +7633,9 @@ func (m *MenuMutation) ClearedFields() []string {
 	if m.FieldCleared(menu.FieldComponent) {
 		fields = append(fields, menu.FieldComponent)
 	}
+	if m.FieldCleared(menu.FieldIcon) {
+		fields = append(fields, menu.FieldIcon)
+	}
 	return fields
 }
 
@@ -7666,6 +7682,9 @@ func (m *MenuMutation) ClearField(name string) error {
 		return nil
 	case menu.FieldComponent:
 		m.ClearComponent()
+		return nil
+	case menu.FieldIcon:
+		m.ClearIcon()
 		return nil
 	}
 	return fmt.Errorf("unknown Menu nullable field %s", name)

@@ -2,7 +2,7 @@
 
 package runtime
 
-// The schema-stitching logic is generated in kcers-survey/biz/dal/db/mysql/ent/runtime.go
+// The schema-stitching logic is generated in kcers-survey/biz/dal/db/ent/runtime.go
 
 const (
 	Version = "v0.14.6"                                         // Version of ent codegen.

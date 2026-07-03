@@ -3,23 +3,23 @@
 package ent
 
 import (
-	"kcers-survey/biz/dal/db/mysql/ent/api"
-	"kcers-survey/biz/dal/db/mysql/ent/area"
-	"kcers-survey/biz/dal/db/mysql/ent/dictionary"
-	"kcers-survey/biz/dal/db/mysql/ent/dictionarydetail"
-	"kcers-survey/biz/dal/db/mysql/ent/logs"
-	"kcers-survey/biz/dal/db/mysql/ent/menu"
-	"kcers-survey/biz/dal/db/mysql/ent/menuparam"
-	"kcers-survey/biz/dal/db/mysql/ent/role"
-	"kcers-survey/biz/dal/db/mysql/ent/schema"
-	"kcers-survey/biz/dal/db/mysql/ent/sms"
-	"kcers-survey/biz/dal/db/mysql/ent/smslog"
-	"kcers-survey/biz/dal/db/mysql/ent/survey"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
-	"kcers-survey/biz/dal/db/mysql/ent/token"
-	"kcers-survey/biz/dal/db/mysql/ent/user"
+	"kcers-survey/biz/dal/db/ent/api"
+	"kcers-survey/biz/dal/db/ent/area"
+	"kcers-survey/biz/dal/db/ent/dictionary"
+	"kcers-survey/biz/dal/db/ent/dictionarydetail"
+	"kcers-survey/biz/dal/db/ent/logs"
+	"kcers-survey/biz/dal/db/ent/menu"
+	"kcers-survey/biz/dal/db/ent/menuparam"
+	"kcers-survey/biz/dal/db/ent/role"
+	"kcers-survey/biz/dal/db/ent/schema"
+	"kcers-survey/biz/dal/db/ent/sms"
+	"kcers-survey/biz/dal/db/ent/smslog"
+	"kcers-survey/biz/dal/db/ent/survey"
+	"kcers-survey/biz/dal/db/ent/surveyquestion"
+	"kcers-survey/biz/dal/db/ent/surveyresponse"
+	"kcers-survey/biz/dal/db/ent/surveyresponseanswers"
+	"kcers-survey/biz/dal/db/ent/token"
+	"kcers-survey/biz/dal/db/ent/user"
 	"kcers-survey/idl_gen/model/service"
 	"time"
 )
@@ -216,6 +216,10 @@ func init() {
 	menuDescComponent := menuFields[8].Descriptor()
 	// menu.DefaultComponent holds the default value on creation for the component field.
 	menu.DefaultComponent = menuDescComponent.Default.(string)
+	// menuDescIcon is the schema descriptor for icon field.
+	menuDescIcon := menuFields[9].Descriptor()
+	// menu.DefaultIcon holds the default value on creation for the icon field.
+	menu.DefaultIcon = menuDescIcon.Default.(string)
 	menuparamMixin := schema.MenuParam{}.Mixin()
 	menuparamMixinFields0 := menuparamMixin[0].Fields()
 	_ = menuparamMixinFields0

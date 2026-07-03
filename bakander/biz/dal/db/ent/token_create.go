@@ -6,8 +6,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/token"
-	"kcers-survey/biz/dal/db/mysql/ent/user"
+	"kcers-survey/biz/dal/db/ent/token"
+	"kcers-survey/biz/dal/db/ent/user"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -253,6 +253,7 @@ func (_c *TokenCreate) createSpec() (*Token, *sqlgraph.CreateSpec) {
 		_node = &Token{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(token.Table, sqlgraph.NewFieldSpec(token.FieldID, field.TypeInt64))
 	)
+	_spec.Schema = _c.schemaConfig.Token
 	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
@@ -312,6 +313,7 @@ func (_c *TokenCreate) createSpec() (*Token, *sqlgraph.CreateSpec) {
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _c.schemaConfig.Token
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}

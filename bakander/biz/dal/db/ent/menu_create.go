@@ -6,9 +6,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/menu"
-	"kcers-survey/biz/dal/db/mysql/ent/menuparam"
-	"kcers-survey/biz/dal/db/mysql/ent/role"
+	"kcers-survey/biz/dal/db/ent/menu"
+	"kcers-survey/biz/dal/db/ent/menuparam"
+	"kcers-survey/biz/dal/db/ent/role"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -202,6 +202,14 @@ func (_c *MenuCreate) SetIcon(v string) *MenuCreate {
 	return _c
 }
 
+// SetNillableIcon sets the "icon" field if the given value is not nil.
+func (_c *MenuCreate) SetNillableIcon(v *string) *MenuCreate {
+	if v != nil {
+		_c.SetIcon(*v)
+	}
+	return _c
+}
+
 // SetID sets the "id" field.
 func (_c *MenuCreate) SetID(v int64) *MenuCreate {
 	_c.mutation.SetID(v)
@@ -337,6 +345,10 @@ func (_c *MenuCreate) defaults() {
 		v := menu.DefaultComponent
 		_c.mutation.SetComponent(v)
 	}
+	if _, ok := _c.mutation.Icon(); !ok {
+		v := menu.DefaultIcon
+		_c.mutation.SetIcon(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -346,9 +358,6 @@ func (_c *MenuCreate) check() error {
 	}
 	if _, ok := _c.mutation.OrderNo(); !ok {
 		return &ValidationError{Name: "order_no", err: errors.New(`ent: missing required field "Menu.order_no"`)}
-	}
-	if _, ok := _c.mutation.Icon(); !ok {
-		return &ValidationError{Name: "icon", err: errors.New(`ent: missing required field "Menu.icon"`)}
 	}
 	return nil
 }
@@ -378,6 +387,7 @@ func (_c *MenuCreate) createSpec() (*Menu, *sqlgraph.CreateSpec) {
 		_node = &Menu{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(menu.Table, sqlgraph.NewFieldSpec(menu.FieldID, field.TypeInt64))
 	)
+	_spec.Schema = _c.schemaConfig.Menu
 	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
@@ -445,6 +455,7 @@ func (_c *MenuCreate) createSpec() (*Menu, *sqlgraph.CreateSpec) {
 				IDSpec: sqlgraph.NewFieldSpec(role.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _c.schemaConfig.RoleMenus
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
@@ -461,6 +472,7 @@ func (_c *MenuCreate) createSpec() (*Menu, *sqlgraph.CreateSpec) {
 				IDSpec: sqlgraph.NewFieldSpec(menu.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _c.schemaConfig.Menu
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
@@ -478,6 +490,7 @@ func (_c *MenuCreate) createSpec() (*Menu, *sqlgraph.CreateSpec) {
 				IDSpec: sqlgraph.NewFieldSpec(menu.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _c.schemaConfig.Menu
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
@@ -494,6 +507,7 @@ func (_c *MenuCreate) createSpec() (*Menu, *sqlgraph.CreateSpec) {
 				IDSpec: sqlgraph.NewFieldSpec(menuparam.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _c.schemaConfig.MenuParam
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}

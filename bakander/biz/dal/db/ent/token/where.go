@@ -3,7 +3,8 @@
 package token
 
 import (
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
+	"kcers-survey/biz/dal/db/ent/internal"
+	"kcers-survey/biz/dal/db/ent/predicate"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -707,6 +708,9 @@ func HasOwner() predicate.Token {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.Edge(sqlgraph.O2O, true, OwnerTable, OwnerColumn),
 		)
+		schemaConfig := internal.SchemaConfigFromContext(s.Context())
+		step.To.Schema = schemaConfig.User
+		step.Edge.Schema = schemaConfig.Token
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
@@ -715,6 +719,9 @@ func HasOwner() predicate.Token {
 func HasOwnerWith(preds ...predicate.User) predicate.Token {
 	return predicate.Token(func(s *sql.Selector) {
 		step := newOwnerStep()
+		schemaConfig := internal.SchemaConfigFromContext(s.Context())
+		step.To.Schema = schemaConfig.User
+		step.Edge.Schema = schemaConfig.Token
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

@@ -3,7 +3,8 @@
 package menu
 
 import (
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
+	"kcers-survey/biz/dal/db/ent/internal"
+	"kcers-survey/biz/dal/db/ent/predicate"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -860,6 +861,16 @@ func IconHasSuffix(v string) predicate.Menu {
 	return predicate.Menu(sql.FieldHasSuffix(FieldIcon, v))
 }
 
+// IconIsNil applies the IsNil predicate on the "icon" field.
+func IconIsNil() predicate.Menu {
+	return predicate.Menu(sql.FieldIsNull(FieldIcon))
+}
+
+// IconNotNil applies the NotNil predicate on the "icon" field.
+func IconNotNil() predicate.Menu {
+	return predicate.Menu(sql.FieldNotNull(FieldIcon))
+}
+
 // IconEqualFold applies the EqualFold predicate on the "icon" field.
 func IconEqualFold(v string) predicate.Menu {
 	return predicate.Menu(sql.FieldEqualFold(FieldIcon, v))
@@ -877,6 +888,9 @@ func HasRoles() predicate.Menu {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, true, RolesTable, RolesPrimaryKey...),
 		)
+		schemaConfig := internal.SchemaConfigFromContext(s.Context())
+		step.To.Schema = schemaConfig.Role
+		step.Edge.Schema = schemaConfig.RoleMenus
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
@@ -885,6 +899,9 @@ func HasRoles() predicate.Menu {
 func HasRolesWith(preds ...predicate.Role) predicate.Menu {
 	return predicate.Menu(func(s *sql.Selector) {
 		step := newRolesStep()
+		schemaConfig := internal.SchemaConfigFromContext(s.Context())
+		step.To.Schema = schemaConfig.Role
+		step.Edge.Schema = schemaConfig.RoleMenus
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)
@@ -900,6 +917,9 @@ func HasParent() predicate.Menu {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, ParentTable, ParentColumn),
 		)
+		schemaConfig := internal.SchemaConfigFromContext(s.Context())
+		step.To.Schema = schemaConfig.Menu
+		step.Edge.Schema = schemaConfig.Menu
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
@@ -908,6 +928,9 @@ func HasParent() predicate.Menu {
 func HasParentWith(preds ...predicate.Menu) predicate.Menu {
 	return predicate.Menu(func(s *sql.Selector) {
 		step := newParentStep()
+		schemaConfig := internal.SchemaConfigFromContext(s.Context())
+		step.To.Schema = schemaConfig.Menu
+		step.Edge.Schema = schemaConfig.Menu
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)
@@ -923,6 +946,9 @@ func HasChildren() predicate.Menu {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, ChildrenTable, ChildrenColumn),
 		)
+		schemaConfig := internal.SchemaConfigFromContext(s.Context())
+		step.To.Schema = schemaConfig.Menu
+		step.Edge.Schema = schemaConfig.Menu
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
@@ -931,6 +957,9 @@ func HasChildren() predicate.Menu {
 func HasChildrenWith(preds ...predicate.Menu) predicate.Menu {
 	return predicate.Menu(func(s *sql.Selector) {
 		step := newChildrenStep()
+		schemaConfig := internal.SchemaConfigFromContext(s.Context())
+		step.To.Schema = schemaConfig.Menu
+		step.Edge.Schema = schemaConfig.Menu
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)
@@ -946,6 +975,9 @@ func HasParams() predicate.Menu {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, ParamsTable, ParamsColumn),
 		)
+		schemaConfig := internal.SchemaConfigFromContext(s.Context())
+		step.To.Schema = schemaConfig.MenuParam
+		step.Edge.Schema = schemaConfig.MenuParam
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
@@ -954,6 +986,9 @@ func HasParams() predicate.Menu {
 func HasParamsWith(preds ...predicate.MenuParam) predicate.Menu {
 	return predicate.Menu(func(s *sql.Selector) {
 		step := newParamsStep()
+		schemaConfig := internal.SchemaConfigFromContext(s.Context())
+		step.To.Schema = schemaConfig.MenuParam
+		step.Edge.Schema = schemaConfig.MenuParam
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

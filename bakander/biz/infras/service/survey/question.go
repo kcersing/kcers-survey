@@ -1,15 +1,38 @@
 package survey
 
 import (
-	"kcers-survey/biz/dal/db/mysql/ent"
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
-	surveyquestion2 "kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
+	"kcers-survey/biz/dal/db/ent"
+	"kcers-survey/biz/dal/db/ent/predicate"
+	surveyquestion2 "kcers-survey/biz/dal/db/ent/surveyquestion"
 	"kcers-survey/idl_gen/model/base"
 	"kcers-survey/idl_gen/model/service"
 	"strconv"
+
+	"github.com/pkg/errors"
 )
 
+var validQuestionTypes = map[string]bool{
+	"h2": true, "h3": true, "page": true,
+	"single_choice": true, "multiple_choice": true, "dropdown": true,
+	"text": true, "number": true, "slider": true,
+	"date": true, "datetime": true,
+	"rate": true, "nps": true,
+	"ranking": true, "matrix": true,
+	"image": true, "file": true, "video": true, "audio": true,
+	"signature": true,
+}
+
+func validateType(t string) error {
+	if !validQuestionTypes[t] {
+		return errors.Errorf("不支持的问题类型: %s", t)
+	}
+	return nil
+}
+
 func (s Survey) CreateQuestion(req *service.CreateOrUpdateQuestionReq) (err error) {
+	if err := validateType(req.Type); err != nil {
+		return err
+	}
 
 	sq := s.db.SurveyQuestion.Create().
 		SetContent(req.Content).
@@ -37,6 +60,9 @@ func (s Survey) CreateQuestion(req *service.CreateOrUpdateQuestionReq) (err erro
 }
 
 func (s Survey) UpdateQuestion(req *service.CreateOrUpdateQuestionReq) (err error) {
+	if err := validateType(req.Type); err != nil {
+		return err
+	}
 	sq := s.db.SurveyQuestion.Update().
 		Where(surveyquestion2.IDEQ(req.ID)).
 		SetContent(req.Content).

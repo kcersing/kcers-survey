@@ -6,8 +6,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
-	"kcers-survey/biz/dal/db/mysql/ent/sms"
+	"kcers-survey/biz/dal/db/ent/internal"
+	"kcers-survey/biz/dal/db/ent/predicate"
+	"kcers-survey/biz/dal/db/ent/sms"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -18,9 +19,8 @@ import (
 // SmsUpdate is the builder for updating Sms entities.
 type SmsUpdate struct {
 	config
-	hooks     []Hook
-	mutation  *SmsMutation
-	modifiers []func(*sql.UpdateBuilder)
+	hooks    []Hook
+	mutation *SmsMutation
 }
 
 // Where appends a list predicates to the SmsUpdate builder.
@@ -178,12 +178,6 @@ func (_u *SmsUpdate) defaults() {
 	}
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (_u *SmsUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SmsUpdate {
-	_u.modifiers = append(_u.modifiers, modifiers...)
-	return _u
-}
-
 func (_u *SmsUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(sms.Table, sms.Columns, sqlgraph.NewFieldSpec(sms.FieldID, field.TypeInt64))
 	if ps := _u.mutation.predicates; len(ps) > 0 {
@@ -232,7 +226,8 @@ func (_u *SmsUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if value, ok := _u.mutation.AddedUsedNotice(); ok {
 		_spec.AddField(sms.FieldUsedNotice, field.TypeInt64, value)
 	}
-	_spec.AddModifiers(_u.modifiers...)
+	_spec.Node.Schema = _u.schemaConfig.Sms
+	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
 	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{sms.Label}
@@ -248,10 +243,9 @@ func (_u *SmsUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 // SmsUpdateOne is the builder for updating a single Sms entity.
 type SmsUpdateOne struct {
 	config
-	fields    []string
-	hooks     []Hook
-	mutation  *SmsMutation
-	modifiers []func(*sql.UpdateBuilder)
+	fields   []string
+	hooks    []Hook
+	mutation *SmsMutation
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -416,12 +410,6 @@ func (_u *SmsUpdateOne) defaults() {
 	}
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (_u *SmsUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SmsUpdateOne {
-	_u.modifiers = append(_u.modifiers, modifiers...)
-	return _u
-}
-
 func (_u *SmsUpdateOne) sqlSave(ctx context.Context) (_node *Sms, err error) {
 	_spec := sqlgraph.NewUpdateSpec(sms.Table, sms.Columns, sqlgraph.NewFieldSpec(sms.FieldID, field.TypeInt64))
 	id, ok := _u.mutation.ID()
@@ -487,7 +475,8 @@ func (_u *SmsUpdateOne) sqlSave(ctx context.Context) (_node *Sms, err error) {
 	if value, ok := _u.mutation.AddedUsedNotice(); ok {
 		_spec.AddField(sms.FieldUsedNotice, field.TypeInt64, value)
 	}
-	_spec.AddModifiers(_u.modifiers...)
+	_spec.Node.Schema = _u.schemaConfig.Sms
+	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
 	_node = &Sms{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

@@ -6,7 +6,7 @@ import (
 	"kcers-survey/biz/dal/cache"
 	"kcers-survey/biz/dal/casbin"
 	"kcers-survey/biz/dal/config"
-	db "kcers-survey/biz/dal/db/mysql"
+	db "kcers-survey/biz/dal/db"
 	"kcers-survey/biz/dal/logger"
 	"kcers-survey/biz/dal/minio"
 	"kcers-survey/biz/infras/cron"

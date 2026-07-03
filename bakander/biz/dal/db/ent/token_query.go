@@ -5,9 +5,10 @@ package ent
 import (
 	"context"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
-	"kcers-survey/biz/dal/db/mysql/ent/token"
-	"kcers-survey/biz/dal/db/mysql/ent/user"
+	"kcers-survey/biz/dal/db/ent/internal"
+	"kcers-survey/biz/dal/db/ent/predicate"
+	"kcers-survey/biz/dal/db/ent/token"
+	"kcers-survey/biz/dal/db/ent/user"
 	"math"
 
 	"entgo.io/ent"
@@ -25,7 +26,6 @@ type TokenQuery struct {
 	predicates []predicate.Token
 	withOwner  *UserQuery
 	withFKs    bool
-	modifiers  []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -78,6 +78,9 @@ func (_q *TokenQuery) QueryOwner() *UserQuery {
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.O2O, true, token.OwnerTable, token.OwnerColumn),
 		)
+		schemaConfig := _q.schemaConfig
+		step.To.Schema = schemaConfig.User
+		step.Edge.Schema = schemaConfig.Token
 		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
 		return fromU, nil
 	}
@@ -278,9 +281,8 @@ func (_q *TokenQuery) Clone() *TokenQuery {
 		predicates: append([]predicate.Token{}, _q.predicates...),
 		withOwner:  _q.withOwner.Clone(),
 		// clone intermediate query.
-		sql:       _q.sql.Clone(),
-		path:      _q.path,
-		modifiers: append([]func(*sql.Selector){}, _q.modifiers...),
+		sql:  _q.sql.Clone(),
+		path: _q.path,
 	}
 }
 
@@ -393,9 +395,8 @@ func (_q *TokenQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Token,
 		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
-	if len(_q.modifiers) > 0 {
-		_spec.Modifiers = _q.modifiers
-	}
+	_spec.Node.Schema = _q.schemaConfig.Token
+	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
 	for i := range hooks {
 		hooks[i](ctx, _spec)
 	}
@@ -449,9 +450,8 @@ func (_q *TokenQuery) loadOwner(ctx context.Context, query *UserQuery, nodes []*
 
 func (_q *TokenQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := _q.querySpec()
-	if len(_q.modifiers) > 0 {
-		_spec.Modifiers = _q.modifiers
-	}
+	_spec.Node.Schema = _q.schemaConfig.Token
+	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
 	_spec.Node.Columns = _q.ctx.Fields
 	if len(_q.ctx.Fields) > 0 {
 		_spec.Unique = _q.ctx.Unique != nil && *_q.ctx.Unique
@@ -514,9 +514,9 @@ func (_q *TokenQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if _q.ctx.Unique != nil && *_q.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range _q.modifiers {
-		m(selector)
-	}
+	t1.Schema(_q.schemaConfig.Token)
+	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
+	selector.WithContext(ctx)
 	for _, p := range _q.predicates {
 		p(selector)
 	}
@@ -532,12 +532,6 @@ func (_q *TokenQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (_q *TokenQuery) Modify(modifiers ...func(s *sql.Selector)) *TokenSelect {
-	_q.modifiers = append(_q.modifiers, modifiers...)
-	return _q.Select()
 }
 
 // TokenGroupBy is the group-by builder for Token entities.
@@ -628,10 +622,4 @@ func (_s *TokenSelect) sqlScan(ctx context.Context, root *TokenQuery, v any) err
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (_s *TokenSelect) Modify(modifiers ...func(s *sql.Selector)) *TokenSelect {
-	_s.modifiers = append(_s.modifiers, modifiers...)
-	return _s
 }

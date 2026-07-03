@@ -2,21 +2,22 @@ package system
 
 import (
 	"context"
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/dgraph-io/ristretto"
-	"github.com/pkg/errors"
 	"kcers-survey/biz/dal/cache"
 	"kcers-survey/biz/dal/config"
-	db "kcers-survey/biz/dal/db/mysql"
-	"kcers-survey/biz/dal/db/mysql/ent"
-	menu2 "kcers-survey/biz/dal/db/mysql/ent/menu"
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
-	"kcers-survey/biz/dal/db/mysql/ent/role"
+	db "kcers-survey/biz/dal/db"
+	"kcers-survey/biz/dal/db/ent"
+	menu2 "kcers-survey/biz/dal/db/ent/menu"
+	"kcers-survey/biz/dal/db/ent/predicate"
+	"kcers-survey/biz/dal/db/ent/role"
 	"kcers-survey/biz/infras/do"
 	"kcers-survey/idl_gen/model/base"
 	"kcers-survey/idl_gen/model/menu"
 	"strconv"
 	"time"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/dgraph-io/ristretto"
+	"github.com/pkg/errors"
 )
 
 type Menu struct {

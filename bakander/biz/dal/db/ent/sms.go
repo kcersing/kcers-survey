@@ -4,7 +4,7 @@ package ent
 
 import (
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/sms"
+	"kcers-survey/biz/dal/db/ent/sms"
 	"strings"
 	"time"
 

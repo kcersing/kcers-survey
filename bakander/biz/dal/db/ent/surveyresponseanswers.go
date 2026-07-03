@@ -5,9 +5,9 @@ package ent
 import (
 	"encoding/json"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
+	"kcers-survey/biz/dal/db/ent/surveyquestion"
+	"kcers-survey/biz/dal/db/ent/surveyresponse"
+	"kcers-survey/biz/dal/db/ent/surveyresponseanswers"
 	"strings"
 	"time"
 

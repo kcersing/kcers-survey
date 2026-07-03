@@ -6,7 +6,7 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
-	"kcers-survey/biz/dal/db/mysql/ent/schema/mixins"
+	"kcers-survey/biz/dal/db/ent/schema/mixins"
 )
 
 type API struct {

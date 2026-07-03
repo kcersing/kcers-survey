@@ -5,8 +5,9 @@ package ent
 import (
 	"context"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/area"
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
+	"kcers-survey/biz/dal/db/ent/area"
+	"kcers-survey/biz/dal/db/ent/internal"
+	"kcers-survey/biz/dal/db/ent/predicate"
 	"math"
 
 	"entgo.io/ent"
@@ -22,7 +23,6 @@ type AreaQuery struct {
 	order      []area.OrderOption
 	inters     []Interceptor
 	predicates []predicate.Area
-	modifiers  []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -252,9 +252,8 @@ func (_q *AreaQuery) Clone() *AreaQuery {
 		inters:     append([]Interceptor{}, _q.inters...),
 		predicates: append([]predicate.Area{}, _q.predicates...),
 		// clone intermediate query.
-		sql:       _q.sql.Clone(),
-		path:      _q.path,
-		modifiers: append([]func(*sql.Selector){}, _q.modifiers...),
+		sql:  _q.sql.Clone(),
+		path: _q.path,
 	}
 }
 
@@ -345,9 +344,8 @@ func (_q *AreaQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Area, e
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
 	}
-	if len(_q.modifiers) > 0 {
-		_spec.Modifiers = _q.modifiers
-	}
+	_spec.Node.Schema = _q.schemaConfig.Area
+	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
 	for i := range hooks {
 		hooks[i](ctx, _spec)
 	}
@@ -362,9 +360,8 @@ func (_q *AreaQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Area, e
 
 func (_q *AreaQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := _q.querySpec()
-	if len(_q.modifiers) > 0 {
-		_spec.Modifiers = _q.modifiers
-	}
+	_spec.Node.Schema = _q.schemaConfig.Area
+	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
 	_spec.Node.Columns = _q.ctx.Fields
 	if len(_q.ctx.Fields) > 0 {
 		_spec.Unique = _q.ctx.Unique != nil && *_q.ctx.Unique
@@ -427,9 +424,9 @@ func (_q *AreaQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if _q.ctx.Unique != nil && *_q.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range _q.modifiers {
-		m(selector)
-	}
+	t1.Schema(_q.schemaConfig.Area)
+	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
+	selector.WithContext(ctx)
 	for _, p := range _q.predicates {
 		p(selector)
 	}
@@ -445,12 +442,6 @@ func (_q *AreaQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (_q *AreaQuery) Modify(modifiers ...func(s *sql.Selector)) *AreaSelect {
-	_q.modifiers = append(_q.modifiers, modifiers...)
-	return _q.Select()
 }
 
 // AreaGroupBy is the group-by builder for Area entities.
@@ -541,10 +532,4 @@ func (_s *AreaSelect) sqlScan(ctx context.Context, root *AreaQuery, v any) error
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (_s *AreaSelect) Modify(modifiers ...func(s *sql.Selector)) *AreaSelect {
-	_s.modifiers = append(_s.modifiers, modifiers...)
-	return _s
 }

@@ -5,8 +5,9 @@ package ent
 import (
 	"context"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
-	"kcers-survey/biz/dal/db/mysql/ent/sms"
+	"kcers-survey/biz/dal/db/ent/internal"
+	"kcers-survey/biz/dal/db/ent/predicate"
+	"kcers-survey/biz/dal/db/ent/sms"
 	"math"
 
 	"entgo.io/ent"
@@ -22,7 +23,6 @@ type SmsQuery struct {
 	order      []sms.OrderOption
 	inters     []Interceptor
 	predicates []predicate.Sms
-	modifiers  []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -252,9 +252,8 @@ func (_q *SmsQuery) Clone() *SmsQuery {
 		inters:     append([]Interceptor{}, _q.inters...),
 		predicates: append([]predicate.Sms{}, _q.predicates...),
 		// clone intermediate query.
-		sql:       _q.sql.Clone(),
-		path:      _q.path,
-		modifiers: append([]func(*sql.Selector){}, _q.modifiers...),
+		sql:  _q.sql.Clone(),
+		path: _q.path,
 	}
 }
 
@@ -345,9 +344,8 @@ func (_q *SmsQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sms, err
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
 	}
-	if len(_q.modifiers) > 0 {
-		_spec.Modifiers = _q.modifiers
-	}
+	_spec.Node.Schema = _q.schemaConfig.Sms
+	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
 	for i := range hooks {
 		hooks[i](ctx, _spec)
 	}
@@ -362,9 +360,8 @@ func (_q *SmsQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sms, err
 
 func (_q *SmsQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := _q.querySpec()
-	if len(_q.modifiers) > 0 {
-		_spec.Modifiers = _q.modifiers
-	}
+	_spec.Node.Schema = _q.schemaConfig.Sms
+	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
 	_spec.Node.Columns = _q.ctx.Fields
 	if len(_q.ctx.Fields) > 0 {
 		_spec.Unique = _q.ctx.Unique != nil && *_q.ctx.Unique
@@ -427,9 +424,9 @@ func (_q *SmsQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if _q.ctx.Unique != nil && *_q.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range _q.modifiers {
-		m(selector)
-	}
+	t1.Schema(_q.schemaConfig.Sms)
+	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
+	selector.WithContext(ctx)
 	for _, p := range _q.predicates {
 		p(selector)
 	}
@@ -445,12 +442,6 @@ func (_q *SmsQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (_q *SmsQuery) Modify(modifiers ...func(s *sql.Selector)) *SmsSelect {
-	_q.modifiers = append(_q.modifiers, modifiers...)
-	return _q.Select()
 }
 
 // SmsGroupBy is the group-by builder for Sms entities.
@@ -541,10 +532,4 @@ func (_s *SmsSelect) sqlScan(ctx context.Context, root *SmsQuery, v any) error {
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (_s *SmsSelect) Modify(modifiers ...func(s *sql.Selector)) *SmsSelect {
-	_s.modifiers = append(_s.modifiers, modifiers...)
-	return _s
 }

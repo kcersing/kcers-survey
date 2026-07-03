@@ -5,11 +5,11 @@ package enttest
 import (
 	"context"
 
-	"kcers-survey/biz/dal/db/mysql/ent"
+	"kcers-survey/biz/dal/db/ent"
 	// required by schema hooks.
-	_ "kcers-survey/biz/dal/db/mysql/ent/runtime"
+	_ "kcers-survey/biz/dal/db/ent/runtime"
 
-	"kcers-survey/biz/dal/db/mysql/ent/migrate"
+	"kcers-survey/biz/dal/db/ent/migrate"
 
 	"entgo.io/ent/dialect/sql/schema"
 )

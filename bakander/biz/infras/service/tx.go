@@ -2,7 +2,7 @@ package service
 
 import (
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent"
+	"kcers-survey/biz/dal/db/ent"
 )
 
 // rollback calls to tx.Rollback and wraps the given error

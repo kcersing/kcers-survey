@@ -5,9 +5,10 @@ package ent
 import (
 	"context"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/dictionary"
-	"kcers-survey/biz/dal/db/mysql/ent/dictionarydetail"
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
+	"kcers-survey/biz/dal/db/ent/dictionary"
+	"kcers-survey/biz/dal/db/ent/dictionarydetail"
+	"kcers-survey/biz/dal/db/ent/internal"
+	"kcers-survey/biz/dal/db/ent/predicate"
 	"math"
 
 	"entgo.io/ent"
@@ -24,7 +25,6 @@ type DictionaryDetailQuery struct {
 	inters         []Interceptor
 	predicates     []predicate.DictionaryDetail
 	withDictionary *DictionaryQuery
-	modifiers      []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -77,6 +77,9 @@ func (_q *DictionaryDetailQuery) QueryDictionary() *DictionaryQuery {
 			sqlgraph.To(dictionary.Table, dictionary.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, dictionarydetail.DictionaryTable, dictionarydetail.DictionaryColumn),
 		)
+		schemaConfig := _q.schemaConfig
+		step.To.Schema = schemaConfig.Dictionary
+		step.Edge.Schema = schemaConfig.DictionaryDetail
 		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
 		return fromU, nil
 	}
@@ -277,9 +280,8 @@ func (_q *DictionaryDetailQuery) Clone() *DictionaryDetailQuery {
 		predicates:     append([]predicate.DictionaryDetail{}, _q.predicates...),
 		withDictionary: _q.withDictionary.Clone(),
 		// clone intermediate query.
-		sql:       _q.sql.Clone(),
-		path:      _q.path,
-		modifiers: append([]func(*sql.Selector){}, _q.modifiers...),
+		sql:  _q.sql.Clone(),
+		path: _q.path,
 	}
 }
 
@@ -385,9 +387,8 @@ func (_q *DictionaryDetailQuery) sqlAll(ctx context.Context, hooks ...queryHook)
 		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
-	if len(_q.modifiers) > 0 {
-		_spec.Modifiers = _q.modifiers
-	}
+	_spec.Node.Schema = _q.schemaConfig.DictionaryDetail
+	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
 	for i := range hooks {
 		hooks[i](ctx, _spec)
 	}
@@ -438,9 +439,8 @@ func (_q *DictionaryDetailQuery) loadDictionary(ctx context.Context, query *Dict
 
 func (_q *DictionaryDetailQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := _q.querySpec()
-	if len(_q.modifiers) > 0 {
-		_spec.Modifiers = _q.modifiers
-	}
+	_spec.Node.Schema = _q.schemaConfig.DictionaryDetail
+	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
 	_spec.Node.Columns = _q.ctx.Fields
 	if len(_q.ctx.Fields) > 0 {
 		_spec.Unique = _q.ctx.Unique != nil && *_q.ctx.Unique
@@ -506,9 +506,9 @@ func (_q *DictionaryDetailQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if _q.ctx.Unique != nil && *_q.ctx.Unique {
 		selector.Distinct()
 	}
-	for _, m := range _q.modifiers {
-		m(selector)
-	}
+	t1.Schema(_q.schemaConfig.DictionaryDetail)
+	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
+	selector.WithContext(ctx)
 	for _, p := range _q.predicates {
 		p(selector)
 	}
@@ -524,12 +524,6 @@ func (_q *DictionaryDetailQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (_q *DictionaryDetailQuery) Modify(modifiers ...func(s *sql.Selector)) *DictionaryDetailSelect {
-	_q.modifiers = append(_q.modifiers, modifiers...)
-	return _q.Select()
 }
 
 // DictionaryDetailGroupBy is the group-by builder for DictionaryDetail entities.
@@ -620,10 +614,4 @@ func (_s *DictionaryDetailSelect) sqlScan(ctx context.Context, root *DictionaryD
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
-}
-
-// Modify adds a query modifier for attaching custom logic to queries.
-func (_s *DictionaryDetailSelect) Modify(modifiers ...func(s *sql.Selector)) *DictionaryDetailSelect {
-	_s.modifiers = append(_s.modifiers, modifiers...)
-	return _s
 }

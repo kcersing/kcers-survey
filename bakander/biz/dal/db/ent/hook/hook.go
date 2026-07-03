@@ -5,7 +5,7 @@ package hook
 import (
 	"context"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent"
+	"kcers-survey/biz/dal/db/ent"
 )
 
 // The APIFunc type is an adapter to allow the use of ordinary

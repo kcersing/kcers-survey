@@ -2,17 +2,22 @@ package survey
 
 import (
 	"context"
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/dgraph-io/ristretto"
-	db "kcers-survey/biz/dal/db/mysql"
-	"kcers-survey/biz/dal/db/mysql/ent"
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
-	survey2 "kcers-survey/biz/dal/db/mysql/ent/survey"
+	"fmt"
+	"strconv"
+	"time"
+
+	db "kcers-survey/biz/dal/db"
+	"kcers-survey/biz/dal/db/ent"
+	"kcers-survey/biz/dal/db/ent/area"
+	"kcers-survey/biz/dal/db/ent/predicate"
+	survey2 "kcers-survey/biz/dal/db/ent/survey"
 	"kcers-survey/biz/infras/do"
 	"kcers-survey/biz/infras/service/common"
 	"kcers-survey/biz/pkg/utils"
 	"kcers-survey/idl_gen/model/service"
-	"time"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/dgraph-io/ristretto"
 )
 
 type Survey struct {
@@ -180,9 +185,39 @@ func (s Survey) DeleteSurvey(id int64) (err error) {
 }
 
 func NewSurvey(ctx context.Context, c *app.RequestContext) do.Survey {
+	cache, _ := ristretto.NewCache(&ristretto.Config{
+		NumCounters: 10000,
+		MaxCost:     1 << 25, // 32MB
+		BufferItems: 64,
+	})
 	return &Survey{
-		ctx: ctx,
-		c:   c,
-		db:  db.DB,
+		ctx:   ctx,
+		c:     c,
+		db:    db.DB,
+		cache: cache,
 	}
+}
+
+// getAreaName 通过缓存获取区域名称，避免 N+1 查询
+func (s Survey) getAreaName(idStr string) string {
+	if idStr == "" || s.cache == nil {
+		return ""
+	}
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		return ""
+	}
+
+	cacheKey := fmt.Sprintf("area:name:%d", id)
+	if name, ok := s.cache.Get(cacheKey); ok {
+		return name.(string)
+	}
+
+	first, err := s.db.Area.Query().Where(area.ID(id)).First(s.ctx)
+	if err != nil {
+		return idStr
+	}
+
+	s.cache.SetWithTTL(cacheKey, first.Name, 1, 10*time.Minute)
+	return first.Name
 }

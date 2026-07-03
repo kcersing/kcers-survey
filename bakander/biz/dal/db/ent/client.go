@@ -9,29 +9,31 @@ import (
 	"log"
 	"reflect"
 
-	"kcers-survey/biz/dal/db/mysql/ent/migrate"
+	"kcers-survey/biz/dal/db/ent/migrate"
 
-	"kcers-survey/biz/dal/db/mysql/ent/api"
-	"kcers-survey/biz/dal/db/mysql/ent/area"
-	"kcers-survey/biz/dal/db/mysql/ent/dictionary"
-	"kcers-survey/biz/dal/db/mysql/ent/dictionarydetail"
-	"kcers-survey/biz/dal/db/mysql/ent/logs"
-	"kcers-survey/biz/dal/db/mysql/ent/menu"
-	"kcers-survey/biz/dal/db/mysql/ent/menuparam"
-	"kcers-survey/biz/dal/db/mysql/ent/role"
-	"kcers-survey/biz/dal/db/mysql/ent/sms"
-	"kcers-survey/biz/dal/db/mysql/ent/smslog"
-	"kcers-survey/biz/dal/db/mysql/ent/survey"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
-	"kcers-survey/biz/dal/db/mysql/ent/token"
-	"kcers-survey/biz/dal/db/mysql/ent/user"
+	"kcers-survey/biz/dal/db/ent/api"
+	"kcers-survey/biz/dal/db/ent/area"
+	"kcers-survey/biz/dal/db/ent/dictionary"
+	"kcers-survey/biz/dal/db/ent/dictionarydetail"
+	"kcers-survey/biz/dal/db/ent/logs"
+	"kcers-survey/biz/dal/db/ent/menu"
+	"kcers-survey/biz/dal/db/ent/menuparam"
+	"kcers-survey/biz/dal/db/ent/role"
+	"kcers-survey/biz/dal/db/ent/sms"
+	"kcers-survey/biz/dal/db/ent/smslog"
+	"kcers-survey/biz/dal/db/ent/survey"
+	"kcers-survey/biz/dal/db/ent/surveyquestion"
+	"kcers-survey/biz/dal/db/ent/surveyresponse"
+	"kcers-survey/biz/dal/db/ent/surveyresponseanswers"
+	"kcers-survey/biz/dal/db/ent/token"
+	"kcers-survey/biz/dal/db/ent/user"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+
+	"kcers-survey/biz/dal/db/ent/internal"
 )
 
 // Client is the client that holds all ent builders.
@@ -113,6 +115,8 @@ type (
 		hooks *hooks
 		// interceptors to execute on queries.
 		inters *inters
+		// schemaConfig contains alternative names for all tables.
+		schemaConfig SchemaConfig
 	}
 	// Option function to configure the client.
 	Option func(*config)
@@ -714,6 +718,9 @@ func (c *DictionaryClient) QueryDictionaryDetails(_m *Dictionary) *DictionaryDet
 			sqlgraph.To(dictionarydetail.Table, dictionarydetail.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, dictionary.DictionaryDetailsTable, dictionary.DictionaryDetailsColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.DictionaryDetail
+		step.Edge.Schema = schemaConfig.DictionaryDetail
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -863,6 +870,9 @@ func (c *DictionaryDetailClient) QueryDictionary(_m *DictionaryDetail) *Dictiona
 			sqlgraph.To(dictionary.Table, dictionary.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, dictionarydetail.DictionaryTable, dictionarydetail.DictionaryColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.Dictionary
+		step.Edge.Schema = schemaConfig.DictionaryDetail
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -1145,6 +1155,9 @@ func (c *MenuClient) QueryRoles(_m *Menu) *RoleQuery {
 			sqlgraph.To(role.Table, role.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, true, menu.RolesTable, menu.RolesPrimaryKey...),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.Role
+		step.Edge.Schema = schemaConfig.RoleMenus
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -1161,6 +1174,9 @@ func (c *MenuClient) QueryParent(_m *Menu) *MenuQuery {
 			sqlgraph.To(menu.Table, menu.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, menu.ParentTable, menu.ParentColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.Menu
+		step.Edge.Schema = schemaConfig.Menu
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -1177,6 +1193,9 @@ func (c *MenuClient) QueryChildren(_m *Menu) *MenuQuery {
 			sqlgraph.To(menu.Table, menu.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, menu.ChildrenTable, menu.ChildrenColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.Menu
+		step.Edge.Schema = schemaConfig.Menu
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -1193,6 +1212,9 @@ func (c *MenuClient) QueryParams(_m *Menu) *MenuParamQuery {
 			sqlgraph.To(menuparam.Table, menuparam.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, menu.ParamsTable, menu.ParamsColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.MenuParam
+		step.Edge.Schema = schemaConfig.MenuParam
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -1342,6 +1364,9 @@ func (c *MenuParamClient) QueryMenus(_m *MenuParam) *MenuQuery {
 			sqlgraph.To(menu.Table, menu.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, menuparam.MenusTable, menuparam.MenusColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.Menu
+		step.Edge.Schema = schemaConfig.MenuParam
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -1491,6 +1516,9 @@ func (c *RoleClient) QueryMenus(_m *Role) *MenuQuery {
 			sqlgraph.To(menu.Table, menu.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, role.MenusTable, role.MenusPrimaryKey...),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.Menu
+		step.Edge.Schema = schemaConfig.RoleMenus
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -1507,6 +1535,9 @@ func (c *RoleClient) QueryUsers(_m *Role) *UserQuery {
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, true, role.UsersTable, role.UsersPrimaryKey...),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.User
+		step.Edge.Schema = schemaConfig.UserRoles
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -1922,6 +1953,9 @@ func (c *SurveyClient) QueryQuestion(_m *Survey) *SurveyQuestionQuery {
 			sqlgraph.To(surveyquestion.Table, surveyquestion.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, survey.QuestionTable, survey.QuestionColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.SurveyQuestion
+		step.Edge.Schema = schemaConfig.SurveyQuestion
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -1938,6 +1972,9 @@ func (c *SurveyClient) QueryResponse(_m *Survey) *SurveyResponseQuery {
 			sqlgraph.To(surveyresponse.Table, surveyresponse.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, survey.ResponseTable, survey.ResponseColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.SurveyResponse
+		step.Edge.Schema = schemaConfig.SurveyResponse
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -2087,6 +2124,9 @@ func (c *SurveyQuestionClient) QuerySurvey(_m *SurveyQuestion) *SurveyQuery {
 			sqlgraph.To(survey.Table, survey.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, surveyquestion.SurveyTable, surveyquestion.SurveyColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.Survey
+		step.Edge.Schema = schemaConfig.SurveyQuestion
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -2103,6 +2143,9 @@ func (c *SurveyQuestionClient) QueryAnswers(_m *SurveyQuestion) *SurveyResponseA
 			sqlgraph.To(surveyresponseanswers.Table, surveyresponseanswers.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, surveyquestion.AnswersTable, surveyquestion.AnswersColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.SurveyResponseAnswers
+		step.Edge.Schema = schemaConfig.SurveyResponseAnswers
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -2252,6 +2295,9 @@ func (c *SurveyResponseClient) QuerySurvey(_m *SurveyResponse) *SurveyQuery {
 			sqlgraph.To(survey.Table, survey.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, surveyresponse.SurveyTable, surveyresponse.SurveyColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.Survey
+		step.Edge.Schema = schemaConfig.SurveyResponse
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -2268,6 +2314,9 @@ func (c *SurveyResponseClient) QueryAnswers(_m *SurveyResponse) *SurveyResponseA
 			sqlgraph.To(surveyresponseanswers.Table, surveyresponseanswers.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, surveyresponse.AnswersTable, surveyresponse.AnswersColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.SurveyResponseAnswers
+		step.Edge.Schema = schemaConfig.SurveyResponseAnswers
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -2417,6 +2466,9 @@ func (c *SurveyResponseAnswersClient) QueryResponse(_m *SurveyResponseAnswers) *
 			sqlgraph.To(surveyresponse.Table, surveyresponse.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, surveyresponseanswers.ResponseTable, surveyresponseanswers.ResponseColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.SurveyResponse
+		step.Edge.Schema = schemaConfig.SurveyResponseAnswers
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -2433,6 +2485,9 @@ func (c *SurveyResponseAnswersClient) QueryQuestion(_m *SurveyResponseAnswers) *
 			sqlgraph.To(surveyquestion.Table, surveyquestion.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, surveyresponseanswers.QuestionTable, surveyresponseanswers.QuestionColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.SurveyQuestion
+		step.Edge.Schema = schemaConfig.SurveyResponseAnswers
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -2582,6 +2637,9 @@ func (c *TokenClient) QueryOwner(_m *Token) *UserQuery {
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.O2O, true, token.OwnerTable, token.OwnerColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.User
+		step.Edge.Schema = schemaConfig.Token
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -2731,6 +2789,9 @@ func (c *UserClient) QueryToken(_m *User) *TokenQuery {
 			sqlgraph.To(token.Table, token.FieldID),
 			sqlgraph.Edge(sqlgraph.O2O, false, user.TokenTable, user.TokenColumn),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.Token
+		step.Edge.Schema = schemaConfig.Token
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -2747,6 +2808,9 @@ func (c *UserClient) QueryRoles(_m *User) *RoleQuery {
 			sqlgraph.To(role.Table, role.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, user.RolesTable, user.RolesPrimaryKey...),
 		)
+		schemaConfig := _m.schemaConfig
+		step.To.Schema = schemaConfig.Role
+		step.Edge.Schema = schemaConfig.UserRoles
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
 	}
@@ -2791,3 +2855,15 @@ type (
 		User []ent.Interceptor
 	}
 )
+
+// SchemaConfig represents alternative schema names for all tables
+// that can be passed at runtime.
+type SchemaConfig = internal.SchemaConfig
+
+// AlternateSchemas allows alternate schema names to be
+// passed into ent operations.
+func AlternateSchema(schemaConfig SchemaConfig) Option {
+	return func(c *config) {
+		c.schemaConfig = schemaConfig
+	}
+}

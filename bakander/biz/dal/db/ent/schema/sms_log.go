@@ -5,7 +5,7 @@ import (
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
-	"kcers-survey/biz/dal/db/mysql/ent/schema/mixins"
+	"kcers-survey/biz/dal/db/ent/schema/mixins"
 )
 
 type SmsLog struct {

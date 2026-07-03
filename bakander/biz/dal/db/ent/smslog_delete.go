@@ -4,8 +4,9 @@ package ent
 
 import (
 	"context"
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
-	"kcers-survey/biz/dal/db/mysql/ent/smslog"
+	"kcers-survey/biz/dal/db/ent/internal"
+	"kcers-survey/biz/dal/db/ent/predicate"
+	"kcers-survey/biz/dal/db/ent/smslog"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -41,6 +42,8 @@ func (_d *SmsLogDelete) ExecX(ctx context.Context) int {
 
 func (_d *SmsLogDelete) sqlExec(ctx context.Context) (int, error) {
 	_spec := sqlgraph.NewDeleteSpec(smslog.Table, sqlgraph.NewFieldSpec(smslog.FieldID, field.TypeInt64))
+	_spec.Node.Schema = _d.schemaConfig.SmsLog
+	ctx = internal.NewSchemaConfigContext(ctx, _d.schemaConfig)
 	if ps := _d.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {

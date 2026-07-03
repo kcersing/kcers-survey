@@ -161,7 +161,7 @@ var (
 		{Name: "ignore", Type: field.TypeBool, Nullable: true, Comment: "当前路由是否渲染菜单项，为 true 的话不会在菜单中显示，但可通过路由地址访问", Default: false},
 		{Name: "redirect", Type: field.TypeString, Nullable: true, Comment: "redirect path | 跳转路径 （外链）", Default: ""},
 		{Name: "component", Type: field.TypeString, Nullable: true, Comment: "the path of vue file | 组件路径", Default: ""},
-		{Name: "icon", Type: field.TypeString, Comment: "menu icon | 菜单图标"},
+		{Name: "icon", Type: field.TypeString, Nullable: true, Comment: "menu icon | 菜单图标", Default: ""},
 		{Name: "parent_id", Type: field.TypeInt64, Nullable: true, Comment: "parent menu ID | 父菜单ID"},
 	}
 	// SysMenusTable holds the schema information for the "sys_menus" table.

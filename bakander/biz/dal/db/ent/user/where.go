@@ -3,7 +3,8 @@
 package user
 
 import (
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
+	"kcers-survey/biz/dal/db/ent/internal"
+	"kcers-survey/biz/dal/db/ent/predicate"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -1297,6 +1298,9 @@ func HasToken() predicate.User {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.Edge(sqlgraph.O2O, false, TokenTable, TokenColumn),
 		)
+		schemaConfig := internal.SchemaConfigFromContext(s.Context())
+		step.To.Schema = schemaConfig.Token
+		step.Edge.Schema = schemaConfig.Token
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
@@ -1305,6 +1309,9 @@ func HasToken() predicate.User {
 func HasTokenWith(preds ...predicate.Token) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		step := newTokenStep()
+		schemaConfig := internal.SchemaConfigFromContext(s.Context())
+		step.To.Schema = schemaConfig.Token
+		step.Edge.Schema = schemaConfig.Token
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)
@@ -1320,6 +1327,9 @@ func HasRoles() predicate.User {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, RolesTable, RolesPrimaryKey...),
 		)
+		schemaConfig := internal.SchemaConfigFromContext(s.Context())
+		step.To.Schema = schemaConfig.Role
+		step.Edge.Schema = schemaConfig.UserRoles
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
@@ -1328,6 +1338,9 @@ func HasRoles() predicate.User {
 func HasRolesWith(preds ...predicate.Role) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		step := newRolesStep()
+		schemaConfig := internal.SchemaConfigFromContext(s.Context())
+		step.To.Schema = schemaConfig.Role
+		step.Edge.Schema = schemaConfig.UserRoles
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

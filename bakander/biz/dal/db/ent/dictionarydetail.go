@@ -4,8 +4,8 @@ package ent
 
 import (
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/dictionary"
-	"kcers-survey/biz/dal/db/mysql/ent/dictionarydetail"
+	"kcers-survey/biz/dal/db/ent/dictionary"
+	"kcers-survey/biz/dal/db/ent/dictionarydetail"
 	"strings"
 	"time"
 

@@ -6,10 +6,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
-	"kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
+	"kcers-survey/biz/dal/db/ent/internal"
+	"kcers-survey/biz/dal/db/ent/predicate"
+	"kcers-survey/biz/dal/db/ent/surveyquestion"
+	"kcers-survey/biz/dal/db/ent/surveyresponse"
+	"kcers-survey/biz/dal/db/ent/surveyresponseanswers"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -21,9 +22,8 @@ import (
 // SurveyResponseAnswersUpdate is the builder for updating SurveyResponseAnswers entities.
 type SurveyResponseAnswersUpdate struct {
 	config
-	hooks     []Hook
-	mutation  *SurveyResponseAnswersMutation
-	modifiers []func(*sql.UpdateBuilder)
+	hooks    []Hook
+	mutation *SurveyResponseAnswersMutation
 }
 
 // Where appends a list predicates to the SurveyResponseAnswersUpdate builder.
@@ -321,12 +321,6 @@ func (_u *SurveyResponseAnswersUpdate) defaults() {
 	}
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (_u *SurveyResponseAnswersUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SurveyResponseAnswersUpdate {
-	_u.modifiers = append(_u.modifiers, modifiers...)
-	return _u
-}
-
 func (_u *SurveyResponseAnswersUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(surveyresponseanswers.Table, surveyresponseanswers.Columns, sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64))
 	if ps := _u.mutation.predicates; len(ps) > 0 {
@@ -409,6 +403,7 @@ func (_u *SurveyResponseAnswersUpdate) sqlSave(ctx context.Context) (_node int, 
 				IDSpec: sqlgraph.NewFieldSpec(surveyresponse.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _u.schemaConfig.SurveyResponseAnswers
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := _u.mutation.ResponseIDs(); len(nodes) > 0 {
@@ -422,6 +417,7 @@ func (_u *SurveyResponseAnswersUpdate) sqlSave(ctx context.Context) (_node int, 
 				IDSpec: sqlgraph.NewFieldSpec(surveyresponse.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _u.schemaConfig.SurveyResponseAnswers
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
@@ -438,6 +434,7 @@ func (_u *SurveyResponseAnswersUpdate) sqlSave(ctx context.Context) (_node int, 
 				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _u.schemaConfig.SurveyResponseAnswers
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := _u.mutation.QuestionIDs(); len(nodes) > 0 {
@@ -451,12 +448,14 @@ func (_u *SurveyResponseAnswersUpdate) sqlSave(ctx context.Context) (_node int, 
 				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _u.schemaConfig.SurveyResponseAnswers
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(_u.modifiers...)
+	_spec.Node.Schema = _u.schemaConfig.SurveyResponseAnswers
+	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
 	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{surveyresponseanswers.Label}
@@ -472,10 +471,9 @@ func (_u *SurveyResponseAnswersUpdate) sqlSave(ctx context.Context) (_node int, 
 // SurveyResponseAnswersUpdateOne is the builder for updating a single SurveyResponseAnswers entity.
 type SurveyResponseAnswersUpdateOne struct {
 	config
-	fields    []string
-	hooks     []Hook
-	mutation  *SurveyResponseAnswersMutation
-	modifiers []func(*sql.UpdateBuilder)
+	fields   []string
+	hooks    []Hook
+	mutation *SurveyResponseAnswersMutation
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -780,12 +778,6 @@ func (_u *SurveyResponseAnswersUpdateOne) defaults() {
 	}
 }
 
-// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (_u *SurveyResponseAnswersUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SurveyResponseAnswersUpdateOne {
-	_u.modifiers = append(_u.modifiers, modifiers...)
-	return _u
-}
-
 func (_u *SurveyResponseAnswersUpdateOne) sqlSave(ctx context.Context) (_node *SurveyResponseAnswers, err error) {
 	_spec := sqlgraph.NewUpdateSpec(surveyresponseanswers.Table, surveyresponseanswers.Columns, sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64))
 	id, ok := _u.mutation.ID()
@@ -885,6 +877,7 @@ func (_u *SurveyResponseAnswersUpdateOne) sqlSave(ctx context.Context) (_node *S
 				IDSpec: sqlgraph.NewFieldSpec(surveyresponse.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _u.schemaConfig.SurveyResponseAnswers
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := _u.mutation.ResponseIDs(); len(nodes) > 0 {
@@ -898,6 +891,7 @@ func (_u *SurveyResponseAnswersUpdateOne) sqlSave(ctx context.Context) (_node *S
 				IDSpec: sqlgraph.NewFieldSpec(surveyresponse.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _u.schemaConfig.SurveyResponseAnswers
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
@@ -914,6 +908,7 @@ func (_u *SurveyResponseAnswersUpdateOne) sqlSave(ctx context.Context) (_node *S
 				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _u.schemaConfig.SurveyResponseAnswers
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := _u.mutation.QuestionIDs(); len(nodes) > 0 {
@@ -927,12 +922,14 @@ func (_u *SurveyResponseAnswersUpdateOne) sqlSave(ctx context.Context) (_node *S
 				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _u.schemaConfig.SurveyResponseAnswers
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.AddModifiers(_u.modifiers...)
+	_spec.Node.Schema = _u.schemaConfig.SurveyResponseAnswers
+	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
 	_node = &SurveyResponseAnswers{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

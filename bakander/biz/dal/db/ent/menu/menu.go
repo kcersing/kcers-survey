@@ -134,6 +134,8 @@ var (
 	DefaultRedirect string
 	// DefaultComponent holds the default value on creation for the "component" field.
 	DefaultComponent string
+	// DefaultIcon holds the default value on creation for the "icon" field.
+	DefaultIcon string
 )
 
 // OrderOption defines the ordering options for the Menu queries.

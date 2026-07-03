@@ -7,7 +7,7 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	"kcers-survey/biz/dal/db/mysql/ent/schema/mixins"
+	"kcers-survey/biz/dal/db/ent/schema/mixins"
 	service "kcers-survey/idl_gen/model/service"
 )
 

@@ -1,12 +1,13 @@
 package schema
 
 import (
+	"kcers-survey/biz/dal/db/ent/schema/mixins"
+
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	"kcers-survey/biz/dal/db/mysql/ent/schema/mixins"
 )
 
 type Menu struct {
@@ -29,7 +30,7 @@ func (Menu) Fields() []ent.Field {
 		field.String("component").Optional().Default("").Comment("the path of vue file | 组件路径"),
 		//// meta
 		//field.String("title").Comment("menu name | 菜单显示标题"),
-		field.String("icon").Comment("menu icon | 菜单图标"),
+		field.String("icon").Optional().Default("").Comment("menu icon | 菜单图标"),
 		//field.Bool("hide_menu").Optional().Default(false).Comment("hide menu | 是否隐藏菜单"),
 		//field.Bool("hide_breadcrumb").Optional().Default(false).Comment("hide the breadcrumb | 隐藏面包屑"),
 		//field.String("current_active_menu").Optional().Default("").Comment("set the active menu | 激活菜单"),

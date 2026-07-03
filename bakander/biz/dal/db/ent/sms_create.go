@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/sms"
+	"kcers-survey/biz/dal/db/ent/sms"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -207,6 +207,7 @@ func (_c *SmsCreate) createSpec() (*Sms, *sqlgraph.CreateSpec) {
 		_node = &Sms{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(sms.Table, sqlgraph.NewFieldSpec(sms.FieldID, field.TypeInt64))
 	)
+	_spec.Schema = _c.schemaConfig.Sms
 	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id

@@ -6,11 +6,11 @@ import (
 	"math"
 
 	"github.com/cloudwego/hertz/pkg/common/hlog"
-	db "kcers-survey/biz/dal/db/mysql"
-	"kcers-survey/biz/dal/db/mysql/ent"
-	surveyquestion2 "kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
-	surveyresponse2 "kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
-	surveyresponseanswers2 "kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
+	db "kcers-survey/biz/dal/db"
+	"kcers-survey/biz/dal/db/ent"
+	surveyquestion2 "kcers-survey/biz/dal/db/ent/surveyquestion"
+	surveyresponse2 "kcers-survey/biz/dal/db/ent/surveyresponse"
+	surveyresponseanswers2 "kcers-survey/biz/dal/db/ent/surveyresponseanswers"
 
 	"testing"
 )

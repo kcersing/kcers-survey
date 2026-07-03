@@ -2,12 +2,11 @@ package survey
 
 import (
 	"github.com/cloudwego/hertz/pkg/common/hlog"
-	"kcers-survey/biz/dal/db/mysql/ent"
-	area2 "kcers-survey/biz/dal/db/mysql/ent/area"
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
-	surveyquestion2 "kcers-survey/biz/dal/db/mysql/ent/surveyquestion"
-	surveyresponse2 "kcers-survey/biz/dal/db/mysql/ent/surveyresponse"
-	surveyresponseanswers2 "kcers-survey/biz/dal/db/mysql/ent/surveyresponseanswers"
+	"kcers-survey/biz/dal/db/ent"
+	"kcers-survey/biz/dal/db/ent/predicate"
+	surveyquestion2 "kcers-survey/biz/dal/db/ent/surveyquestion"
+	surveyresponse2 "kcers-survey/biz/dal/db/ent/surveyresponse"
+	surveyresponseanswers2 "kcers-survey/biz/dal/db/ent/surveyresponseanswers"
 	"kcers-survey/idl_gen/model/service"
 	"strconv"
 	"strings"
@@ -112,16 +111,17 @@ func (s Survey) CreateResponse(req *service.CreateOrUpdateResponseReq) (err erro
 		sau.SetResearcherPhone(req.Value[0])
 	}
 
-	if req.Type == "researcherPhone" {
-		sau.SetResearcherPhone(req.Value[0])
-	}
-
 	if req.Type == "audio" {
 		sau.AppendAudio(req.Value)
 	}
-
 	if req.Type == "image" {
 		sau.AppendPic(req.Value)
+	}
+	if req.Type == "video" {
+		sau.AppendVideo(req.Value)
+	}
+	if req.Type == "file" {
+		sau.AppendFile(req.Value)
 	}
 	if req.Type == "area" {
 		hlog.Info(req.Value)
@@ -164,7 +164,12 @@ func (s Survey) CreateResponse(req *service.CreateOrUpdateResponseReq) (err erro
 		}
 
 		rau := ra.Update()
-		if req.Type == "input" {
+		// 校验答案格式
+		if err := validateAnswer(req.Type, req.Value); err != nil {
+			return err
+		}
+		// 文本类存 answer_text，选择类存 answer
+		if shouldStoreAsText(req.Type) {
 			rau.SetAnswerText(req.Value[0])
 		} else {
 			rau.SetAnswer(req.Value)
@@ -353,46 +358,10 @@ func (s Survey) entToResponse(v *ent.SurveyResponse) *service.Response {
 		AnswerCount: v.AnswersCount,
 	}
 
-	if v.Area != "" {
-		id, err := strconv.ParseInt(v.Area, 10, 64)
-		if err == nil {
-			first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
-			if err == nil {
-				r.Area = first.Name
-			}
-		}
-
-	}
-	if v.City != "" {
-		id, err := strconv.ParseInt(v.City, 10, 64)
-		if err == nil {
-			first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
-			if err == nil {
-				r.City = first.Name
-			}
-		}
-	}
-	if v.District != "" {
-		id, err := strconv.ParseInt(v.District, 10, 64)
-		if err == nil {
-			first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
-			if err == nil {
-				r.District = first.Name
-			}
-
-		}
-
-	}
-	if v.Village != "" {
-		id, err := strconv.ParseInt(v.Village, 10, 64)
-		if err == nil {
-			first, err := s.db.Area.Query().Where(area2.ID(id)).First(s.ctx)
-			if err == nil {
-				r.Village = first.Name
-			}
-		}
-
-	}
+	r.Area = s.getAreaName(v.Area)
+	r.City = s.getAreaName(v.City)
+	r.District = s.getAreaName(v.District)
+	r.Village = s.getAreaName(v.Village)
 
 	return r
 }

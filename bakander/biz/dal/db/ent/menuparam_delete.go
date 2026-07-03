@@ -4,8 +4,9 @@ package ent
 
 import (
 	"context"
-	"kcers-survey/biz/dal/db/mysql/ent/menuparam"
-	"kcers-survey/biz/dal/db/mysql/ent/predicate"
+	"kcers-survey/biz/dal/db/ent/internal"
+	"kcers-survey/biz/dal/db/ent/menuparam"
+	"kcers-survey/biz/dal/db/ent/predicate"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -41,6 +42,8 @@ func (_d *MenuParamDelete) ExecX(ctx context.Context) int {
 
 func (_d *MenuParamDelete) sqlExec(ctx context.Context) (int, error) {
 	_spec := sqlgraph.NewDeleteSpec(menuparam.Table, sqlgraph.NewFieldSpec(menuparam.FieldID, field.TypeInt64))
+	_spec.Node.Schema = _d.schemaConfig.MenuParam
+	ctx = internal.NewSchemaConfigContext(ctx, _d.schemaConfig)
 	if ps := _d.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {

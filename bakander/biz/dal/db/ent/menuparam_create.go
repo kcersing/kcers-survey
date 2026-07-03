@@ -6,8 +6,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent/menu"
-	"kcers-survey/biz/dal/db/mysql/ent/menuparam"
+	"kcers-survey/biz/dal/db/ent/menu"
+	"kcers-survey/biz/dal/db/ent/menuparam"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -212,6 +212,7 @@ func (_c *MenuParamCreate) createSpec() (*MenuParam, *sqlgraph.CreateSpec) {
 		_node = &MenuParam{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(menuparam.Table, sqlgraph.NewFieldSpec(menuparam.FieldID, field.TypeInt64))
 	)
+	_spec.Schema = _c.schemaConfig.MenuParam
 	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
@@ -255,6 +256,7 @@ func (_c *MenuParamCreate) createSpec() (*MenuParam, *sqlgraph.CreateSpec) {
 				IDSpec: sqlgraph.NewFieldSpec(menu.FieldID, field.TypeInt64),
 			},
 		}
+		edge.Schema = _c.schemaConfig.MenuParam
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}

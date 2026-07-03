@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"kcers-survey/biz/dal/db/mysql/ent"
-	"kcers-survey/biz/dal/db/mysql/ent/migrate"
+	"kcers-survey/biz/dal/db/ent"
+	"kcers-survey/biz/dal/db/ent/migrate"
 	"log"
 	"time"
 
