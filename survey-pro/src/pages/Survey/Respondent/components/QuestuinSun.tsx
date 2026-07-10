@@ -16,6 +16,9 @@ import QMatrix from '@/pages/survey/respondent/components/QMatrix';
 import QNps from '@/pages/survey/respondent/components/QNps';
 import QSignature from '@/pages/survey/respondent/components/QSignature';
 
+import QAddress from '@/pages/survey/respondent/components/QAddress';
+import QAddressInput from '@/pages/survey/respondent/components/QAddressInput';
+
 const componentMap: Record<string, React.ComponentType<QuestionComponentProps>> = {
   single_choice: SingleChoice,
   multiple_choice: MultipleChoice,
@@ -35,12 +38,14 @@ const componentMap: Record<string, React.ComponentType<QuestionComponentProps>> 
   matrix: QMatrix,
   nps: QNps,
   signature: QSignature,
+  address: QAddress,
+  address_input: QAddressInput,
 };
 
 const QuestuinSun = (props: QuestionComponentProps) => {
   const { surveyId, question, generateRandom, addRespondent, setCurrentNum, setCurrent } = props;
 
-  const Component = componentMap[question.type];
+  const Component = componentMap[question.type] || (question.type === '' ? QText : undefined);
   if (Component) {
     return (
       <Component

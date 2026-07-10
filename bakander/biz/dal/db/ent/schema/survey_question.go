@@ -1,14 +1,15 @@
 package schema
 
 import (
+	"kcers-survey/biz/dal/db/ent/schema/mixins"
+	service "kcers-survey/idl_gen/model/service"
+
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	_ "entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	"kcers-survey/biz/dal/db/ent/schema/mixins"
-	service "kcers-survey/idl_gen/model/service"
 )
 
 type SurveyQuestion struct {
@@ -25,7 +26,7 @@ func (SurveyQuestion) Fields() []ent.Field {
 		field.String("type").Optional().Default("").Comment("type"),
 
 		field.JSON("options", []*service.Options{}).Optional().Comment("options"),
-
+		field.Int64("value_number").Optional().Default(0).Comment("value_number"),
 		field.Int64("show").Optional().Default(0).Comment("show"),
 		field.Int64("sort").Optional().Default(0).Comment("sort"),
 		field.JSON("jump_rules", []*service.JumpRules{}).Optional().Default([]*service.JumpRules{}).Comment("跳题规则"),

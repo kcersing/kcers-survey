@@ -3,7 +3,6 @@
 package role
 
 import (
-	"kcers-survey/biz/dal/db/ent/internal"
 	"kcers-survey/biz/dal/db/ent/predicate"
 	"time"
 
@@ -708,9 +707,6 @@ func HasMenus() predicate.Role {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, MenusTable, MenusPrimaryKey...),
 		)
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.Menu
-		step.Edge.Schema = schemaConfig.RoleMenus
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
@@ -719,9 +715,6 @@ func HasMenus() predicate.Role {
 func HasMenusWith(preds ...predicate.Menu) predicate.Role {
 	return predicate.Role(func(s *sql.Selector) {
 		step := newMenusStep()
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.Menu
-		step.Edge.Schema = schemaConfig.RoleMenus
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)
@@ -737,9 +730,6 @@ func HasUsers() predicate.Role {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, true, UsersTable, UsersPrimaryKey...),
 		)
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.User
-		step.Edge.Schema = schemaConfig.UserRoles
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
@@ -748,9 +738,6 @@ func HasUsers() predicate.Role {
 func HasUsersWith(preds ...predicate.User) predicate.Role {
 	return predicate.Role(func(s *sql.Selector) {
 		step := newUsersStep()
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.User
-		step.Edge.Schema = schemaConfig.UserRoles
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

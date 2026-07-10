@@ -5,7 +5,6 @@ package ent
 import (
 	"context"
 	"kcers-survey/biz/dal/db/ent/api"
-	"kcers-survey/biz/dal/db/ent/internal"
 	"kcers-survey/biz/dal/db/ent/predicate"
 
 	"entgo.io/ent/dialect/sql"
@@ -42,8 +41,6 @@ func (_d *APIDelete) ExecX(ctx context.Context) int {
 
 func (_d *APIDelete) sqlExec(ctx context.Context) (int, error) {
 	_spec := sqlgraph.NewDeleteSpec(api.Table, sqlgraph.NewFieldSpec(api.FieldID, field.TypeInt64))
-	_spec.Node.Schema = _d.schemaConfig.API
-	ctx = internal.NewSchemaConfigContext(ctx, _d.schemaConfig)
 	if ps := _d.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {

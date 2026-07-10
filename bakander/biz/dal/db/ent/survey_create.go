@@ -296,7 +296,6 @@ func (_c *SurveyCreate) createSpec() (*Survey, *sqlgraph.CreateSpec) {
 		_node = &Survey{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(survey.Table, sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64))
 	)
-	_spec.Schema = _c.schemaConfig.Survey
 	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
@@ -352,7 +351,6 @@ func (_c *SurveyCreate) createSpec() (*Survey, *sqlgraph.CreateSpec) {
 				IDSpec: sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _c.schemaConfig.SurveyQuestion
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
@@ -369,7 +367,6 @@ func (_c *SurveyCreate) createSpec() (*Survey, *sqlgraph.CreateSpec) {
 				IDSpec: sqlgraph.NewFieldSpec(surveyresponse.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _c.schemaConfig.SurveyResponse
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}

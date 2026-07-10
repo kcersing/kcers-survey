@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kcers-survey/biz/dal/db/ent/internal"
 	"kcers-survey/biz/dal/db/ent/menu"
 	"kcers-survey/biz/dal/db/ent/menuparam"
 	"kcers-survey/biz/dal/db/ent/predicate"
@@ -20,8 +19,9 @@ import (
 // MenuParamUpdate is the builder for updating MenuParam entities.
 type MenuParamUpdate struct {
 	config
-	hooks    []Hook
-	mutation *MenuParamMutation
+	hooks     []Hook
+	mutation  *MenuParamMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the MenuParamUpdate builder.
@@ -204,6 +204,12 @@ func (_u *MenuParamUpdate) defaults() {
 	}
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (_u *MenuParamUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *MenuParamUpdate {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
+}
+
 func (_u *MenuParamUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(menuparam.Table, menuparam.Columns, sqlgraph.NewFieldSpec(menuparam.FieldID, field.TypeInt64))
 	if ps := _u.mutation.predicates; len(ps) > 0 {
@@ -260,7 +266,6 @@ func (_u *MenuParamUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 				IDSpec: sqlgraph.NewFieldSpec(menu.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _u.schemaConfig.MenuParam
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := _u.mutation.MenusIDs(); len(nodes) > 0 {
@@ -274,14 +279,12 @@ func (_u *MenuParamUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 				IDSpec: sqlgraph.NewFieldSpec(menu.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _u.schemaConfig.MenuParam
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.Node.Schema = _u.schemaConfig.MenuParam
-	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
+	_spec.AddModifiers(_u.modifiers...)
 	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{menuparam.Label}
@@ -297,9 +300,10 @@ func (_u *MenuParamUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 // MenuParamUpdateOne is the builder for updating a single MenuParam entity.
 type MenuParamUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *MenuParamMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *MenuParamMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -489,6 +493,12 @@ func (_u *MenuParamUpdateOne) defaults() {
 	}
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (_u *MenuParamUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *MenuParamUpdateOne {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
+}
+
 func (_u *MenuParamUpdateOne) sqlSave(ctx context.Context) (_node *MenuParam, err error) {
 	_spec := sqlgraph.NewUpdateSpec(menuparam.Table, menuparam.Columns, sqlgraph.NewFieldSpec(menuparam.FieldID, field.TypeInt64))
 	id, ok := _u.mutation.ID()
@@ -562,7 +572,6 @@ func (_u *MenuParamUpdateOne) sqlSave(ctx context.Context) (_node *MenuParam, er
 				IDSpec: sqlgraph.NewFieldSpec(menu.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _u.schemaConfig.MenuParam
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := _u.mutation.MenusIDs(); len(nodes) > 0 {
@@ -576,14 +585,12 @@ func (_u *MenuParamUpdateOne) sqlSave(ctx context.Context) (_node *MenuParam, er
 				IDSpec: sqlgraph.NewFieldSpec(menu.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _u.schemaConfig.MenuParam
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.Node.Schema = _u.schemaConfig.MenuParam
-	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
+	_spec.AddModifiers(_u.modifiers...)
 	_node = &MenuParam{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

@@ -9,10 +9,11 @@ interface UploadProps extends QuestionComponentProps {
   accept: string;
   listType?: 'picture-card' | 'picture' | 'text';
   maxCount?: number;
+  forceRequired?: boolean;
 }
 
 const QUpload = (props: UploadProps) => {
-  const { surveyId, question, generateRandom, addRespondent, setCurrentNum, setCurrent, accept, listType = 'picture-card', maxCount = 1 } = props;
+  const { surveyId, question, generateRandom, addRespondent, setCurrentNum, setCurrent, accept, listType = 'picture-card', maxCount = 1, forceRequired = false } = props;
   if (!question) return null;
 
   return (
@@ -20,7 +21,7 @@ const QUpload = (props: UploadProps) => {
       <h3>{question.serial ? question.serial + '-' : ''}{question.content}</h3>
       <Form.Item
         name={['question', "'" + question.id + "'"]}
-        rules={[{ required: question.required === 1, message: '请上传文件' }]}
+        rules={[{ required: forceRequired || question.required === 1, message: '请上传文件' }]}
       >
         <ProFormUploadButton
           name={['question', question.id]}
@@ -69,7 +70,7 @@ const QUpload = (props: UploadProps) => {
 
 // 各媒体类型的薄封装
 export const QImage = (props: QuestionComponentProps) => (
-  <QUpload {...props} accept="image/*" listType="picture-card" maxCount={10} />
+  <QUpload {...props} accept="image/*" listType="picture-card" maxCount={10} forceRequired />
 );
 
 export const QFile = (props: QuestionComponentProps) => (

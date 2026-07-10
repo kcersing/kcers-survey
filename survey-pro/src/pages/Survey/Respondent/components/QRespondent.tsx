@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { ProFormText, StepsForm } from '@ant-design/pro-components';
+import { ProFormText } from '@ant-design/pro-components';
 import type { QuestionComponentProps } from '@/pages/survey/respondent/types';
 
 const DEBOUNCE_MS = 400;
@@ -26,10 +26,7 @@ const QRespondent = (props: QuestionComponentProps) => {
   };
 
   return (
-    <StepsForm.StepForm
-      name={`key_${questions.length + 1}`}
-      key={`key_${questions.length + 1}`}
-    >
+    <>
       <ProFormText
         width="md"
         onChange={(e) => debouncedAdd('respondent', e.target.value)}
@@ -58,7 +55,7 @@ const QRespondent = (props: QuestionComponentProps) => {
         rules={[{ required: true, len: 11 }]}
         name="researcherPhone"
       />
-    </StepsForm.StepForm>
+    </>
   );
 };
 

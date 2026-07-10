@@ -43,6 +43,8 @@ type SurveyQuestion struct {
 	Type string `json:"type,omitempty"`
 	// options
 	Options []*service.Options `json:"options,omitempty"`
+	// value_number
+	ValueNumber int64 `json:"value_number,omitempty"`
 	// show
 	Show int64 `json:"show,omitempty"`
 	// sort
@@ -101,7 +103,7 @@ func (*SurveyQuestion) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case surveyquestion.FieldOptions, surveyquestion.FieldJumpRules:
 			values[i] = new([]byte)
-		case surveyquestion.FieldID, surveyquestion.FieldDelete, surveyquestion.FieldCreatedID, surveyquestion.FieldStatus, surveyquestion.FieldSurveyID, surveyquestion.FieldParentID, surveyquestion.FieldShow, surveyquestion.FieldSort, surveyquestion.FieldRequired, surveyquestion.FieldLevel:
+		case surveyquestion.FieldID, surveyquestion.FieldDelete, surveyquestion.FieldCreatedID, surveyquestion.FieldStatus, surveyquestion.FieldSurveyID, surveyquestion.FieldParentID, surveyquestion.FieldValueNumber, surveyquestion.FieldShow, surveyquestion.FieldSort, surveyquestion.FieldRequired, surveyquestion.FieldLevel:
 			values[i] = new(sql.NullInt64)
 		case surveyquestion.FieldSerial, surveyquestion.FieldContent, surveyquestion.FieldType, surveyquestion.FieldRemark, surveyquestion.FieldTree:
 			values[i] = new(sql.NullString)
@@ -195,6 +197,12 @@ func (_m *SurveyQuestion) assignValues(columns []string, values []any) error {
 				if err := json.Unmarshal(*value, &_m.Options); err != nil {
 					return fmt.Errorf("unmarshal field options: %w", err)
 				}
+			}
+		case surveyquestion.FieldValueNumber:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field value_number", values[i])
+			} else if value.Valid {
+				_m.ValueNumber = value.Int64
 			}
 		case surveyquestion.FieldShow:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -318,6 +326,9 @@ func (_m *SurveyQuestion) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("options=")
 	builder.WriteString(fmt.Sprintf("%v", _m.Options))
+	builder.WriteString(", ")
+	builder.WriteString("value_number=")
+	builder.WriteString(fmt.Sprintf("%v", _m.ValueNumber))
 	builder.WriteString(", ")
 	builder.WriteString("show=")
 	builder.WriteString(fmt.Sprintf("%v", _m.Show))

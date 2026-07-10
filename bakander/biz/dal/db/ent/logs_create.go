@@ -299,7 +299,6 @@ func (_c *LogsCreate) createSpec() (*Logs, *sqlgraph.CreateSpec) {
 		_node = &Logs{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(logs.Table, sqlgraph.NewFieldSpec(logs.FieldID, field.TypeInt64))
 	)
-	_spec.Schema = _c.schemaConfig.Logs
 	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id

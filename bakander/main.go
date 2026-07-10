@@ -3,14 +3,10 @@
 package main
 
 import (
-	"context"
 	"fmt"
-	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/hertz-contrib/logger/accesslog"
 	prometheus "github.com/hertz-contrib/monitor-prometheus"
-	"github.com/hertz-contrib/reverseproxy"
 	"kcers-survey/biz/dal"
 	"kcers-survey/biz/dal/config"
 	"time"
@@ -18,13 +14,6 @@ import (
 
 func init() {
 	dal.Init()
-}
-
-func minioReverseProxy(c context.Context, ctx *app.RequestContext) {
-	proxy, _ := reverseproxy.NewSingleHostReverseProxy(config.GlobalServerConfig.Minio.Url)
-	ctx.URI().SetPath(ctx.Param("name"))
-	hlog.CtxInfof(c, string(ctx.Request.URI().Path()))
-	proxy.ServeHTTP(c, ctx)
 }
 
 func main() {
@@ -44,8 +33,6 @@ func main() {
 		accesslog.WithTimeFormat(time.DateTime),
 	))
 	h.NoHijackConnPool = true
-	// Set up /src/*name route forwarding to access minio from external network
-	h.GET("/src/*name", minioReverseProxy)
 	h.Static("/export", "./tmp/")
 
 	register(h)

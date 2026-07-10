@@ -100,22 +100,23 @@ func (s Survey) entToQuestionAll(all []*ent.SurveyQuestion, parentID int64) []*s
 	if all == nil {
 		return nil
 	}
-	var result []*service.Question
+	result := make([]*service.Question, 0)
 	for _, v := range all {
 		if v.ParentID == parentID && v.ID != parentID {
 			sq := &service.Question{
-				Content:   v.Content,
-				Type:      v.Type,
-				Options:   v.Options,
-				Required:  v.Required,
-				Sort:      v.Sort,
-				ID:        v.ID,
-				JumpRules: v.JumpRules,
-				SurveyId:  v.SurveyID,
-				ParentId:  v.ParentID,
-				Serial:    v.Serial,
-				Show:      v.Show,
-				Remark:    v.Remark,
+				Content:     v.Content,
+				Type:        v.Type,
+				Options:     v.Options,
+				Required:    v.Required,
+				Sort:        v.Sort,
+				ID:          v.ID,
+				JumpRules:   v.JumpRules,
+				SurveyId:    v.SurveyID,
+				ParentId:    v.ParentID,
+				Serial:      v.Serial,
+				Show:        v.Show,
+				Remark:      v.Remark,
+				ValueNumber: v.ValueNumber,
 			}
 
 			sq.Children = s.entToQuestionAll(all, v.ID)

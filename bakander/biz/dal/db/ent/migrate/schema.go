@@ -296,6 +296,7 @@ var (
 		{Name: "content", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "content", Default: ""},
 		{Name: "type", Type: field.TypeString, Nullable: true, Comment: "type", Default: ""},
 		{Name: "options", Type: field.TypeJSON, Nullable: true, Comment: "options"},
+		{Name: "value_number", Type: field.TypeInt64, Nullable: true, Comment: "value_number", Default: 0},
 		{Name: "show", Type: field.TypeInt64, Nullable: true, Comment: "show", Default: 0},
 		{Name: "sort", Type: field.TypeInt64, Nullable: true, Comment: "sort", Default: 0},
 		{Name: "jump_rules", Type: field.TypeJSON, Nullable: true, Comment: "跳题规则"},
@@ -313,7 +314,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "survey_question_survey_question",
-				Columns:    []*schema.Column{SurveyQuestionColumns[18]},
+				Columns:    []*schema.Column{SurveyQuestionColumns[19]},
 				RefColumns: []*schema.Column{SurveyColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

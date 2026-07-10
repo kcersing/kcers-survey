@@ -4,14 +4,12 @@ package pub
 
 import (
 	"context"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
+
 	"kcers-survey/biz/dal/config"
-	"kcers-survey/biz/dal/minio"
 	"kcers-survey/biz/pkg/errno"
 	"kcers-survey/biz/pkg/utils"
-	"path"
-	"strconv"
-	"time"
+
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 
 	"github.com/cloudwego/hertz/pkg/app"
 )
@@ -24,21 +22,16 @@ func Upload(ctx context.Context, c *app.RequestContext) {
 		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
-	nowTime := time.Now()
-	filename := minio.NewFileName(0, nowTime.UnixMicro())
-	dateName := nowTime.Format("2006/01/02")
-	file.Filename = dateName + "/" + filename + path.Ext(file.Filename)
-	uploadinfo, err := minio.PutToBucket(ctx, config.GlobalServerConfig.Minio.ImgBucketName, file)
-	hlog.CtxInfof(ctx, "image upload size:"+strconv.FormatInt(uploadinfo.Size, 10))
+	filePath, coverPath, err := config.GlobalUploadService.UploadFile(ctx, *file)
 	if err != nil {
-		hlog.CtxInfof(ctx, "err:"+err.Error())
+		hlog.CtxErrorf(ctx, "upload err: %v", err)
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
 	}
-	//url := minio.URLconvert(ctx, c, config.GlobalServerConfig.Minio.ImgBucketName+"/"+uploadinfo.Key)
 	utils.SendResponse(c, errno.Success, map[string]string{
-		"name": uploadinfo.Key,
-		"url":  config.GlobalServerConfig.PicHost + "/" + config.GlobalServerConfig.Minio.ImgBucketName + "/" + uploadinfo.Key,
-		"path": config.GlobalServerConfig.Minio.ImgBucketName + "/" + uploadinfo.Key,
+		"name":  filePath,
+		"url":   config.GlobalServerConfig.PicHost + "/files/" + filePath,
+		"path":  filePath,
+		"cover": coverPath,
 	}, 1, "")
-
-	return
 }

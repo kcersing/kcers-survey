@@ -222,7 +222,6 @@ func (_c *APICreate) createSpec() (*API, *sqlgraph.CreateSpec) {
 		_node = &API{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(api.Table, sqlgraph.NewFieldSpec(api.FieldID, field.TypeInt64))
 	)
-	_spec.Schema = _c.schemaConfig.API
 	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id

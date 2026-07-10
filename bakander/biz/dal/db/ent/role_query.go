@@ -6,7 +6,6 @@ import (
 	"context"
 	"database/sql/driver"
 	"fmt"
-	"kcers-survey/biz/dal/db/ent/internal"
 	"kcers-survey/biz/dal/db/ent/menu"
 	"kcers-survey/biz/dal/db/ent/predicate"
 	"kcers-survey/biz/dal/db/ent/role"
@@ -28,6 +27,7 @@ type RoleQuery struct {
 	predicates []predicate.Role
 	withMenus  *MenuQuery
 	withUsers  *UserQuery
+	modifiers  []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -80,9 +80,6 @@ func (_q *RoleQuery) QueryMenus() *MenuQuery {
 			sqlgraph.To(menu.Table, menu.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, role.MenusTable, role.MenusPrimaryKey...),
 		)
-		schemaConfig := _q.schemaConfig
-		step.To.Schema = schemaConfig.Menu
-		step.Edge.Schema = schemaConfig.RoleMenus
 		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
 		return fromU, nil
 	}
@@ -105,9 +102,6 @@ func (_q *RoleQuery) QueryUsers() *UserQuery {
 			sqlgraph.To(user.Table, user.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, true, role.UsersTable, role.UsersPrimaryKey...),
 		)
-		schemaConfig := _q.schemaConfig
-		step.To.Schema = schemaConfig.User
-		step.Edge.Schema = schemaConfig.UserRoles
 		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
 		return fromU, nil
 	}
@@ -309,8 +303,9 @@ func (_q *RoleQuery) Clone() *RoleQuery {
 		withMenus:  _q.withMenus.Clone(),
 		withUsers:  _q.withUsers.Clone(),
 		// clone intermediate query.
-		sql:  _q.sql.Clone(),
-		path: _q.path,
+		sql:       _q.sql.Clone(),
+		path:      _q.path,
+		modifiers: append([]func(*sql.Selector){}, _q.modifiers...),
 	}
 }
 
@@ -428,8 +423,9 @@ func (_q *RoleQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Role, e
 		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
-	_spec.Node.Schema = _q.schemaConfig.Role
-	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
+	if len(_q.modifiers) > 0 {
+		_spec.Modifiers = _q.modifiers
+	}
 	for i := range hooks {
 		hooks[i](ctx, _spec)
 	}
@@ -469,7 +465,6 @@ func (_q *RoleQuery) loadMenus(ctx context.Context, query *MenuQuery, nodes []*R
 	}
 	query.Where(func(s *sql.Selector) {
 		joinT := sql.Table(role.MenusTable)
-		joinT.Schema(_q.schemaConfig.RoleMenus)
 		s.Join(joinT).On(s.C(menu.FieldID), joinT.C(role.MenusPrimaryKey[1]))
 		s.Where(sql.InValues(joinT.C(role.MenusPrimaryKey[0]), edgeIDs...))
 		columns := s.SelectedColumns()
@@ -531,7 +526,6 @@ func (_q *RoleQuery) loadUsers(ctx context.Context, query *UserQuery, nodes []*R
 	}
 	query.Where(func(s *sql.Selector) {
 		joinT := sql.Table(role.UsersTable)
-		joinT.Schema(_q.schemaConfig.UserRoles)
 		s.Join(joinT).On(s.C(user.FieldID), joinT.C(role.UsersPrimaryKey[0]))
 		s.Where(sql.InValues(joinT.C(role.UsersPrimaryKey[1]), edgeIDs...))
 		columns := s.SelectedColumns()
@@ -583,8 +577,9 @@ func (_q *RoleQuery) loadUsers(ctx context.Context, query *UserQuery, nodes []*R
 
 func (_q *RoleQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := _q.querySpec()
-	_spec.Node.Schema = _q.schemaConfig.Role
-	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
+	if len(_q.modifiers) > 0 {
+		_spec.Modifiers = _q.modifiers
+	}
 	_spec.Node.Columns = _q.ctx.Fields
 	if len(_q.ctx.Fields) > 0 {
 		_spec.Unique = _q.ctx.Unique != nil && *_q.ctx.Unique
@@ -647,9 +642,9 @@ func (_q *RoleQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if _q.ctx.Unique != nil && *_q.ctx.Unique {
 		selector.Distinct()
 	}
-	t1.Schema(_q.schemaConfig.Role)
-	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
-	selector.WithContext(ctx)
+	for _, m := range _q.modifiers {
+		m(selector)
+	}
 	for _, p := range _q.predicates {
 		p(selector)
 	}
@@ -665,6 +660,12 @@ func (_q *RoleQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (_q *RoleQuery) Modify(modifiers ...func(s *sql.Selector)) *RoleSelect {
+	_q.modifiers = append(_q.modifiers, modifiers...)
+	return _q.Select()
 }
 
 // RoleGroupBy is the group-by builder for Role entities.
@@ -755,4 +756,10 @@ func (_s *RoleSelect) sqlScan(ctx context.Context, root *RoleQuery, v any) error
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (_s *RoleSelect) Modify(modifiers ...func(s *sql.Selector)) *RoleSelect {
+	_s.modifiers = append(_s.modifiers, modifiers...)
+	return _s
 }

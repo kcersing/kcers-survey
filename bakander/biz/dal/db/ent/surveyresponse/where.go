@@ -3,7 +3,6 @@
 package surveyresponse
 
 import (
-	"kcers-survey/biz/dal/db/ent/internal"
 	"kcers-survey/biz/dal/db/ent/predicate"
 	"time"
 
@@ -1588,9 +1587,6 @@ func HasSurvey() predicate.SurveyResponse {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, SurveyTable, SurveyColumn),
 		)
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.Survey
-		step.Edge.Schema = schemaConfig.SurveyResponse
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
@@ -1599,9 +1595,6 @@ func HasSurvey() predicate.SurveyResponse {
 func HasSurveyWith(preds ...predicate.Survey) predicate.SurveyResponse {
 	return predicate.SurveyResponse(func(s *sql.Selector) {
 		step := newSurveyStep()
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.Survey
-		step.Edge.Schema = schemaConfig.SurveyResponse
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)
@@ -1617,9 +1610,6 @@ func HasAnswers() predicate.SurveyResponse {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, AnswersTable, AnswersColumn),
 		)
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.SurveyResponseAnswers
-		step.Edge.Schema = schemaConfig.SurveyResponseAnswers
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
@@ -1628,9 +1618,6 @@ func HasAnswers() predicate.SurveyResponse {
 func HasAnswersWith(preds ...predicate.SurveyResponseAnswers) predicate.SurveyResponse {
 	return predicate.SurveyResponse(func(s *sql.Selector) {
 		step := newAnswersStep()
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.SurveyResponseAnswers
-		step.Edge.Schema = schemaConfig.SurveyResponseAnswers
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

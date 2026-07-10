@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kcers-survey/biz/dal/db/ent/internal"
 	"kcers-survey/biz/dal/db/ent/predicate"
 	"kcers-survey/biz/dal/db/ent/survey"
 	"kcers-survey/biz/dal/db/ent/surveyquestion"
@@ -23,8 +22,9 @@ import (
 // SurveyQuestionUpdate is the builder for updating SurveyQuestion entities.
 type SurveyQuestionUpdate struct {
 	config
-	hooks    []Hook
-	mutation *SurveyQuestionMutation
+	hooks     []Hook
+	mutation  *SurveyQuestionMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the SurveyQuestionUpdate builder.
@@ -248,6 +248,33 @@ func (_u *SurveyQuestionUpdate) AppendOptions(v []*service.Options) *SurveyQuest
 // ClearOptions clears the value of the "options" field.
 func (_u *SurveyQuestionUpdate) ClearOptions() *SurveyQuestionUpdate {
 	_u.mutation.ClearOptions()
+	return _u
+}
+
+// SetValueNumber sets the "value_number" field.
+func (_u *SurveyQuestionUpdate) SetValueNumber(v int64) *SurveyQuestionUpdate {
+	_u.mutation.ResetValueNumber()
+	_u.mutation.SetValueNumber(v)
+	return _u
+}
+
+// SetNillableValueNumber sets the "value_number" field if the given value is not nil.
+func (_u *SurveyQuestionUpdate) SetNillableValueNumber(v *int64) *SurveyQuestionUpdate {
+	if v != nil {
+		_u.SetValueNumber(*v)
+	}
+	return _u
+}
+
+// AddValueNumber adds value to the "value_number" field.
+func (_u *SurveyQuestionUpdate) AddValueNumber(v int64) *SurveyQuestionUpdate {
+	_u.mutation.AddValueNumber(v)
+	return _u
+}
+
+// ClearValueNumber clears the value of the "value_number" field.
+func (_u *SurveyQuestionUpdate) ClearValueNumber() *SurveyQuestionUpdate {
+	_u.mutation.ClearValueNumber()
 	return _u
 }
 
@@ -505,6 +532,12 @@ func (_u *SurveyQuestionUpdate) defaults() {
 	}
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (_u *SurveyQuestionUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SurveyQuestionUpdate {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
+}
+
 func (_u *SurveyQuestionUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(surveyquestion.Table, surveyquestion.Columns, sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64))
 	if ps := _u.mutation.predicates; len(ps) > 0 {
@@ -588,6 +621,15 @@ func (_u *SurveyQuestionUpdate) sqlSave(ctx context.Context) (_node int, err err
 	if _u.mutation.OptionsCleared() {
 		_spec.ClearField(surveyquestion.FieldOptions, field.TypeJSON)
 	}
+	if value, ok := _u.mutation.ValueNumber(); ok {
+		_spec.SetField(surveyquestion.FieldValueNumber, field.TypeInt64, value)
+	}
+	if value, ok := _u.mutation.AddedValueNumber(); ok {
+		_spec.AddField(surveyquestion.FieldValueNumber, field.TypeInt64, value)
+	}
+	if _u.mutation.ValueNumberCleared() {
+		_spec.ClearField(surveyquestion.FieldValueNumber, field.TypeInt64)
+	}
 	if value, ok := _u.mutation.Show(); ok {
 		_spec.SetField(surveyquestion.FieldShow, field.TypeInt64, value)
 	}
@@ -658,7 +700,6 @@ func (_u *SurveyQuestionUpdate) sqlSave(ctx context.Context) (_node int, err err
 				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _u.schemaConfig.SurveyQuestion
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := _u.mutation.SurveyIDs(); len(nodes) > 0 {
@@ -672,7 +713,6 @@ func (_u *SurveyQuestionUpdate) sqlSave(ctx context.Context) (_node int, err err
 				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _u.schemaConfig.SurveyQuestion
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
@@ -689,7 +729,6 @@ func (_u *SurveyQuestionUpdate) sqlSave(ctx context.Context) (_node int, err err
 				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _u.schemaConfig.SurveyResponseAnswers
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := _u.mutation.RemovedAnswersIDs(); len(nodes) > 0 && !_u.mutation.AnswersCleared() {
@@ -703,7 +742,6 @@ func (_u *SurveyQuestionUpdate) sqlSave(ctx context.Context) (_node int, err err
 				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _u.schemaConfig.SurveyResponseAnswers
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
@@ -720,14 +758,12 @@ func (_u *SurveyQuestionUpdate) sqlSave(ctx context.Context) (_node int, err err
 				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _u.schemaConfig.SurveyResponseAnswers
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.Node.Schema = _u.schemaConfig.SurveyQuestion
-	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
+	_spec.AddModifiers(_u.modifiers...)
 	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{surveyquestion.Label}
@@ -743,9 +779,10 @@ func (_u *SurveyQuestionUpdate) sqlSave(ctx context.Context) (_node int, err err
 // SurveyQuestionUpdateOne is the builder for updating a single SurveyQuestion entity.
 type SurveyQuestionUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *SurveyQuestionMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *SurveyQuestionMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -963,6 +1000,33 @@ func (_u *SurveyQuestionUpdateOne) AppendOptions(v []*service.Options) *SurveyQu
 // ClearOptions clears the value of the "options" field.
 func (_u *SurveyQuestionUpdateOne) ClearOptions() *SurveyQuestionUpdateOne {
 	_u.mutation.ClearOptions()
+	return _u
+}
+
+// SetValueNumber sets the "value_number" field.
+func (_u *SurveyQuestionUpdateOne) SetValueNumber(v int64) *SurveyQuestionUpdateOne {
+	_u.mutation.ResetValueNumber()
+	_u.mutation.SetValueNumber(v)
+	return _u
+}
+
+// SetNillableValueNumber sets the "value_number" field if the given value is not nil.
+func (_u *SurveyQuestionUpdateOne) SetNillableValueNumber(v *int64) *SurveyQuestionUpdateOne {
+	if v != nil {
+		_u.SetValueNumber(*v)
+	}
+	return _u
+}
+
+// AddValueNumber adds value to the "value_number" field.
+func (_u *SurveyQuestionUpdateOne) AddValueNumber(v int64) *SurveyQuestionUpdateOne {
+	_u.mutation.AddValueNumber(v)
+	return _u
+}
+
+// ClearValueNumber clears the value of the "value_number" field.
+func (_u *SurveyQuestionUpdateOne) ClearValueNumber() *SurveyQuestionUpdateOne {
+	_u.mutation.ClearValueNumber()
 	return _u
 }
 
@@ -1233,6 +1297,12 @@ func (_u *SurveyQuestionUpdateOne) defaults() {
 	}
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (_u *SurveyQuestionUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SurveyQuestionUpdateOne {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
+}
+
 func (_u *SurveyQuestionUpdateOne) sqlSave(ctx context.Context) (_node *SurveyQuestion, err error) {
 	_spec := sqlgraph.NewUpdateSpec(surveyquestion.Table, surveyquestion.Columns, sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64))
 	id, ok := _u.mutation.ID()
@@ -1333,6 +1403,15 @@ func (_u *SurveyQuestionUpdateOne) sqlSave(ctx context.Context) (_node *SurveyQu
 	if _u.mutation.OptionsCleared() {
 		_spec.ClearField(surveyquestion.FieldOptions, field.TypeJSON)
 	}
+	if value, ok := _u.mutation.ValueNumber(); ok {
+		_spec.SetField(surveyquestion.FieldValueNumber, field.TypeInt64, value)
+	}
+	if value, ok := _u.mutation.AddedValueNumber(); ok {
+		_spec.AddField(surveyquestion.FieldValueNumber, field.TypeInt64, value)
+	}
+	if _u.mutation.ValueNumberCleared() {
+		_spec.ClearField(surveyquestion.FieldValueNumber, field.TypeInt64)
+	}
 	if value, ok := _u.mutation.Show(); ok {
 		_spec.SetField(surveyquestion.FieldShow, field.TypeInt64, value)
 	}
@@ -1403,7 +1482,6 @@ func (_u *SurveyQuestionUpdateOne) sqlSave(ctx context.Context) (_node *SurveyQu
 				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _u.schemaConfig.SurveyQuestion
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := _u.mutation.SurveyIDs(); len(nodes) > 0 {
@@ -1417,7 +1495,6 @@ func (_u *SurveyQuestionUpdateOne) sqlSave(ctx context.Context) (_node *SurveyQu
 				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _u.schemaConfig.SurveyQuestion
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
@@ -1434,7 +1511,6 @@ func (_u *SurveyQuestionUpdateOne) sqlSave(ctx context.Context) (_node *SurveyQu
 				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _u.schemaConfig.SurveyResponseAnswers
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
 	if nodes := _u.mutation.RemovedAnswersIDs(); len(nodes) > 0 && !_u.mutation.AnswersCleared() {
@@ -1448,7 +1524,6 @@ func (_u *SurveyQuestionUpdateOne) sqlSave(ctx context.Context) (_node *SurveyQu
 				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _u.schemaConfig.SurveyResponseAnswers
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
@@ -1465,14 +1540,12 @@ func (_u *SurveyQuestionUpdateOne) sqlSave(ctx context.Context) (_node *SurveyQu
 				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _u.schemaConfig.SurveyResponseAnswers
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_spec.Node.Schema = _u.schemaConfig.SurveyQuestion
-	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
+	_spec.AddModifiers(_u.modifiers...)
 	_node = &SurveyQuestion{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

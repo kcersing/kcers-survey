@@ -1,0 +1,53 @@
+### Simple WebSocket Request
+//TIP It is possible to send messages to server right from the Services tool window
+WEBSOCKET ws://127.0.0.1:8080/echo
+Content-Type: application/json // We use it for highlighting
+
+===
+{
+  "message": "Hello, server!",
+  "repeat": 3
+}
+=== wait-for-server
+=== wait-for-server
+{
+  "message": "We send this message...",
+  "repeat": 0
+}
+===
+{
+  "message": "And this message together",
+  "repeat": 1
+}
+
+
+
+
+### Simple WebSocket Request
+GET 127.0.0.1:8080/echo
+Content-Type: application/json // We use it for highlighting
+
+
+### Simple WebSocket Request
+GET 127.0.0.1:8088/sse
+Content-Type: application/json // We use it for highlighting
+
+
+### Simple WebSocket Request
+POST http://127.0.0.1:9039/service/pub/upload/
+Content-Type: application/json
+
+{
+  "file_path": "C:/Users/k/Desktop/tmp2073783210864545792.jpg"
+}
+
+
+
+
+
+
+
+
+
+
+

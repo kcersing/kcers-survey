@@ -168,6 +168,20 @@ func (_c *SurveyQuestionCreate) SetOptions(v []*service.Options) *SurveyQuestion
 	return _c
 }
 
+// SetValueNumber sets the "value_number" field.
+func (_c *SurveyQuestionCreate) SetValueNumber(v int64) *SurveyQuestionCreate {
+	_c.mutation.SetValueNumber(v)
+	return _c
+}
+
+// SetNillableValueNumber sets the "value_number" field if the given value is not nil.
+func (_c *SurveyQuestionCreate) SetNillableValueNumber(v *int64) *SurveyQuestionCreate {
+	if v != nil {
+		_c.SetValueNumber(*v)
+	}
+	return _c
+}
+
 // SetShow sets the "show" field.
 func (_c *SurveyQuestionCreate) SetShow(v int64) *SurveyQuestionCreate {
 	_c.mutation.SetShow(v)
@@ -359,6 +373,10 @@ func (_c *SurveyQuestionCreate) defaults() {
 		v := surveyquestion.DefaultType
 		_c.mutation.SetType(v)
 	}
+	if _, ok := _c.mutation.ValueNumber(); !ok {
+		v := surveyquestion.DefaultValueNumber
+		_c.mutation.SetValueNumber(v)
+	}
 	if _, ok := _c.mutation.Show(); !ok {
 		v := surveyquestion.DefaultShow
 		_c.mutation.SetShow(v)
@@ -419,7 +437,6 @@ func (_c *SurveyQuestionCreate) createSpec() (*SurveyQuestion, *sqlgraph.CreateS
 		_node = &SurveyQuestion{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(surveyquestion.Table, sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64))
 	)
-	_spec.Schema = _c.schemaConfig.SurveyQuestion
 	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
@@ -464,6 +481,10 @@ func (_c *SurveyQuestionCreate) createSpec() (*SurveyQuestion, *sqlgraph.CreateS
 		_spec.SetField(surveyquestion.FieldOptions, field.TypeJSON, value)
 		_node.Options = value
 	}
+	if value, ok := _c.mutation.ValueNumber(); ok {
+		_spec.SetField(surveyquestion.FieldValueNumber, field.TypeInt64, value)
+		_node.ValueNumber = value
+	}
 	if value, ok := _c.mutation.Show(); ok {
 		_spec.SetField(surveyquestion.FieldShow, field.TypeInt64, value)
 		_node.Show = value
@@ -503,7 +524,6 @@ func (_c *SurveyQuestionCreate) createSpec() (*SurveyQuestion, *sqlgraph.CreateS
 				IDSpec: sqlgraph.NewFieldSpec(survey.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _c.schemaConfig.SurveyQuestion
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
@@ -521,7 +541,6 @@ func (_c *SurveyQuestionCreate) createSpec() (*SurveyQuestion, *sqlgraph.CreateS
 				IDSpec: sqlgraph.NewFieldSpec(surveyresponseanswers.FieldID, field.TypeInt64),
 			},
 		}
-		edge.Schema = _c.schemaConfig.SurveyResponseAnswers
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}

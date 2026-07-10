@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kcers-survey/biz/dal/db/ent/internal"
 	"kcers-survey/biz/dal/db/ent/logs"
 	"kcers-survey/biz/dal/db/ent/predicate"
 	"time"
@@ -19,8 +18,9 @@ import (
 // LogsUpdate is the builder for updating Logs entities.
 type LogsUpdate struct {
 	config
-	hooks    []Hook
-	mutation *LogsMutation
+	hooks     []Hook
+	mutation  *LogsMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the LogsUpdate builder.
@@ -346,6 +346,12 @@ func (_u *LogsUpdate) defaults() {
 	}
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (_u *LogsUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *LogsUpdate {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
+}
+
 func (_u *LogsUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(logs.Table, logs.Columns, sqlgraph.NewFieldSpec(logs.FieldID, field.TypeInt64))
 	if ps := _u.mutation.predicates; len(ps) > 0 {
@@ -442,8 +448,7 @@ func (_u *LogsUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if _u.mutation.IdentityCleared() {
 		_spec.ClearField(logs.FieldIdentity, field.TypeInt64)
 	}
-	_spec.Node.Schema = _u.schemaConfig.Logs
-	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
+	_spec.AddModifiers(_u.modifiers...)
 	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{logs.Label}
@@ -459,9 +464,10 @@ func (_u *LogsUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 // LogsUpdateOne is the builder for updating a single Logs entity.
 type LogsUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *LogsMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *LogsMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -794,6 +800,12 @@ func (_u *LogsUpdateOne) defaults() {
 	}
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (_u *LogsUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *LogsUpdateOne {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
+}
+
 func (_u *LogsUpdateOne) sqlSave(ctx context.Context) (_node *Logs, err error) {
 	_spec := sqlgraph.NewUpdateSpec(logs.Table, logs.Columns, sqlgraph.NewFieldSpec(logs.FieldID, field.TypeInt64))
 	id, ok := _u.mutation.ID()
@@ -907,8 +919,7 @@ func (_u *LogsUpdateOne) sqlSave(ctx context.Context) (_node *Logs, err error) {
 	if _u.mutation.IdentityCleared() {
 		_spec.ClearField(logs.FieldIdentity, field.TypeInt64)
 	}
-	_spec.Node.Schema = _u.schemaConfig.Logs
-	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
+	_spec.AddModifiers(_u.modifiers...)
 	_node = &Logs{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

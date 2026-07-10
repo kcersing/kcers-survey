@@ -37,6 +37,8 @@ const (
 	FieldType = "type"
 	// FieldOptions holds the string denoting the options field in the database.
 	FieldOptions = "options"
+	// FieldValueNumber holds the string denoting the value_number field in the database.
+	FieldValueNumber = "value_number"
 	// FieldShow holds the string denoting the show field in the database.
 	FieldShow = "show"
 	// FieldSort holds the string denoting the sort field in the database.
@@ -87,6 +89,7 @@ var Columns = []string{
 	FieldContent,
 	FieldType,
 	FieldOptions,
+	FieldValueNumber,
 	FieldShow,
 	FieldSort,
 	FieldJumpRules,
@@ -129,6 +132,8 @@ var (
 	DefaultContent string
 	// DefaultType holds the default value on creation for the "type" field.
 	DefaultType string
+	// DefaultValueNumber holds the default value on creation for the "value_number" field.
+	DefaultValueNumber int64
 	// DefaultShow holds the default value on creation for the "show" field.
 	DefaultShow int64
 	// DefaultSort holds the default value on creation for the "sort" field.
@@ -201,6 +206,11 @@ func ByContent(opts ...sql.OrderTermOption) OrderOption {
 // ByType orders the results by the type field.
 func ByType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldType, opts...).ToFunc()
+}
+
+// ByValueNumber orders the results by the value_number field.
+func ByValueNumber(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldValueNumber, opts...).ToFunc()
 }
 
 // ByShow orders the results by the show field.

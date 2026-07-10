@@ -27,7 +27,7 @@ export const errorConfig: RequestConfig = {
     // 错误抛出
     errorThrower: (res) => {
       const { code, data, message } = res as unknown as ResponseStructure;
-      if (code === 0) {
+      if (code !== 0) {
         const error: any = new Error(message);
         error.name = 'BizError';
         error.info = { code, message, data };

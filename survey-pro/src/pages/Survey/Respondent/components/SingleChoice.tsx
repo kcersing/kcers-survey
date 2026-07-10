@@ -15,10 +15,18 @@ const style: React.CSSProperties = {
 const SingleChoice = (props: QuestionComponentProps) => {
   const { surveyId, question, generateRandom, addRespondent, setCurrentNum, setCurrent } = props;
   const [value, setValue] = useState('');
+  const [otherValue, setOtherValue] = useState('');
+  const form = Form.useFormInstance();
   if (!question) return null;
+
+  const otherOption = question.options.find((o: any) => o.inputs === 2);
+  const isOtherSelected = otherOption ? value === otherOption.content : false;
+  const otherFieldName = ['question', 'other_' + question.id];
 
   const onChange = (e: RadioChangeEvent) => {
     setValue(e.target.value);
+    setOtherValue('');
+    form.setFieldValue(otherFieldName, '');
     addRespondent({
       surveyId,
       type: question.type,
@@ -33,6 +41,8 @@ const SingleChoice = (props: QuestionComponentProps) => {
 
   const onOtherInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const val = e.target.value.toString();
+    setOtherValue(val);
+    form.setFieldValue(otherFieldName, val);
     if (otherTimerRef.current) clearTimeout(otherTimerRef.current);
     otherTimerRef.current = setTimeout(() => {
       addRespondent({
@@ -64,9 +74,11 @@ const SingleChoice = (props: QuestionComponentProps) => {
                 {option.content}...
                 {value === option.content && (
                   <Input
+                    value={otherValue}
                     onChange={onOtherInput}
                     variant="filled"
-                    placeholder="请输入..."
+                    placeholder="请输入...(必填)"
+                    status={isOtherSelected && !otherValue.trim() ? 'error' : undefined}
                     style={{ width: 120, marginInlineStart: 12 }}
                   />
                 )}
@@ -75,6 +87,15 @@ const SingleChoice = (props: QuestionComponentProps) => {
           }))}
         />
       </Form.Item>
+      {otherOption && (
+        <Form.Item
+          name={otherFieldName}
+          rules={[{ required: isOtherSelected, message: '请填写其他内容' }]}
+          noStyle
+        >
+          <Input style={{ display: 'none' }} />
+        </Form.Item>
+      )}
       <QJumpRules
         surveyId={surveyId}
         question={question}

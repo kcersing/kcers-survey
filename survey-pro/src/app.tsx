@@ -7,6 +7,7 @@ import { history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
 import { currentUser as queryCurrentUser } from '@/services/ant-design-pro/api';
+import { App } from 'antd';
 import React from 'react';
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -33,7 +34,12 @@ export async function getInitialState(): Promise<{
   };
   // 如果不是登录页面，执行
   const { location } = history;
-  if (location.pathname !== loginPath) {
+
+  // 公共页面（游客可访问），无需获取用户信息
+  const publicPathPattern = /^\/survey\/\d+\/(respondent|response\/.+)/;
+  const isPublicPath = publicPathPattern.test(location.pathname);
+
+  if (location.pathname !== loginPath && !isPublicPath) {
     const currentUser = await fetchUserInfo();
     return {
       fetchUserInfo,
@@ -64,8 +70,11 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
+      // 公共页面（游客可访问），不重定向到登录页
+      const publicPathPattern = /^\/survey\/\d+\/(respondent|response\/.+)/;
+      const isPublicPath = publicPathPattern.test(location.pathname);
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
+      if (!initialState?.currentUser && location.pathname !== loginPath && !isPublicPath) {
         history.push(loginPath);
       }
     },
@@ -99,9 +108,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
     childrenRender: (children) => {
-      // if (initialState?.loading) return <PageLoading />;
       return (
-        <>
+        <App>
           {children}
           {isDev && (
             <SettingDrawer
@@ -116,7 +124,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
               }}
             />
           )}
-        </>
+        </App>
       );
     },
     ...initialState?.settings,

@@ -3,7 +3,6 @@
 package dictionary
 
 import (
-	"kcers-survey/biz/dal/db/ent/internal"
 	"kcers-survey/biz/dal/db/ent/predicate"
 	"time"
 
@@ -548,9 +547,6 @@ func HasDictionaryDetails() predicate.Dictionary {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, DictionaryDetailsTable, DictionaryDetailsColumn),
 		)
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.DictionaryDetail
-		step.Edge.Schema = schemaConfig.DictionaryDetail
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
@@ -559,9 +555,6 @@ func HasDictionaryDetails() predicate.Dictionary {
 func HasDictionaryDetailsWith(preds ...predicate.DictionaryDetail) predicate.Dictionary {
 	return predicate.Dictionary(func(s *sql.Selector) {
 		step := newDictionaryDetailsStep()
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.DictionaryDetail
-		step.Edge.Schema = schemaConfig.DictionaryDetail
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

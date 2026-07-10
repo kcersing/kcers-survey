@@ -20,6 +20,8 @@ var validQuestionTypes = map[string]bool{
 	"ranking": true, "matrix": true,
 	"image": true, "file": true, "video": true, "audio": true,
 	"signature": true,
+	"address": true,
+	"address_input": true,
 }
 
 func validateType(t string) error {
@@ -144,6 +146,7 @@ func (s Survey) ListQuestion(req *service.QuestionListReq) (resp []*service.Ques
 	all, err := s.db.SurveyQuestion.
 		Query().
 		Where(predicates...).
+		Order(surveyquestion2.BySort()).
 		Offset(int(req.Page-1) * int(req.PageSize)).
 		Limit(int(req.PageSize)).All(s.ctx)
 	if err != nil {

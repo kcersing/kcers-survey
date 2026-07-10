@@ -6,7 +6,6 @@ import (
 	"context"
 	"database/sql/driver"
 	"fmt"
-	"kcers-survey/biz/dal/db/ent/internal"
 	"kcers-survey/biz/dal/db/ent/predicate"
 	"kcers-survey/biz/dal/db/ent/survey"
 	"kcers-survey/biz/dal/db/ent/surveyquestion"
@@ -28,6 +27,7 @@ type SurveyQuestionQuery struct {
 	predicates  []predicate.SurveyQuestion
 	withSurvey  *SurveyQuery
 	withAnswers *SurveyResponseAnswersQuery
+	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -80,9 +80,6 @@ func (_q *SurveyQuestionQuery) QuerySurvey() *SurveyQuery {
 			sqlgraph.To(survey.Table, survey.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, surveyquestion.SurveyTable, surveyquestion.SurveyColumn),
 		)
-		schemaConfig := _q.schemaConfig
-		step.To.Schema = schemaConfig.Survey
-		step.Edge.Schema = schemaConfig.SurveyQuestion
 		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
 		return fromU, nil
 	}
@@ -105,9 +102,6 @@ func (_q *SurveyQuestionQuery) QueryAnswers() *SurveyResponseAnswersQuery {
 			sqlgraph.To(surveyresponseanswers.Table, surveyresponseanswers.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, surveyquestion.AnswersTable, surveyquestion.AnswersColumn),
 		)
-		schemaConfig := _q.schemaConfig
-		step.To.Schema = schemaConfig.SurveyResponseAnswers
-		step.Edge.Schema = schemaConfig.SurveyResponseAnswers
 		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
 		return fromU, nil
 	}
@@ -309,8 +303,9 @@ func (_q *SurveyQuestionQuery) Clone() *SurveyQuestionQuery {
 		withSurvey:  _q.withSurvey.Clone(),
 		withAnswers: _q.withAnswers.Clone(),
 		// clone intermediate query.
-		sql:  _q.sql.Clone(),
-		path: _q.path,
+		sql:       _q.sql.Clone(),
+		path:      _q.path,
+		modifiers: append([]func(*sql.Selector){}, _q.modifiers...),
 	}
 }
 
@@ -428,8 +423,9 @@ func (_q *SurveyQuestionQuery) sqlAll(ctx context.Context, hooks ...queryHook) (
 		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
-	_spec.Node.Schema = _q.schemaConfig.SurveyQuestion
-	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
+	if len(_q.modifiers) > 0 {
+		_spec.Modifiers = _q.modifiers
+	}
 	for i := range hooks {
 		hooks[i](ctx, _spec)
 	}
@@ -517,8 +513,9 @@ func (_q *SurveyQuestionQuery) loadAnswers(ctx context.Context, query *SurveyRes
 
 func (_q *SurveyQuestionQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := _q.querySpec()
-	_spec.Node.Schema = _q.schemaConfig.SurveyQuestion
-	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
+	if len(_q.modifiers) > 0 {
+		_spec.Modifiers = _q.modifiers
+	}
 	_spec.Node.Columns = _q.ctx.Fields
 	if len(_q.ctx.Fields) > 0 {
 		_spec.Unique = _q.ctx.Unique != nil && *_q.ctx.Unique
@@ -584,9 +581,9 @@ func (_q *SurveyQuestionQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if _q.ctx.Unique != nil && *_q.ctx.Unique {
 		selector.Distinct()
 	}
-	t1.Schema(_q.schemaConfig.SurveyQuestion)
-	ctx = internal.NewSchemaConfigContext(ctx, _q.schemaConfig)
-	selector.WithContext(ctx)
+	for _, m := range _q.modifiers {
+		m(selector)
+	}
 	for _, p := range _q.predicates {
 		p(selector)
 	}
@@ -602,6 +599,12 @@ func (_q *SurveyQuestionQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (_q *SurveyQuestionQuery) Modify(modifiers ...func(s *sql.Selector)) *SurveyQuestionSelect {
+	_q.modifiers = append(_q.modifiers, modifiers...)
+	return _q.Select()
 }
 
 // SurveyQuestionGroupBy is the group-by builder for SurveyQuestion entities.
@@ -692,4 +695,10 @@ func (_s *SurveyQuestionSelect) sqlScan(ctx context.Context, root *SurveyQuestio
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (_s *SurveyQuestionSelect) Modify(modifiers ...func(s *sql.Selector)) *SurveyQuestionSelect {
+	_s.modifiers = append(_s.modifiers, modifiers...)
+	return _s
 }

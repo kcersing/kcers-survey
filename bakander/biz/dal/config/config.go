@@ -13,12 +13,12 @@ type ServerConfig struct {
 	Auth           Auth             `mapstructure:"Auth" json:"Auth"`
 	Redis          Redis            `mapstructure:"Redis" json:"Redis"`
 	Casbin         CasbinConf       `mapstructure:"Casbin" json:"Casbin"`
-	Minio          Minio            `mapstructure:"Minio" json:"Minio"`
 	Swagger        Swagger          `mapstructure:"Swagger" json:"Swagger"`
 	Aliyun         Aliyun           `mapstructure:"Aliyun" json:"Aliyun"`
 	Wechat         Wechat           `mapstructure:"Wechat" json:"Wechat"`
 	Alipay         AliPay           `mapstructure:"Alipay" yaml:"Alipay"`
 	PicHost        string           `mapstructure:"PicHost" json:"PicHost"`
+	RabbitMQ       RabbitMQ         `mapstructure:"RabbitMQ" json:"RabbitMQ"`
 }
 
 type MySQLConfig struct {
@@ -75,29 +75,15 @@ type AliPay struct {
 	NotifyUrl               string `mapstructure:"notify_url" yaml:"notify_url"`
 }
 
-type Minio struct {
-	EndPoint        string `mapstructure:"EndPoint" yaml:"EndPoint"`
-	AccessKeyID     string `mapstructure:"AccessKeyID" yaml:"AccessKeyID"`
-	SecretAccessKey string `mapstructure:"SecretAccessKey" yaml:"SecretAccessKey"`
-	UseSSL          bool   `mapstructure:"UseSSL" yaml:"UseSSL"`
-
-	VideoBucketName string `mapstructure:"VideoBucketName" yaml:"VideoBucketName"`
-	ImgBucketName   string `mapstructure:"ImgBucketName" yaml:"ImgBucketName"`
-
-	Url string `mapstructure:"Url" yaml:"Url"`
+type RabbitMQ struct {
+	Host     string `mapstructure:"Host" json:"Host"`
+	Port     int    `mapstructure:"Port" json:"Port"`
+	User     string `mapstructure:"User" json:"User"`
+	Password string `mapstructure:"Password" json:"Password"`
 }
+
 type Swagger struct {
 	Url string `mapstructure:"url" yaml:"url"`
-}
-
-type MiniProgram struct {
-	AppID  string `mapstructure:"appid" yaml:"appid"`
-	Secret string `mapstructure:"secret" yaml:"secret"`
-	Token  string `mapstructure:"token" yaml:"token"`
-	AESKey string `mapstructure:"aes_key" yaml:"aes_key"`
-
-	AppKey  string `mapstructure:"app_key" yaml:"app_key"`
-	OfferID string `mapstructure:"offer_id" yaml:"offer_id"`
 }
 
 type Aliyun struct {

@@ -3,7 +3,6 @@
 package surveyquestion
 
 import (
-	"kcers-survey/biz/dal/db/ent/internal"
 	"kcers-survey/biz/dal/db/ent/predicate"
 	"time"
 
@@ -104,6 +103,11 @@ func Content(v string) predicate.SurveyQuestion {
 // Type applies equality check predicate on the "type" field. It's identical to TypeEQ.
 func Type(v string) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldType, v))
+}
+
+// ValueNumber applies equality check predicate on the "value_number" field. It's identical to ValueNumberEQ.
+func ValueNumber(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldValueNumber, v))
 }
 
 // Show applies equality check predicate on the "show" field. It's identical to ShowEQ.
@@ -701,6 +705,56 @@ func OptionsNotNil() predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldNotNull(FieldOptions))
 }
 
+// ValueNumberEQ applies the EQ predicate on the "value_number" field.
+func ValueNumberEQ(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldEQ(FieldValueNumber, v))
+}
+
+// ValueNumberNEQ applies the NEQ predicate on the "value_number" field.
+func ValueNumberNEQ(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNEQ(FieldValueNumber, v))
+}
+
+// ValueNumberIn applies the In predicate on the "value_number" field.
+func ValueNumberIn(vs ...int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIn(FieldValueNumber, vs...))
+}
+
+// ValueNumberNotIn applies the NotIn predicate on the "value_number" field.
+func ValueNumberNotIn(vs ...int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotIn(FieldValueNumber, vs...))
+}
+
+// ValueNumberGT applies the GT predicate on the "value_number" field.
+func ValueNumberGT(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGT(FieldValueNumber, v))
+}
+
+// ValueNumberGTE applies the GTE predicate on the "value_number" field.
+func ValueNumberGTE(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldGTE(FieldValueNumber, v))
+}
+
+// ValueNumberLT applies the LT predicate on the "value_number" field.
+func ValueNumberLT(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLT(FieldValueNumber, v))
+}
+
+// ValueNumberLTE applies the LTE predicate on the "value_number" field.
+func ValueNumberLTE(v int64) predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldLTE(FieldValueNumber, v))
+}
+
+// ValueNumberIsNil applies the IsNil predicate on the "value_number" field.
+func ValueNumberIsNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldIsNull(FieldValueNumber))
+}
+
+// ValueNumberNotNil applies the NotNil predicate on the "value_number" field.
+func ValueNumberNotNil() predicate.SurveyQuestion {
+	return predicate.SurveyQuestion(sql.FieldNotNull(FieldValueNumber))
+}
+
 // ShowEQ applies the EQ predicate on the "show" field.
 func ShowEQ(v int64) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(sql.FieldEQ(FieldShow, v))
@@ -1068,9 +1122,6 @@ func HasSurvey() predicate.SurveyQuestion {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, SurveyTable, SurveyColumn),
 		)
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.Survey
-		step.Edge.Schema = schemaConfig.SurveyQuestion
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
@@ -1079,9 +1130,6 @@ func HasSurvey() predicate.SurveyQuestion {
 func HasSurveyWith(preds ...predicate.Survey) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(func(s *sql.Selector) {
 		step := newSurveyStep()
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.Survey
-		step.Edge.Schema = schemaConfig.SurveyQuestion
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)
@@ -1097,9 +1145,6 @@ func HasAnswers() predicate.SurveyQuestion {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, AnswersTable, AnswersColumn),
 		)
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.SurveyResponseAnswers
-		step.Edge.Schema = schemaConfig.SurveyResponseAnswers
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
@@ -1108,9 +1153,6 @@ func HasAnswers() predicate.SurveyQuestion {
 func HasAnswersWith(preds ...predicate.SurveyResponseAnswers) predicate.SurveyQuestion {
 	return predicate.SurveyQuestion(func(s *sql.Selector) {
 		step := newAnswersStep()
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.SurveyResponseAnswers
-		step.Edge.Schema = schemaConfig.SurveyResponseAnswers
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

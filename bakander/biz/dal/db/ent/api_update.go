@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"kcers-survey/biz/dal/db/ent/api"
-	"kcers-survey/biz/dal/db/ent/internal"
 	"kcers-survey/biz/dal/db/ent/predicate"
 	"time"
 
@@ -19,8 +18,9 @@ import (
 // APIUpdate is the builder for updating API entities.
 type APIUpdate struct {
 	config
-	hooks    []Hook
-	mutation *APIMutation
+	hooks     []Hook
+	mutation  *APIMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the APIUpdate builder.
@@ -206,6 +206,12 @@ func (_u *APIUpdate) defaults() {
 	}
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (_u *APIUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *APIUpdate {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
+}
+
 func (_u *APIUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(api.Table, api.Columns, sqlgraph.NewFieldSpec(api.FieldID, field.TypeInt64))
 	if ps := _u.mutation.predicates; len(ps) > 0 {
@@ -257,8 +263,7 @@ func (_u *APIUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if value, ok := _u.mutation.Method(); ok {
 		_spec.SetField(api.FieldMethod, field.TypeString, value)
 	}
-	_spec.Node.Schema = _u.schemaConfig.API
-	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
+	_spec.AddModifiers(_u.modifiers...)
 	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{api.Label}
@@ -274,9 +279,10 @@ func (_u *APIUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 // APIUpdateOne is the builder for updating a single API entity.
 type APIUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *APIMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *APIMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -469,6 +475,12 @@ func (_u *APIUpdateOne) defaults() {
 	}
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (_u *APIUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *APIUpdateOne {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
+}
+
 func (_u *APIUpdateOne) sqlSave(ctx context.Context) (_node *API, err error) {
 	_spec := sqlgraph.NewUpdateSpec(api.Table, api.Columns, sqlgraph.NewFieldSpec(api.FieldID, field.TypeInt64))
 	id, ok := _u.mutation.ID()
@@ -537,8 +549,7 @@ func (_u *APIUpdateOne) sqlSave(ctx context.Context) (_node *API, err error) {
 	if value, ok := _u.mutation.Method(); ok {
 		_spec.SetField(api.FieldMethod, field.TypeString, value)
 	}
-	_spec.Node.Schema = _u.schemaConfig.API
-	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
+	_spec.AddModifiers(_u.modifiers...)
 	_node = &API{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

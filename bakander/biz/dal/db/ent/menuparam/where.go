@@ -3,7 +3,6 @@
 package menuparam
 
 import (
-	"kcers-survey/biz/dal/db/ent/internal"
 	"kcers-survey/biz/dal/db/ent/predicate"
 	"time"
 
@@ -493,9 +492,6 @@ func HasMenus() predicate.MenuParam {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, MenusTable, MenusColumn),
 		)
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.Menu
-		step.Edge.Schema = schemaConfig.MenuParam
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
@@ -504,9 +500,6 @@ func HasMenus() predicate.MenuParam {
 func HasMenusWith(preds ...predicate.Menu) predicate.MenuParam {
 	return predicate.MenuParam(func(s *sql.Selector) {
 		step := newMenusStep()
-		schemaConfig := internal.SchemaConfigFromContext(s.Context())
-		step.To.Schema = schemaConfig.Menu
-		step.Edge.Schema = schemaConfig.MenuParam
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

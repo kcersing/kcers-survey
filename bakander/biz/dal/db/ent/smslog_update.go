@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"kcers-survey/biz/dal/db/ent/internal"
 	"kcers-survey/biz/dal/db/ent/predicate"
 	"kcers-survey/biz/dal/db/ent/smslog"
 	"time"
@@ -19,8 +18,9 @@ import (
 // SmsLogUpdate is the builder for updating SmsLog entities.
 type SmsLogUpdate struct {
 	config
-	hooks    []Hook
-	mutation *SmsLogMutation
+	hooks     []Hook
+	mutation  *SmsLogMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // Where appends a list predicates to the SmsLogUpdate builder.
@@ -260,6 +260,12 @@ func (_u *SmsLogUpdate) defaults() {
 	}
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (_u *SmsLogUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SmsLogUpdate {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
+}
+
 func (_u *SmsLogUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(smslog.Table, smslog.Columns, sqlgraph.NewFieldSpec(smslog.FieldID, field.TypeInt64))
 	if ps := _u.mutation.predicates; len(ps) > 0 {
@@ -329,8 +335,7 @@ func (_u *SmsLogUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if value, ok := _u.mutation.Template(); ok {
 		_spec.SetField(smslog.FieldTemplate, field.TypeString, value)
 	}
-	_spec.Node.Schema = _u.schemaConfig.SmsLog
-	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
+	_spec.AddModifiers(_u.modifiers...)
 	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{smslog.Label}
@@ -346,9 +351,10 @@ func (_u *SmsLogUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 // SmsLogUpdateOne is the builder for updating a single SmsLog entity.
 type SmsLogUpdateOne struct {
 	config
-	fields   []string
-	hooks    []Hook
-	mutation *SmsLogMutation
+	fields    []string
+	hooks     []Hook
+	mutation  *SmsLogMutation
+	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -595,6 +601,12 @@ func (_u *SmsLogUpdateOne) defaults() {
 	}
 }
 
+// Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
+func (_u *SmsLogUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *SmsLogUpdateOne {
+	_u.modifiers = append(_u.modifiers, modifiers...)
+	return _u
+}
+
 func (_u *SmsLogUpdateOne) sqlSave(ctx context.Context) (_node *SmsLog, err error) {
 	_spec := sqlgraph.NewUpdateSpec(smslog.Table, smslog.Columns, sqlgraph.NewFieldSpec(smslog.FieldID, field.TypeInt64))
 	id, ok := _u.mutation.ID()
@@ -681,8 +693,7 @@ func (_u *SmsLogUpdateOne) sqlSave(ctx context.Context) (_node *SmsLog, err erro
 	if value, ok := _u.mutation.Template(); ok {
 		_spec.SetField(smslog.FieldTemplate, field.TypeString, value)
 	}
-	_spec.Node.Schema = _u.schemaConfig.SmsLog
-	ctx = internal.NewSchemaConfigContext(ctx, _u.schemaConfig)
+	_spec.AddModifiers(_u.modifiers...)
 	_node = &SmsLog{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues

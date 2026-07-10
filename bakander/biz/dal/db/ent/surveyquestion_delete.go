@@ -4,7 +4,6 @@ package ent
 
 import (
 	"context"
-	"kcers-survey/biz/dal/db/ent/internal"
 	"kcers-survey/biz/dal/db/ent/predicate"
 	"kcers-survey/biz/dal/db/ent/surveyquestion"
 
@@ -42,8 +41,6 @@ func (_d *SurveyQuestionDelete) ExecX(ctx context.Context) int {
 
 func (_d *SurveyQuestionDelete) sqlExec(ctx context.Context) (int, error) {
 	_spec := sqlgraph.NewDeleteSpec(surveyquestion.Table, sqlgraph.NewFieldSpec(surveyquestion.FieldID, field.TypeInt64))
-	_spec.Node.Schema = _d.schemaConfig.SurveyQuestion
-	ctx = internal.NewSchemaConfigContext(ctx, _d.schemaConfig)
 	if ps := _d.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {

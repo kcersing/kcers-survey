@@ -254,7 +254,6 @@ func (_c *SmsLogCreate) createSpec() (*SmsLog, *sqlgraph.CreateSpec) {
 		_node = &SmsLog{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(smslog.Table, sqlgraph.NewFieldSpec(smslog.FieldID, field.TypeInt64))
 	)
-	_spec.Schema = _c.schemaConfig.SmsLog
 	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id

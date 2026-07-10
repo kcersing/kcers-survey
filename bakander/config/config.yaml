@@ -26,8 +26,8 @@ MySQL:
   Salt: root
 
 PostgreSQL:
-  Host: postgresql://postgres:root@127.0.0.1/postgres
-  Salt: YOUR_SALT
+  Host: "user=kcersing password=G7#kL2_mQ9$nR4&w host=pgm-bp14pne9o105t6x57o.pg.rds.aliyuncs.com port=5432 dbname=survey port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+  Salt: root
 
 Casbin:
   ModelText: |
@@ -57,14 +57,11 @@ Wechat:
   rsa_public_key_path:
   certificate_key_path: ./config/cert/wechat/wechatpay_platform.pem
 
-Minio:
-  EndPoint: 101.126.9.226:9000
-  AccessKeyID: Yj123987
-  SecretAccessKey: Yj987123
-  UseSSL: false
-  VideoBucketName: videobucket
-  ImgBucketName: imagebucket
-  Url: http://101.126.9.226:9000
+RabbitMQ:
+  Host: 121.41.0.172
+  Port: 5672
+  User: kcersing
+  Password: kcer-913639
 
 Alipay: # 以下配置文件为新沙箱环境配置
   appid:
@@ -85,3 +82,4 @@ Aliyun:
 
 Swagger:
   url : http://127.0.0.1:9039/swagger/doc.json
+

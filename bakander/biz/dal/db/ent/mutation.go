@@ -13413,6 +13413,8 @@ type SurveyQuestionMutation struct {
 	_type            *string
 	options          *[]*service.Options
 	appendoptions    []*service.Options
+	value_number     *int64
+	addvalue_number  *int64
 	show             *int64
 	addshow          *int64
 	sort             *int64
@@ -14179,6 +14181,76 @@ func (m *SurveyQuestionMutation) ResetOptions() {
 	delete(m.clearedFields, surveyquestion.FieldOptions)
 }
 
+// SetValueNumber sets the "value_number" field.
+func (m *SurveyQuestionMutation) SetValueNumber(i int64) {
+	m.value_number = &i
+	m.addvalue_number = nil
+}
+
+// ValueNumber returns the value of the "value_number" field in the mutation.
+func (m *SurveyQuestionMutation) ValueNumber() (r int64, exists bool) {
+	v := m.value_number
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldValueNumber returns the old "value_number" field's value of the SurveyQuestion entity.
+// If the SurveyQuestion object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SurveyQuestionMutation) OldValueNumber(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldValueNumber is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldValueNumber requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldValueNumber: %w", err)
+	}
+	return oldValue.ValueNumber, nil
+}
+
+// AddValueNumber adds i to the "value_number" field.
+func (m *SurveyQuestionMutation) AddValueNumber(i int64) {
+	if m.addvalue_number != nil {
+		*m.addvalue_number += i
+	} else {
+		m.addvalue_number = &i
+	}
+}
+
+// AddedValueNumber returns the value that was added to the "value_number" field in this mutation.
+func (m *SurveyQuestionMutation) AddedValueNumber() (r int64, exists bool) {
+	v := m.addvalue_number
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearValueNumber clears the value of the "value_number" field.
+func (m *SurveyQuestionMutation) ClearValueNumber() {
+	m.value_number = nil
+	m.addvalue_number = nil
+	m.clearedFields[surveyquestion.FieldValueNumber] = struct{}{}
+}
+
+// ValueNumberCleared returns if the "value_number" field was cleared in this mutation.
+func (m *SurveyQuestionMutation) ValueNumberCleared() bool {
+	_, ok := m.clearedFields[surveyquestion.FieldValueNumber]
+	return ok
+}
+
+// ResetValueNumber resets all changes to the "value_number" field.
+func (m *SurveyQuestionMutation) ResetValueNumber() {
+	m.value_number = nil
+	m.addvalue_number = nil
+	delete(m.clearedFields, surveyquestion.FieldValueNumber)
+}
+
 // SetShow sets the "show" field.
 func (m *SurveyQuestionMutation) SetShow(i int64) {
 	m.show = &i
@@ -14737,7 +14809,7 @@ func (m *SurveyQuestionMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SurveyQuestionMutation) Fields() []string {
-	fields := make([]string, 0, 18)
+	fields := make([]string, 0, 19)
 	if m.created_at != nil {
 		fields = append(fields, surveyquestion.FieldCreatedAt)
 	}
@@ -14770,6 +14842,9 @@ func (m *SurveyQuestionMutation) Fields() []string {
 	}
 	if m.options != nil {
 		fields = append(fields, surveyquestion.FieldOptions)
+	}
+	if m.value_number != nil {
+		fields = append(fields, surveyquestion.FieldValueNumber)
 	}
 	if m.show != nil {
 		fields = append(fields, surveyquestion.FieldShow)
@@ -14822,6 +14897,8 @@ func (m *SurveyQuestionMutation) Field(name string) (ent.Value, bool) {
 		return m.GetType()
 	case surveyquestion.FieldOptions:
 		return m.Options()
+	case surveyquestion.FieldValueNumber:
+		return m.ValueNumber()
 	case surveyquestion.FieldShow:
 		return m.Show()
 	case surveyquestion.FieldSort:
@@ -14867,6 +14944,8 @@ func (m *SurveyQuestionMutation) OldField(ctx context.Context, name string) (ent
 		return m.OldType(ctx)
 	case surveyquestion.FieldOptions:
 		return m.OldOptions(ctx)
+	case surveyquestion.FieldValueNumber:
+		return m.OldValueNumber(ctx)
 	case surveyquestion.FieldShow:
 		return m.OldShow(ctx)
 	case surveyquestion.FieldSort:
@@ -14967,6 +15046,13 @@ func (m *SurveyQuestionMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetOptions(v)
 		return nil
+	case surveyquestion.FieldValueNumber:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetValueNumber(v)
+		return nil
 	case surveyquestion.FieldShow:
 		v, ok := value.(int64)
 		if !ok {
@@ -15036,6 +15122,9 @@ func (m *SurveyQuestionMutation) AddedFields() []string {
 	if m.addparent_id != nil {
 		fields = append(fields, surveyquestion.FieldParentID)
 	}
+	if m.addvalue_number != nil {
+		fields = append(fields, surveyquestion.FieldValueNumber)
+	}
 	if m.addshow != nil {
 		fields = append(fields, surveyquestion.FieldShow)
 	}
@@ -15064,6 +15153,8 @@ func (m *SurveyQuestionMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedStatus()
 	case surveyquestion.FieldParentID:
 		return m.AddedParentID()
+	case surveyquestion.FieldValueNumber:
+		return m.AddedValueNumber()
 	case surveyquestion.FieldShow:
 		return m.AddedShow()
 	case surveyquestion.FieldSort:
@@ -15108,6 +15199,13 @@ func (m *SurveyQuestionMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddParentID(v)
+		return nil
+	case surveyquestion.FieldValueNumber:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddValueNumber(v)
 		return nil
 	case surveyquestion.FieldShow:
 		v, ok := value.(int64)
@@ -15178,6 +15276,9 @@ func (m *SurveyQuestionMutation) ClearedFields() []string {
 	if m.FieldCleared(surveyquestion.FieldOptions) {
 		fields = append(fields, surveyquestion.FieldOptions)
 	}
+	if m.FieldCleared(surveyquestion.FieldValueNumber) {
+		fields = append(fields, surveyquestion.FieldValueNumber)
+	}
 	if m.FieldCleared(surveyquestion.FieldShow) {
 		fields = append(fields, surveyquestion.FieldShow)
 	}
@@ -15246,6 +15347,9 @@ func (m *SurveyQuestionMutation) ClearField(name string) error {
 	case surveyquestion.FieldOptions:
 		m.ClearOptions()
 		return nil
+	case surveyquestion.FieldValueNumber:
+		m.ClearValueNumber()
+		return nil
 	case surveyquestion.FieldShow:
 		m.ClearShow()
 		return nil
@@ -15307,6 +15411,9 @@ func (m *SurveyQuestionMutation) ResetField(name string) error {
 		return nil
 	case surveyquestion.FieldOptions:
 		m.ResetOptions()
+		return nil
+	case surveyquestion.FieldValueNumber:
+		m.ResetValueNumber()
 		return nil
 	case surveyquestion.FieldShow:
 		m.ResetShow()

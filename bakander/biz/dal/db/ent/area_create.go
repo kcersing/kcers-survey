@@ -350,7 +350,6 @@ func (_c *AreaCreate) createSpec() (*Area, *sqlgraph.CreateSpec) {
 		_node = &Area{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(area.Table, sqlgraph.NewFieldSpec(area.FieldID, field.TypeInt64))
 	)
-	_spec.Schema = _c.schemaConfig.Area
 	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id

@@ -31,4 +31,4 @@ gen-ent:
 	go generate ./biz/dal/db/mysql/ent
 	go run -mod=mod entgo.io/ent/cmd/ent generate --feature sql/modifier ./biz/dal/db/ent/schema
 	go run -mod=mod entgo.io/ent/cmd/ent generate --feature sql/schemaconfig ./biz/dal/db/ent/schema
-	go run -mod=mod entgo.io/ent/cmd/ent generate --feature sql/modifier sql/schemaconfig ./biz/dal/db/ent/schema
+	go run -mod=mod entgo.io/ent/cmd/ent generate --feature sql/schemaconfig ./biz/dal/db/ent/schema

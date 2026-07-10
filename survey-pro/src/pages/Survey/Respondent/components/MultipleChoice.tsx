@@ -15,12 +15,22 @@ const style: React.CSSProperties = {
 const MultipleChoice = (props: QuestionComponentProps) => {
   const { surveyId, question, generateRandom, addRespondent, setCurrentNum, setCurrent } = props;
   const [value, setValue] = useState<CheckboxValueType[]>([]);
+  const [otherValue, setOtherValue] = useState('');
+  const form = Form.useFormInstance();
   if (!question) return null;
 
   const maxSelect = question.valueNumber ? question.valueNumber : 999;
 
+  const otherOption = question.options.find((o: any) => o.inputs === 2);
+  const isOtherSelected = otherOption ? value.includes(otherOption.content) : false;
+  const otherFieldName = ['question', 'other_' + question.id];
+
   const onChange = (checkedValues: CheckboxValueType[]) => {
     setValue(checkedValues);
+    if (!checkedValues.includes(otherOption?.content || '')) {
+      setOtherValue('');
+      form.setFieldValue(otherFieldName, '');
+    }
     addRespondent({
       surveyId,
       type: question.type,
@@ -35,6 +45,8 @@ const MultipleChoice = (props: QuestionComponentProps) => {
 
   const onOtherInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const val = e.target.value.toString();
+    setOtherValue(val);
+    form.setFieldValue(otherFieldName, val);
     if (otherTimerRef.current) clearTimeout(otherTimerRef.current);
     otherTimerRef.current = setTimeout(() => {
       addRespondent({
@@ -73,9 +85,11 @@ const MultipleChoice = (props: QuestionComponentProps) => {
                 {option.content}...
                 {value.length > 0 && value.includes(option.content) && (
                   <Input
+                    value={otherValue}
                     onChange={onOtherInput}
                     variant="filled"
-                    placeholder="请输入..."
+                    placeholder="请输入...(必填)"
+                    status={isOtherSelected && !otherValue.trim() ? 'error' : undefined}
                     style={{ width: 120, marginInlineStart: 12 }}
                   />
                 )}
@@ -84,6 +98,15 @@ const MultipleChoice = (props: QuestionComponentProps) => {
           }))}
         />
       </Form.Item>
+      {otherOption && (
+        <Form.Item
+          name={otherFieldName}
+          rules={[{ required: isOtherSelected, message: '请填写其他内容' }]}
+          noStyle
+        >
+          <Input style={{ display: 'none' }} />
+        </Form.Item>
+      )}
       <QJumpRules
         surveyId={surveyId}
         question={question}

@@ -446,32 +446,36 @@ func init() {
 	surveyquestionDescType := surveyquestionFields[4].Descriptor()
 	// surveyquestion.DefaultType holds the default value on creation for the type field.
 	surveyquestion.DefaultType = surveyquestionDescType.Default.(string)
+	// surveyquestionDescValueNumber is the schema descriptor for value_number field.
+	surveyquestionDescValueNumber := surveyquestionFields[6].Descriptor()
+	// surveyquestion.DefaultValueNumber holds the default value on creation for the value_number field.
+	surveyquestion.DefaultValueNumber = surveyquestionDescValueNumber.Default.(int64)
 	// surveyquestionDescShow is the schema descriptor for show field.
-	surveyquestionDescShow := surveyquestionFields[6].Descriptor()
+	surveyquestionDescShow := surveyquestionFields[7].Descriptor()
 	// surveyquestion.DefaultShow holds the default value on creation for the show field.
 	surveyquestion.DefaultShow = surveyquestionDescShow.Default.(int64)
 	// surveyquestionDescSort is the schema descriptor for sort field.
-	surveyquestionDescSort := surveyquestionFields[7].Descriptor()
+	surveyquestionDescSort := surveyquestionFields[8].Descriptor()
 	// surveyquestion.DefaultSort holds the default value on creation for the sort field.
 	surveyquestion.DefaultSort = surveyquestionDescSort.Default.(int64)
 	// surveyquestionDescJumpRules is the schema descriptor for jump_rules field.
-	surveyquestionDescJumpRules := surveyquestionFields[8].Descriptor()
+	surveyquestionDescJumpRules := surveyquestionFields[9].Descriptor()
 	// surveyquestion.DefaultJumpRules holds the default value on creation for the jump_rules field.
 	surveyquestion.DefaultJumpRules = surveyquestionDescJumpRules.Default.([]*service.JumpRules)
 	// surveyquestionDescRequired is the schema descriptor for required field.
-	surveyquestionDescRequired := surveyquestionFields[9].Descriptor()
+	surveyquestionDescRequired := surveyquestionFields[10].Descriptor()
 	// surveyquestion.DefaultRequired holds the default value on creation for the required field.
 	surveyquestion.DefaultRequired = surveyquestionDescRequired.Default.(int64)
 	// surveyquestionDescRemark is the schema descriptor for remark field.
-	surveyquestionDescRemark := surveyquestionFields[10].Descriptor()
+	surveyquestionDescRemark := surveyquestionFields[11].Descriptor()
 	// surveyquestion.DefaultRemark holds the default value on creation for the remark field.
 	surveyquestion.DefaultRemark = surveyquestionDescRemark.Default.(string)
 	// surveyquestionDescLevel is the schema descriptor for level field.
-	surveyquestionDescLevel := surveyquestionFields[11].Descriptor()
+	surveyquestionDescLevel := surveyquestionFields[12].Descriptor()
 	// surveyquestion.DefaultLevel holds the default value on creation for the level field.
 	surveyquestion.DefaultLevel = surveyquestionDescLevel.Default.(int64)
 	// surveyquestionDescTree is the schema descriptor for tree field.
-	surveyquestionDescTree := surveyquestionFields[12].Descriptor()
+	surveyquestionDescTree := surveyquestionFields[13].Descriptor()
 	// surveyquestion.DefaultTree holds the default value on creation for the tree field.
 	surveyquestion.DefaultTree = surveyquestionDescTree.Default.(string)
 	surveyresponseMixin := schema.SurveyResponse{}.Mixin()
