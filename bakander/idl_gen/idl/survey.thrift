@@ -168,6 +168,7 @@ struct Options {
 	  1:optional i64 serial=1 (api.raw = "serial")
       2:optional string content="" (api.raw = "content")
       3:optional i64 inputs=1 (api.raw = "inputs")
+      4:optional string suffix="" (api.raw = "suffix")
 }
 
 struct CreateOrUpdateResponseReq {

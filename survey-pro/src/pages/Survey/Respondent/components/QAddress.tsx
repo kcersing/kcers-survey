@@ -186,7 +186,11 @@ const QAddress = (props: QuestionComponentProps) => {
         />
       )}
 
-      <Form.Item label="村">
+      <Form.Item
+        label="村"
+        name={['address', question.id, 'address']}
+        rules={isRequired ? [{ required: true, message: '请输入村名' }] : []}
+      >
         <Input
           placeholder="请输入村名"
           onChange={(e) => savePart('address', e.target.value)}

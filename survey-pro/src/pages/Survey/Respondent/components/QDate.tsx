@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DatePicker, Form } from 'antd';
 import dayjs from 'dayjs';
 import QJumpRules from '@/pages/survey/respondent/components/QJumpRules';
 import type { QuestionComponentProps } from '@/pages/survey/respondent/types';
 import { handleJump } from './jumpRules';
 
-const defaultDate = dayjs('1966-08-31');
-const defaultDateStr = '1966-08-31';
-
 const QDate = (props: QuestionComponentProps) => {
   const { surveyId, question, generateRandom, addRespondent, setCurrentNum, setCurrent } = props;
-  const [value, setValue] = useState(defaultDateStr);
+  const defaultDate = dayjs('1955-01-01');
+  const [value, setValue] = useState('1955-01-01');
   const form = Form.useFormInstance();
   if (!question) return null;
 
@@ -22,7 +20,7 @@ const QDate = (props: QuestionComponentProps) => {
       surveyId,
       questionId: question.id,
       type: question.type,
-      value: [defaultDateStr],
+      value: ['1955-01-01'],
       sn: generateRandom,
     });
   }, []);
@@ -37,6 +35,7 @@ const QDate = (props: QuestionComponentProps) => {
         placeholder="请选择日期"
         format="YYYY-MM-DD"
         defaultValue={defaultDate}
+        disabledDate={(d) => d && d.isAfter('1968-01-01', 'day')}
         onChange={(date: dayjs.Dayjs | null) => {
           form.setFieldValue(fieldName, date);
           const formattedDate = date?.format('YYYY-MM-DD') || '';

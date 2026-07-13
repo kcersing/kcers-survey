@@ -84,14 +84,17 @@ const MultipleChoice = (props: QuestionComponentProps) => {
               <>
                 {option.content}...
                 {value.length > 0 && value.includes(option.content) && (
-                  <Input
-                    value={otherValue}
-                    onChange={onOtherInput}
-                    variant="filled"
-                    placeholder="请输入...(必填)"
-                    status={isOtherSelected && !otherValue.trim() ? 'error' : undefined}
-                    style={{ width: 120, marginInlineStart: 12 }}
-                  />
+                  <>
+                    <Input
+                      value={otherValue}
+                      onChange={onOtherInput}
+                      variant="filled"
+                      placeholder="请输入...(必填)"
+                      status={isOtherSelected && !otherValue.trim() ? 'error' : undefined}
+                      style={{ width: 120, marginInlineStart: 12 }}
+                    />
+                    {option.suffix && <span style={{ marginLeft: 4 }}>{option.suffix}</span>}
+                  </>
                 )}
               </>
             ),
