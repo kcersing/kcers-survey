@@ -37,11 +37,21 @@ service SurveyService {
 
 	base.NilResponse GetNext(1: GetNextReq req)  (api.post = "/service/survey/response/getNext")
 
-    base.NilResponse GetQuestionStatisticsBasic(1: base.IDReq req)  (api.post = "/service/survey/question/basic")
+    base.NilResponse GetQuestionStatisticsBasic(1: GetQuestionStatisticsBasicReq req)  (api.post = "/service/survey/question/basic")
 
     base.NilResponse GetSurveyResponseHeatmap(1: base.IDReq req)  (api.post = "/service/survey/response/heatmap")
 
     base.NilResponse GetSurveyStatistics(1: base.IDReq req)  (api.post = "/service/survey/statistics")
+
+    // 调查员接口
+    base.NilResponse InterviewerSurveyList(1: InterviewerSurveyListReq req) (api.post = "/service/survey/interviewer/list")
+    base.NilResponse InterviewerResponseUpdate(1: InterviewerResponseUpdateReq req) (api.post = "/service/survey/interviewer/response/update")
+    base.NilResponse InterviewerChangePassword(1: InterviewerChangePasswordReq req) (api.post = "/service/survey/interviewer/change-password")
+}
+
+struct GetQuestionStatisticsBasicReq{
+    1:optional i64 id=0 (api.raw = "id")
+    2:optional string type="" (api.raw = "type")
 }
 struct SurveyStatistics{
  1:optional i64 count=0 (api.raw = "count")
@@ -236,6 +246,25 @@ struct ResponseListReq {
       7:optional string createdAt="" (api.raw = "createdAt")
      8:optional string content="" (api.raw = "content")
 
+  }
+
+  struct InterviewerSurveyListReq {
+      1: optional i64 page=1 (api.raw = "page")
+      2: optional i64 pageSize=10 (api.raw = "pageSize")
+  }
+
+  struct InterviewerResponseUpdateReq {
+      1: optional i64 surveyId=0 (api.raw = "surveyId")
+      2: optional string sn="" (api.raw = "sn")
+      3: optional i64 questionId=0 (api.raw = "questionId")
+      4: optional list<string> answer={} (api.raw = "answer")
+      5: optional string answerText="" (api.raw = "answerText")
+      6: optional string type="" (api.raw = "type")
+  }
+
+  struct InterviewerChangePasswordReq {
+      1: optional string oldPassword="" (api.raw = "oldPassword")
+      2: optional string newPassword="" (api.raw = "newPassword")
   }
 
 

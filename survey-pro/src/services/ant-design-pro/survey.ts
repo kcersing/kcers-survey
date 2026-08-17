@@ -296,3 +296,111 @@ export async function getSurveyStatistics(options?: { [key: string]: any }) {
     },
   });
 }
+
+export async function queryByPhone(
+  params: {
+    phone: string;
+    current?: number;
+    pageSize?: number;
+  },
+) {
+  return request<Record<string, any>>(Urls.QueryByPhone, {
+    method: 'POST',
+    data: {
+      phone: params.phone,
+      page: params.current || 1,
+      page_size: params.pageSize || 10,
+    },
+  });
+}
+
+export async function interviewerLogin(data: { mobile: string; password: string }) {
+  return request<Record<string, any>>(Urls.InterviewerLogin, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function interviewerSurveyList(
+  params: { current?: number; pageSize?: number },
+  token: string,
+) {
+  return request<Record<string, any>>(Urls.InterviewerSurveyList, {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + token,
+    },
+    data: {
+      page: params.current || 1,
+      pageSize: params.pageSize || 10,
+    },
+  });
+}
+
+export async function interviewerResponseUpdate(
+  data: {
+    surveyId: number;
+    sn: string;
+    questionId: number;
+    answer: string[];
+    answerText: string;
+    type: string;
+  },
+  token: string,
+) {
+  return request<Record<string, any>>(Urls.InterviewerResponseUpdate, {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + token,
+    },
+    data,
+  });
+}
+
+export async function interviewerSendSms(data: { mobile: string }) {
+  return request<Record<string, any>>(Urls.InterviewerSendSms, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function interviewerSetupPassword(data: {
+  mobile: string;
+  name: string;
+  password: string;
+}) {
+  return request<Record<string, any>>(Urls.InterviewerSetupPassword, {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function interviewerChangePassword(
+  data: { oldPassword: string; newPassword: string },
+  token: string,
+) {
+  return request<Record<string, any>>(Urls.InterviewerChangePassword, {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + token,
+    },
+    data,
+  });
+}
+
+export async function interviewerLogSearch(
+  params: { keyword: string; current?: number; pageSize?: number },
+  token: string,
+) {
+  return request<Record<string, any>>(Urls.InterviewerLogSearch, {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + token,
+    },
+    data: {
+      keyword: params.keyword,
+      page: params.current || 1,
+      pageSize: params.pageSize || 20,
+    },
+  });
+}

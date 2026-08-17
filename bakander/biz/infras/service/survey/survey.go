@@ -185,17 +185,26 @@ func (s Survey) DeleteSurvey(id int64) (err error) {
 	return nil
 }
 
-func NewSurvey(ctx context.Context, c *app.RequestContext) do.Survey {
-	cache, _ := ristretto.NewCache(&ristretto.Config{
+var sharedCache *ristretto.Cache
+
+func init() {
+	var err error
+	sharedCache, err = ristretto.NewCache(&ristretto.Config{
 		NumCounters: 10000,
 		MaxCost:     1 << 25, // 32MB
 		BufferItems: 64,
 	})
+	if err != nil {
+		panic(err)
+	}
+}
+
+func NewSurvey(ctx context.Context, c *app.RequestContext) do.Survey {
 	return &Survey{
 		ctx:   ctx,
 		c:     c,
 		db:    db.DB,
-		cache: cache,
+		cache: sharedCache,
 	}
 }
 

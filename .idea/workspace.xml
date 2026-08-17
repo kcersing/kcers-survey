@@ -1,46 +1,947 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
+    <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d838a6e-b2d0-492f-9d49-d1667c39b189" name="更改" comment="" />
+    <list default="true" id="6d838a6e-b2d0-492f-9d49-d1667c39b189" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.claude/settings.local.json" beforeDir="false" afterPath="$PROJECT_DIR$/.claude/settings.local.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kcers-survey.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kcers-survey.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/dal/aliyun-sms/aliyun_sms.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/dal/aliyun-sms/aliyun_sms.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/dal/config/global.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/dal/config/global.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/dal/db/initDB.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/dal/db/initDB.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/dal/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/dal/init.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/dal/sms/aliyun.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/dal/sms/aliyun.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/handler/pub/pub_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/handler/pub/pub_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/handler/service/survey_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/handler/service/survey_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/infras/cron/cron.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/infras/cron/cron.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/infras/do/survey.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/infras/do/survey.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/infras/service/export.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/infras/service/export.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/infras/service/survey/question.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/infras/service/survey/question.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/infras/service/survey/response.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/infras/service/survey/response.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/infras/service/survey/statistics.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/infras/service/survey/statistics.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/infras/service/survey/survey.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/infras/service/survey/survey.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/pkg/upload/amqp.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/pkg/upload/cloud_uploader.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/pkg/upload/init.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/pkg/upload/upload.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/pkg/upload/upload_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/router/pub/middleware.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/router/pub/middleware.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/router/pub/pub.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/router/pub/pub.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/router/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/router/register.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/router/service/middleware.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/router/service/middleware.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/biz/router/service/survey.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/biz/router/service/survey.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/config/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/config/config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/idl_gen/base/base.thrift" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/idl_gen/base/base.thrift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/idl_gen/idl/pub.thrift" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/idl_gen/idl/pub.thrift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/idl_gen/idl/survey.thrift" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/idl_gen/idl/survey.thrift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/idl_gen/model/base/base.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/idl_gen/model/base/base.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/idl_gen/model/pub/pub.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/idl_gen/model/pub/pub.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/idl_gen/model/service/survey.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/idl_gen/model/service/survey.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bakander/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/bakander/main.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/survey-pro" />
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_D:/Project/kcsrsing/kcers-survey" value="3FiOb8RnRAww6sKqIWrTFoq6hwX" />
+    </persistenceIdMap>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="GOROOT" url="file://C:/Golang/go1.26.2" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HttpClientOnboardingState">{
+  &quot;isOnboardingCommentShown&quot;: true
+}</component>
+  <component name="HttpClientSelectedEnvironments">
+    <file url="jar://$APPLICATION_HOME_DIR$/plugins/restClient/lib/restClient.jar!/com/intellij/ws/rest/client/requests/collection/post-requests.http" environment="test" />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2ya5VvjPKguAJ7Dlg9fbSBZVGa9" />
+  <component name="ProjectSessionTemplates">
+    <option name="panelTemplate">
+      <template>
+        <option name="modeId" value="Agent" />
+        <option name="model">
+          <model>
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="auto" />
+          </model>
+        </option>
+        <option name="targetType" value="BACKGROUND" />
+        <option name="worktreeMode" value="WORKSPACE" />
+      </template>
+    </option>
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/docker/src/kcers-survey",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "D:\\JetBrains\\WebStorm 2025.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Go 测试.kcers-survey/biz/pkg/upload 中的 TestUploadFileSuccess.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP 请求.post-requests | Simple WebSocket Request#4.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.GoLinterPluginOnboardingV2&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.GoLinterPluginStorageMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.analysis.ui.options.defaults&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Project/kcsrsing/kcers-survey&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;go.sdk&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\Project\\kcsrsing\\kcers-survey\\survey-pro\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Project\kcsrsing\kcers-survey\bakander" />
+      <recent name="D:\Project\kcsrsing\kcers-survey\bakander\biz\tools\migration" />
+      <recent name="D:\Project\kcsrsing\kcers-survey\bakander\biz\pkg" />
+      <recent name="D:\Project\kcsrsing\kcers-survey" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Project\kcsrsing\kcers-survey" />
+      <recent name="D:\Project\kcsrsing\kcers-survey\bakander\biz\dal\db" />
+      <recent name="D:\Project\kcsrsing\kcers-survey\bakander\biz\dal" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="GoApplicationRunConfiguration" />
+      </set>
+    </option>
+    <option name="configurationStatuses">
+      <map>
+        <entry key="HttpClient.HttpRequestRunConfigurationType">
+          <value>
+            <map>
+              <entry key="post-requests | Simple WebSocket Request#4" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="RunManager" selected="HTTP 请求.post-requests | Simple WebSocket Request#4">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build bakander/" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build bakander/" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build bakander/" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build bakander/" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/add_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/add_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/add_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/add_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/add_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/add_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/add_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/add_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/add_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/add_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/add_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/add_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/final_import" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/final_import" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/final_import" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/final_import" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/final_import" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/final_import" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/final_import" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/final_import" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/final_import" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/final_import" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/final_import" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/final_import" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/fix_ent_schema" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/fix_ent_schema" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/fix_ent_schema" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/fix_ent_schema" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/fix_ent_schema" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/fix_ent_schema" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/fix_ent_schema" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/fix_ent_schema" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/fix_ent_schema" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/fix_ent_schema" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/fix_ent_schema" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/fix_ent_schema" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/fix_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/fix_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/fix_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/fix_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/fix_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/fix_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/fix_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/fix_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/fix_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/fix_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/fix_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/fix_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/import_docx_ent" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/import_docx_ent" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/import_docx_ent" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/import_docx_ent" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/import_docx_ent" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/import_docx_ent" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/import_docx_ent" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/import_docx_ent" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/import_docx_ent" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/import_docx_ent" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/import_docx_ent" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/import_docx_ent" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/import_mysql" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/import_mysql" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/import_mysql" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/import_mysql" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/import_mysql" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/import_mysql" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/import_mysql" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/import_mysql" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/import_mysql" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/import_mysql" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/import_mysql" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/import_mysql" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/import_survey" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/import_survey" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/import_survey" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/import_survey" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/import_survey" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/import_survey" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/import_survey" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/import_survey" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/import_survey" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/import_survey" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/import_survey" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/import_survey" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/init_pg_schema" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/init_pg_schema" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/init_pg_schema" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/init_pg_schema" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/init_pg_schema" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/init_pg_schema" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/init_pg_schema" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/init_pg_schema" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/init_pg_schema" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/biz/tools/migration/init_pg_schema" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/tools/migration/init_pg_schema" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/tools/migration/init_pg_schema" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/add_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/add_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/add_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/add_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/add_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/add_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/add_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/add_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/add_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/add_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/add_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/add_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/final_import" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/final_import" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/final_import" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/final_import" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/final_import" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/final_import" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/final_import" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/final_import" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/final_import" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/final_import" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/final_import" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/final_import" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/fix_pk" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/fix_pk" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/fix_pk" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/fix_pk" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/fix_pk" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/fix_pk" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/fix_pk" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/fix_pk" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/fix_pk" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/fix_pk" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/fix_pk" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/fix_pk" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/fix_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/fix_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/fix_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/fix_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/fix_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/fix_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/fix_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/fix_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/fix_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/fix_questions" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/fix_questions" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/fix_questions" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_docx" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_docx" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_docx" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_docx" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_docx" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_docx" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_docx" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_docx" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_docx" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_docx" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_docx" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_docx" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_docx_ent" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_docx_ent" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_docx_ent" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_docx_ent" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_docx_ent" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_docx_ent" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_docx_ent" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_docx_ent" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_docx_ent" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_docx_ent" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_docx_ent" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_docx_ent" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_mysql" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_mysql" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_mysql" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_mysql" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_mysql" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_mysql" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_mysql" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_mysql" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_mysql" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_mysql" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_mysql" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_mysql" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_survey" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_survey" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_survey" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_survey" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_survey" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_survey" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_survey" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_survey" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_survey" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/import_survey" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/import_survey" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/import_survey" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/init_pg_schema" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/init_pg_schema" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/init_pg_schema" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/init_pg_schema" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/init_pg_schema" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/init_pg_schema" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/init_pg_schema" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/init_pg_schema" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/init_pg_schema" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build kcers-survey/cmd/init_pg_schema" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/cmd/init_pg_schema" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/cmd/init_pg_schema" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build wechatpay/" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/dal/wechat/wechatpay" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/dal/wechat/wechatpay" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build wechatpay/" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/dal/wechat/wechatpay" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/dal/wechat/wechatpay" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build wechatpay/" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/dal/wechat/wechatpay" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/dal/wechat/wechatpay" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build wechatpay/" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/dal/wechat/wechatpay" />
+      <directory value="$PROJECT_DIR$" />
+      <auto_managed_config_id value="$PROJECT_DIR$/bakander/biz/dal/wechat/wechatpay" />
+      <method v="2" />
+    </configuration>
+    <configuration name="kcers-survey/biz/pkg/upload 中的 TestUploadFileSuccess" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander/biz/pkg/upload" />
+      <root_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/pkg/upload" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestUploadFileSuccess\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="kcers-survey/biz/pkg/upload 中的 TestUploadFileSuccess" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander/biz/pkg/upload" />
+      <root_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/pkg/upload" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestUploadFileSuccess\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="kcers-survey/biz/pkg/upload 中的 TestUploadFileSuccess" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander/biz/pkg/upload" />
+      <root_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/pkg/upload" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestUploadFileSuccess\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="kcers-survey/biz/pkg/upload 中的 TestUploadFileSuccess" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="kcers-survey" />
+      <working_directory value="$PROJECT_DIR$/bakander/biz/pkg/upload" />
+      <root_directory value="$PROJECT_DIR$/bakander" />
+      <kind value="PACKAGE" />
+      <package value="kcers-survey/biz/pkg/upload" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestUploadFileSuccess\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="post-requests | Simple WebSocket Request#4" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/bakander/post-requests.http" executionIdentifier="Simple WebSocket Request#4" index="4" runType="运行单个请求">
+      <method v="2" />
+    </configuration>
+    <configuration name="post-requests | Simple WebSocket Request#4" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/bakander/post-requests.http" executionIdentifier="Simple WebSocket Request#4" index="4" runType="运行单个请求">
+      <method v="2" />
+    </configuration>
+    <configuration name="post-requests | Simple WebSocket Request#4" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/bakander/post-requests.http" executionIdentifier="Simple WebSocket Request#4" index="4" runType="运行单个请求">
+      <method v="2" />
+    </configuration>
+    <configuration name="post-requests | Simple WebSocket Request#4" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/bakander/post-requests.http" executionIdentifier="Simple WebSocket Request#4" index="4" runType="运行单个请求">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="HTTP 请求.post-requests | Simple WebSocket Request#4" />
+        <item itemvalue="Go 测试.kcers-survey/biz/pkg/upload 中的 TestUploadFileSuccess" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-WS-251.23774.424" />
+        <option value="bundled-gosdk-72a9cf600ed8-3dd3895e5e08-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-261.25134.147" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-GO-261.25134.147" />
       </set>
     </attachedChunks>
   </component>
@@ -57,5 +958,19 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VgoModernizerVersionTracker">
+    <upgrades>
+      <map>
+        <entry key="$PROJECT_DIR$/bakander/go.mod">
+          <value>
+            <VersionUpgradeInfo>
+              <version>1.26.2</version>
+              <timestamp>1782988889808</timestamp>
+            </VersionUpgradeInfo>
+          </value>
+        </entry>
+      </map>
+    </upgrades>
   </component>
 </project>

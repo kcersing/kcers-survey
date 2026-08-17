@@ -1,7 +1,6 @@
 package survey
 
 import (
-	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"kcers-survey/biz/dal/db/ent"
 	"kcers-survey/biz/dal/db/ent/predicate"
 	surveyquestion2 "kcers-survey/biz/dal/db/ent/surveyquestion"
@@ -11,6 +10,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 )
 
 func (s Survey) GetNext(req *service.GetNextReq) (number int64, err error) {
@@ -228,6 +229,9 @@ func (s Survey) GetResponseAnswers(req *service.ResponseAnswersReq) (resp []*ser
 	if err != nil {
 		return nil, err
 	}
+	if len(all) == 0 {
+		return nil, nil
+	}
 
 	questions, err := s.db.SurveyQuestion.Query().
 		Where(surveyquestion2.SurveyID(all[0].SurveyID), surveyquestion2.Delete(0)).
@@ -351,6 +355,10 @@ func (s Survey) entToResponse(v *ent.SurveyResponse) *service.Response {
 		ResearcherPhone: v.ResearcherPhone,
 		CreatedAt:       v.CreatedAt.Add(8 * time.Hour).Format(time.DateTime),
 		Pic:             v.Pic,
+		Area:            v.Area,
+		City:            v.City,
+		District:        v.District,
+		Village:         v.Village,
 
 		IP:          v.IP,
 		Device:      v.Device,
@@ -358,10 +366,10 @@ func (s Survey) entToResponse(v *ent.SurveyResponse) *service.Response {
 		AnswerCount: v.AnswersCount,
 	}
 
-	r.Area = s.getAreaName(v.Area)
-	r.City = s.getAreaName(v.City)
-	r.District = s.getAreaName(v.District)
-	r.Village = s.getAreaName(v.Village)
+	//r.Area = s.getAreaName(v.Area)
+	//r.City = s.getAreaName(v.City)
+	//r.District = s.getAreaName(v.District)
+	//r.Village = s.getAreaName(v.Village)
 
 	return r
 }

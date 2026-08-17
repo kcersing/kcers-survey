@@ -4,12 +4,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/hertz-contrib/logger/accesslog"
-	prometheus "github.com/hertz-contrib/monitor-prometheus"
 	"kcers-survey/biz/dal"
 	"kcers-survey/biz/dal/config"
 	"time"
+
+	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/hertz-contrib/logger/accesslog"
+	prometheus "github.com/hertz-contrib/monitor-prometheus"
 )
 
 func init() {
@@ -19,7 +20,7 @@ func init() {
 func main() {
 
 	h := server.Default(
-		server.WithStreamBody(true),
+		//server.WithStreamBody(true),
 		server.WithHostPorts(fmt.Sprintf("%s:%d", config.GlobalServerConfig.Host, config.GlobalServerConfig.Port)),
 		server.WithTracer(
 			prometheus.NewServerTracer(":9091", "/hertz",
@@ -33,7 +34,7 @@ func main() {
 		accesslog.WithTimeFormat(time.DateTime),
 	))
 	h.NoHijackConnPool = true
-	h.Static("/export", "./tmp/")
+	//h.Static("/export", "./tmp/")
 
 	register(h)
 	h.Spin()

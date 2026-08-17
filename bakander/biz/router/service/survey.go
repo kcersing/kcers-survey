@@ -28,6 +28,15 @@ func Register(r *server.Hertz) {
 			_survey.POST("/statistics", append(_getsurveystatisticsMw(), service.GetSurveyStatistics)...)
 			_survey.POST("/update", append(_updatesurveyMw(), service.UpdateSurvey)...)
 			{
+				_interviewer := _survey.Group("/interviewer", _interviewerMw()...)
+				_interviewer.POST("/change-password", append(_interviewerchangepasswordMw(), service.InterviewerChangePassword)...)
+				_interviewer.POST("/list", append(_interviewersurveylistMw(), service.InterviewerSurveyList)...)
+				{
+					_response := _interviewer.Group("/response", _responseMw()...)
+					_response.POST("/update", append(_interviewerresponseupdateMw(), service.InterviewerResponseUpdate)...)
+				}
+			}
+			{
 				_question := _survey.Group("/question", _questionMw()...)
 				_question.POST("/answers", append(_getquestionanswerslistMw(), service.GetQuestionAnswersList)...)
 				_question.POST("/basic", append(_getquestionstatisticsbasicMw(), service.GetQuestionStatisticsBasic)...)
@@ -39,16 +48,16 @@ func Register(r *server.Hertz) {
 				_question.POST("/update", append(_updatequestionMw(), service.UpdateQuestion)...)
 			}
 			{
-				_response := _survey.Group("/response", _responseMw()...)
-				_response.POST("/answers", append(_getresponseanswersMw(), service.GetResponseAnswers)...)
-				_response.POST("/create", append(_createresponseMw(), service.CreateResponse)...)
-				_response.POST("/delete", append(_deleteresponseMw(), service.DeleteResponse)...)
-				_response.POST("/getNext", append(_getnextMw(), service.GetNext)...)
-				_response.POST("/heatmap", append(_getsurveyresponseheatmapMw(), service.GetSurveyResponseHeatmap)...)
-				_response.POST("/info", append(_getresponseMw(), service.GetResponse)...)
-				_response.POST("/list", append(_listresponseMw(), service.ListResponse)...)
-				_response.POST("/list-export", append(_listresponseexportMw(), service.ListResponseExport)...)
-				_response.POST("/update", append(_updateresponseMw(), service.UpdateResponse)...)
+				_response0 := _survey.Group("/response", _response0Mw()...)
+				_response0.POST("/answers", append(_getresponseanswersMw(), service.GetResponseAnswers)...)
+				_response0.POST("/create", append(_createresponseMw(), service.CreateResponse)...)
+				_response0.POST("/delete", append(_deleteresponseMw(), service.DeleteResponse)...)
+				_response0.POST("/getNext", append(_getnextMw(), service.GetNext)...)
+				_response0.POST("/heatmap", append(_getsurveyresponseheatmapMw(), service.GetSurveyResponseHeatmap)...)
+				_response0.POST("/info", append(_getresponseMw(), service.GetResponse)...)
+				_response0.POST("/list", append(_listresponseMw(), service.ListResponse)...)
+				_response0.POST("/list-export", append(_listresponseexportMw(), service.ListResponseExport)...)
+				_response0.POST("/update", append(_updateresponseMw(), service.UpdateResponse)...)
 			}
 		}
 	}

@@ -19,8 +19,8 @@ var validQuestionTypes = map[string]bool{
 	"rate": true, "nps": true,
 	"ranking": true, "matrix": true,
 	"image": true, "file": true, "video": true, "audio": true,
-	"signature": true,
-	"address": true,
+	"signature":     true,
+	"address":       true,
 	"address_input": true,
 }
 
@@ -126,6 +126,7 @@ func findTreeQuestionChildren(data []*ent.SurveyQuestion, parentID int64) []*bas
 			m.Value = strconv.FormatInt(v.ID, 10)
 			m.Key = strconv.FormatInt(v.ID, 10)
 			m.Children = findTreeQuestionChildren(data, v.ID)
+			m.Type = v.Type
 			result = append(result, m)
 		}
 	}

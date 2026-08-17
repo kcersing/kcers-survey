@@ -24,7 +24,8 @@ api:
 idl-gen:
 #	@cd ./app/admin && go hz update -idl idl_gen/admin/schedule.thrift -model_dir idl_gen/model/  --unset_omitempty
 	hz update -idl idl_gen/idl/survey.thrift -model_dir idl_gen/model/  --unset_omitempty
-
+	hz update -idl idl_gen/idl/pub.thrift -model_dir idl_gen/model/  --unset_omitempty
+	hz update -idl idl_gen/base/base.thrift -model_dir idl_gen/model/  --unset_omitempty
 
 .PHONY: gen-ent
 gen-ent:

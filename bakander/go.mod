@@ -9,18 +9,15 @@ require (
 	github.com/ArtisanCloud/PowerLibs/v3 v3.3.2
 	github.com/ArtisanCloud/PowerWeChat/v3 v3.4.41
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.2.3
-	github.com/alibabacloud-go/dysmsapi-20170525/v4 v4.1.3
+	github.com/alibabacloud-go/dypnsapi-20170525/v3 v3.0.0
 	github.com/alibabacloud-go/tea v1.5.2
-	github.com/alibabacloud-go/tea-utils/v2 v2.0.9
 	github.com/apache/thrift v0.0.0-00010101000000-000000000000
-	github.com/bwmarrin/snowflake v0.3.0
 	github.com/bytedance/sonic v1.15.2
 	github.com/casbin/casbin/v3 v3.8.1
 	github.com/casbin/ent-adapter v1.4.0
 	github.com/cloudwego/hertz v0.10.5
 	github.com/cockroachdb/errors v1.14.0
 	github.com/dgraph-io/ristretto v0.2.0
-	github.com/disintegration/imaging v1.6.2
 	github.com/go-sql-driver/mysql v1.10.0
 	github.com/hertz-contrib/jwt v1.0.4
 	github.com/hertz-contrib/logger/accesslog v0.0.0-20241107070745-e4ce8c54dd97
@@ -35,13 +32,11 @@ require (
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/olivere/elastic/v7 v7.0.32
 	github.com/pkg/errors v0.9.1
-	github.com/rabbitmq/amqp091-go v1.12.0
 	github.com/redis/go-redis/v9 v9.21.0
 	github.com/sirupsen/logrus v1.9.4
 	github.com/spf13/cast v1.10.0
 	github.com/spf13/viper v1.21.0
 	github.com/swaggo/swag v1.16.6
-	github.com/u2takey/ffmpeg-go v0.5.0
 	github.com/wechatpay-apiv3/wechatpay-go v0.2.21
 	github.com/xuri/excelize/v2 v2.10.1
 	golang.org/x/crypto v0.53.0
@@ -58,11 +53,10 @@ require (
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.5 // indirect
 	github.com/alibabacloud-go/debug v1.0.1 // indirect
-	github.com/alibabacloud-go/endpoint-util v1.1.0 // indirect
 	github.com/alibabacloud-go/openapi-util v0.1.1 // indirect
+	github.com/alibabacloud-go/tea-utils/v2 v2.0.9 // indirect
 	github.com/aliyun/credentials-go v1.4.5 // indirect
 	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
-	github.com/aws/aws-sdk-go v1.43.21 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bmatcuk/doublestar v1.3.4 // indirect
 	github.com/bmatcuk/doublestar/v4 v4.9.1 // indirect
@@ -96,7 +90,6 @@ require (
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
-	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.11 // indirect
@@ -127,7 +120,6 @@ require (
 	github.com/tiendc/go-deepcopy v1.7.2 // indirect
 	github.com/tjfoc/gmsm v1.4.1 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
-	github.com/u2takey/go-utils v0.3.1 // indirect
 	github.com/xuri/efp v0.0.1 // indirect
 	github.com/xuri/nfp v0.0.2-0.20250530014748-2ddeb826f9a9 // indirect
 	github.com/zclconf/go-cty v1.17.0 // indirect

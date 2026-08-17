@@ -4,12 +4,15 @@ package service
 
 import (
 	"context"
-	"github.com/cloudwego/hertz/pkg/app"
+	interviewerService "kcers-survey/biz/infras/service/interviewer"
 	surveyService "kcers-survey/biz/infras/service/survey"
 	"kcers-survey/biz/pkg/errno"
 	"kcers-survey/biz/pkg/utils"
 	base "kcers-survey/idl_gen/model/base"
 	service "kcers-survey/idl_gen/model/service"
+	"strconv"
+
+	"github.com/cloudwego/hertz/pkg/app"
 )
 
 // CreateSurvey .
@@ -376,13 +379,13 @@ func GetResponseAnswers(ctx context.Context, c *app.RequestContext) {
 // @router /service/survey/question/basic [POST]
 func GetQuestionStatisticsBasic(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req base.IDReq
+	var req service.GetQuestionStatisticsBasicReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
 	}
-	list, err := surveyService.NewSurvey(ctx, c).GetQuestionStatisticsBasic(req.ID)
+	list, err := surveyService.NewSurvey(ctx, c).GetQuestionStatisticsBasic(req.ID, req.Type)
 	if err != nil {
 		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
 		return
@@ -463,4 +466,136 @@ func GetSurveyStatistics(ctx context.Context, c *app.RequestContext) {
 	}
 	utils.SendResponse(c, errno.Success, resp, 0, "")
 	return
+}
+func getInterviewerMobile(c *app.RequestContext) string {
+	mobile, _ := c.Get("interviewerMobile")
+	mobileStr, _ := mobile.(string)
+	return mobileStr
+}
+
+func getInterviewerUserId(c *app.RequestContext) string {
+	userId, _ := c.Get("interviewerUserId")
+	userIdStr, _ := userId.(string)
+	return userIdStr
+}
+
+// InterviewerSurveyList .
+// @router /service/survey/interviewer/list [POST]
+func InterviewerSurveyList(ctx context.Context, c *app.RequestContext) {
+	mobileStr := getInterviewerMobile(c)
+	if mobileStr == "" {
+		utils.SendResponse(c, errno.NewErrNo(10002, "未登录或登录已过期"), nil, 0, "")
+		return
+	}
+
+	var req service.InterviewerSurveyListReq
+	if err := c.BindAndValidate(&req); err != nil {
+		req.Page = 1
+		req.PageSize = 10
+	}
+	if req.Page <= 0 {
+		req.Page = 1
+	}
+	if req.PageSize <= 0 {
+		req.PageSize = 10
+	}
+
+	list, total, err := interviewerService.NewInterviewer(ctx, c).GetSurveys(mobileStr, req.Page, req.PageSize)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, list, int64(total), "")
+}
+
+// InterviewerResponseUpdate .
+// @router /service/survey/interviewer/response/update [POST]
+func InterviewerResponseUpdate(ctx context.Context, c *app.RequestContext) {
+	mobileStr := getInterviewerMobile(c)
+	if mobileStr == "" {
+		utils.SendResponse(c, errno.NewErrNo(10002, "未登录或登录已过期"), nil, 0, "")
+		return
+	}
+
+	var req service.InterviewerResponseUpdateReq
+	if err := c.BindAndValidate(&req); err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+
+	s := interviewerService.NewInterviewer(ctx, c)
+	if !s.CheckOwnership(mobileStr, req.SurveyId, req.Sn) {
+		utils.SendResponse(c, errno.NewErrNo(10002, "无权修改此问卷"), nil, 0, "")
+		return
+	}
+
+	updateReq := interviewerService.InterviewerUpdateAnswerReq{
+		SurveyID:   req.SurveyId,
+		Sn:         req.Sn,
+		QuestionID: req.QuestionId,
+		Answer:     req.Answer,
+		AnswerText: req.AnswerText,
+		Type:       req.Type,
+	}
+	if err := s.UpdateAnswer(&updateReq); err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, nil, 0, "")
+}
+
+// InterviewerLogSearch .
+// @router /service/survey/interviewer/logs [POST]
+func InterviewerLogSearch(ctx context.Context, c *app.RequestContext) {
+	mobileStr := getInterviewerMobile(c)
+	if mobileStr == "" {
+		utils.SendResponse(c, errno.NewErrNo(10002, "未登录或登录已过期"), nil, 0, "")
+		return
+	}
+
+	var req interviewerService.LogSearchReq
+	if err := c.BindAndValidate(&req); err != nil {
+		req.Page = 1
+		req.PageSize = 20
+	}
+	if req.Page <= 0 {
+		req.Page = 1
+	}
+	if req.PageSize <= 0 {
+		req.PageSize = 20
+	}
+
+	resp, err := interviewerService.NewInterviewer(ctx, c).SearchLogs(&req)
+	if err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, resp.List, int64(resp.Total), "")
+}
+
+// InterviewerChangePassword .
+// @router /service/survey/interviewer/change-password [POST]
+func InterviewerChangePassword(ctx context.Context, c *app.RequestContext) {
+	userIdStr := getInterviewerUserId(c)
+	if userIdStr == "" {
+		utils.SendResponse(c, errno.NewErrNo(10002, "未登录或登录已过期"), nil, 0, "")
+		return
+	}
+
+	var req service.InterviewerChangePasswordReq
+	if err := c.BindAndValidate(&req); err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	if req.OldPassword == "" || req.NewPassword == "" {
+		utils.SendResponse(c, errno.NewErrNo(10003, "密码不能为空"), nil, 0, "")
+		return
+	}
+
+	uid, _ := strconv.ParseInt(userIdStr, 10, 64)
+	if err := interviewerService.NewInterviewer(ctx, c).ChangePassword(uid, req.OldPassword, req.NewPassword); err != nil {
+		utils.SendResponse(c, errno.ConvertErr(err), nil, 0, "")
+		return
+	}
+	utils.SendResponse(c, errno.Success, nil, 0, "")
 }

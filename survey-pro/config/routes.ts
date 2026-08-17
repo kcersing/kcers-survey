@@ -67,6 +67,12 @@ export default [
   },
   { path: '/survey/:id/respondent', component: '@/pages/survey/respondent/index-st2', name: '填写问卷',layout: false,  },
   { path: '/survey/:id/response/:sn', component: '@/pages/survey/details',name: '详情', layout: false, },
+  { path: '/query', component: '@/pages/Query', layout: false },
+  { path: '/interviewer/login', component: '@/pages/Interviewer/Login', layout: false },
+  { path: '/interviewer/dashboard', component: '@/pages/Interviewer/Dashboard', layout: false },
+  { path: '/interviewer/setup-password', component: '@/pages/Interviewer/SetupPassword', layout: false },
+  { path: '/interviewer/change-password', component: '@/pages/Interviewer/ChangePassword', layout: false },
+  { path: '/interviewer/logs', component: '@/pages/Interviewer/Logs', layout: false },
 
   {
     path: '/account',

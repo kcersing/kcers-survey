@@ -8,9 +8,9 @@ import (
 	"kcers-survey/biz/dal/casbin"
 	"kcers-survey/biz/dal/config"
 	db "kcers-survey/biz/dal/db"
+	"kcers-survey/biz/dal/db/ent/role"
 	"kcers-survey/biz/dal/logger"
 	"kcers-survey/biz/infras/cron"
-	"kcers-survey/biz/pkg/upload"
 
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 )
@@ -26,28 +26,6 @@ func Init() {
 	hlog.Info("Init db ok!")
 	casbin.InitCasbin()
 	hlog.Info("Init casbin ok!")
-	config.GlobalUploadService = upload.Init(upload.Config{
-		Host:     config.GlobalServerConfig.RabbitMQ.Host,
-		Port:     config.GlobalServerConfig.RabbitMQ.Port,
-		User:     config.GlobalServerConfig.RabbitMQ.User,
-		Password: config.GlobalServerConfig.RabbitMQ.Password,
-	})
-	hlog.Info("Init upload ok!")
-	go func() {
-		if err := config.GlobalUploadService.RunImageUpload(context.Background()); err != nil {
-			hlog.Fatal("upload image service err", err)
-		}
-	}()
-	//go func() {
-	//	if err := config.GlobalUploadService.RunVideoUpload(context.Background()); err != nil {
-	//		hlog.Fatal("upload video service err", err)
-	//	}
-	//}()
-	//go func() {
-	//	if err := config.GlobalUploadService.RunDocUpload(context.Background()); err != nil {
-	//		hlog.Fatal("upload doc service err", err)
-	//	}
-	//}()
 	aliyun_sms.InitAliyunSms()
 	hlog.Info("Init aliyun sms ok!")
 	//go func() {
@@ -57,4 +35,25 @@ func Init() {
 	hlog.Info("Init ok!")
 	cron.InitCron()
 
+	seedRoles()
+}
+
+func seedRoles() {
+	ctx := context.Background()
+	exist, _ := db.DB.Role.Query().Where(role.ValueEQ("interviewer")).Exist(ctx)
+	if !exist {
+		_, err := db.DB.Role.Create().
+			SetName("调查员").
+			SetValue("interviewer").
+			SetDefaultRouter("dashboard").
+			SetRemark("调查员角色，可查看和修改自己调研的问卷").
+			SetOrderNo(10).
+			SetStatus(1).
+			Save(ctx)
+		if err != nil {
+			hlog.Error("create interviewer role failed:", err)
+		} else {
+			hlog.Info("seed interviewer role ok!")
+		}
+	}
 }

@@ -2,6 +2,7 @@ package do
 
 import (
 	"kcers-survey/idl_gen/model/base"
+	"kcers-survey/idl_gen/model/pub"
 	"kcers-survey/idl_gen/model/service"
 )
 
@@ -33,9 +34,11 @@ type Survey interface {
 
 	GetNext(req *service.GetNextReq) (number int64, err error)
 
-	GetQuestionStatisticsBasic(id int64) (resp *service.StatisticsBasic, err error)
+	GetQuestionStatisticsBasic(id int64, addrType string) (resp *service.StatisticsBasic, err error)
 
 	GetQuestionAnswersList(req *service.GetQuestionAnswersListReq) (resp []*service.ResponseAnswers, total int, err error)
 
 	ListResponseExport(req *service.ResponseListReq) (string, error)
+
+	QueryByPhone(req *pub.QueryByPhoneReq) (resp []*pub.QueryByPhoneResp, total int, err error)
 }

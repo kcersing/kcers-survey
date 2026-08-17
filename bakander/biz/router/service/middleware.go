@@ -158,3 +158,36 @@ func _getsurveystatisticsMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _interviewerMw() []app.HandlerFunc {
+	// your code...
+	return []app.HandlerFunc{
+		mw.GetInterviewerJWTMw().MiddlewareFunc(),
+		mw.LogMw(),
+	}
+}
+
+func _interviewerchangepasswordMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _interviewersurveylistMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _interviewerresponseupdateMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _interviewerlogsMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _response0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

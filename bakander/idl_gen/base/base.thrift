@@ -55,6 +55,7 @@ struct Tree  {
  3:optional	string key="" (api.raw = "key")
  4:optional	string method="" (api.raw = "method")
  5:optional	list<Tree> children={} (api.raw = "children")
+ 6:optional	string type="" (api.raw = "type")
 }
 
 struct Seat{

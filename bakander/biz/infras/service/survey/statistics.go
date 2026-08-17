@@ -2,16 +2,18 @@ package survey
 
 import (
 	"context"
-	"entgo.io/ent/dialect/sql"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
+	"kcers-survey/biz/dal/db/ent"
 	"kcers-survey/biz/dal/db/ent/predicate"
 	surveyquestion2 "kcers-survey/biz/dal/db/ent/surveyquestion"
 	surveyresponse2 "kcers-survey/biz/dal/db/ent/surveyresponse"
 	surveyresponseanswers2 "kcers-survey/biz/dal/db/ent/surveyresponseanswers"
 	"kcers-survey/idl_gen/model/service"
+
+	"entgo.io/ent/dialect/sql"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 )
 
-func (s Survey) GetQuestionStatisticsBasic(id int64) (resp *service.StatisticsBasic, err error) {
+func (s Survey) GetQuestionStatisticsBasic(id int64, addrType string) (resp *service.StatisticsBasic, err error) {
 
 	first, err := s.db.SurveyQuestion.Query().Where(
 		surveyquestion2.IDEQ(id),
@@ -27,6 +29,8 @@ func (s Survey) GetQuestionStatisticsBasic(id int64) (resp *service.StatisticsBa
 		resp = s.answerCountMatrix(id)
 	case "ranking":
 		resp = s.answerCountRanking(id)
+	case "address", "address_input":
+		resp = s.answerCountAddress(first, addrType)
 	default:
 		resp = s.answerCount(id)
 	}
@@ -247,6 +251,61 @@ func (s Survey) answerCount(id int64) (resp *service.StatisticsBasic) {
 	return resp
 }
 
+func (s Survey) answerCountAddress(question *ent.SurveyQuestion, addrType string) (resp *service.StatisticsBasic) {
+	columnName := surveyresponse2.FieldArea
+	switch addrType {
+	case "city":
+		columnName = surveyresponse2.FieldCity
+	case "district":
+		columnName = surveyresponse2.FieldDistrict
+	case "village":
+		columnName = surveyresponse2.FieldVillage
+	case "address":
+		columnName = surveyresponse2.FieldAddress
+	}
+
+	type addrScAll struct {
+		Count  int64  `json:"count"`
+		Answer string `json:"answer"`
+	}
+
+	var scAll []*addrScAll
+	err := s.db.SurveyResponse.Query().Where(
+		surveyresponse2.SurveyID(question.SurveyID),
+		surveyresponse2.Delete(0),
+	).
+		Modify(func(sel *sql.Selector) {
+			sel.Select(
+				sql.As(sql.Count("*"), "count"),
+				sql.As(columnName, "answer"),
+			).GroupBy(columnName)
+		}).
+		Scan(context.Background(), &scAll)
+	if err != nil {
+		hlog.Error(err)
+		return nil
+	}
+
+	var bas []*service.Basic
+	var total int64
+	for _, v := range scAll {
+		if v.Answer != "" {
+			bas = append(bas, &service.Basic{
+				Type:  v.Answer,
+				Value: v.Count,
+			})
+			total += v.Count
+		}
+	}
+
+	resp = &service.StatisticsBasic{
+		Count:      total,
+		Data:       bas,
+		QuestionId: question.ID,
+	}
+	return
+}
+
 func (s Survey) GetSurveyResponseHeatmap(id int64) (resp []*service.Heatmap, err error) {
 
 	err = s.db.SurveyResponse.Query().Where(
@@ -259,13 +318,13 @@ func (s Survey) GetSurveyResponseHeatmap(id int64) (resp []*service.Heatmap, err
 		Modify(func(s *sql.Selector) {
 
 			s.Select(
-				sql.As("SUBSTRING( latitude, 1, LOCATE( '.', latitude )+ 3 )", "lat"),
-				sql.As("SUBSTRING( longitude, 1, LOCATE( '.', longitude )+ 3 )", "lng"),
+				sql.As("SUBSTRING( latitude, 1, STRPOS( latitude, '.' )+ 3 )", "lat"),
+				sql.As("SUBSTRING( longitude, 1, STRPOS( longitude, '.' )+ 3 )", "lng"),
 				sql.As(sql.Count("*"), "count"),
 			).
 				GroupBy(
-					"SUBSTRING( latitude, 1, LOCATE( '.', latitude )+ 3 )",
-					"SUBSTRING( longitude, 1, LOCATE( '.', longitude )+ 3 )",
+					"SUBSTRING( latitude, 1, STRPOS( latitude, '.' )+ 3 )",
+					"SUBSTRING( longitude, 1, STRPOS( longitude, '.' )+ 3 )",
 				)
 		}).
 		Scan(context.Background(), &resp)

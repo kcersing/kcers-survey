@@ -21,9 +21,12 @@ func Register(r *server.Hertz) {
 		_service := root.Group("/service", _serviceMw()...)
 		{
 			_pub := _service.Group("/pub", _pubMw()...)
+			_pub.POST("/query-by-phone", append(_querybyphoneMw(), pub.QueryByPhone)...)
 			{
-				_upload := _pub.Group("/upload", _uploadMw()...)
-				_upload.POST("/", append(_upload0Mw(), pub.Upload)...)
+				_interviewer := _pub.Group("/interviewer", _interviewerMw()...)
+				_interviewer.POST("/login", append(_interviewerloginMw(), pub.InterviewerLogin)...)
+				_interviewer.POST("/send-sms", append(_interviewersendsmsMw(), pub.InterviewerSendSms)...)
+				_interviewer.POST("/setup-password", append(_interviewersetuppasswordMw(), pub.InterviewerSetupPassword)...)
 			}
 		}
 	}

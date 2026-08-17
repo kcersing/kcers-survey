@@ -2,7 +2,7 @@
 import type { ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Card, Descriptions, Menu, Modal,Button } from 'antd';
-import React, { useState,useEffect  } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {getSurvey, treeQuestion,getQuestionAnswersList,getHeatmap,questionBasicData,getSurveyStatistics} from '@/services/ant-design-pro/survey';
 import {useParams} from "react-router";
 import { DemoCustomColor } from '@/pages/survey/statistics/components/custom-color';
@@ -50,6 +50,7 @@ export default () => {
   const [questionBasic, setQuestionBasic] = useState([]);
 
   const [menuItems, setMenuItems] = useState<Menu.ItemType[]>([]);
+  const questionTypeMap = useRef<Record<string, string>>({});
 
 
   let params = useParams();
@@ -86,27 +87,25 @@ export default () => {
   }, []);
 
   const convertToMenuItems = (data: any[]): Menu.ItemType[] => {
-    return data.map(item => ({
-      key: item.value,
-      label: item.title,
-      title: item.title,
-      // 如果有子节点，递归转换
-      children: item.children ? convertToMenuItems(item.children) : undefined,
-    }));
+    return data.map(item => {
+      questionTypeMap.current[item.value] = item.type || '';
+      return {
+        key: item.value,
+        label: item.title,
+        title: item.title,
+        children: item.children ? convertToMenuItems(item.children) : undefined,
+      };
+    });
   };
 
 
   const [openheatmap, setOpenheatmap] = useState<boolean>(false);
-  const [openheatmapdata, setOpenheatmapdata] = useState<boolean>(false);
+  const [openheatmapdata, setOpenheatmapdata] = useState<any[] | null>(null);
   const showLoading = () => {
-
-    const getOpenheatmap = async () => {
-      const openheatmapData = await getHeatmap({id: surveyId})
-      setOpenheatmapdata(openheatmapData.data);
-    }
-    getOpenheatmap()
-
     setOpenheatmap(true);
+    getHeatmap({id: surveyId}).then((res) => {
+      setOpenheatmapdata(res.data || []);
+    });
   };
 
   return (
@@ -171,12 +170,11 @@ export default () => {
             key,
           }}
           request={async () => {
-              const getQuestionBasicData = await questionBasicData({id: parseInt(key)})
+              const qt = questionTypeMap.current[key] || '';
+              const getQuestionBasicData = await questionBasicData({id: parseInt(key), type: qt === 'address' || qt === 'address_input' ? 'area' : ''})
 
               setQuestionBasic(getQuestionBasicData.data.data);
 
-
-            // const ans = await getQuestionAnswersList({ id: parseInt(key) });
             return {
               success: true,
               data: getQuestionBasicData.data.data,
@@ -201,7 +199,7 @@ export default () => {
         open={openheatmap}
         onCancel={() => setOpenheatmap(false)}
       >
-        <HeatMap data={openheatmapdata} />
+        {openheatmapdata ? <HeatMap data={openheatmapdata} /> : null}
       </Modal>
 
 

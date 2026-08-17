@@ -9,6 +9,7 @@ services:
       - ./data/nginx/ssl:/etc/nginx/ssl:ro                        # 证书目录
       - ./data/nginx/logs:/var/log/nginx                          # 日志目录
       - /home/www:/home/www
+      - ./data/fastdfs_data/files:/home/files
       - /home/wwwlogs:/home/wwwlogs
 
     extra_hosts:
@@ -36,5 +37,3 @@ services:
       RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "+MMscs 512"
       TZ: Asia/Shanghai
       LANG: zh_CN.UTF-8
-
-      

@@ -2,12 +2,14 @@ package service
 
 import (
 	"fmt"
+	"kcers-survey/biz/infras/service/common"
+
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	excelize "github.com/xuri/excelize/v2"
-	"kcers-survey/biz/infras/service/common"
 )
 
 func Export(tale []interface{}, resp []map[int]interface{}, name string) (string, error) {
+	return "", nil
 	if name == "" {
 		name = "列表导出"
 	}

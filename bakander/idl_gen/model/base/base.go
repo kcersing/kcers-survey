@@ -1739,6 +1739,7 @@ type Tree struct {
 	Key      string  `thrift:"key,3,optional" form:"key" json:"key" query:"key"`
 	Method   string  `thrift:"method,4,optional" form:"method" json:"method" query:"method"`
 	Children []*Tree `thrift:"children,5,optional,list<Tree>" form:"children" json:"children" query:"children"`
+	Type     string  `thrift:"type,6,optional" form:"type" json:"type" query:"type"`
 }
 
 func NewTree() *Tree {
@@ -1748,6 +1749,7 @@ func NewTree() *Tree {
 		Key:      "",
 		Method:   "",
 		Children: []*Tree{},
+		Type:     "",
 	}
 }
 
@@ -1757,6 +1759,7 @@ func (p *Tree) InitDefault() {
 	p.Key = ""
 	p.Method = ""
 	p.Children = []*Tree{}
+	p.Type = ""
 }
 
 var Tree_Title_DEFAULT string = ""
@@ -1804,12 +1807,22 @@ func (p *Tree) GetChildren() (v []*Tree) {
 	return p.Children
 }
 
+var Tree_Type_DEFAULT string = ""
+
+func (p *Tree) GetType() (v string) {
+	if !p.IsSetType() {
+		return Tree_Type_DEFAULT
+	}
+	return p.Type
+}
+
 var fieldIDToName_Tree = map[int16]string{
 	1: "title",
 	2: "value",
 	3: "key",
 	4: "method",
 	5: "children",
+	6: "type",
 }
 
 func (p *Tree) IsSetTitle() bool {
@@ -1830,6 +1843,10 @@ func (p *Tree) IsSetMethod() bool {
 
 func (p *Tree) IsSetChildren() bool {
 	return p.Children != nil
+}
+
+func (p *Tree) IsSetType() bool {
+	return p.Type != Tree_Type_DEFAULT
 }
 
 func (p *Tree) Read(iprot thrift.TProtocol) (err error) {
@@ -1886,6 +1903,14 @@ func (p *Tree) Read(iprot thrift.TProtocol) (err error) {
 		case 5:
 			if fieldTypeId == thrift.LIST {
 				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 6:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField6(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1987,6 +2012,17 @@ func (p *Tree) ReadField5(iprot thrift.TProtocol) error {
 	p.Children = _field
 	return nil
 }
+func (p *Tree) ReadField6(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Type = _field
+	return nil
+}
 
 func (p *Tree) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -2012,6 +2048,10 @@ func (p *Tree) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField5(oprot); err != nil {
 			fieldId = 5
+			goto WriteFieldError
+		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
 			goto WriteFieldError
 		}
 	}
@@ -2133,6 +2173,25 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
+func (p *Tree) writeField6(oprot thrift.TProtocol) (err error) {
+	if p.IsSetType() {
+		if err = oprot.WriteFieldBegin("type", thrift.STRING, 6); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(p.Type); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
 }
 
 func (p *Tree) String() string {

@@ -23,13 +23,24 @@ func _pubMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
-
-func _uploadMw() []app.HandlerFunc {
+func _querybyphoneMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+func _interviewerloginMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+func _interviewersendsmsMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+func _interviewersetuppasswordMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
 
-func _upload0Mw() []app.HandlerFunc {
+func _interviewerMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }

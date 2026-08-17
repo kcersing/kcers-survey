@@ -37,7 +37,7 @@ export async function getInitialState(): Promise<{
 
   // 公共页面（游客可访问），无需获取用户信息
   const publicPathPattern = /^\/survey\/\d+\/(respondent|response\/.+)/;
-  const isPublicPath = publicPathPattern.test(location.pathname);
+  const isPublicPath = publicPathPattern.test(location.pathname) || location.pathname === '/query' || location.pathname.startsWith('/interviewer');
 
   if (location.pathname !== loginPath && !isPublicPath) {
     const currentUser = await fetchUserInfo();
@@ -72,7 +72,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       const { location } = history;
       // 公共页面（游客可访问），不重定向到登录页
       const publicPathPattern = /^\/survey\/\d+\/(respondent|response\/.+)/;
-      const isPublicPath = publicPathPattern.test(location.pathname);
+      const isPublicPath = publicPathPattern.test(location.pathname) || location.pathname === '/query';
       // 如果没有登录，重定向到 login
       if (!initialState?.currentUser && location.pathname !== loginPath && !isPublicPath) {
         history.push(loginPath);

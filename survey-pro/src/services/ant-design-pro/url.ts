@@ -29,4 +29,14 @@ export enum Urls {
   Heatmap='/service/survey/response/heatmap',
   QuestionBasic='/service/survey/question/basic',
   SurveyStatistics='/service/survey/statistics',
+
+  QueryByPhone='/service/pub/query-by-phone',
+
+  InterviewerLogin='/service/pub/interviewer/login',
+  InterviewerSurveyList='/service/survey/interviewer/list',
+  InterviewerResponseUpdate='/service/survey/interviewer/response/update',
+  InterviewerChangePassword='/service/survey/interviewer/change-password',
+  InterviewerSetupPassword='/service/pub/interviewer/setup-password',
+  InterviewerSendSms='/service/pub/interviewer/send-sms',
+  InterviewerLogSearch='/service/survey/interviewer/logs',
 }

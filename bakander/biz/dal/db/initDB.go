@@ -36,6 +36,10 @@ func OpenPq(databaseUrl string) *entsql.Driver {
 	if err != nil {
 		log.Fatal(err)
 	}
+	db.SetMaxIdleConns(10)
+	db.SetMaxOpenConns(50)
+	db.SetConnMaxLifetime(time.Hour)
+	db.SetConnMaxIdleTime(5 * time.Minute)
 	// Create an ent.Driver from `db`.
 	drv := entsql.OpenDB(dialect.Postgres, db)
 
