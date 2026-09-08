@@ -5,12 +5,13 @@ import (
 	service2 "kcers-survey/biz/infras/service"
 	"math"
 
-	"github.com/cloudwego/hertz/pkg/common/hlog"
 	db "kcers-survey/biz/dal/db"
 	"kcers-survey/biz/dal/db/ent"
 	surveyquestion2 "kcers-survey/biz/dal/db/ent/surveyquestion"
 	surveyresponse2 "kcers-survey/biz/dal/db/ent/surveyresponse"
 	surveyresponseanswers2 "kcers-survey/biz/dal/db/ent/surveyresponseanswers"
+
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 
 	"testing"
 )
@@ -51,7 +52,7 @@ type StatisticsBasic struct {
 
 func TestSurvey1(t *testing.T) {
 
-	dbs := db.InItDB("root:kcer-913639@tcp(101.126.9.226:3306)/survey?charset=utf8mb4&parseTime=True&loc=Local", true)
+	dbs := db.InItDB("user=kcersing password=G7#kL2_mQ9$nR4&w host=pgm-bp14pne9o105t6x57o.pg.rds.aliyuncs.com port=5432 dbname=survey port=5432 sslmode=disable TimeZone=Asia/Shanghai", true)
 
 	//rd := redis.NewClient(&redis.Options{
 	//	Addr: "127.0.0.1:6379",
@@ -63,7 +64,7 @@ func TestSurvey1(t *testing.T) {
 	sr, err := dbs.SurveyResponse.Query().
 		Where(
 			surveyresponse2.SurveyID(3), surveyresponse2.Delete(0),
-			surveyresponse2.AnswersCountGTE(60),
+			surveyresponse2.AnswersCountGTE(30),
 			surveyresponse2.Or(surveyresponse2.ResearcherNEQ(""),
 				surveyresponse2.ResearcherPhoneNEQ(""),
 			),

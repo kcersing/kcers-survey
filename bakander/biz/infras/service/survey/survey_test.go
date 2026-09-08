@@ -2,7 +2,6 @@ package survey
 
 import (
 	"context"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
 	db "kcers-survey/biz/dal/db"
 	"kcers-survey/biz/dal/db/ent"
 	surveyquestion2 "kcers-survey/biz/dal/db/ent/surveyquestion"
@@ -14,6 +13,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 )
 
 type Ree struct {
@@ -114,7 +115,7 @@ type Question struct {
 
 func TestSurvey(t *testing.T) {
 
-	dbs := db.InItDB("root:kcer-913639@tcp(101.126.9.226:3306)/survey?charset=utf8mb4&parseTime=True&loc=Local", true)
+	dbs := db.InItDB("user=kcersing password=G7#kL2_mQ9$nR4&w host=pgm-bp14pne9o105t6x57o.pg.rds.aliyuncs.com port=5432 dbname=survey port=5432 sslmode=disable TimeZone=Asia/Shanghai", true)
 
 	//rd := redis.NewClient(&redis.Options{
 	//	Addr: "127.0.0.1:6379",
@@ -146,7 +147,7 @@ func TestSurvey(t *testing.T) {
 	//print("")
 	//
 	sq, err := dbs.SurveyQuestion.Query().
-		Where(surveyquestion2.SurveyID(3), surveyquestion2.Delete(0)).
+		Where(surveyquestion2.SurveyID(1), surveyquestion2.Delete(0)).
 		Order(ent.Asc(surveyquestion2.FieldID, surveyquestion2.FieldParentID, surveyquestion2.FieldSort)).
 		All(ctx)
 	if err != nil {
@@ -198,8 +199,8 @@ func TestSurvey(t *testing.T) {
 
 	sr, err := dbs.SurveyResponse.Query().
 		Where(
-			surveyresponse2.SurveyID(3), surveyresponse2.Delete(0),
-			surveyresponse2.AnswersCountGTE(60),
+			surveyresponse2.SurveyID(1), surveyresponse2.Delete(0),
+			surveyresponse2.AnswersCountGTE(40),
 			surveyresponse2.Or(surveyresponse2.ResearcherNEQ(""),
 				surveyresponse2.ResearcherPhoneNEQ(""),
 			),
@@ -251,16 +252,16 @@ func TestSurvey(t *testing.T) {
 			//if b.Id == strconv.FormatInt(s.SurveyQuestionID, 10) {
 			bian := mun[strconv.FormatInt(s.SurveyQuestionID, 10)+"-"+sqArr[s.SurveyQuestionID].Content].(int) + 1
 
-			if s.SurveyQuestionID == 455 ||
-				s.SurveyQuestionID == 456 ||
-				s.SurveyQuestionID == 457 ||
-				s.SurveyQuestionID == 458 ||
-				s.SurveyQuestionID == 459 ||
-				s.SurveyQuestionID == 461 {
-				a, _ := strconv.Atoi(s.Answer[0])
-				s.Answer[0] = strconv.Itoa(a - 1)
-
-			}
+			//if s.SurveyQuestionID == 455 ||
+			//	s.SurveyQuestionID == 456 ||
+			//	s.SurveyQuestionID == 457 ||
+			//	s.SurveyQuestionID == 458 ||
+			//	s.SurveyQuestionID == 459 ||
+			//	s.SurveyQuestionID == 461 {
+			//	a, _ := strconv.Atoi(s.Answer[0])
+			//	s.Answer[0] = strconv.Itoa(a - 1)
+			//
+			//}
 
 			ans := append(s.Answer, s.AnswerText)
 			li[bian] = strings.Join(ans, " ")

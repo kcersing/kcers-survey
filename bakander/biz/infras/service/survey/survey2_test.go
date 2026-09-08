@@ -6,19 +6,20 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/cloudwego/hertz/pkg/common/hlog"
 	db "kcers-survey/biz/dal/db"
 	"kcers-survey/biz/dal/db/ent"
 	surveyquestion2 "kcers-survey/biz/dal/db/ent/surveyquestion"
 	surveyresponse2 "kcers-survey/biz/dal/db/ent/surveyresponse"
 	surveyresponseanswers2 "kcers-survey/biz/dal/db/ent/surveyresponseanswers"
 
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+
 	"testing"
 )
 
 func TestSurvey2(t *testing.T) {
-
-	dbs := db.InItDB("root:kcer-913639@tcp(101.126.9.226:3306)/survey?charset=utf8mb4&parseTime=True&loc=Local", true)
+	return
+	dbs := db.InItDB("user=kcersing password=G7#kL2_mQ9$nR4&w host=pgm-bp14pne9o105t6x57o.pg.rds.aliyuncs.com port=5432 dbname=survey port=5432 sslmode=disable TimeZone=Asia/Shanghai", true)
 
 	//rd := redis.NewClient(&redis.Options{
 	//	Addr: "127.0.0.1:6379",
@@ -30,7 +31,7 @@ func TestSurvey2(t *testing.T) {
 	sr, err := dbs.SurveyResponse.Query().
 		Where(
 			surveyresponse2.SurveyID(3), surveyresponse2.Delete(0),
-			surveyresponse2.AnswersCountGTE(60),
+			surveyresponse2.AnswersCountGTE(30),
 			surveyresponse2.Or(surveyresponse2.ResearcherNEQ(""),
 				surveyresponse2.ResearcherPhoneNEQ(""),
 			),
@@ -125,20 +126,17 @@ func answerCount2(sq *ent.SurveyQuestion, ids []int64, db *ent.Client, ctx conte
 		hlog.Info(v.Answer)
 		if len(v.Answer) > 0 {
 			for _, an := range v.Answer {
-
-				if v.SurveyQuestionID == 455 ||
-					v.SurveyQuestionID == 456 ||
-					v.SurveyQuestionID == 457 ||
-					v.SurveyQuestionID == 458 ||
-					v.SurveyQuestionID == 459 ||
-					v.SurveyQuestionID == 461 {
-					a, _ := strconv.Atoi(v.Answer[0])
-					an = strconv.Itoa(a - 1)
-
-				}
-
+				//if v.SurveyQuestionID == 455 ||
+				//	v.SurveyQuestionID == 456 ||
+				//	v.SurveyQuestionID == 457 ||
+				//	v.SurveyQuestionID == 458 ||
+				//	v.SurveyQuestionID == 459 ||
+				//	v.SurveyQuestionID == 461 {
+				//	a, _ := strconv.Atoi(v.Answer[0])
+				//	an = strconv.Itoa(a - 1)
+				//
+				//}
 				str = append(str, an)
-
 			}
 		}
 	}
