@@ -186,15 +186,9 @@ export default () => {
 
       <Modal
         title={<p>地图</p>}
-        centered
-        width={{
-          xs: '90%',
-          sm: '80%',
-          md: '70%',
-          lg: '70%',
-          xl: '70%',
-          xxl: '80%',
-        }}
+        width="100vw"
+        style={{ top: 0, maxWidth: '100vw', paddingBottom: 0 }}
+        styles={{ body: { height: 'calc(100vh - 120px)', padding: 0 } }}
         footer={<></>}
         open={openheatmap}
         onCancel={() => setOpenheatmap(false)}
