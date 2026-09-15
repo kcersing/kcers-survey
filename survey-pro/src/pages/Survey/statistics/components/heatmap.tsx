@@ -1,4 +1,6 @@
+import { Button } from 'antd';
 import React, { useEffect, useRef } from 'react';
+import { computeHeatMax, parsePoints } from './heatmap-utils';
 
 function isSupportCanvas() {
   const elem = document.createElement('canvas');
@@ -15,6 +17,22 @@ export const HeatMap = (props: { data: any[] }) => {
   if (!isSupportCanvas()) {
     alert('热力图目前只支持有canvas支持的浏览器,您所使用的浏览器不能使用热力图功能~');
   }
+
+  const fitToData = () => {
+    const map = mapInstance.current;
+    const T = (window as any).T;
+    if (!map || !T) return;
+    const points = parsePoints(data);
+    if (points.length === 0) {
+      map.centerAndZoom(new T.LngLat(108.95, 34.27), 4);
+      return;
+    }
+    if (points.length === 1) {
+      map.centerAndZoom(new T.LngLat(points[0].lng, points[0].lat), 12);
+      return;
+    }
+    map.setViewport(points.map((p) => new T.LngLat(p.lng, p.lat)));
+  };
 
   useEffect(() => {
     const loadScript = (src: string) => new Promise<void>((resolve, reject) => {
@@ -35,8 +53,8 @@ export const HeatMap = (props: { data: any[] }) => {
       const T = (window as any).T;
 
       const map = new T.Map(mapRef.current);
-      map.centerAndZoom(new T.LngLat(108.95, 34.27), 4);
       mapInstance.current = map;
+      map.centerAndZoom(new T.LngLat(108.95, 34.27), 4);
 
       const heatmapOverlay = new T.HeatmapOverlay({
         radius: 30,
@@ -56,15 +74,16 @@ export const HeatMap = (props: { data: any[] }) => {
       heatmapInstance.current = heatmapOverlay;
 
       if (data && data.length > 0) {
-        heatmapOverlay.setDataSet({ data, max: 300 });
+        heatmapOverlay.setDataSet({ data, max: computeHeatMax(data) });
         heatmapOverlay.show();
       }
+      fitToData();
     };
 
     if (scriptsLoaded.current) {
       // Scripts already loaded, just update data on existing map
       if (heatmapInstance.current && data && data.length > 0) {
-        heatmapInstance.current.setDataSet({ data, max: 300 });
+        heatmapInstance.current.setDataSet({ data, max: computeHeatMax(data) });
         heatmapInstance.current.show();
       }
       return;
@@ -76,9 +95,24 @@ export const HeatMap = (props: { data: any[] }) => {
       .then(() => loadScript('/scripts/HeatmapOverlay.js'))
       .then(createMap)
       .catch(console.error);
+
+    const onResize = () => {
+      mapInstance.current?.checkResize();
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, [data]);
 
   return (
-    <div ref={mapRef} id="mapDiv" style={{ width: '100%', height: '900px' }}></div>
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      <div ref={mapRef} id="mapDiv" style={{ width: '100%', height: '100%' }} />
+      <Button
+        size="small"
+        onClick={fitToData}
+        style={{ position: 'absolute', top: 8, right: 8, zIndex: 10 }}
+      >
+        回到全貌
+      </Button>
+    </div>
   );
 };
