@@ -57,10 +57,10 @@ export const HeatMap = (props: { data: any[] }) => {
       map.centerAndZoom(new T.LngLat(108.95, 34.27), 4);
 
       const heatmapOverlay = new T.HeatmapOverlay({
-        radius: 30,
+        radius: 12,
         maxOpacity: 0.9,
         minOpacity: 0.2,
-        blur: 0.75,
+        blur: 0.3,
         gradient: {
           0.0: 'blue',
           0.3: 'cyan',
