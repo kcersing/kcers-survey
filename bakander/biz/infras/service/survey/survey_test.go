@@ -148,6 +148,8 @@ func TestSurvey(t *testing.T) {
 	//
 	sq, err := dbs.SurveyQuestion.Query().
 		Where(surveyquestion2.SurveyID(1), surveyquestion2.Delete(0)).
+		//Where(surveyquestion2.SurveyID(2), surveyquestion2.Delete(0)).
+		//Where(surveyquestion2.SurveyID(3), surveyquestion2.Delete(0)).
 		Order(ent.Asc(surveyquestion2.FieldID, surveyquestion2.FieldParentID, surveyquestion2.FieldSort)).
 		All(ctx)
 	if err != nil {
@@ -199,8 +201,14 @@ func TestSurvey(t *testing.T) {
 
 	sr, err := dbs.SurveyResponse.Query().
 		Where(
-			surveyresponse2.SurveyID(1), surveyresponse2.Delete(0),
-			surveyresponse2.AnswersCountGTE(40),
+			surveyresponse2.SurveyID(1),
+			//surveyresponse2.AnswersCountGTE(50),
+			//surveyresponse2.SurveyID(2),
+			//surveyresponse2.AnswersCountGTE(20),
+			//surveyresponse2.SurveyID(3),
+			//surveyresponse2.AnswersCountGTE(30),
+
+			surveyresponse2.Delete(0),
 			surveyresponse2.Or(surveyresponse2.ResearcherNEQ(""),
 				surveyresponse2.ResearcherPhoneNEQ(""),
 			),

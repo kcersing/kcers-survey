@@ -37,17 +37,20 @@ func SName(id int64, dbs *ent.Client) string {
 }
 
 type Basic struct {
-	Name string
-
-	Value       int64
-	Proportion  float64
-	Proportion2 float64
+	Name        string         `json:"name"`        // 选项名称
+	Value       int64          `json:"value"`       // 总频次
+	Proportion  float64        `json:"proportion"`  // 占比（基于回答总数）
+	Proportion2 float64        `json:"proportion2"` // 占比（基于选项总数）
+	RegionData  map[string]int `json:"region_data"` // 各地区频次
 }
 type StatisticsBasic struct {
 	Count2 int
 	Count  int64
 	Name   string
 	Data   []Basic
+	// 地区(省)维度分母:该题在各省的答卷数(按 survey_response_id 去重)与选项总数
+	RegionResponseCount map[string]int64 `json:"region_response_count"`
+	RegionOptionCount   map[string]int64 `json:"region_option_count"`
 }
 
 func TestSurvey1(t *testing.T) {
@@ -63,8 +66,8 @@ func TestSurvey1(t *testing.T) {
 
 	sr, err := dbs.SurveyResponse.Query().
 		Where(
-			surveyresponse2.SurveyID(3), surveyresponse2.Delete(0),
-			surveyresponse2.AnswersCountGTE(30),
+			surveyresponse2.SurveyID(1), surveyresponse2.Delete(0),
+			surveyresponse2.AnswersCountGTE(50),
 			surveyresponse2.Or(surveyresponse2.ResearcherNEQ(""),
 				surveyresponse2.ResearcherPhoneNEQ(""),
 			),
@@ -77,7 +80,7 @@ func TestSurvey1(t *testing.T) {
 
 	sqarr, err := dbs.SurveyQuestion.Query().
 		Where(
-			surveyquestion2.SurveyID(3),
+			surveyquestion2.SurveyID(1),
 			surveyquestion2.Delete(0),
 			surveyquestion2.TypeIn("single_choice", "multiple_choice"),
 		).
@@ -126,11 +129,17 @@ func TestSurvey1(t *testing.T) {
 }
 
 func answerCount1(sq *ent.SurveyQuestion, ids []int64, db *ent.Client, ctx context.Context) (resp *StatisticsBasic) {
-	count, err := db.SurveyResponseAnswers.Query().Where(
-		surveyresponseanswers2.SurveyQuestionID(sq.ID),
-		surveyresponseanswers2.Delete(0),
-		surveyresponseanswers2.SurveyResponseIDIn(ids...),
-	).Count(ctx)
+	// 回答数按答卷去重:同一份答卷(survey_response_id)对同一道题可能有多行,
+	// 统计时一个 survey_response_id 只计 1,即 COUNT(DISTINCT survey_response_id)。
+	count, err := db.SurveyResponseAnswers.Query().
+		Where(
+			surveyresponseanswers2.SurveyQuestionID(sq.ID),
+			surveyresponseanswers2.Delete(0),
+			surveyresponseanswers2.SurveyResponseIDIn(ids...),
+		).
+		Select(surveyresponseanswers2.FieldSurveyResponseID).
+		Unique(true).
+		Count(ctx)
 	if err != nil {
 		hlog.Error(err)
 		return nil
