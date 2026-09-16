@@ -11,6 +11,7 @@ import { Demobase } from '@/pages/survey/statistics/components/space-layer';
 import { DemoPie } from '@/pages/survey/statistics/components/spider-label';
 import {HeatMap} from "@/pages/survey/statistics/components/heatmap";
 import {ChinaHeatMap} from "@/pages/survey/statistics/components/china-heatmap";
+import {L7HeatMap} from "@/pages/survey/statistics/components/l7-heatmap";
 
 const columns: ProColumns[] = [
 
@@ -118,6 +119,15 @@ export default () => {
     });
   };
 
+  const [openl7, setOpenl7] = useState<boolean>(false);
+  const [openl7data, setOpenl7data] = useState<any[] | null>(null);
+  const showL7Loading = () => {
+    setOpenl7(true);
+    getHeatmap({id: surveyId}).then((res) => {
+      setOpenl7data(res.data || []);
+    });
+  };
+
   return (
     <>
       <Card>
@@ -169,6 +179,9 @@ export default () => {
               <a type="primary" onClick={showChinaLoading} style={{ marginLeft: 16 }}>
                 热力地图
               </a>
+              <a type="primary" onClick={showL7Loading} style={{ marginLeft: 16 }}>
+                L7 热力图
+              </a>
 
 
               {questionBasic? <DemoCustomColor data={questionBasic}/>:null}
@@ -219,6 +232,18 @@ export default () => {
         onCancel={() => setOpenchina(false)}
       >
         {openchinadata ? <ChinaHeatMap data={openchinadata} /> : null}
+      </Modal>
+
+      <Modal
+        title={<p>L7 热力图</p>}
+        width="100vw"
+        style={{ top: 0, maxWidth: '100vw', paddingBottom: 0 }}
+        styles={{ body: { height: 'calc(100vh - 120px)', padding: 0 } }}
+        footer={<></>}
+        open={openl7}
+        onCancel={() => setOpenl7(false)}
+      >
+        {openl7data ? <L7HeatMap data={openl7data} /> : null}
       </Modal>
 
 

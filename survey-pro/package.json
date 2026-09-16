@@ -49,6 +49,8 @@
     "@ant-design/charts": "^2.6.4",
     "@ant-design/icons": "^4.8.3",
     "@ant-design/pro-components": "^2.8.10",
+    "@antv/l7": "^2.29.1",
+    "@antv/l7-maps": "^2.29.1",
     "@umijs/route-utils": "^2.2.2",
     "antd": "^5.27.3",
     "antd-style": "^3.7.1",
