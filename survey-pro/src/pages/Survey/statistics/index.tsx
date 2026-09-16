@@ -10,6 +10,7 @@ import { DemoRose } from '@/pages/survey/statistics/components/donut-rose';
 import { Demobase } from '@/pages/survey/statistics/components/space-layer';
 import { DemoPie } from '@/pages/survey/statistics/components/spider-label';
 import {HeatMap} from "@/pages/survey/statistics/components/heatmap";
+import {ChinaHeatMap} from "@/pages/survey/statistics/components/china-heatmap";
 
 const columns: ProColumns[] = [
 
@@ -108,6 +109,15 @@ export default () => {
     });
   };
 
+  const [openchina, setOpenchina] = useState<boolean>(false);
+  const [openchinadata, setOpenchinadata] = useState<any[] | null>(null);
+  const showChinaLoading = () => {
+    setOpenchina(true);
+    getHeatmap({id: surveyId}).then((res) => {
+      setOpenchinadata(res.data || []);
+    });
+  };
+
   return (
     <>
       <Card>
@@ -156,6 +166,9 @@ export default () => {
               <a type="primary" onClick={showLoading}>
                 地图
               </a>
+              <a type="primary" onClick={showChinaLoading} style={{ marginLeft: 16 }}>
+                热力地图
+              </a>
 
 
               {questionBasic? <DemoCustomColor data={questionBasic}/>:null}
@@ -194,6 +207,18 @@ export default () => {
         onCancel={() => setOpenheatmap(false)}
       >
         {openheatmapdata ? <HeatMap data={openheatmapdata} /> : null}
+      </Modal>
+
+      <Modal
+        title={<p>热力地图</p>}
+        width="100vw"
+        style={{ top: 0, maxWidth: '100vw', paddingBottom: 0 }}
+        styles={{ body: { height: 'calc(100vh - 120px)', padding: 0 } }}
+        footer={<></>}
+        open={openchina}
+        onCancel={() => setOpenchina(false)}
+      >
+        {openchinadata ? <ChinaHeatMap data={openchinadata} /> : null}
       </Modal>
 
 
