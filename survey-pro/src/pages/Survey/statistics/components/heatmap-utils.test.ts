@@ -1,4 +1,4 @@
-import { computeHeatMax, parsePoints, toHeatmapSeriesData } from './heatmap-utils';
+import { computeBounds, computeHeatMax, parsePoints, toHeatmapSeriesData } from './heatmap-utils';
 
 describe('parsePoints', () => {
   it('returns empty array for null/undefined/empty data', () => {
@@ -40,6 +40,35 @@ describe('computeHeatMax', () => {
 
   it('returns 1 when all counts are zero', () => {
     expect(computeHeatMax([{ count: 0 }])).toBe(1);
+  });
+});
+
+describe('computeBounds', () => {
+  it('returns null for null/undefined/empty data', () => {
+    expect(computeBounds(null as any)).toBeNull();
+    expect(computeBounds(undefined)).toBeNull();
+    expect(computeBounds([])).toBeNull();
+  });
+
+  it('computes min/max lng lat over all valid points', () => {
+    const data = [
+      { lng: '108.5', lat: '34.2' },
+      { lng: '110.1', lat: '35.8' },
+      { lng: '109.0', lat: '33.9' },
+    ];
+    expect(computeBounds(data)).toEqual({ minLng: 108.5, minLat: 33.9, maxLng: 110.1, maxLat: 35.8 });
+  });
+
+  it('ignores invalid coordinates', () => {
+    const data = [
+      { lng: 'abc', lat: '34.2' },
+      { lng: '109.0', lat: '33.9' },
+    ];
+    expect(computeBounds(data)).toEqual({ minLng: 109.0, minLat: 33.9, maxLng: 109.0, maxLat: 33.9 });
+  });
+
+  it('returns null when all coordinates invalid', () => {
+    expect(computeBounds([{ lng: 'x', lat: 'y' }])).toBeNull();
   });
 });
 

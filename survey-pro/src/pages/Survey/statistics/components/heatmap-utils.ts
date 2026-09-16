@@ -18,6 +18,30 @@ export function computeHeatMax(data: Array<{ count: number }> | null | undefined
   return max > 0 ? max : 1;
 }
 
+export interface LngLatBounds {
+  minLng: number;
+  minLat: number;
+  maxLng: number;
+  maxLat: number;
+}
+
+export function computeBounds(data: HeatPoint[] | null | undefined): LngLatBounds | null {
+  const points = parsePoints(data);
+  if (points.length === 0) return null;
+  const first = points[0];
+  let minLng = first.lng;
+  let maxLng = first.lng;
+  let minLat = first.lat;
+  let maxLat = first.lat;
+  for (const p of points) {
+    if (p.lng < minLng) minLng = p.lng;
+    if (p.lng > maxLng) maxLng = p.lng;
+    if (p.lat < minLat) minLat = p.lat;
+    if (p.lat > maxLat) maxLat = p.lat;
+  }
+  return { minLng, minLat, maxLng, maxLat };
+}
+
 export function toHeatmapSeriesData(
   data: Array<{ lng: string; lat: string; count: number }> | null | undefined,
 ): Array<[number, number, number]> {
