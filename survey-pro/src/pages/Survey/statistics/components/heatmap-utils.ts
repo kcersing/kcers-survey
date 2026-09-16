@@ -17,3 +17,13 @@ export function computeHeatMax(data: Array<{ count: number }> | null | undefined
   const max = data.reduce((m, d) => Math.max(m, d.count || 0), 0);
   return max > 0 ? max : 1;
 }
+
+export function toHeatmapSeriesData(
+  data: Array<{ lng: string; lat: string; count: number }> | null | undefined,
+): Array<[number, number, number]> {
+  if (!data) return [];
+  return data
+    .map((d) => ({ lng: parseFloat(d.lng), lat: parseFloat(d.lat), count: d.count || 0 }))
+    .filter((p) => Number.isFinite(p.lng) && Number.isFinite(p.lat))
+    .map((p) => [p.lng, p.lat, p.count]);
+}
