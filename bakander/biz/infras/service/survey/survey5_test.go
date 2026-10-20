@@ -55,7 +55,7 @@ func surveyResponsePredicates(sc surveyScope) []predicate.SurveyResponse {
 // 问卷 1/2/3 × 全量 / 已完成。
 // 复用 survey_test.go 中已定义的 Ree / Tree / Data / Question 类型与
 // treeToMap / findTreeQuestionChildren1 函数(同包内不可重复声明)。
-// 相比 TestSurvey，额外把 survey_response 的省/市/县/乡/详细地址各占一列。
+// 相比 TestSurvey，额外把 survey_response 的省/市/县/乡/详细地址/纬度/经度各占一列。
 func TestSurvey5(t *testing.T) {
 
 	dbs := db.InItDB("user=kcersing password=G7#kL2_mQ9$nR4&w host=pgm-bp14pne9o105t6x57o.pg.rds.aliyuncs.com port=5432 dbname=survey port=5432 sslmode=disable TimeZone=Asia/Shanghai", true)
@@ -103,6 +103,8 @@ func exportSurveyDetail(dbs *ent.Client, ctx context.Context, sc surveyScope) er
 	tale = append(tale, "县（区、旗）")
 	tale = append(tale, "乡（镇）")
 	tale = append(tale, "详细地址")
+	tale = append(tale, "纬度")
+	tale = append(tale, "经度")
 	for _, s := range treeMap {
 		tale = append(tale, s.Id+"-"+s.Title)
 		if s.Type == "multiple_choice" {
@@ -145,6 +147,8 @@ func exportSurveyDetail(dbs *ent.Client, ctx context.Context, sc surveyScope) er
 			10: item.District,
 			11: item.Village,
 			12: item.Address,
+			13: item.Latitude,
+			14: item.Longitude,
 		}
 		sra, err := dbs.SurveyResponseAnswers.
 			Query().
