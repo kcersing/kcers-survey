@@ -42,3 +42,6 @@ bakander/config/config.yaml
 /bakander/config
 /docs
 /.idea
+*.md
+*.yaml
+*.yaml
